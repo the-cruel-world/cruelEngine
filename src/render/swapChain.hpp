@@ -41,7 +41,12 @@ namespace realEngine {
         u32                     imageCount = 0;
 
         VkSwapchainKHR          swapChain = VK_NULL_HANDLE;
-        VkColorSpaceKHR         coloeSpace;
+        
+    private:
+        const Instance          &instance;
+        const VulkanDevice      &device;
+
+        VkColorSpaceKHR         colorSpace;
         VkFormat                colorFormat;
         VkSurfaceFormatKHR      surfaceFormat;
         VkPresentModeKHR        presentMode;
@@ -51,10 +56,5 @@ namespace realEngine {
         virtual void            chooseSwapSurfaceFormat();
         virtual void            chooseSwapPresentMode();
         virtual void            chooseSwapExtentMode();
-        
-    private:
-        const VulkanDevice      &device;
-        const Instance          &instance;
-
     };
 }

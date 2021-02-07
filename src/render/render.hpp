@@ -122,10 +122,10 @@ namespace realEngine {
 
     class Render {
     public:
-        Render(const Window &_topwindow, const VkApplicationInfo &_appInfo, 
-            const Instance &_instance, const VulkanDevice &_device, 
-            const RenderProp &_settings): topWindow(_topwindow), appInfo(_appInfo), 
-                instance(_instance), device(_device), settings(_settings)
+        Render(const Window &_topwindow, const VkApplicationInfo &_appInfo, const RenderProp &_settings,
+            const Instance &_instance, const VulkanDevice &_device)
+                : topWindow(_topwindow), appInfo(_appInfo), settings(_settings),
+                instance(_instance), device(_device)
         {
             
         }
@@ -134,12 +134,12 @@ namespace realEngine {
 
         }
 
-        const RenderProp        &settings;
-
         // The window that this render will present 
         const Window            &topWindow;
         // AppInfo 
         const VkApplicationInfo &appInfo;
+
+        const RenderProp        &settings;
 
         /// I dont wnat to use pointer here, need some change.
         // The Vulkan Instance 
