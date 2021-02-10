@@ -1,3 +1,3 @@
 # Network
 
-The network part that is designed for the multiplayer game/application.
+The network framework that is designed for the multiplayer game/application.

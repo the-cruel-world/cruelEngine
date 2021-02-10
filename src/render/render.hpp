@@ -2,6 +2,8 @@
 #include "vkDevice.hpp"
 #include "instance.hpp"
 #include "swapChain.hpp"
+#include "pipeLine.hpp"
+#include "renderPass.hpp"
 
 #include "../common.h"
 #include "../types.h"

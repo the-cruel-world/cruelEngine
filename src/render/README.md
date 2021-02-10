@@ -14,6 +14,14 @@ So a proper render api is required.
       - [x] Logical device creation & destroy
     
     - [x] Swap Chain
+
+      - [x] Images & Image View
+
+    - [x] Render Pass
+
+    - [x] Graphics PipeLine
+
+    - [x] Frame Buffer
     
 * OpenGL
 

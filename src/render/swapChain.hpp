@@ -49,16 +49,19 @@ namespace realEngine {
 
         VkSwapchainKHR          swapChain = VK_NULL_HANDLE;
         void                    createSwapChain();
-        
-    private:
-        const Instance          &instance;
-        const VulkanDevice      &device;
+        void                    createImages();
+        void                    createImageViews();
+        void                    destroyImageViews();
 
         VkColorSpaceKHR         colorSpace;
         VkFormat                colorFormat;
         VkSurfaceFormatKHR      surfaceFormat;
         VkPresentModeKHR        presentMode;
         VkExtent2D              extent2dMode;
+        
+    private:
+        const Instance          &instance;
+        const VulkanDevice      &device;
 
         swapChainSupportDetails supportDetails;
         virtual void            chooseSwapSurfaceFormat();
