@@ -7,10 +7,14 @@ So a proper render api is required.
 
 ## Backend 
 * Vulkan
-    [x] Device select & creation
-        [x] Physical device select
-        [x] Logical device creation & destroy
-    [x] SwapChain
+  
+    - [x] Device select & creation
+    
+      - [x] Physical device select
+      - [x] Logical device creation & destroy
+    
+    - [x] Swap Chain
+    
 * OpenGL
 
 ## Lighting techniques

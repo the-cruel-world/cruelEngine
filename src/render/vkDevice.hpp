@@ -11,16 +11,10 @@ namespace realEngine {
         i32 present = -1;
         i32 compute = -1;
         i32 transfer = -1;
-        VkDeviceQueueFamilyIndex(const VkPhysicalDevice& _physical, const VkSurfaceKHR& _surface, VkQueueFlags& _flags)
-        : physicalDevice(_physical), surface(_surface), flags(_flags)
-        {
-            findIndices();
-        }
-    protected:
-        const VkPhysicalDevice  &physicalDevice;
-        const VkSurfaceKHR      &surface;
-        const VkQueueFlags      &flags; 
-        void                    findIndices();
+        VkDeviceQueueFamilyIndex() {};
+        VkDeviceQueueFamilyIndex(const VkPhysicalDevice& physicalDevice, const VkSurfaceKHR& surface, VkQueueFlags& flags);
+
+        void findIndices(const VkPhysicalDevice& physicalDevice, const VkSurfaceKHR& surface, VkQueueFlags& flags);
     };
 
     class VulkanDevice
@@ -34,22 +28,28 @@ namespace realEngine {
 
         virtual ~VulkanDevice();
 
-        VkDevice            logicalDevice;
+        VkDevice            logicalDevice = VK_NULL_HANDLE;
 
-        VkPhysicalDevice    physicalDevice;
+        VkPhysicalDevice    physicalDevice = VK_NULL_HANDLE;
         std::vector<VkPhysicalDevice> suitablePhysicalDevices; 
 
         void                selectPhysicalDevice(int order = 0);
         void                createLogicalDevice();
 
-        VkQueue             getGraphicsQueue() {return graphic;}
-        VkQueue             getComputeQueue() {return compute;}
-        VkQueue             getPresentQueue() {return present;}
+        VkQueue             getGraphicsQueue() const {return graphic;}
+        VkQueue             getComputeQueue() const {return compute;}
+        VkQueue             getPresentQueue() const {return present;}
+
+        u32                 getGraphicsQueueIndex() const {return queueFamilyInices.graphics;}
+        u32                 getComputeQueueIndex() const {return queueFamilyInices.compute;}
+        u32                 getPresentQueueIndex() const {return queueFamilyInices.present;}
 
     private:
         VkQueue             graphic;
         VkQueue             compute;
         VkQueue             present;
+
+        VkDeviceQueueFamilyIndex queueFamilyInices;
 
         void                getSuitablePhysicalDevices();
 
@@ -57,7 +57,7 @@ namespace realEngine {
         virtual bool        isDeviceSuitable(VkPhysicalDevice device);
         bool                extensionSupported();
 
-        void                destroyLoginalDevice();
+        void                destroyLogicalDevice();
 
         VkQueueFlags        flags = VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT | VK_QUEUE_COMPUTE_BIT;
         const bool          validationLayer;// 

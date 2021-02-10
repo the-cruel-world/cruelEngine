@@ -15,7 +15,7 @@
 12. Content creation
 
 ## Dependences
-1. glfw3 
+1. glfw3
 2. vulkan SDK
 3. glm
 4. imgui
@@ -42,7 +42,7 @@ cmake ../
 make 
 ```
 
-Then you can run some executables like ./editor/editor or ./test/main
+Then you can run some executables like ./editor/editor
 
 ## Todo
 
@@ -50,5 +50,5 @@ Then you can run some executables like ./editor/editor or ./test/main
    1. Basic Render
    2. Render Template
    3. Dynamic loadable render model
-2. Memory Management
+2. Memory & Process Management
 3. Application Template

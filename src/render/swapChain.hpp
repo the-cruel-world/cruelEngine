@@ -7,13 +7,20 @@
 namespace realEngine {
 
     struct swapChainSupportDetails  {
-        VkSurfaceCapabilitiesKHR    capabilities;
-        std::vector<VkSurfaceFormatKHR> formats;
-        std::vector<VkPresentModeKHR> presentModes;
+        VkSurfaceCapabilitiesKHR    capabilities = {};
+        std::vector<VkSurfaceFormatKHR> formats = {};
+        std::vector<VkPresentModeKHR> presentModes = {};
 
         swapChainSupportDetails() { }
-        swapChainSupportDetails(VkPhysicalDevice device, VkSurfaceKHR surface){
-            vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &capabilities);
+        swapChainSupportDetails(const VkPhysicalDevice &device, const VkSurfaceKHR &surface){
+            getDetails(device, surface);
+        }
+        void cleanUp(){
+            formats.clear();
+            presentModes.clear();
+        }
+        void getDetails(const VkPhysicalDevice &device, const VkSurfaceKHR &surface){
+            VK_CHECK_RESULT(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &capabilities));
 
             u32 formatCount;
             vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, nullptr);
@@ -41,6 +48,7 @@ namespace realEngine {
         u32                     imageCount = 0;
 
         VkSwapchainKHR          swapChain = VK_NULL_HANDLE;
+        void                    createSwapChain();
         
     private:
         const Instance          &instance;

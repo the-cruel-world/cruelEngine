@@ -1,7 +1,13 @@
 #include "vkDevice.hpp"
 
 namespace realEngine {
-    void VkDeviceQueueFamilyIndex::findIndices()
+
+    VkDeviceQueueFamilyIndex::VkDeviceQueueFamilyIndex(const VkPhysicalDevice& physicalDevice, const VkSurfaceKHR& surface, VkQueueFlags& flags)
+    {
+        findIndices(physicalDevice, surface, flags);
+    }
+    
+    void VkDeviceQueueFamilyIndex::findIndices(const VkPhysicalDevice& physicalDevice, const VkSurfaceKHR& surface, VkQueueFlags& flags)
     {
         u32 queueFamilyCount = 0;
         vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
@@ -87,13 +93,19 @@ namespace realEngine {
         getSuitablePhysicalDevices();
     }
 
+    /* Create device
+        1. Get all physical device. 
+        2. Select a nice device.
+        3. Create a logical device.
+    */ 
+
     /* Create devices 
         1. create a instence of VulkanDevice
         2. select a suitable physical device 
         3. create a logical device
     */
 
-    VulkanDevice::~VulkanDevice(){ destroyLoginalDevice(); }
+    VulkanDevice::~VulkanDevice(){ destroyLogicalDevice(); }
 
     void VulkanDevice::getSuitablePhysicalDevices()
     {
@@ -176,7 +188,7 @@ namespace realEngine {
         std::vector<VkDeviceQueueCreateInfo> queueCreateInfos{};
         const float defaultQueuePriority = 1.0f;
 
-        VkDeviceQueueFamilyIndex queueFamilyInices(physicalDevice, surface, flags);
+        queueFamilyInices.findIndices(physicalDevice, surface, flags);
         
         // Set queue requirements
         if (flags & VK_QUEUE_GRAPHICS_BIT) {
@@ -243,7 +255,7 @@ namespace realEngine {
         vkGetDeviceQueue(logicalDevice, queueFamilyInices.present, 0, &present);
     }
 
-    void VulkanDevice::destroyLoginalDevice()
+    void VulkanDevice::destroyLogicalDevice()
     {
         if (logicalDevice)
             vkDestroyDevice(logicalDevice, nullptr);
