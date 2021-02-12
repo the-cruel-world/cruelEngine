@@ -59,6 +59,7 @@ namespace realEngine
     }
 
     RenderPass::~RenderPass () {
+        //std::cout << "clean up RenderPass" << std::endl;
         destroyRenderPass();
     }
 }

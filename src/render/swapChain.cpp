@@ -98,6 +98,7 @@ namespace realEngine {
     }
 
     SwapChain::~SwapChain(){
+        //std::cout << "clean up SwapChain" << std::endl;
         destroyImageViews();
         vkDestroySwapchainKHR(device.logicalDevice, swapChain, nullptr);
     }

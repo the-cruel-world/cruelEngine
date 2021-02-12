@@ -105,7 +105,10 @@ namespace realEngine {
         3. create a logical device
     */
 
-    VulkanDevice::~VulkanDevice(){ destroyLogicalDevice(); }
+    VulkanDevice::~VulkanDevice() {
+        //std::cout << "clean up VulkanDevice" << std::endl;
+        destroyLogicalDevice(); 
+    }
 
     void VulkanDevice::getSuitablePhysicalDevices()
     {

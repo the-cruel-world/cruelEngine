@@ -17,6 +17,7 @@ namespace realEngine {
             VK_CHECK_RESULT(glfwCreateWindowSurface(instance, topWindow.window, nullptr, &surface));
         }
         virtual ~Instance(){
+            //std::cout << "clean up instance" << std::endl;
             vkDestroySurfaceKHR(instance, surface, nullptr);
             vkDestroyInstance(instance, nullptr);
         }

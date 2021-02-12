@@ -8,6 +8,7 @@ namespace realEngine
         ;
     }
     PipeLine::~PipeLine() {
+        //std::cout << "clean up PipeLine" << std::endl;
         vkDestroyPipelineLayout(device.logicalDevice, pipeLineLayout, nullptr);
         vkDestroyPipeline(device.logicalDevice, pipeLine, nullptr);
     }
