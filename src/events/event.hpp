@@ -1,4 +1,4 @@
-#ifndef __real_engine_event__
-#define __real_engine_event__
+#ifndef __cruel_engine_event__
+#define __cruel_engine_event__
 
 #endif

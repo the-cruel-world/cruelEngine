@@ -1,21 +1,22 @@
 #include "../src/common.h"
 #include "../src/types.h"
+#include <GLFW/glfw3.h>
 
-#include "../src/application/application.hpp"
 #include "../src/window/window.hpp"
+#include "../src/application/application.hpp"
 
-#include "../src/render/render.hpp"
-#include "../src/render/vkDevice.hpp"
-#include "../src/render/instance.hpp"
-#include "../src/render/swapChain.hpp"
-#include "../src/render/renderPass.hpp"
-#include "../src/render/shader.hpp"
-#include "../src/render/pipeLine.hpp"
-#include "../src/render/buffer.hpp"
+#include "../src/render/vulkan/instance.hpp"
+#include "../src/render/vulkan/render.hpp"
+#include "../src/render/vulkan/vkDevice.hpp"
+#include "../src/render/vulkan/swapChain.hpp"
+#include "../src/render/vulkan/renderPass.hpp"
+#include "../src/render/vulkan/shader.hpp"
+#include "../src/render/vulkan/pipeLine.hpp"
+#include "../src/render/vulkan/buffer.hpp"
 
 #include "../src/debug/debug.hpp"
 
-using namespace realEngine;
+using namespace cruelEngine;
 
 class Editor : Application{
 public:
@@ -168,17 +169,17 @@ public:
     .pEngineName = "Real Engine",
     .apiVersion = VK_API_VERSION_1_0};
 
-    realEngine::WindowProp                  mainWindowProp = {"Editor", 1280, 720, false};
-    realEngine::Window                      mainWindow;
+    cruelEngine::WindowProp                  mainWindowProp = {"Editor", 1280, 720, false};
+    cruelEngine::Window                      mainWindow;
 
-    realEngine::Instance        instance;
+    cruelEngine::Instance        instance;
     VkPhysicalDeviceFeatures    features = {};
-    realEngine::VulkanDevice    device;
-    realEngine::SwapChain       swapChain;
-    realEngine::RenderPass      renderPass;
-    realEngine::PipeLine        pipeLine;
-    realEngine::FrameBuffer     frameBuffer;
-    realEngine::CommandBuffer   commandBuffer;
+    cruelEngine::VulkanDevice    device;
+    cruelEngine::SwapChain       swapChain;
+    cruelEngine::RenderPass      renderPass;
+    cruelEngine::PipeLine        pipeLine;
+    cruelEngine::FrameBuffer     frameBuffer;
+    cruelEngine::CommandBuffer   commandBuffer;
 
 
     const int                   MAX_FRAMES_IN_FLIGHT = 2;
@@ -204,8 +205,8 @@ public:
     }
 };
 
-u32 realEngine::Window::count = 0;
-bool realEngine::Window::glfw_inited = false;
+u32 cruelEngine::Window::count = 0;
+bool cruelEngine::Window::glfw_inited = false;
 
 int main(int argc, char const *argv[])
 {

@@ -1,10 +1,10 @@
-#ifndef __real_engine_application__
-#define __real_engine_application__
+#ifndef __cruel_engine_application__
+#define __cruel_engine_application__
 
 #include "../window/window.hpp"
 #include <cassert>
 
-namespace realEngine {
+namespace cruelEngine {
     class Application
     {
     public: 

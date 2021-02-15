@@ -1,6 +1,6 @@
 file(GLOB SRC "*.cpp" "*.hpp" "*.h")
 file(GLOB HEADERS "*.hpp" "*.h")
 
-add_library(realApplication SHARED ${SRC})
+add_library(cruelApplication SHARED ${SRC})
 
-target_link_libraries(realApplication realWindow)
+target_link_libraries(cruelApplication cruelWindow)

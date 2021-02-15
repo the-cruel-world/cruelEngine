@@ -1,6 +1,6 @@
 #include "noise.hpp"
 
-namespace realEngien {
+namespace cruelEngien {
 
     Noise::Noise(){
 

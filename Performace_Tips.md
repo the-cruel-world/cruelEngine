@@ -14,3 +14,11 @@
 1. [Dos and donts](https://developer.nvidia.com/blog/vulkan-dos-donts/)
 2. [Performance](https://zeux.io/2020/02/27/writing-an-efficient-vulkan-renderer/)
 3. 
+
+
+## Coding tips
+1. To replace the name of a namespace, the easy way:
+
+```bash
+grep -rl "realEngine" . | xargs sed -i 's/realEngine/cruelEngine/g'
+```

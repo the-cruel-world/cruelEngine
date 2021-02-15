@@ -1,6 +1,6 @@
 #include "application.hpp"
 
-namespace realEngine {
+namespace cruelEngine {
     Application::Application()
     {
     

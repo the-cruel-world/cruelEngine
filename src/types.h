@@ -1,5 +1,5 @@
-#ifndef __real_engine_types__
-#define __real_engine_types__
+#ifndef __cruel_engine_types__
+#define __cruel_engine_types__
 
 #include <cstdint>
 

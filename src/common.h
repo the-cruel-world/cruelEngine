@@ -1,31 +1,29 @@
-#ifndef __real_engine_common__
-#define __real_engine_common__
+#ifndef __cruel_engine_common__
+#define __cruel_engine_common__
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-#include <vector>
-#include <array>
-#include <unordered_map>
-#include <numeric>
+// C headers
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cassert>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <cstdint>
 #include <ctime>
+
+// C++ headers
 #include <iostream>
 #include <fstream>
-#include <cstdint>
-#include <chrono>
+#include <string>
+#include <array>
+#include <vector>
 #include <set>
-#include <unistd.h>
+#include <unordered_map>
+
+#include <numeric>
 #include <random>
 #include <algorithm>
-#include <sys/stat.h>
-
-// headers of vulkan
-#include <vulkan/vulkan.h>
-
-#ifdef __VULKAN__
-#define GLFW_INCLUDE_VULKAN
-#endif 
+#include <chrono>
 
 // headers of GLM
 #define GLM_FORCE_RADIANS
@@ -35,9 +33,5 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include <string>
-#include <numeric>
-#include <array>
-#include <vector>
 
 #endif

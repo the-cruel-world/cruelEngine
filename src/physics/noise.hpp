@@ -1,7 +1,7 @@
-#ifndef __real_engin_noise__
-#define __real_engin_noise__
+#ifndef __cruel_engin_noise__
+#define __cruel_engin_noise__
 
-namespace realEngien {
+namespace cruelEngien {
     class Noise {
     public:
         Noise();

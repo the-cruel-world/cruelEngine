@@ -1,6 +1,6 @@
 #include "window.hpp"
 
-namespace realEngine {
+namespace cruelEngine {
     Window::Window() : property(WindowProp())
     {
         createWindow();
@@ -15,7 +15,7 @@ namespace realEngine {
         if (!glfw_inited)
             glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+        // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         // Create different type of window fullscreen or not.
         if (property.fullscreen)

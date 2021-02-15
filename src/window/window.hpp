@@ -1,5 +1,5 @@
-#ifndef __real_engine_window__
-#define __real_engine_window__
+#ifndef __cruel_engine_window__
+#define __cruel_engine_window__
 
 #include <string>
 
@@ -16,7 +16,7 @@
 #include <GLFW/glfw3.h>
 #include "../types.h"
 
-namespace realEngine{
+namespace cruelEngine{
     struct WindowProp {
         std::string title;
         u32 width;
