@@ -5,7 +5,8 @@
 #include "../../window/window.hpp"
 
 namespace cruelEngine {
-    class Instance {
+namespace VulkanContext {
+    struct Instance {
     public: 
         Instance(const Window &_theWindow, const VkApplicationInfo &_appInfo, const bool _validation,
             const std::vector<const char*> _validationLayers,
@@ -32,4 +33,5 @@ namespace cruelEngine {
 
     private:
     };
+}
 }

@@ -1,7 +1,7 @@
 #include "instance.hpp"
 
-namespace cruelEngine
-{
+namespace cruelEngine {
+namespace VulkanContext {
 
     Instance::Instance(const Window &_theWindow, const VkApplicationInfo &_appInfo, const bool _validation,
         const std::vector<const char*> _validationLayers,
@@ -48,4 +48,5 @@ namespace cruelEngine
         }
         return extensions;
     }
-} // namespace cruelEngine
+}
+}

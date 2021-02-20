@@ -3,7 +3,15 @@
 #include "vkcommon.h"
 
 
-namespace cruelEngine
-{
-    class LogicalDevice {};
-} // namespace cruelEngine
+namespace cruelEngine {
+namespace VulkanContext {
+    struct LogicalDevice {
+    public:
+        LogicalDevice() {}
+        ~LogicalDevice() {}
+
+    public:
+        VkFramebuffer   &createFrameBuffer();
+    };
+}
+}

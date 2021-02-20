@@ -1,4 +1,4 @@
-# Game engine
+# Cruel engine
 
 ## Components of a game engine
 1. Entry point
@@ -9,7 +9,7 @@
 6. Debugging Support
 7. Scripting Language
 8. Memory Management
-9. Entry component system (ECS)
+9. Entity component system (ECS)
 10. Physics
 11. File I/O Visual File System
 12. Content creation
@@ -21,7 +21,7 @@
 4. imgui
 
 ## Install dependences 
-On archlinux see [here](https://wiki.archlinux.org/index.php/Vulkan#Installation)
+On archlinux see [this](https://wiki.archlinux.org/index.php/Vulkan#Installation)
 ```bash
 sudo pacman -S glfw-x11 vulkan-icd-loader vulkan-headers vulkan-validation-layers vulkan-tools
 ```

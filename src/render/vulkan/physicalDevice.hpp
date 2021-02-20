@@ -4,20 +4,46 @@
 
 #include "instance.hpp"
 
+namespace cruelEngine {
+namespace VulkanContext {
 
-namespace cruelEngine
-{
-    class PhysicalDevice {
+    std::vector<VkPhysicalDevice> & getPhysicalDevices(const Instance &instance);
+
+    std::vector<VkPhysicalDevice> & getSuitablePhysicalDevices(const Instance &instance, const VkPhysicalDeviceFeatures &requiredFeatures, const std::vector<const char*> requiredExtensions);
+
+    bool isPhysicalDeviceSuitable (const VkPhysicalDevice & physicalDevice, const VkPhysicalDeviceFeatures &requiredFeatures, const std::vector<const char*> requiredExtensions);
+
+    struct VkDeviceQueueFamilyIndex {
+        i32 graphics = -1;
+        i32 present = -1;
+        i32 compute = -1;
+        i32 transfer = -1;
+        VkDeviceQueueFamilyIndex() {};
+        VkDeviceQueueFamilyIndex(const VkPhysicalDevice& physicalDevice, const VkSurfaceKHR& surface, VkQueueFlags& flags);
+
+        void findIndices(const VkPhysicalDevice& physicalDevice, const VkSurfaceKHR& surface, VkQueueFlags& flags);
+    };
+
+    struct PhysicalDevice {
     public:
-        PhysicalDevice(Instance &instance, VkPhysicalDevice physical_device);
+        PhysicalDevice(const VkPhysicalDevice& physicalDevice);
+        
+        u32 getMemotyTypeIndex(const u32& filter, const VkMemoryPropertyFlags& flags) const;
+
+        const VkPhysicalDeviceFeatures& getDeviceFeatures() const {return features;}
+
+        const VkPhysicalDeviceMemoryProperties& getMemotyProperties() const {return memoryProperties;}
+
+        const VkSampleCountFlagBits& getMultiSamplingLevel() const;
 
     private:
-        Instance &instance;
 
-        VkPhysicalDeviceFeatures features{};
+        VkPhysicalDevice            physicalDevice;
+
+        VkPhysicalDeviceFeatures    features{};
 
         // The GPU properties
-        VkPhysicalDeviceProperties properties;
+        VkPhysicalDeviceProperties  properties;
 
         // The GPU memory properties
         VkPhysicalDeviceMemoryProperties memoryProperties;
@@ -25,14 +51,11 @@ namespace cruelEngine
         // The GPU queue family properties
         std::vector<VkQueueFamilyProperties> queueFamilyProperties;
 
-        // The features that will be requested to be enabled in the logical device
-        VkPhysicalDeviceFeatures requiredFeatures{};
-
-        // The extension feature pointer
-        std::vector<const char *> requiredExtensions{};
+        // The depthFormat
+        VkFormat                    depthFormat;
 
         // Holds the extension feature structures, we use a map to retain an order of requested structures
-        // std::map<VkStructureType, std::shared_ptr<void>> extension_features;
+        std::vector<const char *>   extension_features;
     };
-} // namespace cruelEngine
- 
+}
+}

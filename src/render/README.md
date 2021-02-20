@@ -3,9 +3,13 @@
 The render should support both vulkan and opengl as backed.
 So a proper render api is required.
 
+
+
+## Renderer Design Pattern
+
 ## Render API
 
-## Backend 
+## Backend
 * Vulkan
   
     - [x] Device select & creation
@@ -26,5 +30,3 @@ So a proper render api is required.
 * OpenGL
 
 ## Lighting techniques
-
-## 

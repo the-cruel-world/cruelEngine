@@ -7,15 +7,16 @@
 
 
 namespace cruelEngine {
-    class Semaphores {
+namespace VulkanContext {
+    struct Semaphores {
     public:
-        Semaphores(const VulkanDevice &_device, const SwapChain &_swapChain);
+        Semaphores();
         virtual ~Semaphores();
 
     public:
 
     private:
-        const VulkanDevice          &device;
-        const SwapChain             &swapChain;
+
     };
+}
 }

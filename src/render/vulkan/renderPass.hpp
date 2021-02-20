@@ -5,18 +5,28 @@
 #include "swapChain.hpp"
 
 namespace cruelEngine {
-    class RenderPass {
+namespace VulkanContext {
+    struct RenderPass {
     public: 
-        RenderPass(const Instance &_instance, const VulkanDevice &_device, const SwapChain &swapChain);
+        RenderPass(const VulkanDevice &_device, const SwapChain &swapChain);
+
         virtual ~RenderPass();
 
     public:
-        VkRenderPass            renderPass = VK_NULL_HANDLE;
+
         void                    createRenderPass();
-        void                    destroyRenderPass();
+
+        const VkRenderPass&     get_handle() const {return handle;}
+
+        const VulkanDevice&     get_device() const {return device;}
+
     private:
-        const SwapChain         &swapChain;
+
         const VulkanDevice      &device;
-        const Instance          &instance;
+
+        const VkFormat          &colorFormat;
+
+        VkRenderPass            handle = VK_NULL_HANDLE;
     };
+}
 }

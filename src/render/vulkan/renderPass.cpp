@@ -1,16 +1,18 @@
 #include "renderPass.hpp"
 
-namespace cruelEngine
-{
-    RenderPass::RenderPass(const Instance &_instance, const VulkanDevice &_device, const SwapChain &_swapChain)
-        : swapChain (_swapChain), device (_device), instance (_instance)
-    {
+namespace cruelEngine {
+namespace VulkanContext {
 
+    RenderPass::RenderPass(const VulkanDevice &_device, const SwapChain &_swapChain)
+        : device (_device), colorFormat (_swapChain.get_colorFormat())
+    {
+        
     }
 
-    void RenderPass::createRenderPass() {
+    void RenderPass::createRenderPass() 
+    {
         VkAttachmentDescription colorAttachment{};
-        colorAttachment.format = swapChain.colorFormat;
+        colorAttachment.format = colorFormat;
         colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 
         colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
@@ -47,19 +49,12 @@ namespace cruelEngine
         renderPassInfo.dependencyCount = 1;
         renderPassInfo.pDependencies = &dependency;
 
-        if (vkCreateRenderPass(device.logicalDevice, &renderPassInfo, nullptr, &renderPass) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create render pass!");
-        }
-    }
-
-    void RenderPass::destroyRenderPass() {
-        if (renderPass == VK_NULL_HANDLE)
-            return;
-        vkDestroyRenderPass(device.logicalDevice, renderPass, nullptr);
+        VK_CHECK_RESULT (vkCreateRenderPass(device.logicalDevice, &renderPassInfo, nullptr, &handle));
     }
 
     RenderPass::~RenderPass () {
-        //std::cout << "clean up RenderPass" << std::endl;
-        destroyRenderPass();
+        if (handle != VK_NULL_HANDLE)
+            vkDestroyRenderPass(device.logicalDevice, handle, nullptr);
     }
+}
 }

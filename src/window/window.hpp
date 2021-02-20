@@ -24,7 +24,7 @@ namespace cruelEngine{
         bool fullscreen;
         
         // Give the structure init values.
-        WindowProp(const std::string& _title = "Real Engine",
+        WindowProp(const std::string& _title = "Cruel Engine",
             u32 _width = 1280, u32 _height = 720, bool _fullscreen = false) 
             : title(_title), width(_width), height(_height), fullscreen(_fullscreen)
         {}

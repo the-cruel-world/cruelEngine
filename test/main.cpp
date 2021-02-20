@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 #include <../src/window/window.hpp>
 
@@ -57,6 +58,17 @@ std::ostream& operator<<(std::ostream &out, const Complex &obj) {
 u32 cruelEngine::Window::count = 0;
 bool cruelEngine::Window::glfw_inited = false;
 
+struct every {
+    public:
+    
+    every (std::string _str) : str (std::move(_str)) {
+        std::cout << str << std::endl;
+    }
+    ~every () { std::cout << "my life ends: " + str << std::endl;}
+
+    std::string str;
+};
+
 int main(int argc, char const *argv[])
 {
     Complex a (5,5);
@@ -78,11 +90,19 @@ int main(int argc, char const *argv[])
     std::cout << "(" << a.getreal() << " + i" << a.getimage() << ") * " << "(" << b.getreal() << " + i" << b.getimage() << ") = ";
     std::cout << a * b << std::endl;
 
+    std::vector<std::shared_ptr<every>> everylist{};
+
+    everylist.push_back(std::make_shared<every>("hello"));
+    everylist.push_back(std::make_shared<every>("world"));
+
+
     cruelEngine::Window window;
 
     while (!glfwWindowShouldClose(window.window)){
         glfwPollEvents();
     }
+
+    everylist.clear();
 
     return 0;
 }

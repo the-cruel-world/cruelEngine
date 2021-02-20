@@ -4,12 +4,12 @@
 
 
 namespace cruelEngine {
-
+namespace VulkanContext {
     std::vector<char> readFile(const std::string& filename);
 
     VkShaderModule createShaderModule(const VkDevice logicalDevice, const std::vector<char>& code);
 
-    class Shader {
+    struct Shader {
     public:
         Shader (const VkDevice &_device, const std::string& _filename)
             : device (_device)
@@ -27,4 +27,5 @@ namespace cruelEngine {
     private: 
         const VkDevice      &device;
     };
+}
 }

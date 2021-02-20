@@ -5,7 +5,7 @@
 #include "instance.hpp"
 
 namespace cruelEngine {
-
+namespace VulkanContext {
     struct swapChainSupportDetails  {
         VkSurfaceCapabilitiesKHR    capabilities = {};
         std::vector<VkSurfaceFormatKHR> formats = {};
@@ -37,35 +37,57 @@ namespace cruelEngine {
             }
         }
     };
-    class SwapChain {
+    struct SwapChain {
     public:
         SwapChain(const Instance &_instance, const VulkanDevice &_device);
+
         virtual ~SwapChain();
 
-    public: 
-        std::vector<VkImage>    images;
-        std::vector<VkImageView>imageViews;
+        void Update(const VkExtent2D& _extent2dMode);
+        void Update(const VkColorSpaceKHR& _colorSpace);
+        void Update(const VkFormat& _colorFormat);
+
+    public:
+
         u32                     imageCount = 0;
 
-        VkSwapchainKHR          swapChain = VK_NULL_HANDLE;
-        void                    createSwapChain();
+        void                    createSwapChain(u32 &_imageCount);
+
         void                    createImages();
+
         void                    createImageViews();
+
         void                    destroyImageViews();
+
+        const VkSwapchainKHR&   get_handle() const {return handle;}
+
+        const VulkanDevice&     get_device() const {return device;}
+
+        const VkFormat&         get_colorFormat() const {return colorFormat;}
+
+        const VkExtent2D&       get_extent() const {return extent2dMode;}
+
+        const std::vector<VkImageView> & get_imageViews() const {return imageViews;}
+        
+    private:
+        const Instance          &instance;
+        const VulkanDevice      &device;
 
         VkColorSpaceKHR         colorSpace;
         VkFormat                colorFormat;
         VkSurfaceFormatKHR      surfaceFormat;
         VkPresentModeKHR        presentMode;
         VkExtent2D              extent2dMode;
-        
-    private:
-        const Instance          &instance;
-        const VulkanDevice      &device;
+
+        std::vector<VkImage>    images;
+        std::vector<VkImageView>imageViews;
+
+        VkSwapchainKHR          handle = VK_NULL_HANDLE;
 
         swapChainSupportDetails supportDetails;
         virtual void            chooseSwapSurfaceFormat();
         virtual void            chooseSwapPresentMode();
         virtual void            chooseSwapExtentMode();
     };
+}
 }

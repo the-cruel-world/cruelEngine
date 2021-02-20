@@ -1,13 +1,14 @@
 #include "swapChain.hpp"
 
 namespace cruelEngine {
+namespace VulkanContext {
     SwapChain::SwapChain(const Instance &_instance, const VulkanDevice &_device)
         : instance(_instance), device(_device)
     {
         
     }
 
-    void SwapChain::createSwapChain()
+    void SwapChain::createSwapChain(u32 &_imageCount)
     {
         supportDetails.getDetails(device.physicalDevice, instance.surface);  
 
@@ -15,10 +16,15 @@ namespace cruelEngine {
         chooseSwapPresentMode();
         chooseSwapExtentMode();
 
-        imageCount = supportDetails.capabilities.minImageCount + 1;
         if (supportDetails.capabilities.maxImageCount > 0 && 
-            imageCount > supportDetails.capabilities.maxImageCount) 
-        imageCount = supportDetails.capabilities.maxImageCount;
+            _imageCount > supportDetails.capabilities.maxImageCount)
+            _imageCount = supportDetails.capabilities.maxImageCount;
+        else if (supportDetails.capabilities.minImageCount > 0 && 
+            _imageCount < supportDetails.capabilities.minImageCount)
+            _imageCount = supportDetails.capabilities.minImageCount;
+        
+
+        imageCount = _imageCount;
 
         VkSwapchainCreateInfoKHR createInfo{};
         createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -53,14 +59,14 @@ namespace cruelEngine {
         createInfo.clipped = VK_TRUE;
         createInfo.oldSwapchain = VK_NULL_HANDLE;
 
-        VK_CHECK_RESULT(vkCreateSwapchainKHR(device.logicalDevice, &createInfo, nullptr, &swapChain));
+        VK_CHECK_RESULT(vkCreateSwapchainKHR(device.logicalDevice, &createInfo, nullptr, &handle));
     }
 
     void SwapChain::createImages()
     {
-        vkGetSwapchainImagesKHR(device.logicalDevice, swapChain, &imageCount, nullptr);
+        vkGetSwapchainImagesKHR(device.logicalDevice, handle, &imageCount, nullptr);
         images.resize(imageCount);
-        vkGetSwapchainImagesKHR(device.logicalDevice, swapChain, &imageCount, images.data());
+        vkGetSwapchainImagesKHR(device.logicalDevice, handle, &imageCount, images.data());
     }
 
     void SwapChain::createImageViews()
@@ -100,7 +106,8 @@ namespace cruelEngine {
     SwapChain::~SwapChain(){
         //std::cout << "clean up SwapChain" << std::endl;
         destroyImageViews();
-        vkDestroySwapchainKHR(device.logicalDevice, swapChain, nullptr);
+        if (handle != VK_NULL_HANDLE)
+            vkDestroySwapchainKHR(device.logicalDevice, handle, nullptr);
     }
 
     void SwapChain::chooseSwapSurfaceFormat() {
@@ -147,4 +154,5 @@ namespace cruelEngine {
             extent2dMode = actualExtent;
         }
     }
+}
 }
