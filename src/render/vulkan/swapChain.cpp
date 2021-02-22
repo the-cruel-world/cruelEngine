@@ -7,6 +7,11 @@ namespace VulkanContext {
     {
         
     }
+    
+    SwapChain::~SwapChain(){
+        //std::cout << "clean up SwapChain" << std::endl;
+        __destroy();
+    }
 
     void SwapChain::createSwapChain(u32 &_imageCount)
     {
@@ -22,44 +27,17 @@ namespace VulkanContext {
         else if (supportDetails.capabilities.minImageCount > 0 && 
             _imageCount < supportDetails.capabilities.minImageCount)
             _imageCount = supportDetails.capabilities.minImageCount;
-        
 
         imageCount = _imageCount;
 
-        VkSwapchainCreateInfoKHR createInfo{};
-        createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
-        createInfo.surface = instance.surface;
-        createInfo.minImageCount = imageCount;
-        createInfo.imageFormat = surfaceFormat.format;
-        createInfo.imageColorSpace = surfaceFormat.colorSpace;
-        createInfo.imageExtent = extent2dMode;
-        createInfo.imageArrayLayers = 1;
-        createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+        __create();
+    }
 
-        const VkQueue graphicFamily = device.getPresentQueue();
-        const VkQueue presentFamily = device.getPresentQueue();
-        uint32_t queueFamilyIndices[] = {
-            device.getGraphicsQueueIndex(),
-            device.getPresentQueueIndex()
-        };
-
-        if (graphicFamily != presentFamily) {
-            createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
-            createInfo.queueFamilyIndexCount = 2;
-            createInfo.pQueueFamilyIndices = queueFamilyIndices;
-        } else {
-            createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
-            createInfo.queueFamilyIndexCount = 0;
-            createInfo.pQueueFamilyIndices = nullptr;
-        }
-
-        createInfo.preTransform = supportDetails.capabilities.currentTransform;
-        createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-        createInfo.presentMode = presentMode;
-        createInfo.clipped = VK_TRUE;
-        createInfo.oldSwapchain = VK_NULL_HANDLE;
-
-        VK_CHECK_RESULT(vkCreateSwapchainKHR(device.logicalDevice, &createInfo, nullptr, &handle));
+    void SwapChain::update(const VkExtent2D& _extent2dMode)
+    {
+        extent2dMode = _extent2dMode;
+        __destroy();
+        __create();
     }
 
     void SwapChain::createImages()
@@ -96,6 +74,7 @@ namespace VulkanContext {
             }
         }
     }
+
     void SwapChain::destroyImageViews()
     {
         for (auto imageView : imageViews) {
@@ -103,8 +82,51 @@ namespace VulkanContext {
         }
     }
 
-    SwapChain::~SwapChain(){
-        //std::cout << "clean up SwapChain" << std::endl;
+
+    void SwapChain::__create()
+    {
+        VkSwapchainCreateInfoKHR createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
+        createInfo.surface = instance.surface;
+        createInfo.minImageCount = imageCount;
+        createInfo.imageFormat = surfaceFormat.format;
+        createInfo.imageColorSpace = surfaceFormat.colorSpace;
+        createInfo.imageExtent = extent2dMode;
+        createInfo.imageArrayLayers = 1;
+        createInfo.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+
+        const VkQueue graphicFamily = device.getPresentQueue();
+        const VkQueue presentFamily = device.getPresentQueue();
+        uint32_t queueFamilyIndices[] = {
+            device.getGraphicsQueueIndex(),
+            device.getPresentQueueIndex()
+        };
+
+        if (graphicFamily != presentFamily) {
+            createInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+            createInfo.queueFamilyIndexCount = 2;
+            createInfo.pQueueFamilyIndices = queueFamilyIndices;
+        } else {
+            createInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+            createInfo.queueFamilyIndexCount = 0;
+            createInfo.pQueueFamilyIndices = nullptr;
+        }
+
+        createInfo.preTransform = supportDetails.capabilities.currentTransform;
+        createInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+        createInfo.presentMode = presentMode;
+        createInfo.clipped = VK_TRUE;
+        createInfo.oldSwapchain = VK_NULL_HANDLE;
+
+        VK_CHECK_RESULT(vkCreateSwapchainKHR(device.logicalDevice, &createInfo, nullptr, &handle));
+
+        createImages();
+
+        createImageViews();
+    }
+
+    void SwapChain::__destroy()
+    {
         destroyImageViews();
         if (handle != VK_NULL_HANDLE)
             vkDestroySwapchainKHR(device.logicalDevice, handle, nullptr);

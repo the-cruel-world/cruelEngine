@@ -22,16 +22,16 @@ using namespace cruelEngine;
 
 using namespace cruelEngine::VulkanContext;
 
-class Triangle : Application{
+class Draw_Index : Application{
 public:
-    Triangle () : mainWindow (mainWindowProp), 
+    Draw_Index () : mainWindow (mainWindowProp), 
         instance (mainWindow, appInfo, settings.validation, settings.validationLayers, settings.enabledInstanceExtensions), 
         device (settings.validation, settings.validationLayers, instance.instance, instance.surface, settings.enabledDeviceExtensions),
         swapChain (instance, device), renderPass (device), pipeLineLayout(device), pipeLine(device), commandPool(device)
     {
-        std::cout << "[Triangle] Hello World" << std::endl;
+        std::cout << "[Draw_Index] Hello World" << std::endl;
     };
-    ~Triangle () {
+    ~Draw_Index () {
         destroySemaphores();
         cleanUp();
     }
@@ -286,8 +286,12 @@ public:
             VkBuffer vertexBuffers[] = {vertexBuffer};
             VkDeviceSize offsets[] = {0};
             vkCmdBindVertexBuffers(commandBuffers[i]->get_handle(), 0, 1, vertexBuffers, offsets);
+            // vkCmdBindVertexBuffers(commandBuffers[i]->get_handle(), 0, 1, vertexBuffers, offsets);
+            vkCmdBindIndexBuffer(commandBuffers[i]->get_handle(), indexBuffer, 0, VK_INDEX_TYPE_UINT16);
 
-            vkCmdDraw(commandBuffers[i]->get_handle(), static_cast<uint32_t>(vertices.size()), 1, 0, 0);
+            vkCmdDrawIndexed(commandBuffers[i]->get_handle(), static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
+
+            // vkCmdDraw(commandBuffers[i]->get_handle(), static_cast<uint32_t>(vertices.size()), 1, 0, 0);
 
             // vkCmdDraw(commandBuffers[i]->get_handle(), 3, 1, 0, 0);
 
@@ -299,7 +303,7 @@ public:
 
     void windowFrameBufferResized()
     {
-        if (clock() - resize_time < 1e5 )
+        if (clock() - resize_time < window_resize_wait_time )
             return;
         int width = 0, height = 0;
         glfwGetFramebufferSize(mainWindow.window, &width, &height);
@@ -329,7 +333,7 @@ public:
     void init() {
 
         glfwSetWindowUserPointer(mainWindow.window, this);
-        std::string appHead("[Triangle] ");
+        std::string appHead("[Draw_Index] ");
         std::cout << appHead+"Window initialized!" << std::endl;
         std::cout << appHead+"Vulkan Instance Created!" << std::endl;
         std::cout << appHead+"Suitable GPUS: " << device.suitablePhysicalDevices.size() << std::endl;
@@ -362,6 +366,8 @@ public:
 
         createVertexBuffer();
 
+        createIndexBuffer();
+
         prepareCommandBuffer();
         std::cout << appHead+"CommandBuffer Created!" << std::endl;
 
@@ -375,7 +381,7 @@ public:
     static void on_window_resize_cb(GLFWwindow* window, int width, int height)
     {
         // std::cout << "resizedresizedresizedresizedresizedresizedresizedresizedresizedresized" << std::endl;
-        auto app = reinterpret_cast<Triangle*>(glfwGetWindowUserPointer(window));
+        auto app = reinterpret_cast<Draw_Index*>(glfwGetWindowUserPointer(window));
         app->resize_time = clock();
     }
 
@@ -388,6 +394,10 @@ public:
             vkDestroyBuffer(device.logicalDevice, vertexBuffer, nullptr);
         if (vertexBufferMemory != VK_NULL_HANDLE)
             vkFreeMemory(device.logicalDevice, vertexBufferMemory, nullptr);
+        if (indexBuffer != VK_NULL_HANDLE)
+            vkDestroyBuffer(device.logicalDevice, indexBuffer, nullptr);
+        if (indexBufferMemory != VK_NULL_HANDLE)
+            vkFreeMemory(device.logicalDevice, indexBufferMemory, nullptr);
     }
 
     void run (){
@@ -407,11 +417,11 @@ public:
 
     VkApplicationInfo           appInfo = {
     .sType=VK_STRUCTURE_TYPE_APPLICATION_INFO,
-    .pApplicationName = "Triangle",
+    .pApplicationName = "Draw_Index",
     .pEngineName = "Real Engine",
     .apiVersion = VK_API_VERSION_1_0};
 
-    cruelEngine::WindowProp                  mainWindowProp = {"Triangle", 1280, 720, false};
+    cruelEngine::WindowProp                  mainWindowProp = {"Draw_Index", 1280, 720, false};
     cruelEngine::Window                      mainWindow;
 
     cruelEngine::VulkanContext::Instance        instance;
@@ -427,6 +437,9 @@ public:
 
     VkBuffer                    vertexBuffer = VK_NULL_HANDLE;
     VkDeviceMemory              vertexBufferMemory = VK_NULL_HANDLE;
+    VkBuffer                    indexBuffer = VK_NULL_HANDLE;
+    VkDeviceMemory              indexBufferMemory = VK_NULL_HANDLE;
+
 
     struct Vertex {
         glm::vec3 pos;
@@ -455,38 +468,115 @@ public:
     };
 
     const std::vector<Vertex> vertices = {
-        {{0.0f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-        {{0.5f,  0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-        {{-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}}
+        {{-.5f, -.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+        {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+        {{-.5f, 0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+        {{0.5f, -.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
     };
 
+    const std::vector<uint16_t> indices = {
+        0, 1, 2, 1, 0, 3
+    };
 
     void createVertexBuffer()
     {
+        VkDeviceSize bufferSize = sizeof(vertices[0]) * vertices.size();
+
+        // stage buffer
+        VkBuffer stagingBuffer;
+        VkDeviceMemory stagingBufferMemory;
+        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory);
+
+        void *data;
+        vkMapMemory(device.logicalDevice, stagingBufferMemory, 0, bufferSize, 0, &data);
+        memcpy(data, vertices.data(), (size_t) bufferSize);
+        vkUnmapMemory(device.logicalDevice, stagingBufferMemory);
+
+        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, vertexBuffer, vertexBufferMemory);
+
+        copyBuffer(stagingBuffer, vertexBuffer, bufferSize);
+        vkDestroyBuffer(device.logicalDevice, stagingBuffer, nullptr);
+        vkFreeMemory(device.logicalDevice, stagingBufferMemory, nullptr);
+    }
+
+    void createIndexBuffer() {
+        VkDeviceSize bufferSize = sizeof(indices[0]) * indices.size();
+
+        VkBuffer stagingBuffer;
+        VkDeviceMemory stagingBufferMemory;
+        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, stagingBuffer, stagingBufferMemory);
+
+        void* data;
+        vkMapMemory(device.logicalDevice, stagingBufferMemory, 0, bufferSize, 0, &data);
+        memcpy(data, indices.data(), (size_t) bufferSize);
+        vkUnmapMemory(device.logicalDevice, stagingBufferMemory);
+
+        createBuffer(bufferSize, VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, indexBuffer, indexBufferMemory);
+
+        copyBuffer(stagingBuffer, indexBuffer, bufferSize);
+
+        vkDestroyBuffer(device.logicalDevice, stagingBuffer, nullptr);
+        vkFreeMemory(device.logicalDevice, stagingBufferMemory, nullptr);
+    }
+
+
+    void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) {
+        VkCommandBufferAllocateInfo allocInfo{};
+        allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        allocInfo.commandPool = commandPool.get_handle();
+        allocInfo.commandBufferCount = 1;
+
+        VkCommandBuffer commandBuffer;
+        vkAllocateCommandBuffers(device.logicalDevice, &allocInfo, &commandBuffer);
+
+        VkCommandBufferBeginInfo beginInfo{};
+        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+        beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+        vkBeginCommandBuffer(commandBuffer, &beginInfo);
+
+        VkBufferCopy copyRegion{};
+        copyRegion.srcOffset = 0; // Optional
+        copyRegion.dstOffset = 0; // Optional
+        copyRegion.size = size;
+        vkCmdCopyBuffer(commandBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
+        vkEndCommandBuffer(commandBuffer);
+
+        VkSubmitInfo submitInfo{};
+        submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submitInfo.commandBufferCount = 1;
+        submitInfo.pCommandBuffers = &commandBuffer;
+
+        vkQueueSubmit(device.getGraphicsQueue(), 1, &submitInfo, VK_NULL_HANDLE);
+        vkQueueWaitIdle(device.getGraphicsQueue());
+        vkFreeCommandBuffers(device.logicalDevice, commandPool.get_handle(), 1, &commandBuffer);
+    }
+
+    void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory) {
         VkBufferCreateInfo bufferInfo{};
         bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-        bufferInfo.size = sizeof(vertices[0]) * vertices.size();
-        bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+        bufferInfo.size = size;
+        bufferInfo.usage = usage;
         bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-        VK_CHECK_RESULT (vkCreateBuffer(device.logicalDevice, &bufferInfo, nullptr, &vertexBuffer));
+        if (vkCreateBuffer(device.logicalDevice, &bufferInfo, nullptr, &buffer) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create buffer!");
+        }
 
         VkMemoryRequirements memRequirements;
-        vkGetBufferMemoryRequirements(device.logicalDevice, vertexBuffer, &memRequirements);
+        vkGetBufferMemoryRequirements(device.logicalDevice, buffer, &memRequirements);
 
         VkMemoryAllocateInfo allocInfo{};
         allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
         allocInfo.allocationSize = memRequirements.size;
-        allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+        allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, properties);
 
-        VK_CHECK_RESULT (vkAllocateMemory(device.logicalDevice, &allocInfo, nullptr, &vertexBufferMemory));
+        if (vkAllocateMemory(device.logicalDevice, &allocInfo, nullptr, &bufferMemory) != VK_SUCCESS) {
+            throw std::runtime_error("failed to allocate buffer memory!");
+        }
 
-        vkBindBufferMemory(device.logicalDevice, vertexBuffer, vertexBufferMemory, 0);
-
-        void *data;
-        vkMapMemory(device.logicalDevice, vertexBufferMemory, 0, bufferInfo.size, 0, &data);
-        memcpy(data, vertices.data(), (size_t) bufferInfo.size);
-        vkUnmapMemory(device.logicalDevice, vertexBufferMemory);
+        vkBindBufferMemory(device.logicalDevice, buffer, bufferMemory, 0);
     }
 
     uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
@@ -509,7 +599,8 @@ public:
 
     clock_t                     resize_time;
     clock_t                     last_frame_time;
-    const clock_t                     frame_time = 2e4;
+    const clock_t               frame_time = 2e4;
+    const clock_t               window_resize_wait_time = frame_time * 5;
 
     std::vector<VkFence> inFlightFences;
     std::vector<VkFence> imagesInFlight;
@@ -521,11 +612,11 @@ bool cruelEngine::Window::glfw_inited = false;
 
 int main(int argc, char const *argv[])
 {
-    Triangle mainTriangle;
-    mainTriangle.init();
-    std::string appHead("[Triangle] ");
+    Draw_Index mainDraw_Index;
+    mainDraw_Index.init();
+    std::string appHead("[Draw_Index] ");
     std::cout << appHead+"Entering main loop!" << std::endl;
-    mainTriangle.run();
+    mainDraw_Index.run();
     std::cout << appHead+"Exit main loop!" << std::endl;
 
     return 0;

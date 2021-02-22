@@ -35,9 +35,13 @@ namespace VulkanContext {
 
         void                    createPipeLine(const VkGraphicsPipelineCreateInfo &pipelineInfo);
 
+        void                    update(const VkGraphicsPipelineCreateInfo &pipelineInfo);
+
         const VkPipeline        &get_handle() const {return handle;}
 
         const VulkanDevice      &get_device() const {return device;}
+
+        void                    __destroy();
 
     private:
 

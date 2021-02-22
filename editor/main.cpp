@@ -27,7 +27,7 @@ public:
     Editor () : mainWindow (mainWindowProp), 
         instance (mainWindow, appInfo, settings.validation, settings.validationLayers, settings.enabledInstanceExtensions), 
         device (settings.validation, settings.validationLayers, instance.instance, instance.surface, settings.enabledDeviceExtensions),
-        swapChain (instance, device), renderPass (device, swapChain), pipeLineLayout(device), pipeLine(device), commandPool(device)
+        swapChain (instance, device), renderPass (device), pipeLineLayout(device), pipeLine(device), commandPool(device)
     {
         std::cout << "[Editor] Hello World" << std::endl;
     };
@@ -70,19 +70,27 @@ public:
 
     void drawFrame()
     {
-        vkWaitForFences(device.logicalDevice, 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
-        vkResetFences(device.logicalDevice, 1, &inFlightFences[currentFrame]);
-
         uint32_t imageIndex;
-        vkAcquireNextImageKHR(device.logicalDevice, swapChain.get_handle(), UINT64_MAX, 
+        VkResult result = vkAcquireNextImageKHR(device.logicalDevice, swapChain.get_handle(), UINT64_MAX, 
                 imageAvailableSemaphores[currentFrame], VK_NULL_HANDLE, &imageIndex);
+
+        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
+        {
+            windowFrameBufferResized();
+            return ;
+        } else if (result != VK_SUCCESS)
+        {
+            std::cout << "vkAcquireNextImageKHR Failed" << std::endl;
+            glfwSetWindowShouldClose(mainWindow.window, 1);
+            return ;
+        }
 
         if (imagesInFlight[imageIndex] != VK_NULL_HANDLE) {
             vkWaitForFences(device.logicalDevice, 1, &imagesInFlight[imageIndex], VK_TRUE, UINT64_MAX);
         }
         // Mark the image as now being in use by this frame
         imagesInFlight[imageIndex] = inFlightFences[currentFrame];
-
+        // std::cout << "Submit" << std::endl;
 
         VkSubmitInfo submitInfo{};
         submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
@@ -92,10 +100,8 @@ public:
         submitInfo.waitSemaphoreCount = 1;
         submitInfo.pWaitSemaphores = waitSemaphores;
         submitInfo.pWaitDstStageMask = waitStages;
-
         submitInfo.commandBufferCount = 1;
         submitInfo.pCommandBuffers = &commandBuffers[imageIndex]->get_handle();
-
         VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrame]};
         submitInfo.signalSemaphoreCount = 1;
         submitInfo.pSignalSemaphores = signalSemaphores;
@@ -107,7 +113,6 @@ public:
 
         VkPresentInfoKHR presentInfo{};
         presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-
         presentInfo.waitSemaphoreCount = 1;
         presentInfo.pWaitSemaphores = signalSemaphores;
         VkSwapchainKHR swapChains[] = {swapChain.get_handle()};
@@ -117,7 +122,6 @@ public:
         presentInfo.pResults = nullptr; // Optional
 
         vkQueuePresentKHR(device.getPresentQueue(), &presentInfo);
-
         vkQueueWaitIdle(device.getPresentQueue());
         currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
     }
@@ -144,12 +148,15 @@ public:
             fragShaderStageInfo
         };
 
+        auto bindingDescription = Vertex::getBindingDescription();
+        auto attributeDescriptions = Vertex::getAttributeDescriptions();
+
         VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
         vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-        vertexInputInfo.vertexBindingDescriptionCount = 0;
-        vertexInputInfo.pVertexBindingDescriptions = nullptr; // Optional
-        vertexInputInfo.vertexAttributeDescriptionCount = 0;
-        vertexInputInfo.pVertexAttributeDescriptions = nullptr; // Optional
+        vertexInputInfo.vertexBindingDescriptionCount = 1;
+        vertexInputInfo.pVertexBindingDescriptions = &bindingDescription; // Optional
+        vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+        vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data(); // Optional
 
         VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
         inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -276,7 +283,13 @@ public:
 
             vkCmdBindPipeline(commandBuffers[i]->get_handle(), VK_PIPELINE_BIND_POINT_GRAPHICS, pipeLine.get_handle());
 
-            vkCmdDraw(commandBuffers[i]->get_handle(), 3, 1, 0, 0);
+            VkBuffer vertexBuffers[] = {vertexBuffer};
+            VkDeviceSize offsets[] = {0};
+            vkCmdBindVertexBuffers(commandBuffers[i]->get_handle(), 0, 1, vertexBuffers, offsets);
+
+            vkCmdDraw(commandBuffers[i]->get_handle(), static_cast<uint32_t>(vertices.size()), 1, 0, 0);
+
+            // vkCmdDraw(commandBuffers[i]->get_handle(), 3, 1, 0, 0);
 
             commandBuffers[i]->end_renderpass();
 
@@ -284,11 +297,44 @@ public:
         }
     }
 
+    void windowFrameBufferResized()
+    {
+        if (clock() - resize_time < 1e5 )
+            return;
+        int width = 0, height = 0;
+        glfwGetFramebufferSize(mainWindow.window, &width, &height);
+        while (width == 0 || height == 0) {
+            glfwGetFramebufferSize(mainWindow.window, &width, &height);
+            glfwWaitEvents();
+        }
+        vkDeviceWaitIdle(device.logicalDevice);
+
+        // Update SwapChain
+        swapChain.update(VkExtent2D({(u32)width, (u32)height}));
+
+        renderPass.update(swapChain.get_colorFormat());
+
+        pipeLine.__destroy();
+        preparePipeline();
+
+        frameBuffers.clear();
+        prepareFrameBuffer();
+
+        commandBuffers.clear();
+        prepareCommandBuffer();
+
+        std::cout << "SwapChain, RenderPass, PipeLine, FrameBuffer, CommandBuffer recreated!" << std::endl;
+    }
+
     void init() {
+
+        glfwSetWindowUserPointer(mainWindow.window, this);
         std::string appHead("[Editor] ");
         std::cout << appHead+"Window initialized!" << std::endl;
         std::cout << appHead+"Vulkan Instance Created!" << std::endl;
         std::cout << appHead+"Suitable GPUS: " << device.suitablePhysicalDevices.size() << std::endl;
+
+        glfwSetFramebufferSizeCallback(mainWindow.window, on_window_resize_cb);
 
         device.selectPhysicalDevice(1);
         std::cout << appHead+"Physical Device Selected!" << std::endl;
@@ -299,13 +345,7 @@ public:
         swapChain.createSwapChain(swapChainImageCount);
         std::cout << appHead+"SwapChain Established!" << std::endl;
 
-        swapChain.createImages();
-        std::cout << appHead+"SwapChain Images Created!" << std::endl;
-
-        swapChain.createImageViews();
-        std::cout << appHead+"SwapChain Image Views Created!" << std::endl;
-
-        renderPass.createRenderPass();
+        renderPass.createRenderPass(swapChain.get_colorFormat());
         std::cout << appHead+"RenderPass Created!" << std::endl;
 
         pipeLineLayout.createPipeLineLayout();
@@ -320,16 +360,45 @@ public:
         commandPool.createCommandPool();
         std::cout << appHead+"CommandPool Created!" << std::endl;
 
+        createVertexBuffer();
+
         prepareCommandBuffer();
         std::cout << appHead+"CommandBuffer Created!" << std::endl;
 
         createSemaphores();
+
+        windowFrameBufferResized();
+
+        last_frame_time = clock();
+    }
+
+    static void on_window_resize_cb(GLFWwindow* window, int width, int height)
+    {
+        // std::cout << "resizedresizedresizedresizedresizedresizedresizedresizedresizedresized" << std::endl;
+        auto app = reinterpret_cast<Editor*>(glfwGetWindowUserPointer(window));
+        app->resize_time = clock();
     }
 
     void cleanUp()
     {
         frameBuffers.clear();
         commandBuffers.clear();
+
+        if (vertexBuffer != VK_NULL_HANDLE)
+            vkDestroyBuffer(device.logicalDevice, vertexBuffer, nullptr);
+        if (vertexBufferMemory != VK_NULL_HANDLE)
+            vkFreeMemory(device.logicalDevice, vertexBufferMemory, nullptr);
+    }
+
+    void run (){
+        while (!glfwWindowShouldClose(mainWindow.window)){
+            if (clock() - last_frame_time < frame_time)
+                continue;
+            glfwPollEvents();
+            drawFrame();
+            last_frame_time = clock();
+        }
+        vkDeviceWaitIdle(device.logicalDevice);
     }
 
 public:
@@ -356,6 +425,81 @@ public:
     std::vector<std::shared_ptr<cruelEngine::VulkanContext::FrameBuffer>>   frameBuffers {};
     std::vector<std::shared_ptr<cruelEngine::VulkanContext::CommandBuffer>> commandBuffers {};
 
+    VkBuffer                    vertexBuffer = VK_NULL_HANDLE;
+    VkDeviceMemory              vertexBufferMemory = VK_NULL_HANDLE;
+
+    struct Vertex {
+        glm::vec3 pos;
+        glm::vec3 color;
+        
+        static VkVertexInputBindingDescription getBindingDescription() {
+            VkVertexInputBindingDescription bindingDescription{};
+            bindingDescription.binding = 0;
+            bindingDescription.stride = sizeof(Vertex);
+            bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+            return bindingDescription;
+        }
+
+        static std::array<VkVertexInputAttributeDescription, 2> getAttributeDescriptions() {
+            std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions{};
+            attributeDescriptions[0].binding = 0;
+            attributeDescriptions[0].location = 0;
+            attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
+            attributeDescriptions[0].offset = offsetof(Vertex, pos);
+            attributeDescriptions[1].binding = 0;
+            attributeDescriptions[1].location = 1;
+            attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+            attributeDescriptions[1].offset = offsetof(Vertex, color);
+            return attributeDescriptions;
+        }
+    };
+
+    const std::vector<Vertex> vertices = {
+        {{0.0f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+        {{0.5f,  0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+        {{-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}}
+    };
+
+
+    void createVertexBuffer()
+    {
+        VkBufferCreateInfo bufferInfo{};
+        bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+        bufferInfo.size = sizeof(vertices[0]) * vertices.size();
+        bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+        bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+        VK_CHECK_RESULT (vkCreateBuffer(device.logicalDevice, &bufferInfo, nullptr, &vertexBuffer));
+
+        VkMemoryRequirements memRequirements;
+        vkGetBufferMemoryRequirements(device.logicalDevice, vertexBuffer, &memRequirements);
+
+        VkMemoryAllocateInfo allocInfo{};
+        allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+        allocInfo.allocationSize = memRequirements.size;
+        allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+
+        VK_CHECK_RESULT (vkAllocateMemory(device.logicalDevice, &allocInfo, nullptr, &vertexBufferMemory));
+
+        vkBindBufferMemory(device.logicalDevice, vertexBuffer, vertexBufferMemory, 0);
+
+        void *data;
+        vkMapMemory(device.logicalDevice, vertexBufferMemory, 0, bufferInfo.size, 0, &data);
+        memcpy(data, vertices.data(), (size_t) bufferInfo.size);
+        vkUnmapMemory(device.logicalDevice, vertexBufferMemory);
+    }
+
+    uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
+        VkPhysicalDeviceMemoryProperties memProperties;
+        vkGetPhysicalDeviceMemoryProperties(device.physicalDevice, &memProperties);
+        for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
+            if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
+                return i;
+            }
+        }
+        throw std::runtime_error("failed to find suitable memory type!");
+    }
+
     u32                         swapChainImageCount = 5;
     const int                   MAX_FRAMES_IN_FLIGHT = 2;
     VkSemaphore                 imageAvailableSemaphore;
@@ -363,19 +507,13 @@ public:
     std::vector<VkSemaphore>    imageAvailableSemaphores;
     std::vector<VkSemaphore>    renderFinishedSemaphores;
 
+    clock_t                     resize_time;
+    clock_t                     last_frame_time;
+    const clock_t                     frame_time = 2e4;
+
     std::vector<VkFence> inFlightFences;
     std::vector<VkFence> imagesInFlight;
     size_t currentFrame = 0;
-
-    void run (){
-        assert(mainWindow.window != nullptr);
-        while (!glfwWindowShouldClose(mainWindow.window)){
-            usleep(1e4);
-            glfwPollEvents();
-            drawFrame();
-        }
-        vkDeviceWaitIdle(device.logicalDevice);
-    }
 };
 
 u32 cruelEngine::Window::count = 0;

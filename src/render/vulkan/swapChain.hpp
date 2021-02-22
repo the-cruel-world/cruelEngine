@@ -43,21 +43,17 @@ namespace VulkanContext {
 
         virtual ~SwapChain();
 
-        void Update(const VkExtent2D& _extent2dMode);
-        void Update(const VkColorSpaceKHR& _colorSpace);
-        void Update(const VkFormat& _colorFormat);
+        void update(const VkExtent2D& _extent2dMode);
+
+        void update(const VkColorSpaceKHR& _colorSpace);
+
+        void update(const VkFormat& _colorFormat);
 
     public:
 
         u32                     imageCount = 0;
 
         void                    createSwapChain(u32 &_imageCount);
-
-        void                    createImages();
-
-        void                    createImageViews();
-
-        void                    destroyImageViews();
 
         const VkSwapchainKHR&   get_handle() const {return handle;}
 
@@ -88,6 +84,17 @@ namespace VulkanContext {
         virtual void            chooseSwapSurfaceFormat();
         virtual void            chooseSwapPresentMode();
         virtual void            chooseSwapExtentMode();
+
+        void                    createImages();
+
+        void                    createImageViews();
+
+        void                    destroyImageViews();
+
+        void                    __create();
+
+        void                    __destroy();
+
     };
 }
 }

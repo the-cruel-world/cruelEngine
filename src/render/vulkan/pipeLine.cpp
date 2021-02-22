@@ -34,13 +34,24 @@ namespace VulkanContext {
     {
 
     }
+
     PipeLine::~PipeLine() {
-        if (handle != VK_NULL_HANDLE)
-            vkDestroyPipeline(device.logicalDevice, handle, nullptr);
+        __destroy();
     }
 
     void PipeLine::createPipeLine(const VkGraphicsPipelineCreateInfo &pipelineInfo) {
         VK_CHECK_RESULT (vkCreateGraphicsPipelines(device.logicalDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &handle));
+    }
+
+    void PipeLine::update(const VkGraphicsPipelineCreateInfo &pipelineInfo) {
+        __destroy();
+        createPipeLine(pipelineInfo);
+    }
+
+    void PipeLine::__destroy()
+    {
+        if (handle != VK_NULL_HANDLE)
+            vkDestroyPipeline(device.logicalDevice, handle, nullptr);
     }
 }
 }

@@ -1,29 +1,15 @@
 # Cruel engine
 
-## Components of a game engine
-1. Entry point
-2. Application Layer
-3. Window Layer
-4. Render
-5. Render API
-6. Debugging Support
-7. Scripting Language
-8. Memory Management
-9. Entity component system (ECS)
-10. Physics
-11. File I/O Visual File System
-12. Content creation
-
 ## Dependences
 1. glfw3
 2. vulkan SDK
 3. glm
 4. imgui
 
-## Install dependences 
+## Install dependences
 On archlinux see [this](https://wiki.archlinux.org/index.php/Vulkan#Installation)
 ```bash
-sudo pacman -S glfw-x11 vulkan-icd-loader vulkan-headers vulkan-validation-layers vulkan-tools
+sudo pacman -S glfw-x11 vulkan-icd-loader vulkan-headers vulkan-validation-layers vulkan-tools glm
 ```
 Vulkan Driver
 ```bash 

@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
+#include <ctime>
 
 #include <../src/window/window.hpp>
 
@@ -98,9 +99,13 @@ int main(int argc, char const *argv[])
 
     cruelEngine::Window window;
 
+    clock_t start_time = clock();
+
     while (!glfwWindowShouldClose(window.window)){
         glfwPollEvents();
     }
+
+    std::cout << "MainWindow Running time: " << (clock() - start_time) / 1e6 << std::endl;
 
     everylist.clear();
 

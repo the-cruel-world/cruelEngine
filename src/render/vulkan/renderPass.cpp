@@ -3,13 +3,30 @@
 namespace cruelEngine {
 namespace VulkanContext {
 
-    RenderPass::RenderPass(const VulkanDevice &_device, const SwapChain &_swapChain)
-        : device (_device), colorFormat (_swapChain.get_colorFormat())
+    RenderPass::RenderPass(const VulkanDevice &_device)
+        : device (_device)
     {
         
     }
 
-    void RenderPass::createRenderPass() 
+    void RenderPass::createRenderPass(const VkFormat &_colorFormat) 
+    {
+        colorFormat = _colorFormat;
+        __create();
+    }
+
+    void RenderPass::update(const VkFormat &_colorFormat)
+    {
+        colorFormat = _colorFormat;
+        __destroy();
+        __create();
+    }
+
+    RenderPass::~RenderPass () {
+        __destroy();
+    }
+
+    void RenderPass::__create()
     {
         VkAttachmentDescription colorAttachment{};
         colorAttachment.format = colorFormat;
@@ -52,7 +69,8 @@ namespace VulkanContext {
         VK_CHECK_RESULT (vkCreateRenderPass(device.logicalDevice, &renderPassInfo, nullptr, &handle));
     }
 
-    RenderPass::~RenderPass () {
+    void RenderPass::__destroy()
+    {
         if (handle != VK_NULL_HANDLE)
             vkDestroyRenderPass(device.logicalDevice, handle, nullptr);
     }

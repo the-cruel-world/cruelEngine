@@ -6,15 +6,17 @@
 
 namespace cruelEngine {
 namespace VulkanContext {
-    struct RenderPass {
+    class RenderPass {
     public: 
-        RenderPass(const VulkanDevice &_device, const SwapChain &swapChain);
+        RenderPass(const VulkanDevice &_device);
 
         virtual ~RenderPass();
 
     public:
 
-        void                    createRenderPass();
+        void                    createRenderPass(const VkFormat &_colorFormat);
+
+        void                    update(const VkFormat &_colorFormat);
 
         const VkRenderPass&     get_handle() const {return handle;}
 
@@ -24,9 +26,13 @@ namespace VulkanContext {
 
         const VulkanDevice      &device;
 
-        const VkFormat          &colorFormat;
+        VkFormat                colorFormat {};
 
         VkRenderPass            handle = VK_NULL_HANDLE;
+
+        void                    __create();
+
+        void                    __destroy();
     };
 }
 }
