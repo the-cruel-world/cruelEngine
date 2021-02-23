@@ -10,7 +10,9 @@ namespace cruelScene {
     struct Object {
     public:
         Object () {}
-        virtual ~Object () {}
+        virtual ~Object() {}
+
+        void    prepare();
 
         void    drawCommand();
 
@@ -26,8 +28,8 @@ namespace cruelScene {
         std::vector<Texture> textures;
         std::vector<Vertex> vertices;
 
-        //PipeLine    m_pipeline;
-        //Shader      m_shader;
+        //VulkanContext::PipeLine    pipeline;
+        //VulkanContext::Shader      shader;
     };
 }
 }

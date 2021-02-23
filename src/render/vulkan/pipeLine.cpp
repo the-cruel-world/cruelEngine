@@ -29,6 +29,13 @@ namespace VulkanContext {
         }
     }
 
+    void PipeLineLayout::createPipeLineLayout(const VkPipelineLayoutCreateInfo &pipelineLayoutInfo)
+    {
+        if (vkCreatePipelineLayout(device.logicalDevice, &pipelineLayoutInfo, nullptr, &handle) != VK_SUCCESS) {
+            throw std::runtime_error("createGraphicPipeline: pipelineLayoutCreate: failed to create pipeline layout!");
+        }
+    }
+
     PipeLine::PipeLine(const VulkanDevice &_device)
             : device (_device)
     {

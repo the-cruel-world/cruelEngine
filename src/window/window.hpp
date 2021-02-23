@@ -39,12 +39,16 @@ namespace cruelEngine{
         // count how many windows you have created. Should be set to 0 mannualy.
         static u32 count;
 
+        bool        onresize = false;
+
         GLFWwindow * window = nullptr;
         WindowProp property;
         
         Window();
         Window(const WindowProp& _property);
         virtual ~Window();
+
+        const bool      isWindowResize() const {return onresize;}
 
         virtual void createWindow();
         virtual void destroyWindow();

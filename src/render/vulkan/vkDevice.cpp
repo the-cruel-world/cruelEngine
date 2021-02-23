@@ -177,6 +177,12 @@ namespace VulkanContext {
             queueSupported = false;
         if (!(flags & VK_QUEUE_TRANSFER_BIT) || index.transfer < 0)
            queueSupported = false;
+
+        VkPhysicalDeviceFeatures supportedFeatures;
+        vkGetPhysicalDeviceFeatures(device, &supportedFeatures);
+        if (requiredFeatures.samplerAnisotropy && !supportedFeatures.samplerAnisotropy)
+            return false;
+
         return queueSupported && extensionSupported;
     }
 

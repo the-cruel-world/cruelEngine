@@ -15,6 +15,8 @@ namespace VulkanContext {
 
         void                    createPipeLineLayout();
 
+        void                    createPipeLineLayout(const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
+
         const VkPipelineLayout  &get_handle() const {return handle;}
 
         const VulkanDevice      &get_device() const {return device;}

@@ -13,6 +13,7 @@ FIND_PACKAGE(glfw3 REQUIRED FATAL_ERROR)
 FIND_PACKAGE(glm REQUIRED FATAL_ERROR)
 
 include_directories(src
+    external/stb_image/
     ${glfw3_INCLUDE_DIRS}
     ${glm_INCLUDE_DIRS})
 

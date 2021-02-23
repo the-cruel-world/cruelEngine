@@ -25,7 +25,15 @@ rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
 
 ## Uniform Buffer
 
+Control model direction, camera position, view direction, upward direction and projection through uniform buffer. 
+
+![uniform_buffer](screenshots/uniform_buffer.png)
+
 ## Texture
+
+Bind texture to a rectangle. 
+
+![texture](screenshots/texture.png)
 
 ## MipMap
 

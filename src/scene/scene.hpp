@@ -1,4 +1,7 @@
 #pragma once
+
+#include "../common.h"
+
 #include "object.hpp"
 
 namespace cruelEngine {
@@ -13,6 +16,8 @@ namespace cruelScene {
         void rmObject(const char *objectName);
 
         virtual void onUpdate();
+
+        void        newFrame();
 
     private:
         std::vector<Object> sceneObjects;

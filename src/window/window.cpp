@@ -22,6 +22,9 @@ namespace cruelEngine {
             window = glfwCreateWindow(property.width, property.height, property.title.c_str(), glfwGetPrimaryMonitor(), nullptr);
         else 
             window = glfwCreateWindow(property.width, property.height, property.title.c_str(), nullptr, nullptr);
+
+        // glfwSetWindowUserPointer(window, this);
+        
         if (window)
             count ++;
     }
