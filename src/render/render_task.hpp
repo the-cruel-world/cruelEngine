@@ -2,7 +2,7 @@
 #include "vkcommon.h"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     class Pipeline;
     class PipelineStatus;

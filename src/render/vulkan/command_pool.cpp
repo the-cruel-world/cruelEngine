@@ -3,7 +3,7 @@
 #include "logical_device.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     CommandPool::CommandPool(LogicalDevice &_device) : device (_device) 
     {
         VkCommandPoolCreateInfo poolInfo{};

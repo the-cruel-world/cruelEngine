@@ -3,7 +3,7 @@
 #include "render_pass.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     /*! \brief The FrameBuffer
     */
     FrameBuffer::FrameBuffer(LogicalDevice &device, const VkImageView &imageView, const VkExtent2D &extent, const RenderPass &renderPass)

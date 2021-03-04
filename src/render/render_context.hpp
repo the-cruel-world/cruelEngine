@@ -1,29 +1,61 @@
 #pragma once
-
-#include "../common.h"
-#include "../debug/debug.hpp"
-
+#include "vkcommon.h"
 
 namespace cruelEngine {
     class Window;
 
-// namespace cruelScene {
-//     class Scene;
-//     class Object;
-// }
+namespace cruelRender {
 
-    class RenderContext {
+    class LogicalDevice;
+    class PhysicalDevice;
+    class Swapchain;
+    class Instance;
+    class RenderTask;
+    class RenderSession;
+
+    class RenderContext
+    {
     public:
-        RenderContext(const Window& _window);
+        RenderContext ();
 
-        virtual ~RenderContext();
+        ~RenderContext();
 
-    public:
-        // virtual void        loadScene(const cruelEngine::cruelScene::Scene &theScene) = 0;
-        // virtual void        loadObject(const cruelEngine::cruelScene::Object &theObject) = 0;
+        void    prepareRender();
+
+        void    draw();
+
+        void    render_frame();
+
+        Instance        &get_instance() const {return *instance;}
+
+        PhysicalDevice  &get_gpu() const {return *physicalDevice;}
+
+        LogicalDevice   &get_device() const {return *device;}
+
+        RenderSession   &get_session() const {return *session;}
 
     protected:
-        const Window&           mainWindow;
-        // std::unique_ptr<cruelScene::Scene> scene;
+        VkApplicationInfo       appInfo = {
+            .sType=VK_STRUCTURE_TYPE_APPLICATION_INFO,
+            .pApplicationName = "Triangle",
+            .pEngineName = "Real Engine",
+            .apiVersion = VK_API_VERSION_1_0};
+
+        /*! \brief The Vulkan instance. 
+            In general, one application should have only one vulkan instance.
+            Because multi vulkan instance may crush your applications. */
+        std::unique_ptr<Instance>           instance;
+
+        /*! \brief The physical device (aka gpu). */
+        std::unique_ptr<PhysicalDevice>     physicalDevice;
+
+        /*! \brief The logical device of this render context. */
+        std::unique_ptr<LogicalDevice>      device;
+
+        /*! \brief The render session container. 
+            Instead of let the render context to control everything, I use render sessions for 
+            muiti window(surface) management. There should be more sessions. */
+        std::unique_ptr<RenderSession>      session;
     };
+}
 }

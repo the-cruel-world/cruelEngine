@@ -1,11 +1,11 @@
 #pragma once
 #include "../common.h"
-#include "../render/vulkan/vkheader.h"
+#include "../render/render_header.h"
 
 namespace cruelEngine {
     class RenderContext;
-namespace VulkanContext {
-    class VulkanContext;
+namespace cruelRender {
+    class RenderContext;
 }
 
 namespace cruelScene {
@@ -13,7 +13,7 @@ namespace cruelScene {
 
     class Scene {
     public:
-        Scene (VulkanContext::VulkanContext &render_context);
+        Scene (cruelRender::RenderContext &render_context);
         virtual ~Scene ();
 
         void addObject(std::string name);
@@ -30,7 +30,7 @@ namespace cruelScene {
         
         std::vector<std::unique_ptr<Object>> sceneObjects {};
 
-        VulkanContext::VulkanContext   &render_context;
+        cruelRender::RenderContext   &render_context;
     };
 }
 }

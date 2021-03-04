@@ -9,7 +9,7 @@ namespace cruelEngine {
     class RenderContext;
     class Window;
 
-namespace VulkanContext {
+namespace cruelRender {
     class LogicalDevice;
     class PhysicalDevice;
     class CommandBuffer;
@@ -20,6 +20,9 @@ namespace VulkanContext {
     class RenderTask;
     class Queue;
 
+    //Todo 
+    // 1. The rendersession should support headless render.
+    // 2. Session should support multi swapchains/renderpass.
     struct RenderProp {
             bool        validation = true;
 
@@ -64,6 +67,10 @@ namespace VulkanContext {
 
         Swapchain       &get_swapchain() const {return *swapchain;}
 
+        Window          &get_window() const {return *window;}
+
+        VkSurfaceKHR    &get_surface() {return surface;}
+
         void            createSemaphores();
 
         void            destroySemaphores();
@@ -79,14 +86,25 @@ namespace VulkanContext {
         std::vector<VkFence>        imagesInFlight;
         size_t                      currentFrame = 0;
 
+        //! \brief The reference points to the instance of the render context
         Instance        &instance;
-
+        
+        //! \brief The reference points to the logical device of the render context.
         LogicalDevice   &device;
 
+        //! \brief The unique window of a render session, it's null if the session is a headless session.
+        std::unique_ptr<Window>     window;
+
+        //! \brief The surface of a session. Every session will have one unless it's a headless render session.
+        VkSurfaceKHR                surface; 
+
+        //! \brief The swapchain of this session. Every session should have at least one swapchain.
         std::unique_ptr<Swapchain>  swapchain;
 
+        //! \brief The renderpass of this session. Every session should have at least one render pass. 
         std::unique_ptr<RenderPass> render_pass;
 
+        //! \brief The redner properties of a render session.
         RenderProp      render_properties;
 
         Queue           *graphic_queue;

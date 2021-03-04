@@ -20,4 +20,4 @@ include_directories(src
 add_subdirectory(src)
 #add_subdirectory(examples)
 #add_subdirectory(editor)
-add_subdirectory(test)
+#add_subdirectory(test)

@@ -3,4 +3,4 @@ file(GLOB HEADERS "*.hpp" "*.h" "basic/*.hpp" "objects/*.hpp")
 
 add_library(cruelScene SHARED ${SRC})
 
-target_link_libraries(cruelScene cruelVulkan ${glm_LIBRARIES})
+target_link_libraries(cruelScene cruelRender ${glm_LIBRARIES})

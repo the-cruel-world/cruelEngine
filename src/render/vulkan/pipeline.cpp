@@ -4,7 +4,7 @@
 #include "render_pass.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     PipelineLayout::PipelineLayout(LogicalDevice &_device, const std::vector<ShaderModule> &shaders) : 
         device (_device), shaders{shaders}
@@ -85,7 +85,6 @@ namespace VulkanContext {
         {
             vkDestroyShaderModule(device.get_handle(), shader_module, nullptr);
         }
-
         status = pipeline_state;
     }
 
@@ -130,9 +129,9 @@ namespace VulkanContext {
         rasterization_state.cullMode                = pipeline_state.get_rasterization_state().cull_mode;
         rasterization_state.frontFace               = pipeline_state.get_rasterization_state().front_face;
         rasterization_state.depthBiasEnable         = pipeline_state.get_rasterization_state().depth_bias_enable;
-        rasterization_state.depthBiasClamp          = 1.0f;
-        rasterization_state.depthBiasSlopeFactor    = 1.0f;
-        rasterization_state.lineWidth               = 1.0f;
+        rasterization_state.depthBiasClamp          = pipeline_state.get_rasterization_state().depth_bias_clamp;
+        rasterization_state.depthBiasSlopeFactor    = pipeline_state.get_rasterization_state().depth_bias_slope_factor;
+        rasterization_state.lineWidth               = pipeline_state.get_rasterization_state().line_width;
 
         VkPipelineMultisampleStateCreateInfo multisample_state{VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO};
         multisample_state.sampleShadingEnable   = pipeline_state.get_multisample_state().sample_shading_enable;
@@ -172,26 +171,15 @@ namespace VulkanContext {
         color_blend_state.logicOp           = pipeline_state.get_color_blend_state().logic_op;
         color_blend_state.attachmentCount   = (u32)(pipeline_state.get_color_blend_state().attachments.size());
         color_blend_state.pAttachments      = reinterpret_cast<const VkPipelineColorBlendAttachmentState *>(pipeline_state.get_color_blend_state().attachments.data());
-        color_blend_state.blendConstants[0] = 1.0f;
-        color_blend_state.blendConstants[1] = 1.0f;
-        color_blend_state.blendConstants[2] = 1.0f;
-        color_blend_state.blendConstants[3] = 1.0f;
+        color_blend_state.blendConstants[0] = pipeline_state.get_color_blend_state().blend_constants[0];
+        color_blend_state.blendConstants[1] = pipeline_state.get_color_blend_state().blend_constants[1];
+        color_blend_state.blendConstants[2] = pipeline_state.get_color_blend_state().blend_constants[2];
+        color_blend_state.blendConstants[3] = pipeline_state.get_color_blend_state().blend_constants[3];
 
-        std::array<VkDynamicState, 9> dynamic_states{
-            VK_DYNAMIC_STATE_VIEWPORT,
-            VK_DYNAMIC_STATE_SCISSOR,
-            VK_DYNAMIC_STATE_LINE_WIDTH,
-            VK_DYNAMIC_STATE_DEPTH_BIAS,
-            VK_DYNAMIC_STATE_BLEND_CONSTANTS,
-            VK_DYNAMIC_STATE_DEPTH_BOUNDS,
-            VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK,
-            VK_DYNAMIC_STATE_STENCIL_WRITE_MASK,
-            VK_DYNAMIC_STATE_STENCIL_REFERENCE,
-        };
 
         VkPipelineDynamicStateCreateInfo dynamic_state{VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO};
-        dynamic_state.pDynamicStates    = dynamic_states.data();
-        dynamic_state.dynamicStateCount = (u32)(dynamic_states.size());
+        dynamic_state.pDynamicStates    = pipeline_state.get_dynamic_state().dynamic_states.data();
+        dynamic_state.dynamicStateCount = (u32)(pipeline_state.get_dynamic_state().dynamic_states.size());
 
         VkGraphicsPipelineCreateInfo create_info{VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO};
         create_info.stageCount          = (u32)stage_create_infos.size();

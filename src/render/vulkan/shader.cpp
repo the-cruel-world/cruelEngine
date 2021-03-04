@@ -2,7 +2,7 @@
 #include "logical_device.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     size_t readFile(const std::string& filename, std::vector<char> &source) 
     {
         std::ifstream file(filename, std::ios::ate | std::ios::binary);

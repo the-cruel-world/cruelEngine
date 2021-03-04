@@ -1,8 +1,8 @@
 #pragma once
-#include "vkcommon.h"
+#include "../vkcommon.h"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     class LogicalDevice;
 
@@ -10,11 +10,12 @@ namespace VulkanContext {
         VkAttachmentDescription colorAttachment;
         VkAttachmentReference   colorAttachmentRef;
         VkSubpassDependency     subpassDependency;
+        std::vector<VkSubpassDescription> subpass;
     };
 
     class RenderPass {
     public: 
-        RenderPass(LogicalDevice &device, const VkFormat &colorFormat);
+        RenderPass(LogicalDevice &device, const RenderPassAttachment &attachments);
 
         RenderPass(RenderPass &&other);
 
@@ -27,9 +28,6 @@ namespace VulkanContext {
         ~RenderPass();
 
     public:
-
-        void                    createRenderPass(const VkFormat &_colorFormat);
-
         const VkRenderPass&     get_handle() const {return handle;}
 
         const LogicalDevice&    get_device() const {return device;}
@@ -37,6 +35,8 @@ namespace VulkanContext {
     private:
 
         LogicalDevice           &device;
+
+        RenderPassAttachment    attachments {};
 
         VkRenderPass            handle = VK_NULL_HANDLE;
     };

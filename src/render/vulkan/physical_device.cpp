@@ -2,91 +2,14 @@
 #include "instance.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
-
-    VkDeviceQueueFamilyIndex::VkDeviceQueueFamilyIndex(const VkPhysicalDevice &physicalDevice, const VkSurfaceKHR &surface, const VkQueueFlags &flags)
-    {
-        u32 queueFamilyCount = 0;
-        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
-        std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
-
-        // Find graphic queue & present queue
-        if (flags & VK_QUEUE_GRAPHICS_BIT) {
-            for (u32 i = 0; i < queueFamilyCount; ++i)
-            {
-                const auto &queueFamily = queueFamilies[i];
-
-                if (queueFamily.queueCount > 0 && graphics < 0 && (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT))
-                {
-                    //std::cout << "Got Graphic!" << std::endl;
-                    graphics = i;
-                    break;
-                }
-            }
-            for (u32 i = 0; i < queueFamilyCount; ++i)
-            {
-                const auto &queueFamily = queueFamilies[i];
-
-                VkBool32 presentSupport = false;
-                vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice, i, surface, &presentSupport);
-                // if (!presentSupport)
-                //     std::cout << "No present!" << std::endl;
-                if (queueFamily.queueCount > 0 && present < 0 && presentSupport)
-                {
-                    present = i;
-                    break;
-                }
-            }
-        }
-        // Find compute queue
-        if (flags & VK_QUEUE_COMPUTE_BIT){
-            for (int i = 0; i < queueFamilies.size(); ++i)
-            {
-                const auto &queueFamily = queueFamilies[i];
-
-                if (queueFamily.queueCount > 0 &&
-                    compute < 0 &&
-                    i != graphics && i != present &&
-                    (queueFamily.queueCount & VK_QUEUE_COMPUTE_BIT))
-                {
-                    compute = i;
-                    break;
-                }
-            }
-
-            // fall back to using graphcis queue if no dedicated comptue queue is available
-            if (compute < 0)
-                compute = graphics;
-        }
-        if (flags & VK_QUEUE_TRANSFER_BIT)
-        {
-            for (int i = 0; i < queueFamilies.size(); ++i)
-            {
-                const auto &queueFamily = queueFamilies[i];
-
-                if (queueFamily.queueCount > 0 &&
-                    transfer < 0 &&
-                    i != graphics && i != present && i != compute &&
-                    (queueFamily.queueCount & VK_QUEUE_TRANSFER_BIT))
-                {
-                    transfer = i;
-                    break;
-                }
-            }
-
-            if (transfer < 0)
-                transfer = graphics < 0 ? compute : graphics;
-        }
-    }
+namespace cruelRender {
 
     bool isPhysicalDeviceSuitable (const VkPhysicalDevice &physicalDevice, 
-                        const VkSurfaceKHR &surface, 
                         const VkPhysicalDeviceFeatures &requiredFeatures, 
                         const std::vector<const char*> requiredExtensions, 
                         const VkQueueFlags& flags)
     {
-        // Extension support check
+        //! \brief Check whether the physical device support the required extensions 
         bool extensionSupported = true;
         std::vector<std::string> supportedExtensions = {};
         u32 extCount = 0;
@@ -107,25 +30,80 @@ namespace VulkanContext {
                 break;
             }
         }
-                
-        bool queueSupported = true;
+        if (extensionSupported == false)
+        {
+            std::cerr << "at least one extension is not supported by device" << std::endl;
+            return false;
+        }
 
-        VkDeviceQueueFamilyIndex index(physicalDevice, surface, flags);
+        //! \brief Check whether the physical device support the queue fethures required or not.
+        u32 queueFamilyCount = 0;
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, nullptr);
+        std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+        vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies.data());
 
-        //std::cout << "Flags: " << index.present << ",\t" << index.graphics << ",\t" << index.compute << std::endl;
-        if (!(flags & VK_QUEUE_GRAPHICS_BIT) || index.graphics < 0 || index.present <0)
+        bool queueSupported;
+        if (flags & VK_QUEUE_GRAPHICS_BIT)
+        {
             queueSupported = false;
-        if (!(flags & VK_QUEUE_COMPUTE_BIT) || index.compute < 0)
-            queueSupported = false;
-        if (!(flags & VK_QUEUE_TRANSFER_BIT) || index.transfer < 0)
-           queueSupported = false;
+            for (auto queueFamily : queueFamilies)
+            {
+                if (queueFamily.queueCount > 0  && (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT))
+                {
+                    queueSupported = true;
+                    break;
+                }
+            }
+            if (queueSupported == false)
+            {
+                std::cerr << "transfer queue is not supported by device" << std::endl; 
+                return false;
+            }
+        }
 
+        if (flags & VK_QUEUE_COMPUTE_BIT)
+        {
+            queueSupported = false;
+            for (auto queueFamily : queueFamilies)
+            {
+                if (queueFamily.queueCount > 0  && (queueFamily.queueFlags & VK_QUEUE_COMPUTE_BIT))
+                {
+                    queueSupported = true;
+                    break;
+                }
+            }
+            if (queueSupported == false)
+            {
+                std::cerr << "transfer queue is not supported by device" << std::endl; 
+                return false;
+            }
+        }
+
+        if (flags & VK_QUEUE_TRANSFER_BIT)
+        {
+            queueSupported = false;
+            for (auto queueFamily : queueFamilies)
+            {
+                if (queueFamily.queueCount > 0  && (queueFamily.queueFlags & VK_QUEUE_TRANSFER_BIT))
+                {
+                    queueSupported = true;
+                    break;
+                }
+            }
+            if (queueSupported == false)
+            {
+                std::cerr << "transfer queue is not supported by device" << std::endl; 
+                return false;
+            }
+        }
+
+        //Todo The physical device feature support details is not ok. rewrite later
         VkPhysicalDeviceFeatures supportedFeatures;
         vkGetPhysicalDeviceFeatures(physicalDevice, &supportedFeatures);
         if (requiredFeatures.samplerAnisotropy && !supportedFeatures.samplerAnisotropy)
             return false;
 
-        return queueSupported && extensionSupported;
+        return true;
     }
 
     PhysicalDevice::PhysicalDevice(const VkPhysicalDevice& _physicalDevice, VkPhysicalDeviceFeatures &_requiredFeatures) :

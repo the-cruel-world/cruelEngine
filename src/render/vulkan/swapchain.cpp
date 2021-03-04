@@ -7,7 +7,7 @@
 #include "frame_buffer.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     u32 choose_image_count (u32 requestCount, u32 minCount, u32 maxCount)
     {
@@ -130,22 +130,22 @@ namespace VulkanContext {
         surface_format_priority_list = old_swapchain.surface_format_priority_list;
 
         VkSurfaceCapabilitiesKHR capabilities;
-        VK_CHECK_RESULT (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device.get_physicalDevice().get_handle(), device.get_surface(), &capabilities));
+        VK_CHECK_RESULT (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device.get_physicalDevice().get_handle(), surface, &capabilities));
 
         u32 formatCount;
         std::vector<VkSurfaceFormatKHR> formats;
-        vkGetPhysicalDeviceSurfaceFormatsKHR(device.get_physicalDevice().get_handle(), device.get_surface(), &formatCount, nullptr);
+        vkGetPhysicalDeviceSurfaceFormatsKHR(device.get_physicalDevice().get_handle(), surface, &formatCount, nullptr);
         if (formatCount!=0) {
             formats.resize(formatCount);
-            vkGetPhysicalDeviceSurfaceFormatsKHR(device.get_physicalDevice().get_handle(), device.get_surface(), &formatCount, formats.data());
+            vkGetPhysicalDeviceSurfaceFormatsKHR(device.get_physicalDevice().get_handle(), surface, &formatCount, formats.data());
         }
 
         u32 presentModeCount;
         std::vector<VkPresentModeKHR> presentModes;
-        vkGetPhysicalDeviceSurfacePresentModesKHR(device.get_physicalDevice().get_handle(), device.get_surface(), &presentModeCount, nullptr);
+        vkGetPhysicalDeviceSurfacePresentModesKHR(device.get_physicalDevice().get_handle(), surface, &presentModeCount, nullptr);
         if (presentModeCount!=0) {
             presentModes.resize(presentModeCount);
-            vkGetPhysicalDeviceSurfacePresentModesKHR(device.get_physicalDevice().get_handle(), device.get_surface(), &presentModeCount, presentModes.data());
+            vkGetPhysicalDeviceSurfacePresentModesKHR(device.get_physicalDevice().get_handle(), surface, &presentModeCount, presentModes.data());
         }
         
         properties.image_count      = choose_image_count(_imageCount, capabilities.minImageCount, capabilities.maxImageCount);

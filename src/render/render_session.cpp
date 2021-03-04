@@ -1,15 +1,17 @@
 #include "render_session.hpp"
-#include "logical_device.hpp"
 #include "render_task.hpp"
-#include "instance.hpp"
-#include "swapchain.hpp"
-#include "queue.hpp"
-#include "render_pass.hpp"
-#include "command_buffer.hpp"
-#include "frame_buffer.hpp"
+
+#include "vulkan/logical_device.hpp"
+#include "vulkan/instance.hpp"
+#include "vulkan/swapchain.hpp"
+#include "vulkan/queue.hpp"
+#include "vulkan/render_pass.hpp"
+#include "vulkan/command_buffer.hpp"
+#include "vulkan/frame_buffer.hpp"
+#include "../window/window.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     RenderSession::RenderSession (Instance &instance, 
                                   LogicalDevice &device, 
@@ -18,13 +20,23 @@ namespace VulkanContext {
         device {device},
         render_properties{render_properties}
     {
+        //! Create a new window for this session.
+        window = std::make_unique<Window>();
+        //! create a render surface for this session.
+        glfwCreateWindowSurface(instance.get_handle(), &(window->get_handle()), nullptr, &surface);
+
         VkExtent2D extent = {};
         u32 imgCount = 3;
-        swapchain = std::make_unique<Swapchain>(device, device.get_surface(), extent, imgCount, VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR, VK_PRESENT_MODE_FIFO_KHR);
+        
+        swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount, VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR, VK_PRESENT_MODE_FIFO_KHR);
+        
         graphic_queue = &device.get_suitable_graphics_queue(0);
-        present_queue = &device.get_suitable_present_queue(0);
+        
+        present_queue = &device.get_suitable_present_queue(surface, 0);
+        
         std::cout << "graphic queue info: " << graphic_queue->get_family_index() << graphic_queue->get_index() << std::endl;
         std::cout << "present queue info: " << present_queue->get_family_index() << present_queue->get_index() << std::endl;
+        
         prepare_render_pass();
 
         for (auto &image_view : swapchain->get_imageViews())
@@ -41,12 +53,15 @@ namespace VulkanContext {
 
     RenderSession::~RenderSession()
     {
+        //! run destructor until all the render process ends.
         vkDeviceWaitIdle(device.get_handle());
         commandBuffers.clear();
         tasks.clear();
         destroySemaphores();
         frameBuffer.clear();
         swapchain.reset();
+        vkDestroySurfaceKHR(instance.get_handle(), surface, nullptr);
+        window.reset();
         std::cout << "Session destroied" << std::endl;
     }
 
@@ -58,7 +73,42 @@ namespace VulkanContext {
 
     void RenderSession::prepare_render_pass()
     {
-        render_pass = std::make_unique<RenderPass>(device, swapchain->get_surface_format().format);
+        VkAttachmentDescription colorAttachment{};
+        colorAttachment.format = swapchain->get_surface_format().format;
+        colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+        colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
+        colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+        colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+        VkAttachmentReference colorAttachmentRef{};
+        colorAttachmentRef.attachment = 0;
+        colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        VkSubpassDescription subpass{};
+        subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        subpass.colorAttachmentCount = 1;
+        subpass.pColorAttachments = &colorAttachmentRef;
+
+        VkSubpassDependency dependency{};
+        dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+        dependency.dstSubpass = 0;
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcAccessMask = 0;
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+        RenderPassAttachment attachments 
+        = {
+            .colorAttachment = colorAttachment, 
+            .colorAttachmentRef = colorAttachmentRef,
+            .subpassDependency = dependency,
+            .subpass = {subpass}
+        };
+        
+        render_pass = std::make_unique<RenderPass>(device, attachments);
     }
 
     void RenderSession::draw()

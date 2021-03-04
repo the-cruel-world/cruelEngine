@@ -1,10 +1,10 @@
 #pragma once
-#include "vkcommon.h"
+#include "../vkcommon.h"
 #include "image.hpp"
 #include "image_view.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     class Instance;
     class LogicalDevice;
@@ -94,10 +94,6 @@ namespace VulkanContext {
         LogicalDevice     &device;
 
         const VkSurfaceKHR      &surface;
-
-        // std::vector<VkSurfaceFormatKHR>     surfaceFormat;
-
-        // VkPresentModeKHR                    presentMode;
 
         SwapchainProperties                 properties;
 

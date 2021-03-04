@@ -1,9 +1,9 @@
 #pragma once
-#include "vkcommon.h"
+#include "../vkcommon.h"
 #include "shader.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     class ShaderModule;
     class RenderPass;
@@ -86,6 +86,10 @@ namespace VulkanContext {
 
             VkFrontFace             front_face {VK_FRONT_FACE_COUNTER_CLOCKWISE};
             VkBool32                depth_bias_enable {VK_FALSE};
+
+            float                   depth_bias_clamp {1.0f};
+            float                   depth_bias_slope_factor {1.0f};
+            float                   line_width {1.0f};
         };
 
         struct StencilOpState {
@@ -114,6 +118,7 @@ namespace VulkanContext {
             VkBool32                logic_op_enable {VK_FALSE};
             VkLogicOp               logic_op {VK_LOGIC_OP_CLEAR};
             std::vector<ColorBlendAttachmentState> attachments;
+            float                   blend_constants[4] {1.0f, 1.0f, 1.0f, 1.0f};
         };
 
         struct DepthStencilState {
@@ -129,6 +134,21 @@ namespace VulkanContext {
             StencilOpState front{};
             StencilOpState back{};
         };
+
+        struct DynamicState {
+            std::vector<VkDynamicState>     dynamic_states {
+                VK_DYNAMIC_STATE_VIEWPORT,
+                VK_DYNAMIC_STATE_SCISSOR,
+                VK_DYNAMIC_STATE_LINE_WIDTH,
+                VK_DYNAMIC_STATE_DEPTH_BIAS,
+                VK_DYNAMIC_STATE_BLEND_CONSTANTS,
+                VK_DYNAMIC_STATE_DEPTH_BOUNDS,
+                VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK,
+                VK_DYNAMIC_STATE_STENCIL_WRITE_MASK,
+                VK_DYNAMIC_STATE_STENCIL_REFERENCE,
+            };
+        };
+        
 
         void    set_render_pass(const RenderPass &new_render_pass) {render_pass = &new_render_pass;}
         void    set_pipeline_layout(PipelineLayout &new_pipeline_layout) {pipeline_layout = &new_pipeline_layout;}
@@ -147,8 +167,9 @@ namespace VulkanContext {
 
         void    set_color_blend_state(const ColorBlendState &new_color_blend_state) {color_blend_state = new_color_blend_state;}
 
-        void    set_subpass_index(uint32_t new_subpass_index) {subpass_index = new_subpass_index;}
+        void    set_dynamic_state(const DynamicState &new_dynamic_state) {dynamic_state = new_dynamic_state;}
 
+        void    set_subpass_index(uint32_t new_subpass_index) {subpass_index = new_subpass_index;}
 
         PipelineLayout      *get_pipeline_layout() const {return pipeline_layout;}
         const RenderPass          *get_render_pass() const {return render_pass;}
@@ -159,26 +180,29 @@ namespace VulkanContext {
         const MultisampleState    &get_multisample_state() const {return multisample_state;}
         const DepthStencilState   &get_depth_stencil_state() const {return depth_stencil_state;}
         const ColorBlendState     &get_color_blend_state() const {return color_blend_state;}
+        const DynamicState        &get_dynamic_state() const {return dynamic_state;}
         const u32                 get_subpass_index() const {return subpass_index;}
     
     protected:
-        PipelineLayout      *pipeline_layout{nullptr};
+        PipelineLayout      *pipeline_layout {nullptr};
 
-        const RenderPass    *render_pass{nullptr};
+        const RenderPass    *render_pass {nullptr};
 
-        VertexInputState    vertex_input_sate{};
+        VertexInputState    vertex_input_sate {};
 
-        InputAssemblyState  input_assembly_state{};
+        InputAssemblyState  input_assembly_state {};
 
-        RasterizationState  rasterization_state{};
+        RasterizationState  rasterization_state {};
 
-        ViewportState       viewport_state{};
+        ViewportState       viewport_state {};
 
-        MultisampleState    multisample_state{};
+        MultisampleState    multisample_state {};
 
-        DepthStencilState   depth_stencil_state{};
+        DepthStencilState   depth_stencil_state {};
 
-        ColorBlendState     color_blend_state{};
+        ColorBlendState     color_blend_state {};
+
+        DynamicState        dynamic_state {};
 
         u32                 subpass_index {0U};
     };

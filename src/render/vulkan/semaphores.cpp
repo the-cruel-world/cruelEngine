@@ -2,7 +2,7 @@
 
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     Semaphores::Semaphores()
     {}
 

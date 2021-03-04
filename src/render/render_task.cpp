@@ -1,14 +1,15 @@
 #include "render_task.hpp"
-#include "pipeline.hpp"
-#include "render_pass.hpp"
 #include "render_session.hpp"
-#include "queue.hpp"
-#include "shader.hpp"
-#include "swapchain.hpp"
-#include "command_buffer.hpp"
+
+#include "vulkan/pipeline.hpp"
+#include "vulkan/render_pass.hpp"
+#include "vulkan/queue.hpp"
+#include "vulkan/shader.hpp"
+#include "vulkan/swapchain.hpp"
+#include "vulkan/command_buffer.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     RenderTask::RenderTask (RenderSession &session, RenderPass &render_pass) : 
         session {session}, render_pass{render_pass}
     {

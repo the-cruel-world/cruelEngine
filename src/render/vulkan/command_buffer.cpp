@@ -4,7 +4,7 @@
 #include "queue.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     CommandBuffer::CommandBuffer (const CommandPool &_commandPool, VkCommandBufferLevel _level) : 
         commandPool (_commandPool), 

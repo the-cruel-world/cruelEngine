@@ -1,8 +1,8 @@
 #pragma once
-#include "vkcommon.h"
+#include "../vkcommon.h"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     
     class LogicalDevice;
     class CommandBuffer;
@@ -10,7 +10,7 @@ namespace VulkanContext {
     class Queue {
     public:
 
-        Queue (LogicalDevice &_device, const u32 _family_index, const u32 _index, const VkQueueFamilyProperties _properties, const VkBool32 can_present);
+        Queue (LogicalDevice &_device, const u32 _family_index, const u32 _index, const VkQueueFamilyProperties _properties);
 
         Queue (const Queue&) = delete;
 
@@ -28,18 +28,15 @@ namespace VulkanContext {
 
         const u32           get_index() const {return index;}
 
-        const bool          get_can_present() const {return can_present;}
+        VkBool32            can_present(const VkSurfaceKHR &surface);
 
         const u32           get_family_index() const {return family_index;}
 
         const VkQueueFamilyProperties& get_properties() const {return properties;}
 
-        VkBool32            queue_present_support() const {return can_present;}
-
         VkResult                submit(const std::vector<VkSubmitInfo> &submit_infos, VkFence fence);
 
         VkResult                submit(const CommandBuffer &command_buffer, VkFence fence);
-
 
         VkResult                present(const VkPresentInfoKHR &presentInfo);
 
@@ -56,8 +53,6 @@ namespace VulkanContext {
         u32             index = 0;
 
         VkQueueFamilyProperties properties{};
-
-        VkBool32        can_present = false;
 
         // bool            busy = false;
 

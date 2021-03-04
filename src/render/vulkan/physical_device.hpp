@@ -1,21 +1,13 @@
 #pragma once
-#include "vkcommon.h"
+#include "../vkcommon.h"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     class Instance;
 
-    bool isPhysicalDeviceSuitable (const VkPhysicalDevice &physicalDevice, const VkSurfaceKHR &surface, const VkPhysicalDeviceFeatures &requiredFeatures, const std::vector<const char*> requiredExtensions, const VkQueueFlags& flags);
+    bool isPhysicalDeviceSuitable (const VkPhysicalDevice &physicalDevice, const VkPhysicalDeviceFeatures &requiredFeatures, const std::vector<const char*> requiredExtensions, const VkQueueFlags& flags);
     
-    struct VkDeviceQueueFamilyIndex {
-        i32 graphics = -1;
-        i32 present = -1;
-        i32 compute = -1;
-        i32 transfer = -1;
-        VkDeviceQueueFamilyIndex(const VkPhysicalDevice &physicalDevice, const VkSurfaceKHR &surface, const VkQueueFlags &flags);
-    };
-
     struct DriverVersion
     {
         uint16_t major;
@@ -55,6 +47,7 @@ namespace VulkanContext {
 
         //! \brief Return the memory properties of this device.
         const VkPhysicalDeviceMemoryProperties& getMemoryProperties() const {return memoryProperties;}
+
 
         // const VkSampleCountFlagBits& getMultiSamplingLevel() const;
 

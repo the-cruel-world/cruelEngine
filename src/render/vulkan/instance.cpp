@@ -2,12 +2,12 @@
 #include "../../window/window.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
-    Instance::Instance(const Window &_theWindow, const VkApplicationInfo &_appInfo, const bool _validation,
+    Instance::Instance(const VkApplicationInfo &_appInfo, const bool _validation,
         const std::vector<const char*> _validationLayers,
         const std::vector<const char*> _instanceExtensions) :
-        topWindow(_theWindow), appInfo(_appInfo), validation(_validation), validationLayers(_validationLayers), requiredInstanceExtensions(_instanceExtensions)
+        appInfo(_appInfo), validation(_validation), validationLayers(_validationLayers), requiredInstanceExtensions(_instanceExtensions)
     {
         std::vector<const char*> instanceExtensions = getRequiredInstanceExtensions();
         VkInstanceCreateInfo instCreateInfo = {};
@@ -25,9 +25,12 @@ namespace VulkanContext {
             instCreateInfo.enabledLayerCount = 0;
         VK_CHECK_RESULT(vkCreateInstance(&instCreateInfo, nullptr, &handle));
 
-        VK_CHECK_RESULT(glfwCreateWindowSurface(handle, &topWindow.get_handle(), nullptr, &surface));
-
         query_gpus();
+    }
+    Instance::~Instance()
+    {   
+        if (handle != VK_NULL_HANDLE)
+            vkDestroyInstance(handle, nullptr);
     }
     
     std::vector<const char*> 

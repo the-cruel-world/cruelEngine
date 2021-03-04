@@ -5,9 +5,9 @@
 #include "mesh.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     class RenderTask;
-    class VulkanContext;
+    class RenderContext;
     class ShaderModule;
 }
 
@@ -19,7 +19,7 @@ namespace cruelScene {
     
     class Object {
     public:
-        Object (VulkanContext::VulkanContext &render_context, std::string name);
+        Object (cruelRender::RenderContext &render_context, std::string name);
 
         virtual ~Object();
 
@@ -37,7 +37,7 @@ namespace cruelScene {
 
         void            show_name() const {std::cout << "Object : " << name << std::endl;}
 
-        VulkanContext::RenderTask   *get_task() {return task;}
+        cruelRender::RenderTask   *get_task() {return task;}
 
     protected:
         std::string     name;
@@ -47,10 +47,10 @@ namespace cruelScene {
         std::vector<Texture> textures;
         std::vector<Vertex> vertices;
 
-        std::vector<VulkanContext::ShaderModule> shaders;
+        std::vector<cruelRender::ShaderModule> shaders;
 
-        VulkanContext::VulkanContext &render_context;
-        VulkanContext::RenderTask *task;
+        cruelRender::RenderContext &render_context;
+        cruelRender::RenderTask *task;
     };
 }
 }

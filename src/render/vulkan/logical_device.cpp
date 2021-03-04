@@ -6,13 +6,12 @@
 #include "queue.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     LogicalDevice::LogicalDevice(const PhysicalDevice &_physicalDevice, 
-                                 const VkSurfaceKHR &_surface, 
                                  std::vector<const char*> &_layerNames, 
                                  std::vector<const char*> &_requiredExtensions,
                                  const VkQueueFlags &_flags) :
-        physicalDevice(_physicalDevice), surface(_surface), layerNames(_layerNames), requiredExtensions(_requiredExtensions), flags(_flags)
+        physicalDevice(_physicalDevice), layerNames(_layerNames), requiredExtensions(_requiredExtensions), flags(_flags)
     {
         // clock_t start_time = clock();
         createDevice();
@@ -91,12 +90,9 @@ namespace VulkanContext {
         {
             if (queueFamilies[family_index].queueCount > 0)
             {
-                // std::cout << "family[" << family_index << "]: " << queueFamilies[family_index].queueCount << std::endl;
-                VkBool32 can_present = false;
-                vkGetPhysicalDeviceSurfaceSupportKHR(physicalDevice.get_handle(), family_index, surface, &can_present);
                 for (size_t queue_index =0; queue_index < queueFamilies[family_index].queueCount; queue_index++)
                 {
-                    queues.emplace_back(*this, family_index, queue_index, queueFamilies[family_index], can_present);
+                    queues.emplace_back(*this, family_index, queue_index, queueFamilies[family_index]);
                 }
             }
         }
@@ -117,21 +113,31 @@ namespace VulkanContext {
         throw std::runtime_error("No suitable queue found.");
     }
 
+    bool LogicalDevice::is_surface_supported(const VkSurfaceKHR &surface)
+    {
+        for (auto &queue: queues)
+        {
+            if (queue.can_present(surface) == VK_TRUE)
+                return true;
+        }
+        return false;
+    }
+
     Queue& LogicalDevice::get_suitable_graphics_queue(u32 queue_index)
     {
         return get_queue_by_flags(VK_QUEUE_GRAPHICS_BIT, queue_index);
     }
 
-    Queue& LogicalDevice::get_suitable_present_queue(u32 queue_index)
+    Queue& LogicalDevice::get_suitable_present_queue(const VkSurfaceKHR &surface, u32 queue_index)
     {
         for (auto &queue: queues)
         {
-            if (queue.get_can_present() == VK_TRUE && queue.get_index() == queue_index)
+            if (queue.can_present(surface) == VK_TRUE && queue.get_index() == queue_index)
                 return queue;
         }
         for (auto &queue: queues)
         {
-            if (queue.get_can_present() == VK_TRUE)
+            if (queue.can_present(surface) == VK_TRUE)
                 return queue;
         }
     }

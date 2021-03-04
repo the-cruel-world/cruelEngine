@@ -2,7 +2,7 @@
 #include "logical_device.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     Image::Image(LogicalDevice &device) : 
         device {device}
     {

@@ -3,7 +3,7 @@
 
 namespace cruelEngine {
 namespace cruelScene {
-    Scene::Scene(VulkanContext::VulkanContext &render_context) :
+    Scene::Scene(cruelRender::RenderContext &render_context) :
         render_context {render_context}
     {
 

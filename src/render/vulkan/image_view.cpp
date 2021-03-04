@@ -3,7 +3,7 @@
 #include "image.hpp"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
 
     ImageView::ImageView(LogicalDevice &device, VkImage *image, VkFormat &format) : 
         device{device}, image{image}, format{format}

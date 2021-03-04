@@ -1,9 +1,9 @@
 #pragma once
 
-#include "vkcommon.h"
+#include "../vkcommon.h"
 
 namespace cruelEngine {
-namespace VulkanContext {
+namespace cruelRender {
     class Semaphores {
     public:
         Semaphores();

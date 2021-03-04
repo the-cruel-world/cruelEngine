@@ -1,8 +1,8 @@
 #include "object.hpp"
 #include "mesh.hpp"
-#include "../render/vulkan/render_task.hpp"
-#include "../render/vulkan/render.hpp"
-#include "../render/vulkan/render_session.hpp"
+#include "../render/render_task.hpp"
+#include "../render/render_context.hpp"
+#include "../render/render_session.hpp"
 #include "../render/vulkan/shader.hpp"
 #include "../render/vulkan/logical_device.hpp"
 #include "../render/vulkan/pipeline.hpp"
@@ -11,7 +11,7 @@
 
 namespace cruelEngine {
 namespace cruelScene {
-    Object::Object(VulkanContext::VulkanContext &render_context, std::string name) :
+    Object::Object(cruelRender::RenderContext &render_context, std::string name) :
         render_context {render_context}, name {name}
     {
         show_name();
@@ -37,10 +37,10 @@ namespace cruelScene {
         // task->prepare_render_pass();
         // std::cout << "[" << name << "] Render Pass Created." << std::endl;
 
-        VulkanContext::PipelineStatus pipeline_state {};
-        VulkanContext::PipelineStatus::VertexInputState     vertex_input_state;
-        VulkanContext::PipelineStatus::InputAssemblyState   input_assembly_state;
-        VulkanContext::PipelineStatus::RasterizationState   rasterization_state
+        cruelRender::PipelineStatus pipeline_state {};
+        cruelRender::PipelineStatus::VertexInputState     vertex_input_state;
+        cruelRender::PipelineStatus::InputAssemblyState   input_assembly_state;
+        cruelRender::PipelineStatus::RasterizationState   rasterization_state
         = {
             VK_FALSE, 
             VK_FALSE, 
@@ -49,7 +49,7 @@ namespace cruelScene {
             VK_FRONT_FACE_CLOCKWISE, 
             VK_FALSE
         };
-        VulkanContext::PipelineStatus::ViewportState        viewport_state;
+        cruelRender::PipelineStatus::ViewportState        viewport_state;
         // VkViewport viewport = 
         // {
         //     .x = 0.0f,
@@ -67,7 +67,7 @@ namespace cruelScene {
         // viewport_state.viewport.push_back(viewport);
         // viewport_state.scissor.push_back(scissor);
 
-        VulkanContext::PipelineStatus::MultisampleState     multisample_state 
+        cruelRender::PipelineStatus::MultisampleState     multisample_state 
         = {
             VK_SAMPLE_COUNT_1_BIT,
             VK_FALSE,
@@ -76,9 +76,9 @@ namespace cruelScene {
             VK_FALSE,
             VK_FALSE
         };
-        VulkanContext::PipelineStatus::DepthStencilState    depth_stencil_state;
-        VulkanContext::PipelineStatus::ColorBlendState      color_blend_state;
-        VulkanContext::PipelineStatus::ColorBlendAttachmentState attach
+        cruelRender::PipelineStatus::DepthStencilState    depth_stencil_state;
+        cruelRender::PipelineStatus::ColorBlendState      color_blend_state;
+        cruelRender::PipelineStatus::ColorBlendAttachmentState attach
          = {VK_FALSE, 
          VK_BLEND_FACTOR_ONE, 
          VK_BLEND_FACTOR_ZERO, 
