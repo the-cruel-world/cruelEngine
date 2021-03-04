@@ -12,6 +12,7 @@ namespace cruelRender {
     class Instance;
     class RenderTask;
     class RenderSession;
+    struct RenderProp;
 
     class RenderContext
     {
@@ -32,7 +33,12 @@ namespace cruelRender {
 
         LogicalDevice   &get_device() const {return *device;}
 
-        RenderSession   &get_session() const {return *session;}
+        RenderSession   &get_session(u32 index) const ;
+
+        void            add_session(std::string session_name, RenderProp &properties);
+
+        bool            is_context_alive();
+
 
     protected:
         VkApplicationInfo       appInfo = {
@@ -55,7 +61,7 @@ namespace cruelRender {
         /*! \brief The render session container. 
             Instead of let the render context to control everything, I use render sessions for 
             muiti window(surface) management. There should be more sessions. */
-        std::unique_ptr<RenderSession>      session;
+        std::vector<std::unique_ptr<RenderSession>>     sessions;
     };
 }
 }

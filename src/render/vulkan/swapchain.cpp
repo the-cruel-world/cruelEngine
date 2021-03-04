@@ -161,6 +161,8 @@ namespace cruelRender {
         properties.array_layers = 1U;
         properties.old_swapchain = old_swapchain.get_handle();
 
+
+
         // properties.present_mode   = choose_present_mode(properties.present_mode, presentModes, present_mode_priority_list);
         VkSwapchainCreateInfoKHR create_info{VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR};
         create_info.minImageCount    = properties.image_count;
@@ -173,6 +175,9 @@ namespace cruelRender {
         create_info.preTransform     = properties.transform;
         create_info.compositeAlpha   = properties.composite_alpha;
         create_info.oldSwapchain     = properties.old_swapchain;
+        // create_info.queueFamilyIndexCount = 1;
+        // u32 familyIndices[] = {device.get_suitable_present_queue(surface, 0).get_family_index()};
+        // create_info.pQueueFamilyIndices = familyIndices;
         create_info.surface          = surface;
 
         VK_CHECK_RESULT( vkCreateSwapchainKHR(device.get_handle(), &create_info, nullptr, &handle));

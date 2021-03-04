@@ -88,6 +88,7 @@ namespace cruelRender {
 
         for (size_t family_index =0; family_index < queueFamilyCount; family_index++)
         {
+        std::cout << "Queue Family [" << family_index << "]: " << queueFamilies[family_index].queueCount << std::endl;
             if (queueFamilies[family_index].queueCount > 0)
             {
                 for (size_t queue_index =0; queue_index < queueFamilies[family_index].queueCount; queue_index++)

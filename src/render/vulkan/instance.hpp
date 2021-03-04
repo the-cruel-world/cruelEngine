@@ -18,7 +18,7 @@ namespace cruelRender {
 
         Instance operator=(Instance&&) = delete;
 
-        ~Instance(); 
+        ~Instance();
 
         void            query_gpus();
 

@@ -27,8 +27,9 @@ namespace cruelRender {
 
         query_gpus();
     }
+
     Instance::~Instance()
-    {   
+    {
         if (handle != VK_NULL_HANDLE)
             vkDestroyInstance(handle, nullptr);
     }

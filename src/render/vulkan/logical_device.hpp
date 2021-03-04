@@ -56,6 +56,8 @@ namespace cruelRender {
 
         Queue                       &get_suitable_present_queue(const VkSurfaceKHR &surface, u32 queue_index);
 
+        std::vector<Queue>          &get_queues();
+
         /*! \brief Get the reference to the commandPool. */
         void get_commanfPool() {};
 

@@ -71,6 +71,8 @@ namespace cruelRender {
 
         VkSurfaceKHR    &get_surface() {return surface;}
 
+        bool            is_session_alive();
+
         void            createSemaphores();
 
         void            destroySemaphores();
@@ -96,7 +98,7 @@ namespace cruelRender {
         std::unique_ptr<Window>     window;
 
         //! \brief The surface of a session. Every session will have one unless it's a headless render session.
-        VkSurfaceKHR                surface; 
+        VkSurfaceKHR                surface;
 
         //! \brief The swapchain of this session. Every session should have at least one swapchain.
         std::unique_ptr<Swapchain>  swapchain;
@@ -116,6 +118,5 @@ namespace cruelRender {
 
         std::vector<std::unique_ptr<RenderTask>> tasks;
     };
-
 }
 }

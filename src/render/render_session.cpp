@@ -23,32 +23,37 @@ namespace cruelRender {
         //! Create a new window for this session.
         window = std::make_unique<Window>();
         //! create a render surface for this session.
-        glfwCreateWindowSurface(instance.get_handle(), &(window->get_handle()), nullptr, &surface);
+        VK_CHECK_RESULT (glfwCreateWindowSurface(instance.get_handle(), &(window->get_handle()), nullptr, &surface));
 
         VkExtent2D extent = {};
         u32 imgCount = 3;
-        
-        swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount, VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR, VK_PRESENT_MODE_FIFO_KHR);
-        
+
         graphic_queue = &device.get_suitable_graphics_queue(0);
         
         present_queue = &device.get_suitable_present_queue(surface, 0);
+
+        std::cout << "[Rendersession] graphic queue info: " << graphic_queue->get_family_index() << graphic_queue->get_index() << std::endl;
+        std::cout << "[Rendersession] present queue info: " << present_queue->get_family_index() << present_queue->get_index() << std::endl;
         
-        std::cout << "graphic queue info: " << graphic_queue->get_family_index() << graphic_queue->get_index() << std::endl;
-        std::cout << "present queue info: " << present_queue->get_family_index() << present_queue->get_index() << std::endl;
-        
+        swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount, VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR, VK_PRESENT_MODE_FIFO_KHR);
+        std::cout << "[Rendersession] swapchain creatd!" << std::endl;
+
         prepare_render_pass();
+        std::cout << "[Rendersession] renderpass creatd!" << std::endl;
 
         for (auto &image_view : swapchain->get_imageViews())
         {
             frameBuffer.push_back(std::make_unique<FrameBuffer>(device, image_view, swapchain->get_properties().extent, *render_pass));
         }
+        std::cout << "[Rendersession] framebuffers creatd!" << std::endl;
 
         createSemaphores();
+        std::cout << "[Rendersession] semaphores creatd!" << std::endl;
 
         for (size_t i = 0; i < imgCount; i ++){
             commandBuffers.push_back(device.request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
         }
+        std::cout << "[Rendersession] commandbuffers creatd!" << std::endl;
     }
 
     RenderSession::~RenderSession()
@@ -221,5 +226,11 @@ namespace cruelRender {
         }
     }
 
+    bool RenderSession::is_session_alive() 
+    {
+        if (!glfwWindowShouldClose(&window->get_handle()))
+            return true;
+        return false;
+    }
 }
 }

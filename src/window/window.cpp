@@ -1,11 +1,11 @@
 #include "window.hpp"
 
 namespace cruelEngine {
-    Window::Window() : property(WindowProp())
+    Window::Window() : properties(WindowProp())
     {
         createWindow();
     }
-    Window::Window(const WindowProp& _property) : property (_property)
+    Window::Window(const WindowProp& _property) : properties (_property)
     {
         createWindow();
     }
@@ -18,10 +18,10 @@ namespace cruelEngine {
         // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         // Create different type of window fullscreen or not.
-        if (property.fullscreen)
-            handle = glfwCreateWindow(property.width, property.height, property.title.c_str(), glfwGetPrimaryMonitor(), nullptr);
+        if (properties.fullscreen)
+            handle = glfwCreateWindow(properties.width, properties.height, properties.title.c_str(), glfwGetPrimaryMonitor(), nullptr);
         else 
-            handle = glfwCreateWindow(property.width, property.height, property.title.c_str(), nullptr, nullptr);
+            handle = glfwCreateWindow(properties.width, properties.height, properties.title.c_str(), nullptr, nullptr);
 
         // glfwSetWindowUserPointer(window, this);
         

@@ -34,7 +34,7 @@ namespace cruelEngine{
     {
     public:
         Window();
-        Window(const WindowProp& _property);
+        Window(const WindowProp& _properties);
         ~Window();
 
         const bool      isWindowResize() const {return onresize;}
@@ -45,14 +45,18 @@ namespace cruelEngine{
         // count how many windows you have created. Should be set to 0 mannualy.
         static u32 count;
 
+        const WindowProp      &get_properties() const {return properties;}
+
         GLFWwindow      &get_handle() const {return *handle;}
+
+        bool operator==(const Window &object) const {return handle == object.handle;}
 
     private:
         bool        onresize = false;
 
         GLFWwindow  *handle = nullptr;
         
-        WindowProp property;
+        WindowProp properties;
 
         void createWindow();
         void destroyWindow();

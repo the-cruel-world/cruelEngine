@@ -57,6 +57,10 @@ void createPipeLine(const VkGraphicsPipelineCreateInfo &pipelineInfo);
 
 Compute pipeline will be supported in the future.
 
+## Issues 
+
+- [ ] The later usage of an **instance** should be clear that the instance can be created with the proper instance extensions and validation layers.
+
 
 
 ## TODO

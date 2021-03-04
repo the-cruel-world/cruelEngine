@@ -8,7 +8,7 @@
 #include "../src/application/application.hpp"
 
 #include "../src/scene/scene_header.h"
-#include "../src/render/vulkan/vkheader.h"
+#include "../src/render/render_header.h"
 
 
 u32 cruelEngine::Window::count = 0;
@@ -19,55 +19,47 @@ public:
     Render()
     {
         std::cout << "frame time: " << frame_time << std::endl;
-        main_window = std::make_unique<cruelEngine::Window>(window_prop);
-        std::cout << "Window created." << std::endl;
-        render_context = std::make_unique<cruelEngine::VulkanContext::VulkanContext>(*main_window);
+
+        render_context = std::make_unique<cruelEngine::cruelRender::RenderContext>();
         std::cout << "Render context created." << std::endl;
+        cruelEngine::cruelRender::RenderProp  properties = {true, {"VK_LAYER_KHRONOS_validation"}, {}, {VK_KHR_SWAPCHAIN_EXTENSION_NAME}, false, false};
+        render_context->add_session("session 1", properties);
+        // render_context->add_session("session 2", properties);
+
         scene = std::make_unique<cruelEngine::cruelScene::Scene>(*render_context);
         std::cout << "Scene created." << std::endl;
 
-        cruelEngine::VulkanContext::DriverVersion version = render_context->get_gpu().get_driver_version();
-        std::cout << "Gpu driver version: " << version.major << "." << version.minor << "." << version.patch << std::endl;
-
-        scene->addObject("Cube");
-
-        cruelEngine::VulkanContext::RenderTask *task = scene->get_obj()[0]->get_task();
-        if (task->get_status() == cruelEngine::VulkanContext::RenderTask::RENDER_TASK_UNINIRED)
-            std::cout << "Task not inited." << std::endl;
+        scene->addObject("cube");
 
         render_context->draw();
     }
 
     ~Render()
     {
-        render_context.reset();
         scene.reset();
-        main_window.reset();
+        render_context.reset();
     }
 
     void main_loop()
     {
-        if (main_window){
-            clock_t past_time = clock();
-            clock_t _frame_time = clock();
-            while (!glfwWindowShouldClose(&main_window->get_handle())){
-                glfwPollEvents();
-                _frame_time = clock() - past_time;
-                past_time = clock();
-                // std::cout << "frame time: " << _frame_time * 1e-3 << " ms\tusleep: " << (frame_time - _frame_time) * 1e-3 << " ms" << std::endl;
-                if (_frame_time < frame_time)
-                    usleep(frame_time - _frame_time);
-                render_context->render_frame();
-            }
+        clock_t past_time = clock();
+        clock_t _frame_time = clock();
+        while (render_context->is_context_alive())
+        {
+            glfwPollEvents();
+            _frame_time = clock() - past_time;
+            past_time = clock();
+            std::cout << "frame time: " << _frame_time * 1e-3 << " ms\tusleep: " << (frame_time - _frame_time) * 1e-3 << " ms" << std::endl;
+            if (_frame_time < frame_time)
+                usleep(frame_time - _frame_time);
+            render_context->render_frame();
         }
     }
 private:
 
-    cruelEngine::WindowProp                  window_prop = {"Render", 1280, 720, false};
-
-    std::unique_ptr<cruelEngine::Window>     main_window;
-    std::unique_ptr<cruelEngine::cruelScene::Scene> scene;
-    std::unique_ptr<cruelEngine::VulkanContext::VulkanContext> render_context;
+    std::unique_ptr<cruelEngine::cruelScene::Scene>             scene;
+    
+    std::unique_ptr<cruelEngine::cruelRender::RenderContext>    render_context;
 
     u32     frame_time = 16e3;
 };

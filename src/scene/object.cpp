@@ -15,7 +15,7 @@ namespace cruelScene {
         render_context {render_context}, name {name}
     {
         show_name();
-        task = render_context.get_session().request_new_task();
+        task = render_context.get_session(0).request_new_task();
 
         shaders.emplace_back(
             render_context.get_device(), 
@@ -88,7 +88,8 @@ namespace cruelScene {
          VK_BLEND_OP_ADD, 
          VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT};
         color_blend_state.attachments.push_back(attach);
-
+        
+        cruelRender::PipelineStatus::DynamicState           dynamic_state;
         pipeline_state.set_vertex_input_state(vertex_input_state);
         pipeline_state.set_input_assembly_state(input_assembly_state);
         pipeline_state.set_rasterization_state(rasterization_state);
@@ -96,6 +97,8 @@ namespace cruelScene {
         pipeline_state.set_multisample_state(multisample_state);
         pipeline_state.set_depth_stencil_state(depth_stencil_state);
         pipeline_state.set_color_blend_state(color_blend_state);
+        pipeline_state.set_dynamic_state(dynamic_state);
+
         pipeline_state.set_subpass_index(0);
 
         task->prepare_pipeline(VK_NULL_HANDLE, pipeline_state);
