@@ -1,4 +1,5 @@
 #include "instance.hpp"
+#include "../../window/window.hpp"
 
 namespace cruelEngine {
 namespace VulkanContext {
@@ -7,11 +8,6 @@ namespace VulkanContext {
         const std::vector<const char*> _validationLayers,
         const std::vector<const char*> _instanceExtensions) :
         topWindow(_theWindow), appInfo(_appInfo), validation(_validation), validationLayers(_validationLayers), requiredInstanceExtensions(_instanceExtensions)
-    {
-        createInstance();
-        VK_CHECK_RESULT(glfwCreateWindowSurface(instance, topWindow.window, nullptr, &surface));
-    }
-    void Instance::createInstance()
     {
         std::vector<const char*> instanceExtensions = getRequiredInstanceExtensions();
         VkInstanceCreateInfo instCreateInfo = {};
@@ -27,7 +23,11 @@ namespace VulkanContext {
             instCreateInfo.ppEnabledLayerNames = validationLayers.data();
         } else 
             instCreateInfo.enabledLayerCount = 0;
-        VK_CHECK_RESULT(vkCreateInstance(&instCreateInfo, nullptr, &instance));
+        VK_CHECK_RESULT(vkCreateInstance(&instCreateInfo, nullptr, &handle));
+
+        VK_CHECK_RESULT(glfwCreateWindowSurface(handle, &topWindow.get_handle(), nullptr, &surface));
+
+        query_gpus();
     }
     
     std::vector<const char*> 
@@ -47,6 +47,22 @@ namespace VulkanContext {
                 extensions.push_back(enabled);
         }
         return extensions;
+    }
+
+    void Instance::query_gpus()
+    {
+        u32 deviceCount = 0;
+        vkEnumeratePhysicalDevices(handle, &deviceCount, nullptr);
+
+        if (!deviceCount)
+            throw std::runtime_error("Failed to find GPUS with Vulkan support.");
+
+        std::vector<VkPhysicalDevice> physicalDevices(deviceCount);
+        vkEnumeratePhysicalDevices(handle, &deviceCount, physicalDevices.data());
+
+        for (const auto &physicalDev: physicalDevices) {
+            gpus.push_back(physicalDev);
+        }
     }
 }
 }

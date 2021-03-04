@@ -59,15 +59,30 @@ Compute pipeline will be supported in the future.
 
 
 
-
-
 ## TODO
 
-- [ ] SwapChain
+- [x] use c++ smart pointers
+
+- [ ] Swapchain
   - [ ] Update or Recreate
+  - [ ] create swapchain image
+  - [ ] swapchain format proorities
 
 - [ ] Device
-  - [ ] Separate Physical and Logical Devices
+  - [x] Separate Physical and Logical Devices
+  - [ ] Physical Device
+    - [ ] list all supported extensions of this physical device
+  - [ ] Logical Device
+    - [x] create all supported queues by default.
+    - [ ] Manage Pipeline and Buffer resources
 
-- [ ] Render Pass 
-- [ ] Connect Scene and Vulkan Render Context
+- [ ] Render Pass & subPass 
+  - [ ] It was said that the use of subpass can improve the performance of render heavily.
+
+- [ ] Render Context
+
+- [ ] Render Sessions
+  - [ ] Swapchain
+  - [ ] Render tasks
+
+- [ ] Render Tasks

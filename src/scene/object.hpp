@@ -1,35 +1,56 @@
 #pragma once
-#include "../render/vulkan/pipeLine.hpp"
-#include "../render/vulkan/shader.hpp"
 
+#include "../common.h"
+#include "../types.h"
 #include "mesh.hpp"
 
 namespace cruelEngine {
+namespace VulkanContext {
+    class RenderTask;
+    class VulkanContext;
+    class ShaderModule;
+}
+
 namespace cruelScene {
+
+    struct Mesh;
+    struct Texture;
+    struct Vertex;
     
-    struct Object {
+    class Object {
     public:
-        Object () {}
-        virtual ~Object() {}
+        Object (VulkanContext::VulkanContext &render_context, std::string name);
+
+        virtual ~Object();
 
         void    prepare();
 
         void    drawCommand();
 
-        void    loadAsset();
+        virtual void    loadAsset() {};
 
-        void    unloadAsset();
+        virtual void    unloadAsset() {};
 
-    private:
-        char        name[255];
-        u32         lifetime;
+        const std::string &get_name() const {return name;}
+
+        bool            is_alive() const;
+
+        void            show_name() const {std::cout << "Object : " << name << std::endl;}
+
+        VulkanContext::RenderTask   *get_task() {return task;}
+
+    protected:
+        std::string     name;
+        // std::chrono::high_resolution_clock         lifetime;
 
         std::vector<Mesh> meshes;
         std::vector<Texture> textures;
         std::vector<Vertex> vertices;
 
-        //VulkanContext::PipeLine    pipeline;
-        //VulkanContext::Shader      shader;
+        std::vector<VulkanContext::ShaderModule> shaders;
+
+        VulkanContext::VulkanContext &render_context;
+        VulkanContext::RenderTask *task;
     };
 }
 }

@@ -1,26 +1,36 @@
 #pragma once
-
 #include "../common.h"
-
-#include "object.hpp"
+#include "../render/vulkan/vkheader.h"
 
 namespace cruelEngine {
+    class RenderContext;
+namespace VulkanContext {
+    class VulkanContext;
+}
+
 namespace cruelScene {
+    class Object;
+
     class Scene {
     public:
-        Scene () {}
-        virtual ~Scene () {}
+        Scene (VulkanContext::VulkanContext &render_context);
+        virtual ~Scene ();
 
-        void addObject(const Object& object);
+        void addObject(std::string name);
 
-        void rmObject(const char *objectName);
+        void rmObject(std::string name);
 
-        virtual void onUpdate();
+        const std::vector<std::unique_ptr<Object>> &get_obj() const {return sceneObjects;}
 
-        void        newFrame();
+        void update();
 
-    private:
-        std::vector<Object> sceneObjects;
+        void render();
+
+    protected:
+        
+        std::vector<std::unique_ptr<Object>> sceneObjects {};
+
+        VulkanContext::VulkanContext   &render_context;
     };
 }
 }

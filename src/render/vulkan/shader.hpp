@@ -2,30 +2,31 @@
 
 #include "vkcommon.h"
 
-
 namespace cruelEngine {
 namespace VulkanContext {
-    std::vector<char> readFile(const std::string& filename);
+
+    class LogicalDevice;
+
+    size_t readFile(const std::string& filename, std::vector<char> &source);
 
     VkShaderModule createShaderModule(const VkDevice logicalDevice, const std::vector<char>& code);
 
-    struct Shader {
+    class ShaderModule {
     public:
-        Shader (const VkDevice &_device, const std::string& _filename)
-            : device (_device)
-        {
-            const std::vector<char> &buffer = readFile(_filename);
-            shader =  createShaderModule(device, buffer);
-            //std::cout << "shader " + _filename + " loaded!" << std::endl;
-        }
-        virtual ~Shader (){
-            //std::cout << "shader released!" << std::endl;
-            vkDestroyShaderModule(device, shader, nullptr);
-        }
+        ShaderModule (const LogicalDevice &device, const std::string& filename, const char *entry_point, const VkShaderStageFlagBits stage);
+        
+        virtual ~ShaderModule ();
 
-        VkShaderModule      shader;
-    private: 
-        const VkDevice      &device;
+        VkShaderStageFlagBits   get_shader_stage() const {return shader_stage;}
+        const char              *get_entry_point() const {return entry;}
+
+        const std::vector<char>       &get_source() const {return source;}
+
+    private:
+        const LogicalDevice     &device;
+        char                    entry[255]; 
+        std::vector<char>       source;
+        VkShaderStageFlagBits   shader_stage;
     };
 }
 }

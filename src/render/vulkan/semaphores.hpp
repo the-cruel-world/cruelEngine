@@ -2,13 +2,9 @@
 
 #include "vkcommon.h"
 
-#include "vkDevice.hpp"
-#include "swapChain.hpp"
-
-
 namespace cruelEngine {
 namespace VulkanContext {
-    struct Semaphores {
+    class Semaphores {
     public:
         Semaphores();
         virtual ~Semaphores();

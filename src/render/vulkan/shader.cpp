@@ -1,8 +1,9 @@
 #include "shader.hpp"
+#include "logical_device.hpp"
 
 namespace cruelEngine {
 namespace VulkanContext {
-    std::vector<char> readFile(const std::string& filename) 
+    size_t readFile(const std::string& filename, std::vector<char> &source) 
     {
         std::ifstream file(filename, std::ios::ate | std::ios::binary);
 
@@ -11,12 +12,12 @@ namespace VulkanContext {
             exit(-1);
         }
         size_t fileSize = (size_t) file.tellg();
-        std::vector<char> buffer(fileSize);
+        source.resize(fileSize);
 
         file.seekg(0);
-        file.read(buffer.data(), fileSize);
+        file.read(source.data(), fileSize);
         file.close();
-        return buffer;
+        return fileSize;
     }
 
     VkShaderModule createShaderModule(const VkDevice logicalDevice, const std::vector<char>& code) 
@@ -31,6 +32,22 @@ namespace VulkanContext {
             throw std::runtime_error("failed to create shader module!");
         }
         return shaderModule;
+    }
+
+    void destroyShaderModule(VkDevice &device, VkShaderModule &handle)
+    {
+        vkDestroyShaderModule(device, handle, nullptr);
+    }
+
+    ShaderModule::ShaderModule (const LogicalDevice &device, const std::string& filename, const char *entry_point, const VkShaderStageFlagBits stage)
+        : device {device} ,shader_stage {stage}
+    {
+        strncpy(entry, entry_point, 255);
+        readFile(filename, source);
+    }
+
+    ShaderModule::~ShaderModule (){
+        source.clear();
     }
 }
 }

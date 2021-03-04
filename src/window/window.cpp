@@ -19,24 +19,24 @@ namespace cruelEngine {
 
         // Create different type of window fullscreen or not.
         if (property.fullscreen)
-            window = glfwCreateWindow(property.width, property.height, property.title.c_str(), glfwGetPrimaryMonitor(), nullptr);
+            handle = glfwCreateWindow(property.width, property.height, property.title.c_str(), glfwGetPrimaryMonitor(), nullptr);
         else 
-            window = glfwCreateWindow(property.width, property.height, property.title.c_str(), nullptr, nullptr);
+            handle = glfwCreateWindow(property.width, property.height, property.title.c_str(), nullptr, nullptr);
 
         // glfwSetWindowUserPointer(window, this);
         
-        if (window)
+        if (handle)
             count ++;
     }
 
     void Window::destroyWindow()
     {
         // if window is not not created, then create one
-        if (window) {
-            glfwDestroyWindow(window);
+        if (handle) {
+            glfwDestroyWindow(handle);
         } else return;
         // if a new window is created, count += 1 
-        if (!window)
+        if (!handle)
             count --;
     }
 

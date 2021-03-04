@@ -1,7 +1,5 @@
 #pragma once
-
 #include "../common.h"
-
 
 namespace cruelEngine {
 namespace cruelScene {
@@ -22,8 +20,6 @@ namespace cruelScene {
         Vertex(const glm::vec3 _pos, const glm::vec3 _color) : 
             pos (_pos), color (_color) 
         {}
-
-
     };
 }
 }

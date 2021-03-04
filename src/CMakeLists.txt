@@ -2,7 +2,7 @@ add_subdirectory(application)
 
 add_subdirectory(window)
 
-add_subdirectory(ui)
+# add_subdirectory(ui)
 
 # add_subdirectory(audio)
 

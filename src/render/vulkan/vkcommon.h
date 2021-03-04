@@ -7,6 +7,3 @@
 
 // headers of vulkan
 #include <vulkan/vulkan.h>
-
-// inheriant
-#include "../renderContext.hpp"

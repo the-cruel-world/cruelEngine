@@ -18,6 +18,6 @@ include_directories(src
     ${glm_INCLUDE_DIRS})
 
 add_subdirectory(src)
-add_subdirectory(examples)
-add_subdirectory(editor)
+#add_subdirectory(examples)
+#add_subdirectory(editor)
 add_subdirectory(test)

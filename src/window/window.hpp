@@ -33,25 +33,29 @@ namespace cruelEngine{
     class Window 
     {
     public:
+        Window();
+        Window(const WindowProp& _property);
+        ~Window();
+
+        const bool      isWindowResize() const {return onresize;}
+
         // whether glfw is initialized. Should be set to false mannualy
         static bool glfw_inited;
 
         // count how many windows you have created. Should be set to 0 mannualy.
         static u32 count;
 
+        GLFWwindow      &get_handle() const {return *handle;}
+
+    private:
         bool        onresize = false;
 
-        GLFWwindow * window = nullptr;
-        WindowProp property;
+        GLFWwindow  *handle = nullptr;
         
-        Window();
-        Window(const WindowProp& _property);
-        virtual ~Window();
+        WindowProp property;
 
-        const bool      isWindowResize() const {return onresize;}
-
-        virtual void createWindow();
-        virtual void destroyWindow();
+        void createWindow();
+        void destroyWindow();
     };
 
 }

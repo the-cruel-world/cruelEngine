@@ -1,72 +1,55 @@
 #pragma once
-
 #include "vkcommon.h"
-
-#include "instance.hpp"
-#include "vkDevice.hpp"
-#include "swapChain.hpp"
-#include "pipeLine.hpp"
-#include "renderPass.hpp"
-
-
-#define MAIN_VER 0
-#define MID_VER  0
-#define END_VER  1Z
+#include "../render_context.hpp"
 
 namespace cruelEngine {
+    class RenderContext;
+    class Window;
+
 namespace VulkanContext {
-    class VulkanContext : RenderContext
+
+    class LogicalDevice;
+    class PhysicalDevice;
+    class Swapchain;
+    class Instance;
+    class RenderTask;
+    class RenderSession;
+
+    class VulkanContext : public RenderContext
     {
-    public: 
-        VulkanContext () : RenderContext() 
-        {
-
-        }
-
-        virtual ~VulkanContext() {}
-    };
-
-    struct RenderProp {
-            bool        validation = true;
-
-            const std::vector<const char*>
-                        validationLayers = {};
-            const std::vector<const char*>
-                        enabledInstanceExtensions = {};
-
-            const std::vector<const char*>
-                        enabledDeviceExtensions = {};
-
-            bool        vsync = false;
-            bool        overlay = false;
-    };
-
-    class Render {
     public:
-        Render(const Window &_topwindow, const VkApplicationInfo &_appInfo, const RenderProp &_settings,
-            const Instance &_instance, const VulkanDevice &_device)
-                : topWindow(_topwindow), appInfo(_appInfo), settings(_settings),
-                instance(_instance), device(_device)
-        {
-            
-        }
+        VulkanContext (const Window& _window);
 
-        virtual ~Render(){
+        ~VulkanContext();
 
-        }
+        void    prepareRender();
 
-        // The window that this render will present 
-        const Window            &topWindow;
-        // AppInfo 
-        const VkApplicationInfo &appInfo;
+        void    draw();
 
-        const RenderProp        &settings;
+        void    render_frame();
 
-        /// I dont wnat to use pointer here, need some change.
-        // The Vulkan Instance 
-        const Instance          &instance;
-        // The Vulkan Devices physical and logical
-        const VulkanDevice      &device;
+        Instance        &get_instance() const {return *instance;}
+
+        PhysicalDevice  &get_gpu() const {return *physicalDevice;}
+
+        LogicalDevice   &get_device() const {return *device;}
+
+        RenderSession   &get_session() const {return *session;}
+
+    protected:
+        VkApplicationInfo       appInfo = {
+            .sType=VK_STRUCTURE_TYPE_APPLICATION_INFO,
+            .pApplicationName = "Triangle",
+            .pEngineName = "Real Engine",
+            .apiVersion = VK_API_VERSION_1_0};
+
+        std::unique_ptr<Instance>           instance;
+
+        std::unique_ptr<PhysicalDevice>     physicalDevice;
+
+        std::unique_ptr<LogicalDevice>      device;
+
+        std::unique_ptr<RenderSession>      session;
     };
 }
 }
