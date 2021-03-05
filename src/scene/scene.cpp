@@ -1,5 +1,6 @@
 #include "scene.hpp"
 #include "object.hpp"
+#include "objects/triangle.hpp"
 
 namespace cruelEngine {
 namespace cruelScene {
@@ -11,12 +12,13 @@ namespace cruelScene {
 
     Scene::~Scene()
     {
-
+        sceneObjects.clear();
     }
 
-    void Scene::addObject(std::string name)
+    void Scene::addObject(std::string name, u32 session_idx, ObjectType type)
     {
-        sceneObjects.push_back(std::make_unique<Object>(render_context, name));
+        if (type == SCENE_OBJ_TYPE_TRIANGLE)
+            sceneObjects.push_back(std::make_unique<Triangle>(render_context, session_idx, name));
     }
 
     void Scene::rmObject(std::string name)

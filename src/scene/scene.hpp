@@ -1,5 +1,6 @@
 #pragma once
 #include "../common.h"
+#include "object.hpp"
 #include "../render/render_header.h"
 
 namespace cruelEngine {
@@ -16,11 +17,11 @@ namespace cruelScene {
         Scene (cruelRender::RenderContext &render_context);
         virtual ~Scene ();
 
-        void addObject(std::string name);
+        void addObject(std::string name, u32 session_idx, ObjectType type);
 
         void rmObject(std::string name);
 
-        const std::vector<std::unique_ptr<Object>> &get_obj() const {return sceneObjects;}
+        const std::vector<std::unique_ptr<Object>> &get_objs() const {return sceneObjects;}
 
         void update();
 

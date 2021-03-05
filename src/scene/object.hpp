@@ -16,14 +16,18 @@ namespace cruelScene {
     struct Mesh;
     struct Texture;
     struct Vertex;
+
+    enum ObjectType {
+        SCENE_OBJ_TYPE_TRIANGLE = 0,
+    };
     
     class Object {
     public:
-        Object (cruelRender::RenderContext &render_context, std::string name);
+        Object (cruelRender::RenderContext &render_context, u32 session_idx, std::string name);
 
         virtual ~Object();
 
-        void    prepare();
+        virtual void    prepare() = 0;
 
         void    drawCommand();
 
@@ -43,9 +47,13 @@ namespace cruelScene {
         std::string     name;
         // std::chrono::high_resolution_clock         lifetime;
 
-        std::vector<Mesh> meshes;
-        std::vector<Texture> textures;
-        std::vector<Vertex> vertices;
+        ObjectType          type;
+
+        u32                 session_idx;
+
+        // std::vector<Mesh> meshes;
+        // std::vector<Texture> textures;
+        // std::vector<Vertex> vertices;
 
         std::vector<cruelRender::ShaderModule> shaders;
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "vkcommon.h"
+#include "../window/window.hpp"
 
 #define MAIN_VER 0
 #define MID_VER  0
@@ -8,6 +9,7 @@
 namespace cruelEngine {
     class RenderContext;
     class Window;
+    struct WindowProp;
 
 namespace cruelRender {
     class LogicalDevice;
@@ -23,24 +25,15 @@ namespace cruelRender {
     //Todo 
     // 1. The rendersession should support headless render.
     // 2. Session should support multi swapchains/renderpass.
-    struct RenderProp {
-            bool        validation = true;
 
-            const std::vector<const char*>
-                        validationLayers = {};
-            const std::vector<const char*>
-                        enabledInstanceExtensions = {};
 
-            const std::vector<const char*>
-                        enabledDeviceExtensions = {};
-
-            bool        vsync = false;
-            bool        overlay = false;
+    struct SessionProp {
+        WindowProp      window_prop;
     };
 
     class RenderSession {
     public:
-        RenderSession (Instance &instance, LogicalDevice &device, RenderProp &render_properties);
+        RenderSession (Instance &instance, LogicalDevice &device, SessionProp &session_properties);
 
         RenderSession (const RenderSession &) = delete;
 
@@ -53,7 +46,7 @@ namespace cruelRender {
 
         void            recreate_swapchain() {}
 
-        RenderTask      *request_new_task();
+        void            add_new_task(std::unique_ptr<RenderTask> task);
 
         void            prepare();
 
@@ -70,6 +63,8 @@ namespace cruelRender {
         Window          &get_window() const {return *window;}
 
         VkSurfaceKHR    &get_surface() {return surface;}
+
+        RenderPass      &get_render_pass() {return *render_pass;}
 
         bool            is_session_alive();
 
@@ -107,7 +102,7 @@ namespace cruelRender {
         std::unique_ptr<RenderPass> render_pass;
 
         //! \brief The redner properties of a render session.
-        RenderProp      render_properties;
+        SessionProp     session_properties;
 
         Queue           *graphic_queue;
         Queue           *present_queue;

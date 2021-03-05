@@ -18,7 +18,7 @@ namespace cruelRender {
     public:
         RenderTask (RenderSession &session, RenderPass &render_pass);
         
-        ~RenderTask ();
+        virtual ~RenderTask ();
 
         enum RenderTaskStatus{
             RENDER_TASK_UNINIRED = 0,
@@ -35,13 +35,13 @@ namespace cruelRender {
 
         void                prepare_pipeline(VkPipelineCache pipeline_cache, PipelineStatus  &pipeline_state);
 
-        void                draw(CommandBuffer &commandBuffer);
+        virtual void        draw(CommandBuffer &commandBuffer);
 
         RenderTaskStatus    get_status() const {return status;}
 
         void                set_status(RenderTaskStatus state) {status = state;}
 
-    private:
+    protected:
         RenderSession   &session;
 
         RenderPass      &render_pass;

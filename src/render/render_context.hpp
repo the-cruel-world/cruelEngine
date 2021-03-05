@@ -1,6 +1,7 @@
 #pragma once
 #include "vkcommon.h"
 
+
 namespace cruelEngine {
     class Window;
 
@@ -13,11 +14,38 @@ namespace cruelRender {
     class RenderTask;
     class RenderSession;
     struct RenderProp;
+    struct SessionProp;
+
+    struct RenderProp {
+        VkApplicationInfo appInfo = {
+            .sType=VK_STRUCTURE_TYPE_APPLICATION_INFO,
+            .pApplicationName = "Cruel Engine",
+            .pEngineName = "Cruel Engine",
+            .apiVersion = USED_VULKAN_API_VERSION};
+
+        bool        validation = true;
+
+        std::vector<const char*>
+                    validationLayers = {"VK_LAYER_KHRONOS_validation", "VK_LAYER_LUNARG_monitor"};
+
+        std::vector<const char*>
+                    enabledInstanceExtensions = {};
+
+        std::vector<const char*>
+                    enabledDeviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
+        
+        VkPhysicalDeviceFeatures features = {};
+
+        VkQueueFlags flags = {VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT | VK_QUEUE_COMPUTE_BIT};
+
+        bool        vsync = false;
+        bool        overlay = false;
+    };
 
     class RenderContext
     {
     public:
-        RenderContext ();
+        RenderContext (RenderProp properties);
 
         ~RenderContext();
 
@@ -35,17 +63,13 @@ namespace cruelRender {
 
         RenderSession   &get_session(u32 index) const ;
 
-        void            add_session(std::string session_name, RenderProp &properties);
+        void            add_session(std::string session_name, SessionProp &properties);
 
         bool            is_context_alive();
 
 
     protected:
-        VkApplicationInfo       appInfo = {
-            .sType=VK_STRUCTURE_TYPE_APPLICATION_INFO,
-            .pApplicationName = "Triangle",
-            .pEngineName = "Real Engine",
-            .apiVersion = VK_API_VERSION_1_0};
+        RenderProp                          properties;
 
         /*! \brief The Vulkan instance. 
             In general, one application should have only one vulkan instance.

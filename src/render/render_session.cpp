@@ -15,13 +15,13 @@ namespace cruelRender {
 
     RenderSession::RenderSession (Instance &instance, 
                                   LogicalDevice &device, 
-                                  RenderProp &render_properties) :
+                                  SessionProp &session_properties) :
         instance{instance},
         device {device},
-        render_properties{render_properties}
+        session_properties{session_properties}
     {
         //! Create a new window for this session.
-        window = std::make_unique<Window>();
+        window = std::make_unique<Window>(session_properties.window_prop);
         //! create a render surface for this session.
         VK_CHECK_RESULT (glfwCreateWindowSurface(instance.get_handle(), &(window->get_handle()), nullptr, &surface));
 
@@ -70,10 +70,9 @@ namespace cruelRender {
         std::cout << "Session destroied" << std::endl;
     }
 
-    RenderTask *RenderSession::request_new_task()
+    void RenderSession::add_new_task(std::unique_ptr<RenderTask> task)
     {
-        tasks.push_back(std::make_unique<RenderTask>(*this, *render_pass));
-        return tasks.back().get();
+        tasks.push_back(std::move(task));
     }
 
     void RenderSession::prepare_render_pass()
@@ -118,6 +117,7 @@ namespace cruelRender {
 
     void RenderSession::draw()
     {
+        std::cout << "Session tasks: " << tasks.size() << std::endl; 
         size_t size = commandBuffers.size();
         for (size_t i = 0; i < size ; i ++)
         {
