@@ -1,0 +1,6 @@
+<map id="cruelEngine::cruelRender::CommandBuffer::CommandBuffer" name="cruelEngine::cruelRender::CommandBuffer::CommandBuffer">
+<area shape="rect" id="node1" title="Init the command buffer, allocate space for it." alt="" coords="5,71,257,112"/>
+<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_command_pool.html#aac3834e97b6836b70583f23f5d5b2f6c" title=" " alt="" coords="306,5,510,47"/>
+<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_command_pool.html#a1ba2eab8d4f2463bd5aa5f0b3142ee9a" title=" " alt="" coords="305,71,511,112"/>
+<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671" title=" " alt="" coords="307,136,509,177"/>
+</map>

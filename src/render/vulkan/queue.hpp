@@ -3,59 +3,57 @@
 
 namespace cruelEngine {
 namespace cruelRender {
-    
-    class LogicalDevice;
-    class CommandBuffer;
-    
-    class Queue {
-    public:
 
-        Queue (LogicalDevice &_device, const u32 _family_index, const u32 _index, const VkQueueFamilyProperties _properties);
+class LogicalDevice;
+class CommandBuffer;
 
-        Queue (const Queue&) = delete;
+class Queue {
+public:
+  Queue(LogicalDevice &_device, const u32 _family_index, const u32 _index,
+        const VkQueueFamilyProperties _properties);
 
-        Queue (Queue &&);
+  Queue(const Queue &) = delete;
 
-        Queue &operator=(const Queue &) = delete;
+  Queue(Queue &&);
 
-        Queue &operator=(Queue &&) = delete;
+  Queue &operator=(const Queue &) = delete;
 
-        virtual ~Queue () {};
+  Queue &operator=(Queue &&) = delete;
 
-        const VkQueue&  get_handle() const {return handle;}
+  virtual ~Queue(){};
 
-        const LogicalDevice& get_device() const {return device;}
+  const VkQueue &get_handle() const { return handle; }
 
-        const u32           get_index() const {return index;}
+  const LogicalDevice &get_device() const { return device; }
 
-        VkBool32            can_present(const VkSurfaceKHR &surface);
+  const u32 get_index() const { return index; }
 
-        const u32           get_family_index() const {return family_index;}
+  VkBool32 can_present(const VkSurfaceKHR &surface);
 
-        const VkQueueFamilyProperties& get_properties() const {return properties;}
+  const u32 get_family_index() const { return family_index; }
 
-        VkResult                submit(const std::vector<VkSubmitInfo> &submit_infos, VkFence fence);
+  const VkQueueFamilyProperties &get_properties() const { return properties; }
 
-        VkResult                submit(const CommandBuffer &command_buffer, VkFence fence);
+  VkResult submit(const std::vector<VkSubmitInfo> &submit_infos, VkFence fence);
 
-        VkResult                present(const VkPresentInfoKHR &presentInfo);
+  VkResult submit(const CommandBuffer &command_buffer, VkFence fence);
 
-        VkResult                wait_idle();
+  VkResult present(const VkPresentInfoKHR &presentInfo);
 
-    private:
+  VkResult wait_idle();
 
-        LogicalDevice   &device;
+private:
+  LogicalDevice &device;
 
-        VkQueue         handle = VK_NULL_HANDLE;
+  VkQueue handle = VK_NULL_HANDLE;
 
-        u32             family_index = 0;
+  u32 family_index = 0;
 
-        u32             index = 0;
+  u32 index = 0;
 
-        VkQueueFamilyProperties properties{};
+  VkQueueFamilyProperties properties{};
 
-        // bool            busy = false;
-
-    };
-}
-}
+  // bool            busy = false;
+};
+} // namespace cruelRender
+} // namespace cruelEngine

@@ -1,0 +1,7 @@
+<map id="cruelEngine::cruelRender::CommandPool::CommandPool" name="cruelEngine::cruelRender::CommandPool::CommandPool">
+<area shape="rect" id="node1" title=" " alt="" coords="5,71,233,112"/>
+<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#ac0677713f46b0fbf3c5aa6611c802865" title=" " alt="" coords="289,5,483,47"/>
+<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671" title=" " alt="" coords="285,71,487,112"/>
+<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a992d6f9aaf4bbd0fe0cbed6f4f241c70" title="Get a proper graphics queue from the device." alt="" coords="281,137,491,193"/>
+<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a20da049e506d61fa17ceb80d128f1f11" title="Get a queue from the device by types." alt="" coords="539,137,736,193"/>
+</map>

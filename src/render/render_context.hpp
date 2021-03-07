@@ -1,91 +1,88 @@
 #pragma once
 #include "vkcommon.h"
 
-
 namespace cruelEngine {
-    class Window;
+class Window;
 
 namespace cruelRender {
 
-    class LogicalDevice;
-    class PhysicalDevice;
-    class Swapchain;
-    class Instance;
-    class RenderTask;
-    class RenderSession;
-    struct RenderProp;
-    struct SessionProp;
+class LogicalDevice;
+class PhysicalDevice;
+class Swapchain;
+class Instance;
+class RenderTask;
+class RenderSession;
+struct RenderProp;
+struct SessionProp;
 
-    struct RenderProp {
-        VkApplicationInfo appInfo = {
-            .sType=VK_STRUCTURE_TYPE_APPLICATION_INFO,
-            .pApplicationName = "Cruel Engine",
-            .pEngineName = "Cruel Engine",
-            .apiVersion = USED_VULKAN_API_VERSION};
+struct RenderProp {
+  VkApplicationInfo appInfo = {.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+                               .pApplicationName = "Cruel Engine",
+                               .pEngineName = "Cruel Engine",
+                               .apiVersion = USED_VULKAN_API_VERSION};
 
-        bool        validation = true;
+  bool validation = true;
 
-        std::vector<const char*>
-                    validationLayers = {"VK_LAYER_KHRONOS_validation", "VK_LAYER_LUNARG_monitor"};
+  std::vector<const char *> validationLayers = {"VK_LAYER_KHRONOS_validation",
+                                                "VK_LAYER_LUNARG_monitor"};
 
-        std::vector<const char*>
-                    enabledInstanceExtensions = {};
+  std::vector<const char *> enabledInstanceExtensions = {};
 
-        std::vector<const char*>
-                    enabledDeviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME};
-        
-        VkPhysicalDeviceFeatures features = {};
+  std::vector<const char *> enabledDeviceExtensions = {
+      VK_KHR_SWAPCHAIN_EXTENSION_NAME};
 
-        VkQueueFlags flags = {VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT | VK_QUEUE_COMPUTE_BIT};
+  VkPhysicalDeviceFeatures features = {};
 
-        bool        vsync = false;
-        bool        overlay = false;
-    };
+  VkQueueFlags flags = {VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT |
+                        VK_QUEUE_COMPUTE_BIT};
 
-    class RenderContext
-    {
-    public:
-        RenderContext (RenderProp properties);
+  bool vsync = false;
+  bool overlay = false;
+};
 
-        ~RenderContext();
+class RenderContext {
+public:
+  RenderContext(RenderProp properties);
 
-        void    prepareRender();
+  ~RenderContext();
 
-        void    draw();
+  void prepareRender();
 
-        void    render_frame();
+  void draw();
 
-        Instance        &get_instance() const {return *instance;}
+  void render_frame();
 
-        PhysicalDevice  &get_gpu() const {return *physicalDevice;}
+  Instance &get_instance() const { return *instance; }
 
-        LogicalDevice   &get_device() const {return *device;}
+  PhysicalDevice &get_gpu() const { return *physicalDevice; }
 
-        RenderSession   &get_session(u32 index) const ;
+  LogicalDevice &get_device() const { return *device; }
 
-        void            add_session(std::string session_name, SessionProp &properties);
+  RenderSession &get_session(u32 index) const;
 
-        bool            is_context_alive();
+  void add_session(std::string session_name, SessionProp &properties);
 
+  bool is_context_alive();
 
-    protected:
-        RenderProp                          properties;
+protected:
+  RenderProp properties;
 
-        /*! \brief The Vulkan instance. 
-            In general, one application should have only one vulkan instance.
-            Because multi vulkan instance may crush your applications. */
-        std::unique_ptr<Instance>           instance;
+  /*! \brief The Vulkan instance.
+      In general, one application should have only one vulkan instance.
+      Because multi vulkan instance may crush your applications. */
+  std::unique_ptr<Instance> instance;
 
-        /*! \brief The physical device (aka gpu). */
-        std::unique_ptr<PhysicalDevice>     physicalDevice;
+  /*! \brief The physical device (aka gpu). */
+  std::unique_ptr<PhysicalDevice> physicalDevice;
 
-        /*! \brief The logical device of this render context. */
-        std::unique_ptr<LogicalDevice>      device;
+  /*! \brief The logical device of this render context. */
+  std::unique_ptr<LogicalDevice> device;
 
-        /*! \brief The render session container. 
-            Instead of let the render context to control everything, I use render sessions for 
-            muiti window(surface) management. There should be more sessions. */
-        std::vector<std::unique_ptr<RenderSession>>     sessions;
-    };
-}
-}
+  /*! \brief The render session container.
+      Instead of let the render context to control everything, I use render
+     sessions for muiti window(surface) management. There should be more
+     sessions. */
+  std::vector<std::unique_ptr<RenderSession>> sessions;
+};
+} // namespace cruelRender
+} // namespace cruelEngine

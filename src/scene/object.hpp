@@ -6,59 +6,60 @@
 
 namespace cruelEngine {
 namespace cruelRender {
-    class RenderTask;
-    class RenderContext;
-    class ShaderModule;
-}
+class RenderTask;
+class RenderContext;
+class ShaderModule;
+} // namespace cruelRender
 
 namespace cruelScene {
 
-    struct Mesh;
-    struct Texture;
-    struct Vertex;
+struct Mesh;
+struct Texture;
+struct Vertex;
 
-    enum ObjectType {
-        SCENE_OBJ_TYPE_TRIANGLE = 0,
-    };
-    
-    class Object {
-    public:
-        Object (cruelRender::RenderContext &render_context, u32 session_idx, std::string name);
+enum ObjectType {
+  SCENE_OBJ_TYPE_TRIANGLE = 0,
+};
 
-        virtual ~Object();
+class Object {
+public:
+  Object(cruelRender::RenderContext &render_context, u32 session_idx,
+         std::string name);
 
-        virtual void    prepare() = 0;
+  virtual ~Object();
 
-        void    drawCommand();
+  virtual void prepare() = 0;
 
-        virtual void    loadAsset() {};
+  void drawCommand();
 
-        virtual void    unloadAsset() {};
+  virtual void loadAsset(){};
 
-        const std::string &get_name() const {return name;}
+  virtual void unloadAsset(){};
 
-        bool            is_alive() const;
+  const std::string &get_name() const { return name; }
 
-        void            show_name() const {std::cout << "Object : " << name << std::endl;}
+  bool is_alive() const;
 
-        cruelRender::RenderTask   *get_task() {return task;}
+  void show_name() const { std::cout << "Object : " << name << std::endl; }
 
-    protected:
-        std::string     name;
-        // std::chrono::high_resolution_clock         lifetime;
+  cruelRender::RenderTask *get_task() { return task; }
 
-        ObjectType          type;
+protected:
+  std::string name;
+  // std::chrono::high_resolution_clock         lifetime;
 
-        u32                 session_idx;
+  ObjectType type;
 
-        // std::vector<Mesh> meshes;
-        // std::vector<Texture> textures;
-        // std::vector<Vertex> vertices;
+  u32 session_idx;
 
-        std::vector<cruelRender::ShaderModule> shaders;
+  // std::vector<Mesh> meshes;
+  // std::vector<Texture> textures;
+  // std::vector<Vertex> vertices;
 
-        cruelRender::RenderContext &render_context;
-        cruelRender::RenderTask *task;
-    };
-}
-}
+  std::vector<cruelRender::ShaderModule> shaders;
+
+  cruelRender::RenderContext &render_context;
+  cruelRender::RenderTask *task;
+};
+} // namespace cruelScene
+} // namespace cruelEngine

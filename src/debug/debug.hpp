@@ -1,19 +1,15 @@
-#ifndef __cruel_engine_debug__
-#define __cruel_engine_debug__
+#pragma once
+// #include <vulkan/vulkan.h>
+// #include <string>
 
-#include "../common.h"
-#include "../types.h"
+#define VK_CHECK_RESULT(stat)                                                  \
+  do {                                                                         \
+    VkResult res = (stat);                                                     \
+    if (res != true) {                                                         \
+      fprintf(stderr, "Fatal: vKResult is \"%s\" in %s at line %d\n",          \
+              "errorString(res).c_str()", __FILE__, __LINE__);                 \
+      exit(-1);                                                                \
+    }                                                                          \
+  } while (0)
 
-#include <vulkan/vulkan.h>
-#define VK_CHECK_RESULT(stat)  do {         \
-    VkResult res = (stat);                  \
-    if (res != VK_SUCCESS){                 \
-        fprintf(stderr, "Fatal: vKResult is \"%s\" in %s at line %d\n", \
-        errorString(res).c_str(), __FILE__,__LINE__);\
-        exit(-1);                           \
-    }                                       \
-} while (0)
-
-std::string errorString(VkResult errorCode);
-
-#endif
+// std::string errorString(VkResult errorCode);

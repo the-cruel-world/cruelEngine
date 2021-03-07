@@ -2,11 +2,13 @@
 #define __cruel_engin_noise__
 
 namespace cruelEngine {
-    class Noise {
-    public:
-        Noise();
-        ~Noise();
-    };
-}
+namespace cruelPhysics {
+class Noise {
+public:
+  Noise();
+  ~Noise();
+};
+} // namespace cruelPhysics
+} // namespace cruelEngine
 
 #endif

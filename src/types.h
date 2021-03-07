@@ -1,11 +1,9 @@
-#ifndef __cruel_engine_types__
-#define __cruel_engine_types__
-
+#pragma once
 #include <cstdint>
 
 enum ENGINE_RESULT {
-    ENGINE_SUCCESS = 1,
-    ENGINE_FAIL = 0,
+  ENGINE_SUCCESS = 1,
+  ENGINE_FAIL = 0,
 };
 
 typedef uint8_t u8;
@@ -17,5 +15,3 @@ typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
-
-#endif

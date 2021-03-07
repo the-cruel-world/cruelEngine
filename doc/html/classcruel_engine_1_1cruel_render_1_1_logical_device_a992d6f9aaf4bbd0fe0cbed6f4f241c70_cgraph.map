@@ -1,0 +1,4 @@
+<map id="cruelEngine::cruelRender::LogicalDevice::get_suitable_graphics_queue" name="cruelEngine::cruelRender::LogicalDevice::get_suitable_graphics_queue">
+<area shape="rect" id="node1" title="Get a proper graphics queue from the device." alt="" coords="5,5,215,61"/>
+<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a20da049e506d61fa17ceb80d128f1f11" title="Get a queue from the device by types." alt="" coords="263,5,460,61"/>
+</map>

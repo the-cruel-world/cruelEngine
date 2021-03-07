@@ -13,6 +13,6 @@ include_directories(../ ./
     ${glfw3_INCLUDE_DIRS}
     ${glm_INCLUDE_DIRS})
 
-add_library(cruelRender SHARED ${VULKAN_CORE_SRC} ${RENDER_SRC}  "render_context.cpp")
+add_library(cruelRender SHARED ${VULKAN_CORE_SRC} ${RENDER_SRC})
 
-target_link_libraries(cruelRender cruelWindow cruelDebug ${Vulkan_LIBRARIES} ${glm_LIBRARIES})
+target_link_libraries(cruelRender cruelDebug cruelWindow ${Vulkan_LIBRARIES} ${glm_LIBRARIES})

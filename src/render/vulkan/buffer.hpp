@@ -1,60 +1,109 @@
 #pragma once
 #include "../vkcommon.h"
 
-
 namespace cruelEngine {
 namespace cruelRender {
 
-    class LogicalDevice;
+class LogicalDevice;
+class CommandBuffer;
 
-    class CommandBuffer;
-    
-    uint32_t    findMemoryType(const VkPhysicalDevice &device, uint32_t typeFilter, VkMemoryPropertyFlags properties);
+uint32_t findMemoryType(const VkPhysicalDevice &device, uint32_t typeFilter,
+                        VkMemoryPropertyFlags properties);
 
-    void        copyBuffer(const VkDevice &device, const VkQueue &queue, const VkCommandPool &cmdPool, VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
-    
-    void        createBuffer(const VkDevice &device, const VkPhysicalDevice &physicalDevice, VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory); 
+void copy_buffer(const VkDevice &device, const VkQueue &queue,
+                 const VkCommandPool &cmdPool, VkBuffer srcBuffer,
+                 VkBuffer dstBuffer, VkDeviceSize size);
 
-    class Buffer {
-    public:
-        Buffer(LogicalDevice &device);
+void create_buffer(const VkDevice &device,
+                   const VkPhysicalDevice &physicalDevice, VkDeviceSize size,
+                   VkBufferUsageFlags usage, VkMemoryPropertyFlags properties,
+                   VkBuffer &buffer, VkDeviceMemory &bufferMemory);
 
-        Buffer(LogicalDevice &device, VkDeviceSize bufferSize, VkBufferUsageFlags bufferUsage, VkMemoryPropertyFlags memoryProperties);
+class Buffer {
+public:
+  Buffer(LogicalDevice &device);
 
-        Buffer(const Buffer &) = delete;
+  Buffer(LogicalDevice &device, VkDeviceSize bufferSize,
+         VkBufferUsageFlags bufferUsage,
+         VkMemoryPropertyFlags memoryProperties);
 
-        Buffer(Buffer &&);
+  Buffer(const Buffer &) = delete;
 
-        Buffer &operator=(const Buffer &) = delete;
+  Buffer(Buffer &&);
 
-        Buffer &operator=(Buffer &&) = delete;
-        
-        ~Buffer();
+  Buffer &operator=(const Buffer &) = delete;
 
-        void            createBuffer(VkDeviceSize _bufferSize, VkBufferUsageFlags _bufferUsage, VkMemoryPropertyFlags _memoryProperties);
-        
-        void            destroyBuffer();
-        
-        void            load (void *data);
-        
-        void            load_stage (void *data, const VkQueue &queue, const VkCommandPool &cmdPool);
+  Buffer &operator=(Buffer &&) = delete;
 
-        const VkBuffer&     get_handle() const {return handle;}
-        
-        const VkDeviceMemory& get_handleMem() const {return memory;}
-        
-        const LogicalDevice& get_device() const {return device;} 
-    private:
-        LogicalDevice               &device;
+  ~Buffer();
 
-        VkDeviceSize                bufferSize = 0;
-        
-        VkBuffer                    handle = VK_NULL_HANDLE;
-        
-        VkDeviceMemory              memory = VK_NULL_HANDLE;
-    };
-    class UniformBuffer {
+  void createBuffer(VkDeviceSize _bufferSize, VkBufferUsageFlags _bufferUsage,
+                    VkMemoryPropertyFlags _memoryProperties);
 
-    };
-}
-}
+  void destroyBuffer();
+
+  void load(void *data);
+
+  void load_stage(void *data, CommandBuffer &cmdBuffer);
+
+  const VkBuffer &get_handle() const { return handle; }
+
+  const VkDeviceMemory &get_handleMem() const { return memory; }
+
+  const LogicalDevice &get_device() const { return device; }
+
+  // VkBool32            map(VkDeviceSize size, VkDeviceSize offset);
+
+  // void                unmap();
+private:
+  LogicalDevice &device;
+
+  VkDeviceSize buffer_size = 0;
+
+  // void                        *mapped;
+
+  VkBuffer handle = VK_NULL_HANDLE;
+
+  VkDeviceMemory memory = VK_NULL_HANDLE;
+
+  VkBufferUsageFlags buffer_usage;
+
+  VkMemoryPropertyFlags memory_flags;
+};
+
+class UniformBuffer {
+public:
+  UniformBuffer(LogicalDevice &device, VkDeviceSize bufferSize);
+
+  UniformBuffer(const UniformBuffer &) = delete;
+
+  UniformBuffer(UniformBuffer &&);
+
+  UniformBuffer &operator=(const UniformBuffer &) = delete;
+
+  UniformBuffer &operator=(UniformBuffer &&) = delete;
+
+  ~UniformBuffer();
+
+  const VkBuffer &get_handle() const { return handle; }
+
+  const VkDeviceMemory &get_handleMem() const { return memory; }
+
+  void update(void *new_data);
+
+private:
+  LogicalDevice &device;
+
+  VkDeviceSize buffer_size = 0;
+
+  VkBuffer handle = VK_NULL_HANDLE;
+
+  VkDeviceMemory memory = VK_NULL_HANDLE;
+
+  VkBufferUsageFlags buffer_usage = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+
+  VkMemoryPropertyFlags memory_flags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+                                       VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+};
+} // namespace cruelRender
+} // namespace cruelEngine

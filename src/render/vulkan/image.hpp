@@ -3,38 +3,38 @@
 
 namespace cruelEngine {
 namespace cruelRender {
-    class LogicalDevice;
+class LogicalDevice;
 
-    class Image {
-    public:
-        Image(LogicalDevice &device);
+class Image {
+public:
+  Image(LogicalDevice &device);
 
-        Image(const Image &) = delete;
+  Image(const Image &) = delete;
 
-        Image(Image &&) = delete;
+  Image(Image &&) = delete;
 
-        Image operator=(const Image &) = delete;
+  Image operator=(const Image &) = delete;
 
-        ~Image();
+  ~Image();
 
-        LogicalDevice   &get_device() const {return device;}
+  LogicalDevice &get_device() const { return device; }
 
-        VkImage         get_handle() const {return handle;}
+  VkImage get_handle() const { return handle; }
 
-        const VkImageType   &get_image_type() const {return type;}
+  const VkImageType &get_image_type() const { return type; }
 
-        const VkFormat      &get_format() const {return format;}
-    
-    private:
-        LogicalDevice       &device;
+  const VkFormat &get_format() const { return format; }
 
-        VkImage             handle = VK_NULL_HANDLE;
+private:
+  LogicalDevice &device;
 
-        VkImageType         type {};
+  VkImage handle = VK_NULL_HANDLE;
 
-        VkFormat            format {};
+  VkImageType type = {};
 
-        VkImageUsageFlags   usage {};
-    };
-}
-}
+  VkFormat format = {};
+
+  // VkImageUsageFlags usage{};
+};
+} // namespace cruelRender
+} // namespace cruelEngine

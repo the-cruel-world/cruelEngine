@@ -1,9 +1,9 @@
-#pragma once 
+#pragma once
 
 // General headers
 #include "../common.h"
-#include "../types.h"
 #include "../debug/debug.hpp"
+#include "../types.h"
 
 // headers of vulkan
 #include <vulkan/vulkan.h>

@@ -1,7 +1,6 @@
 #include "render_context.hpp"
 #include "render_session.hpp"
 #include "render_task.hpp"
-
 #include "vulkan/buffer.hpp"
 #include "vulkan/command_buffer.hpp"
 #include "vulkan/command_pool.hpp"

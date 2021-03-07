@@ -4,47 +4,47 @@
 namespace cruelEngine {
 namespace cruelRender {
 
-    class CommandBuffer;
+class CommandBuffer;
 
-    class LogicalDevice;
+class LogicalDevice;
 
-    /*! A wrap of vulkan command pool for easy management. */
-    class CommandPool {
-    public:
-        /*! Create a command pool, it requires a physical device. */
-        CommandPool (LogicalDevice &_device);
+/*! A wrap of vulkan command pool for easy management. */
+class CommandPool {
+public:
+  /*! Create a command pool, it requires a physical device. */
+  CommandPool(LogicalDevice &_device);
 
-        virtual ~CommandPool ();
+  virtual ~CommandPool();
 
-        // void                    createCommandPool();
-        
-        /*! Return the handle of the commandpool. */ 
-        const VkCommandPool&    get_handle() const {return handle;}
+  // void                    createCommandPool();
 
-        /*! Return a reference to the vulkandevice instance. */ 
-        LogicalDevice&    get_device() const {return device;}
+  /*! Return the handle of the commandpool. */
+  const VkCommandPool &get_handle() const { return handle; }
 
-        /*! \brief Request a new commandbuffer from the commandPool. */
-        CommandBuffer&          request_commandbuffer(const VkCommandBufferLevel &_level);
+  /*! Return a reference to the vulkandevice instance. */
+  LogicalDevice &get_device() const { return device; }
 
-        VkResult                reset_pool();
+  /*! \brief Request a new commandbuffer from the commandPool. */
+  CommandBuffer &request_commandbuffer(const VkCommandBufferLevel &_level);
 
-    private:
-        LogicalDevice           &device;
+  VkResult reset_pool();
 
-        VkCommandPool           handle = VK_NULL_HANDLE;
+private:
+  LogicalDevice &device;
 
-        size_t                  thread_index = 0;
+  VkCommandPool handle = VK_NULL_HANDLE;
 
-        u32                     queue_family_index = 0;
+  size_t thread_index = 0;
 
-        std::vector<std::unique_ptr<CommandBuffer>> primary_command_buffers;
+  u32 queue_family_index = 0;
 
-        u32                     active_primary_command_buffer_count     = 0;
+  std::vector<std::unique_ptr<CommandBuffer>> primary_command_buffers;
 
-        std::vector<std::unique_ptr<CommandBuffer>> secondary_command_buffers;
+  u32 active_primary_command_buffer_count = 0;
 
-        u32                     active_secondary_command_buffer_count   = 0;
-    };
-}
-}
+  std::vector<std::unique_ptr<CommandBuffer>> secondary_command_buffers;
+
+  u32 active_secondary_command_buffer_count = 0;
+};
+} // namespace cruelRender
+} // namespace cruelEngine

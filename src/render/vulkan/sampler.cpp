@@ -1,7 +1,5 @@
 #include "sampler.hpp"
 
 namespace cruelEngine {
-namespace cruelRender {
-
-}
-}
+namespace cruelRender {}
+} // namespace cruelEngine

@@ -4,53 +4,54 @@
 namespace cruelEngine {
 namespace cruelRender {
 
-    class Pipeline;
-    class PipelineStatus;
-    class PipelineLayout;
-    class GraphicsPipeline;
-    class RenderPass;
-    class RenderSession;
-    class CommandBuffer;
-    class Queue;
-    class ShaderModule;
+class Pipeline;
+class PipelineStatus;
+class PipelineLayout;
+class GraphicsPipeline;
+class RenderPass;
+class RenderSession;
+class CommandBuffer;
+class Queue;
+class ShaderModule;
 
-    class RenderTask {
-    public:
-        RenderTask (RenderSession &session, RenderPass &render_pass);
-        
-        virtual ~RenderTask ();
+class RenderTask {
+public:
+  RenderTask(RenderSession &session, RenderPass &render_pass);
 
-        enum RenderTaskStatus{
-            RENDER_TASK_UNINIRED = 0,
-            RENDER_TASK_INIRED,
-            RENDER_TASK_BUSY,
-            RENDER_TASK_IDLE,
-            RENDER_TASK_FINISHED,
-            RENDER_TASK_DESTROY,
-        };
+  virtual ~RenderTask();
 
-        void                prepare();
+  enum RenderTaskStatus {
+    RENDER_TASK_UNINIRED = 0,
+    RENDER_TASK_INIRED,
+    RENDER_TASK_BUSY,
+    RENDER_TASK_IDLE,
+    RENDER_TASK_FINISHED,
+    RENDER_TASK_DESTROY,
+  };
 
-        void                prepare_pipline_layout(const std::vector<ShaderModule> &shaders);
+  void prepare();
 
-        void                prepare_pipeline(VkPipelineCache pipeline_cache, PipelineStatus  &pipeline_state);
+  void prepare_pipline_layout(const std::vector<ShaderModule> &shaders);
 
-        virtual void        draw(CommandBuffer &commandBuffer);
+  void prepare_pipeline(VkPipelineCache pipeline_cache,
+                        PipelineStatus &pipeline_state);
 
-        RenderTaskStatus    get_status() const {return status;}
+  virtual void draw(CommandBuffer &commandBuffer);
 
-        void                set_status(RenderTaskStatus state) {status = state;}
+  RenderTaskStatus get_status() const { return status; }
 
-    protected:
-        RenderSession   &session;
+  void set_status(RenderTaskStatus state) { status = state; }
 
-        RenderPass      &render_pass;
+protected:
+  RenderSession &session;
 
-        std::unique_ptr<PipelineLayout> pipeline_layout;
+  RenderPass &render_pass;
 
-        std::unique_ptr<Pipeline>       pipeline;
+  std::unique_ptr<PipelineLayout> pipeline_layout;
 
-        RenderTaskStatus                status = RENDER_TASK_UNINIRED;
-    };
-}
-}
+  std::unique_ptr<Pipeline> pipeline;
+
+  RenderTaskStatus status = RENDER_TASK_UNINIRED;
+};
+} // namespace cruelRender
+} // namespace cruelEngine

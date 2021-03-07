@@ -5,28 +5,32 @@
 namespace cruelEngine {
 namespace cruelRender {
 
-    class LogicalDevice;
+class LogicalDevice;
 
-    size_t readFile(const std::string& filename, std::vector<char> &source);
+size_t readFile(const std::string &filename, std::vector<char> &source);
 
-    VkShaderModule createShaderModule(const VkDevice logicalDevice, const std::vector<char>& code);
+VkShaderModule createShaderModule(const VkDevice logicalDevice,
+                                  const std::vector<char> &code);
 
-    class ShaderModule {
-    public:
-        ShaderModule (const LogicalDevice &device, const std::string& filename, const char *entry_point, const VkShaderStageFlagBits stage);
-        
-        virtual ~ShaderModule ();
+class ShaderModule {
+public:
+  ShaderModule(const LogicalDevice &device, const std::string &filename,
+               const char *entry_point, const VkShaderStageFlagBits stage);
 
-        VkShaderStageFlagBits   get_shader_stage() const {return shader_stage;}
-        const char              *get_entry_point() const {return entry;}
+  virtual ~ShaderModule();
 
-        const std::vector<char>       &get_source() const {return source;}
+  VkShaderStageFlagBits get_shader_stage() const { return shader_stage; }
+  const char *get_entry_point() const { return entry; }
 
-    private:
-        const LogicalDevice     &device;
-        char                    entry[255]; 
-        std::vector<char>       source;
-        VkShaderStageFlagBits   shader_stage;
-    };
-}
-}
+  const std::vector<char> &get_source() const { return source; }
+
+  const LogicalDevice &get_device() const { return device; }
+
+private:
+  const LogicalDevice &device;
+  char entry[255];
+  std::vector<char> source;
+  VkShaderStageFlagBits shader_stage;
+};
+} // namespace cruelRender
+} // namespace cruelEngine

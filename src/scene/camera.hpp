@@ -1,13 +1,13 @@
 #pragma once
 
 #include "../common.h"
-#include "../types.h"
 #include "../debug/debug.hpp"
+#include "../types.h"
 
 namespace cruelEngine {
-    class Camera{
-        public:
-            Camera();
-            virtual ~Camera();
-    };
-}
+class Camera {
+public:
+  Camera();
+  virtual ~Camera();
+};
+} // namespace cruelEngine

@@ -4,74 +4,84 @@
 namespace cruelEngine {
 namespace cruelRender {
 
-    class Instance;
+class Instance;
 
-    bool isPhysicalDeviceSuitable (const VkPhysicalDevice &physicalDevice, const VkPhysicalDeviceFeatures &requiredFeatures, const std::vector<const char*> requiredExtensions, const VkQueueFlags& flags);
-    
-    struct DriverVersion
-    {
-        uint16_t major;
-        uint16_t minor;
-        uint16_t patch;
-    };
+bool isPhysicalDeviceSuitable(
+    const VkPhysicalDevice &physicalDevice,
+    const VkPhysicalDeviceFeatures &requiredFeatures,
+    const std::vector<const char *> requiredExtensions,
+    const VkQueueFlags &flags);
 
-    class PhysicalDevice {
-    public:
-        /*! \brief The Data Prototype of physical device (GPU)
-            This will create a gpu object, which contains all the information related to this device.
-            \param physicalDevice is the vulkan handle to a physical device 
-            \param _requiredFeatures is the features that we want the physical device to have.
-        */
-        PhysicalDevice(const VkPhysicalDevice& physicalDevice, VkPhysicalDeviceFeatures &_requiredFeatures);
+struct DriverVersion {
+  uint16_t major;
+  uint16_t minor;
+  uint16_t patch;
+};
 
-        ~PhysicalDevice();
+class PhysicalDevice {
+public:
+  /*! \brief The Data Prototype of physical device (GPU)
+      This will create a gpu object, which contains all the information related
+     to this device. \param physicalDevice is the vulkan handle to a physical
+     device \param _requiredFeatures is the features that we want the physical
+     device to have.
+  */
+  PhysicalDevice(const VkPhysicalDevice &physicalDevice,
+                 VkPhysicalDeviceFeatures &_requiredFeatures);
 
-        const VkPhysicalDevice&     get_handle() const {return handle;}
-        
-        /*! \brief Return the required memoty type index. 
-            \param filter is the  asdfdsagdasg asgd
-            \param flags is the aldhfgdla fhdasf 
-        */
-        const u32                   getMemoryTypeIndex(const u32& filter, const VkMemoryPropertyFlags& flags) const;
+  ~PhysicalDevice();
 
-        const VkPhysicalDeviceProperties &get_properties() const {return properties;}
+  const VkPhysicalDevice &get_handle() const { return handle; }
 
-        /*! \brief Reture the information about the driver used by this gpu. */
-        const DriverVersion         &get_driver_version() const;
+  /*! \brief Return the required memoty type index.
+      \param filter is the  asdfdsagdasg asgd
+      \param flags is the aldhfgdla fhdasf
+  */
+  const u32 getMemoryTypeIndex(const u32 &filter,
+                               const VkMemoryPropertyFlags &flags) const;
 
-        //! \brief Return all the supported features of this device. 
-        const VkPhysicalDeviceFeatures& getDeviceFeatures() const {return features;}
+  const VkPhysicalDeviceProperties &get_properties() const {
+    return properties;
+  }
 
-        //! \brief Return the required features the must be supported by this device.
-        const VkPhysicalDeviceFeatures& getRequiredFeatures() const {return requiredFeatures;}
+  /*! \brief Reture the information about the driver used by this gpu. */
+  DriverVersion get_driver_version() const;
 
-        //! \brief Return the memory properties of this device.
-        const VkPhysicalDeviceMemoryProperties& getMemoryProperties() const {return memoryProperties;}
+  //! \brief Return all the supported features of this device.
+  const VkPhysicalDeviceFeatures &getDeviceFeatures() const { return features; }
 
+  //! \brief Return the required features the must be supported by this device.
+  const VkPhysicalDeviceFeatures &getRequiredFeatures() const {
+    return requiredFeatures;
+  }
 
-        // const VkSampleCountFlagBits& getMultiSamplingLevel() const;
+  //! \brief Return the memory properties of this device.
+  const VkPhysicalDeviceMemoryProperties &getMemoryProperties() const {
+    return memoryProperties;
+  }
 
-    private:
+  // const VkSampleCountFlagBits& getMultiSamplingLevel() const;
 
-        VkPhysicalDevice            handle = VK_NULL_HANDLE;
+private:
+  VkPhysicalDevice handle = VK_NULL_HANDLE;
 
-        VkPhysicalDeviceFeatures    features{};
+  VkPhysicalDeviceFeatures features{};
 
-        VkPhysicalDeviceFeatures    &requiredFeatures;
+  VkPhysicalDeviceFeatures &requiredFeatures;
 
-        // The GPU properties
-        VkPhysicalDeviceProperties  properties;
+  // The GPU properties
+  VkPhysicalDeviceProperties properties;
 
-        // The GPU memory properties
-        VkPhysicalDeviceMemoryProperties memoryProperties;
+  // The GPU memory properties
+  VkPhysicalDeviceMemoryProperties memoryProperties;
 
-        // The GPU queue family properties
-        // std::vector<VkQueueFamilyProperties> queueFamilyProperties {};
+  // The GPU queue family properties
+  // std::vector<VkQueueFamilyProperties> queueFamilyProperties {};
 
-        // The depthFormat
-        VkFormat                    depthFormat {};
+  // The depthFormat
+  // VkFormat depthFormat = {};
 
-        std::vector<const char *>   extension_features {};
-    };
-}
-}
+  std::vector<const char *> extension_features{};
+};
+} // namespace cruelRender
+} // namespace cruelEngine

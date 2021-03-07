@@ -3,39 +3,39 @@
 
 namespace cruelEngine {
 namespace cruelRender {
-    
-    class LogicalDevice;
-    class Image;
 
-    class ImageView {
-    public: 
-        ImageView (LogicalDevice &device, VkImage *image, VkFormat &format);
+class LogicalDevice;
+class Image;
 
-        ImageView(ImageView &) = delete;
+class ImageView {
+public:
+  ImageView(LogicalDevice &device, VkImage *image, VkFormat &format);
 
-        ImageView operator=(const ImageView &) = delete;
+  ImageView(ImageView &) = delete;
 
-        ImageView(ImageView &&other);
+  ImageView operator=(const ImageView &) = delete;
 
-        ~ImageView ();
+  ImageView(ImageView &&other);
 
-        VkImageView     get_handle() const {return handle;}
+  ~ImageView();
 
-        LogicalDevice   &get_device() const {return device;}
+  VkImageView get_handle() const { return handle; }
 
-        const VkImage     &get_image() const {return *image;}
+  LogicalDevice &get_device() const { return device; }
 
-        VkFormat        get_format() const {return format;}
+  const VkImage &get_image() const { return *image; }
 
-        void            set_image(VkImage &image);
+  VkFormat get_format() const { return format; }
 
-    private:
-        LogicalDevice   &device;
-        VkImage           *image;
-        VkImageView     handle;
+  void set_image(VkImage &image);
 
-        VkFormat        format;
-    };
+private:
+  LogicalDevice &device;
+  VkImage *image;
+  VkImageView handle;
 
-}
-}
+  VkFormat format;
+};
+
+} // namespace cruelRender
+} // namespace cruelEngine

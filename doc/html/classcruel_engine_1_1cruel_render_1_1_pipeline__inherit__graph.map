@@ -1,0 +1,5 @@
+<map id="cruelEngine::cruelRender::Pipeline" name="cruelEngine::cruelRender::Pipeline">
+<area shape="rect" id="node1" title=" " alt="" coords="5,39,189,80"/>
+<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_compute_pipeline.html" title=" " alt="" coords="237,5,421,47"/>
+<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_graphics_pipeline.html" title=" " alt="" coords="237,71,421,112"/>
+</map>
