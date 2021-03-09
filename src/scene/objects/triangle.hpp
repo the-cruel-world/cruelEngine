@@ -7,16 +7,22 @@ namespace cruelEngine {
 namespace cruelScene {
 class TriangleTask : public cruelRender::RenderTask {
 public:
-  TriangleTask(cruelRender::RenderSession &session,
-               cruelRender::RenderPass &render_pass,
-               const VkBuffer &vertexBuffer, const VkBuffer &indexBuffer)
+  TriangleTask(
+      cruelRender::RenderSession &session, cruelRender::RenderPass &render_pass,
+      const VkBuffer &vertexBuffer, const VkBuffer &indexBuffer,
+      cruelRender::UniformBuffer &uniform_buffer,
+      std::vector<std::unique_ptr<cruelRender::DescriptorSet>> &descriptor_set)
       : cruelRender::RenderTask(session, render_pass),
-        vertexBuffer{vertexBuffer}, indexBuffer{indexBuffer} {}
-  void draw(cruelRender::CommandBuffer &commandBuffer);
+        vertexBuffer{vertexBuffer}, indexBuffer{indexBuffer},
+        uniform_buffer{uniform_buffer}, descriptor_set{descriptor_set} {}
+  void draw(cruelRender::CommandBuffer &commandBuffer, int index);
+  void render();
 
 private:
   const VkBuffer &vertexBuffer;
   const VkBuffer &indexBuffer;
+  cruelRender::UniformBuffer &uniform_buffer;
+  std::vector<std::unique_ptr<cruelRender::DescriptorSet>> &descriptor_set;
 };
 
 class Triangle : public Object {
@@ -48,24 +54,34 @@ public:
     }
   };
 
+  struct UniformBufferObject {
+    glm::mat4 model;
+    glm::mat4 view;
+    glm::mat4 proj;
+  };
+
   Triangle(cruelRender::RenderContext &render_context, u32 session_idx,
            std::string name);
   ~Triangle();
 
   void prepare();
 
-  void createVertexBuffer();
+  void create_buffer();
 
 private:
   const std::vector<Vertex> vertices = {
       {{-.5f, -.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
       {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
       {{-.5f, 0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-      {{0.5f, -.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+      {{0.5f, -.5f, 0.0f}, {1.0f, 1.0f, 0.0f}},
   };
-  const std::vector<uint16_t> indices = {0, 1, 2, 1, 0, 3};
-  std::unique_ptr<cruelEngine::cruelRender::Buffer> buffer;
-  std::unique_ptr<cruelEngine::cruelRender::Buffer> indexbuffer;
+  const std::vector<uint16_t> indices = {0, 2, 1, 1, 3, 0};
+  std::unique_ptr<cruelRender::Buffer> buffer;
+  std::unique_ptr<cruelRender::Buffer> indexbuffer;
+  std::unique_ptr<cruelRender::UniformBuffer> uniform_buffer;
+  std::vector<std::unique_ptr<cruelRender::DescriptorSet>> descriptor_set;
+  std::unique_ptr<cruelRender::DescriptorSetLayout> descriptor_set_layout;
+  std::unique_ptr<cruelRender::DescriptorPool> descriptor_pool;
 };
 } // namespace cruelScene
 } // namespace cruelEngine

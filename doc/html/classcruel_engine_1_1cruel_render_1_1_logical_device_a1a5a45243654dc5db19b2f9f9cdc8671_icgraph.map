@@ -1,41 +1,45 @@
 <map id="cruelEngine::cruelRender::LogicalDevice::get_handle" name="cruelEngine::cruelRender::LogicalDevice::get_handle">
-<area shape="rect" id="node1" title=" " alt="" coords="839,1075,1040,1116"/>
+<area shape="rect" id="node1" title=" " alt="" coords="839,1156,1040,1197"/>
 <area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_swapchain.html#ae778f113075fae1b99203653401b0d2a" title=" " alt="" coords="539,5,779,47"/>
 <area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a577017409e15f36a918c8be4e3249dd3" title="Init the command buffer, allocate space for it." alt="" coords="533,71,785,112"/>
 <area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_command_pool.html#aa93d8e113f459d0e8e749fb0dc8e6498" title=" " alt="" coords="545,136,773,177"/>
 <area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_compute_pipeline.html#ad5c0f1dfcd613a5792192958896bac25" title=" " alt="" coords="529,201,789,243"/>
 <area shape="rect" id="node6" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#adaabc55d9cd0dbc218d6e5b0df337989" title=" " alt="" coords="567,267,751,308"/>
-<area shape="rect" id="node8" href="$classcruel_engine_1_1cruel_render_1_1_pipeline_layout.html#a52dd0167356c555bc6ba6908aec1cf0e" title=" " alt="" coords="545,333,772,389"/>
-<area shape="rect" id="node10" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5" title=" " alt="" coords="531,413,787,455"/>
-<area shape="rect" id="node12" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_set_layout.html#a4cd58b3f136ee59b81832e1b22ad98bf" title=" " alt="" coords="567,479,751,535"/>
-<area shape="rect" id="node13" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#ace246f5884edd06640ff9ec1520c9699" title=" " alt="" coords="567,560,751,601"/>
-<area shape="rect" id="node15" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297" title=" " alt="" coords="527,625,791,667"/>
-<area shape="rect" id="node16" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#adc491dced8a714501dfadb7725b1cdc4" title=" " alt="" coords="237,655,479,696"/>
-<area shape="rect" id="node17" href="$classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a208b1fd8f87f5fec9a53e31cc78d9384" title="End the record of one time command." alt="" coords="545,743,772,784"/>
-<area shape="rect" id="node18" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#aab86a436b97b2c995dc4a171eb567e5d" title=" " alt="" coords="266,793,450,835"/>
-<area shape="rect" id="node19" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#abe158d1e85f9a35bb30f1969c0774bbd" title=" " alt="" coords="5,823,189,864"/>
-<area shape="rect" id="node20" href="$classcruel_engine_1_1cruel_render_1_1_frame_buffer.html#a67b26d66267786f3c6a62695184ad2d7" title="The FrameBuffer." alt="" coords="559,911,759,952"/>
-<area shape="rect" id="node21" href="$classcruel_engine_1_1cruel_render_1_1_graphics_pipeline.html#a8c7798cf1ef94aacaf6769879aed3e00" title=" " alt="" coords="531,976,787,1017"/>
-<area shape="rect" id="node22" href="$classcruel_engine_1_1cruel_render_1_1_image_view.html#ada08fbd908a324c6b4540878897ad428" title=" " alt="" coords="567,1041,751,1083"/>
-<area shape="rect" id="node23" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#a4777928150daa2c88aac4bedfb974fc8" title=" " alt="" coords="567,1107,751,1148"/>
-<area shape="rect" id="node24" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a349fe1543634902e976125fb0edebe94" title=" " alt="" coords="547,1172,770,1213"/>
-<area shape="rect" id="node25" href="$classcruel_engine_1_1cruel_render_1_1_render_pass.html#abaf0fbc77bb454d02b70f570f062a540" title=" " alt="" coords="563,1237,754,1279"/>
-<area shape="rect" id="node26" href="$classcruel_engine_1_1cruel_render_1_1_swapchain.html#a592b6dfa569b2701707fbd7410d5d454" title=" " alt="" coords="567,1303,751,1344"/>
-<area shape="rect" id="node27" href="$classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#a4eced549f109e284cec145271cdee97d" title=" " alt="" coords="547,1368,771,1409"/>
-<area shape="rect" id="node28" href="$classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#ac9f4c0ecf1496f42fdd24a5619f973ae" title=" " alt="" coords="567,1433,751,1475"/>
-<area shape="rect" id="node29" href="$classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a707eb681b7321a2d0a6d8aacd6352c59" title=" " alt="" coords="527,1499,790,1540"/>
-<area shape="rect" id="node30" href="$classcruel_engine_1_1cruel_render_1_1_command_pool.html#a4282782d6853bda76bd52e911f672169" title=" " alt="" coords="539,1564,778,1605"/>
-<area shape="rect" id="node31" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_pool.html#af3af832cdc3ce485630224939afd3bc5" title=" " alt="" coords="539,1629,778,1671"/>
-<area shape="rect" id="node32" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_set_layout.html#ae778d90008af127e7512d59414b9aa5e" title=" " alt="" coords="567,1695,751,1751"/>
-<area shape="rect" id="node33" href="$classcruel_engine_1_1cruel_render_1_1_frame_buffer.html#a04d7677af22dd820ffff5c704b15da5f" title=" " alt="" coords="553,1776,764,1817"/>
-<area shape="rect" id="node34" href="$classcruel_engine_1_1cruel_render_1_1_image_view.html#a25f6b8525ad8afc7682418bb87cef153" title=" " alt="" coords="561,1841,756,1883"/>
-<area shape="rect" id="node35" href="$classcruel_engine_1_1cruel_render_1_1_pipeline.html#a9b8f5627f02268e8bcadc1312f4eac39" title=" " alt="" coords="567,1907,751,1948"/>
-<area shape="rect" id="node36" href="$classcruel_engine_1_1cruel_render_1_1_pipeline_layout.html#a05f2f732ab4894b4afb5ad6f4023c09c" title=" " alt="" coords="538,1972,779,2013"/>
-<area shape="rect" id="node37" href="$classcruel_engine_1_1cruel_render_1_1_render_pass.html#a8dc44dba2e27e02a65f51261bd4c5151" title=" " alt="" coords="558,2037,759,2079"/>
-<area shape="rect" id="node38" href="$classcruel_engine_1_1cruel_render_1_1_swapchain.html#a3bc966ce181e0d1a2ac4ad9177100d64" title=" " alt="" coords="564,2103,753,2144"/>
-<area shape="rect" id="node39" href="$classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#aa7d70e0178ad9d35016c13934a98d3f1" title=" " alt="" coords="541,2168,776,2209"/>
+<area shape="rect" id="node8" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5" title=" " alt="" coords="531,332,787,373"/>
+<area shape="rect" id="node10" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_pool.html#ab555733a1f4721a72f1dfc690e70426e" title=" " alt="" coords="545,397,773,439"/>
+<area shape="rect" id="node11" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_set.html#abe11830280010a26a1b56467c29f66d0" title=" " alt="" coords="551,463,766,504"/>
+<area shape="rect" id="node12" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_set_layout.html#a4cd58b3f136ee59b81832e1b22ad98bf" title=" " alt="" coords="567,529,751,585"/>
+<area shape="rect" id="node13" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#ace246f5884edd06640ff9ec1520c9699" title=" " alt="" coords="567,609,751,651"/>
+<area shape="rect" id="node15" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297" title=" " alt="" coords="527,675,791,716"/>
+<area shape="rect" id="node16" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#adc491dced8a714501dfadb7725b1cdc4" title=" " alt="" coords="237,704,479,745"/>
+<area shape="rect" id="node17" href="$classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a208b1fd8f87f5fec9a53e31cc78d9384" title="End the record of one time command." alt="" coords="545,792,772,833"/>
+<area shape="rect" id="node18" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#aab86a436b97b2c995dc4a171eb567e5d" title=" " alt="" coords="266,843,450,884"/>
+<area shape="rect" id="node19" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#abe158d1e85f9a35bb30f1969c0774bbd" title=" " alt="" coords="5,872,189,913"/>
+<area shape="rect" id="node20" href="$classcruel_engine_1_1cruel_render_1_1_frame_buffer.html#a67b26d66267786f3c6a62695184ad2d7" title="The FrameBuffer." alt="" coords="559,960,759,1001"/>
+<area shape="rect" id="node21" href="$classcruel_engine_1_1cruel_render_1_1_graphics_pipeline.html#a8c7798cf1ef94aacaf6769879aed3e00" title=" " alt="" coords="531,1025,787,1067"/>
+<area shape="rect" id="node22" href="$classcruel_engine_1_1cruel_render_1_1_image_view.html#ada08fbd908a324c6b4540878897ad428" title=" " alt="" coords="567,1091,751,1132"/>
+<area shape="rect" id="node23" href="$classcruel_engine_1_1cruel_render_1_1_pipeline_layout.html#a33847327c2b3d99a8a32010aedc18d76" title=" " alt="" coords="543,1156,774,1197"/>
+<area shape="rect" id="node24" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#a4777928150daa2c88aac4bedfb974fc8" title=" " alt="" coords="567,1221,751,1263"/>
+<area shape="rect" id="node25" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a349fe1543634902e976125fb0edebe94" title=" " alt="" coords="547,1287,770,1328"/>
+<area shape="rect" id="node26" href="$classcruel_engine_1_1cruel_render_1_1_render_pass.html#abaf0fbc77bb454d02b70f570f062a540" title=" " alt="" coords="563,1352,754,1393"/>
+<area shape="rect" id="node27" href="$classcruel_engine_1_1cruel_render_1_1_swapchain.html#a592b6dfa569b2701707fbd7410d5d454" title=" " alt="" coords="567,1417,751,1459"/>
+<area shape="rect" id="node28" href="$classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#a4eced549f109e284cec145271cdee97d" title=" " alt="" coords="547,1483,771,1524"/>
+<area shape="rect" id="node29" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_set.html#a6efee584b4f073ebd838b81c5313d27b" title=" " alt="" coords="567,1548,751,1589"/>
+<area shape="rect" id="node30" href="$classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#ac9f4c0ecf1496f42fdd24a5619f973ae" title=" " alt="" coords="567,1613,751,1655"/>
+<area shape="rect" id="node33" href="$classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a707eb681b7321a2d0a6d8aacd6352c59" title=" " alt="" coords="527,1679,790,1720"/>
+<area shape="rect" id="node34" href="$classcruel_engine_1_1cruel_render_1_1_command_pool.html#a4282782d6853bda76bd52e911f672169" title=" " alt="" coords="539,1744,778,1785"/>
+<area shape="rect" id="node35" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_pool.html#af3af832cdc3ce485630224939afd3bc5" title=" " alt="" coords="539,1809,778,1851"/>
+<area shape="rect" id="node36" href="$classcruel_engine_1_1cruel_render_1_1_descriptor_set_layout.html#ae778d90008af127e7512d59414b9aa5e" title=" " alt="" coords="567,1875,751,1931"/>
+<area shape="rect" id="node37" href="$classcruel_engine_1_1cruel_render_1_1_frame_buffer.html#a04d7677af22dd820ffff5c704b15da5f" title=" " alt="" coords="553,1956,764,1997"/>
+<area shape="rect" id="node38" href="$classcruel_engine_1_1cruel_render_1_1_image_view.html#a25f6b8525ad8afc7682418bb87cef153" title=" " alt="" coords="561,2021,756,2063"/>
+<area shape="rect" id="node39" href="$classcruel_engine_1_1cruel_render_1_1_pipeline.html#a9b8f5627f02268e8bcadc1312f4eac39" title=" " alt="" coords="567,2087,751,2128"/>
+<area shape="rect" id="node40" href="$classcruel_engine_1_1cruel_render_1_1_pipeline_layout.html#a05f2f732ab4894b4afb5ad6f4023c09c" title=" " alt="" coords="538,2152,779,2193"/>
+<area shape="rect" id="node41" href="$classcruel_engine_1_1cruel_render_1_1_render_pass.html#a8dc44dba2e27e02a65f51261bd4c5151" title=" " alt="" coords="558,2217,759,2259"/>
+<area shape="rect" id="node42" href="$classcruel_engine_1_1cruel_render_1_1_swapchain.html#a3bc966ce181e0d1a2ac4ad9177100d64" title=" " alt="" coords="564,2283,753,2324"/>
+<area shape="rect" id="node43" href="$classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#aa7d70e0178ad9d35016c13934a98d3f1" title=" " alt="" coords="541,2348,776,2389"/>
 <area shape="rect" id="node7" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#a1f133341fe641a62350827a11e6dc04f" title=" " alt="" coords="266,267,450,308"/>
-<area shape="rect" id="node9" href="$classcruel_engine_1_1cruel_render_1_1_pipeline_layout.html#a33847327c2b3d99a8a32010aedc18d76" title=" " alt="" coords="243,340,473,381"/>
-<area shape="rect" id="node11" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8" title=" " alt="" coords="243,413,473,455"/>
-<area shape="rect" id="node14" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#aaf6c15a9ec1a075428711a1659e2279e" title=" " alt="" coords="266,560,450,601"/>
+<area shape="rect" id="node9" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8" title=" " alt="" coords="243,332,473,373"/>
+<area shape="rect" id="node14" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#aaf6c15a9ec1a075428711a1659e2279e" title=" " alt="" coords="266,609,450,651"/>
+<area shape="rect" id="node31" href="$classcruel_engine_1_1cruel_scene_1_1_sphere_task.html#a077bf52d3183640f67aa27e127703e44" title=" " alt="" coords="269,1581,447,1623"/>
+<area shape="rect" id="node32" href="$classcruel_engine_1_1cruel_scene_1_1_triangle_task.html#a32969b3381382f73181d07db854b28c0" title=" " alt="" coords="269,1647,447,1688"/>
 </map>

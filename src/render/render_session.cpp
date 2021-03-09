@@ -137,7 +137,7 @@ void RenderSession::draw() {
         render_pass->get_handle(), frameBuffer[i]->get_handle(),
         swapchain->get_properties().extent);
     for (auto &task : tasks) {
-      task->draw(commandBuffers[i].get());
+      task->draw(commandBuffers[i].get(), i);
     }
     commandBuffers[i].get().end_renderpass();
     commandBuffers[i].get().end();
@@ -159,6 +159,10 @@ void RenderSession::render_frame() {
                     VK_TRUE, UINT64_MAX);
   }
   imagesInFlight[image_index] = inFlightFences[currentFrame];
+
+  for (auto &task : tasks) {
+    task->render();
+  }
 
   VkSubmitInfo submitInfo{VK_STRUCTURE_TYPE_SUBMIT_INFO};
 

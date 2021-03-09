@@ -14,12 +14,11 @@ public:
   PipelineLayout(LogicalDevice &_device,
                  const std::vector<ShaderModule> &shaders);
 
+  PipelineLayout(LogicalDevice &_device,
+                 const std::vector<ShaderModule> &shaders,
+                 const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
+
   ~PipelineLayout();
-
-  void createPipelineLayout();
-
-  void
-  createPipelineLayout(const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
 
   const VkPipelineLayout &get_handle() const { return handle; }
 
@@ -249,6 +248,9 @@ protected:
   u32 subpass_index{0U};
 };
 
+/**
+ * ! \brief Pipeline base class.
+ */
 class Pipeline {
 public:
   Pipeline(LogicalDevice &device);
@@ -278,6 +280,9 @@ protected:
   PipelineStatus status;
 };
 
+/**
+ * ! \brief compute pipeline
+ */
 class ComputePipeline : public Pipeline {
 public:
   ComputePipeline(LogicalDevice &device, VkPipelineCache pipeline_cache,
@@ -285,6 +290,9 @@ public:
   virtual ~ComputePipeline() = default;
 };
 
+/**
+ * ! \brief graphic pipeline
+ */
 class GraphicsPipeline : public Pipeline {
 public:
   GraphicsPipeline(LogicalDevice &device, VkPipelineCache pipeline_cache,

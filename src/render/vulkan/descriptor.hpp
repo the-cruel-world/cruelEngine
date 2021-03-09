@@ -9,6 +9,10 @@ class DescriptorSetLayout;
 class DescriptorPool;
 class DescriptorSet;
 
+/**
+ * \brief Descriptor pool. Manages a vkdescriptor pool and is able to create
+ * new descriptor set.
+ */
 class DescriptorPool {
 public:
   DescriptorPool(LogicalDevice &device, const VkDescriptorPoolSize pool_size);
@@ -52,6 +56,8 @@ public:
 
   const DescriptorSetLayout &get_layout() const { return layout; }
 
+  void update(VkDescriptorBufferInfo &bufferInfo);
+
 private:
   LogicalDevice &device;
 
@@ -80,6 +86,10 @@ public:
 
   void
   set_bindings(const std::vector<VkDescriptorSetLayoutBinding> new_bindings);
+
+  const std::vector<VkDescriptorSetLayoutBinding> get_bindings() const {
+    return bindings;
+  }
 
   const VkDescriptorSetLayout &get_handle() const { return handle; }
 

@@ -152,10 +152,14 @@ void Buffer::createBuffer(VkDeviceSize _bufferSize,
 // }
 
 void Buffer::destroyBuffer() {
-  if (handle != VK_NULL_HANDLE)
+  if (handle != VK_NULL_HANDLE) {
     vkDestroyBuffer(device.get_handle(), handle, nullptr);
-  if (memory != VK_NULL_HANDLE)
+    handle = VK_NULL_HANDLE;
+  }
+  if (memory != VK_NULL_HANDLE) {
     vkFreeMemory(device.get_handle(), memory, nullptr);
+    handle = VK_NULL_HANDLE;
+  }
 }
 
 void Buffer::load(void *data) {
@@ -205,10 +209,14 @@ UniformBuffer::UniformBuffer(LogicalDevice &device, VkDeviceSize bufferSize)
 }
 
 UniformBuffer::~UniformBuffer() {
-  if (handle != VK_NULL_HANDLE)
+  if (handle != VK_NULL_HANDLE) {
     vkDestroyBuffer(device.get_handle(), handle, nullptr);
-  if (memory != VK_NULL_HANDLE)
+    handle = VK_NULL_HANDLE;
+  }
+  if (memory != VK_NULL_HANDLE) {
     vkFreeMemory(device.get_handle(), memory, nullptr);
+    handle = VK_NULL_HANDLE;
+  }
 }
 
 void UniformBuffer::update(void *new_data) {

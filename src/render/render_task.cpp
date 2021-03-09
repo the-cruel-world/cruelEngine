@@ -17,13 +17,15 @@ RenderTask::~RenderTask() {}
 
 void RenderTask::prepare() {}
 
-void RenderTask::draw(CommandBuffer &commandBuffer) {
+void RenderTask::draw(CommandBuffer &commandBuffer, int index) {
   // commandBuffer.bindPipeLine(pipeline->get_handle(),
   // VK_PIPELINE_BIND_POINT_GRAPHICS);
   vkCmdBindPipeline(commandBuffer.get_handle(), VK_PIPELINE_BIND_POINT_GRAPHICS,
                     pipeline->get_handle());
   vkCmdDraw(commandBuffer.get_handle(), 3, 1, 0, 0);
 }
+
+void RenderTask::render() {}
 
 void RenderTask::prepare_pipeline(VkPipelineCache pipeline_cache,
                                   PipelineStatus &pipeline_state) {
@@ -44,5 +46,13 @@ void RenderTask::prepare_pipline_layout(
       std::make_unique<PipelineLayout>(session.get_device(), shaders);
   // std::cout << "direct: " << pipeline_layout->get_handle() << std::endl;
 }
+
+void RenderTask::prepare_pipline_layout(
+    const std::vector<ShaderModule> &shaders,
+    const VkPipelineLayoutCreateInfo &pipelineLayoutInfo) {
+  pipeline_layout = std::make_unique<PipelineLayout>(
+      session.get_device(), shaders, pipelineLayoutInfo);
+}
+
 } // namespace cruelRender
 } // namespace cruelEngine

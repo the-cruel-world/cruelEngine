@@ -81,8 +81,9 @@ Inheritance diagram for cruelEngine::cruelRender::RenderTask:</div>
 <div class="dyncontent">
 <div class="center"><img src="classcruel_engine_1_1cruel_render_1_1_render_task__inherit__graph.png" border="0" usemap="#acruel_engine_1_1cruel_render_1_1_render_task_inherit__map" alt="Inheritance graph"/></div>
 <map name="acruel_engine_1_1cruel_render_1_1_render_task_inherit__map" id="acruel_engine_1_1cruel_render_1_1_render_task_inherit__map">
-<area shape="rect" title=" " alt="" coords="5,5,189,47"/>
-<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_triangle_task.html" title=" " alt="" coords="9,95,186,136"/>
+<area shape="rect" title=" " alt="" coords="102,5,286,47"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_sphere_task.html" title=" " alt="" coords="5,95,183,136"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_triangle_task.html" title=" " alt="" coords="207,95,384,136"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -120,10 +121,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1a4d3895b7798262b4ca63bd9325037b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf3fefe7695f40e5c08855a9126889f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#abf3fefe7695f40e5c08855a9126889f1">prepare_pipline_layout</a> (const std::vector&lt; <a class="el" href="classcruel_engine_1_1cruel_render_1_1_shader_module.html">ShaderModule</a> &gt; &amp;shaders)</td></tr>
 <tr class="separator:abf3fefe7695f40e5c08855a9126889f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1238ca41596624c609ba15b5d485ac5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#a1238ca41596624c609ba15b5d485ac5c">prepare_pipline_layout</a> (const std::vector&lt; <a class="el" href="classcruel_engine_1_1cruel_render_1_1_shader_module.html">ShaderModule</a> &gt; &amp;shaders, const VkPipelineLayoutCreateInfo &amp;pipelineLayoutInfo)</td></tr>
+<tr class="separator:a1238ca41596624c609ba15b5d485ac5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a192c4b03bd7be53ac6697386ddcbf090"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#a192c4b03bd7be53ac6697386ddcbf090">prepare_pipeline</a> (VkPipelineCache pipeline_cache, <a class="el" href="classcruel_engine_1_1cruel_render_1_1_pipeline_status.html">PipelineStatus</a> &amp;pipeline_state)</td></tr>
 <tr class="separator:a192c4b03bd7be53ac6697386ddcbf090"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac221d9d27216f15d74e1dd1742f16f00"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#ac221d9d27216f15d74e1dd1742f16f00">draw</a> (<a class="el" href="classcruel_engine_1_1cruel_render_1_1_command_buffer.html">CommandBuffer</a> &amp;commandBuffer)</td></tr>
-<tr class="separator:ac221d9d27216f15d74e1dd1742f16f00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1bb5c198623442454001662d1f1bdd4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#aa1bb5c198623442454001662d1f1bdd4">draw</a> (<a class="el" href="classcruel_engine_1_1cruel_render_1_1_command_buffer.html">cruelRender::CommandBuffer</a> &amp;commandBuffer, int index)</td></tr>
+<tr class="separator:aa1bb5c198623442454001662d1f1bdd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4e1517f426a6044388a92601de7113a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#aa4e1517f426a6044388a92601de7113a">render</a> ()</td></tr>
+<tr class="separator:aa4e1517f426a6044388a92601de7113a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa493939febb8d2a5f7640745cf34935b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#aba64d6574a0aa4edd8ccf07b6616cad3">RenderTaskStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#aa493939febb8d2a5f7640745cf34935b">get_status</a> () const</td></tr>
 <tr class="separator:aa493939febb8d2a5f7640745cf34935b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab63d9829ea5d1ba5b2c7782e46fda6d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#ab63d9829ea5d1ba5b2c7782e46fda6d7">set_status</a> (<a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#aba64d6574a0aa4edd8ccf07b6616cad3">RenderTaskStatus</a> state)</td></tr>
@@ -229,8 +234,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac221d9d27216f15d74e1dd1742f16f00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac221d9d27216f15d74e1dd1742f16f00">&#9670;&nbsp;</a></span>draw()</h2>
+<a id="aa1bb5c198623442454001662d1f1bdd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1bb5c198623442454001662d1f1bdd4">&#9670;&nbsp;</a></span>draw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -241,9 +246,19 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void cruelEngine::cruelRender::RenderTask::draw </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_command_buffer.html">CommandBuffer</a> &amp;&#160;</td>
-          <td class="paramname"><em>commandBuffer</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_command_buffer.html">cruelRender::CommandBuffer</a> &amp;&#160;</td>
+          <td class="paramname"><em>commandBuffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -253,14 +268,14 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_triangle_task.html#ab46c81d602554dc15b3d310dff79c7f5">cruelEngine::cruelScene::TriangleTask</a>.</p>
+<p>Reimplemented in <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_triangle_task.html#a47a4971c444ebd30754859f045feb1a1">cruelEngine::cruelScene::TriangleTask</a>, and <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_sphere_task.html#a5c655534310076e7bec989c6d3062b1d">cruelEngine::cruelScene::SphereTask</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="render__task_8cpp_source.html#l00020">20</a> of file <a class="el" href="render__task_8cpp_source.html">render_task.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classcruel_engine_1_1cruel_render_1_1_render_task_ac221d9d27216f15d74e1dd1742f16f00_cgraph.png" border="0" usemap="#aclasscruel_engine_1_1cruel_render_1_1_render_task_ac221d9d27216f15d74e1dd1742f16f00_cgraph" alt=""/></div>
-<map name="aclasscruel_engine_1_1cruel_render_1_1_render_task_ac221d9d27216f15d74e1dd1742f16f00_cgraph" id="aclasscruel_engine_1_1cruel_render_1_1_render_task_ac221d9d27216f15d74e1dd1742f16f00_cgraph">
+<div class="center"><img src="classcruel_engine_1_1cruel_render_1_1_render_task_aa1bb5c198623442454001662d1f1bdd4_cgraph.png" border="0" usemap="#aclasscruel_engine_1_1cruel_render_1_1_render_task_aa1bb5c198623442454001662d1f1bdd4_cgraph" alt=""/></div>
+<map name="aclasscruel_engine_1_1cruel_render_1_1_render_task_aa1bb5c198623442454001662d1f1bdd4_cgraph" id="aclasscruel_engine_1_1cruel_render_1_1_render_task_aa1bb5c198623442454001662d1f1bdd4_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,189,47"/>
 <area shape="rect" href="classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a15e383648d131ef2bb4596bdd82b7047" title="Return a reference to the Vulkan CommandBuffer." alt="" coords="237,5,455,47"/>
 </map>
@@ -291,7 +306,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00041">41</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00047">47</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
 
 </div>
 </div>
@@ -340,7 +355,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8cpp_source.html#l00028">28</a> of file <a class="el" href="render__task_8cpp_source.html">render_task.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8cpp_source.html#l00030">30</a> of file <a class="el" href="render__task_8cpp_source.html">render_task.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -357,15 +372,16 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classcruel_engine_1_1cruel_render_1_1_render_task_a192c4b03bd7be53ac6697386ddcbf090_icgraph.png" border="0" usemap="#aclasscruel_engine_1_1cruel_render_1_1_render_task_a192c4b03bd7be53ac6697386ddcbf090_icgraph" alt=""/></div>
 <map name="aclasscruel_engine_1_1cruel_render_1_1_render_task_a192c4b03bd7be53ac6697386ddcbf090_icgraph" id="aclasscruel_engine_1_1cruel_render_1_1_render_task_a192c4b03bd7be53ac6697386ddcbf090_icgraph">
-<area shape="rect" title=" " alt="" coords="231,5,453,47"/>
-<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_triangle.html#ad4a3ed849585c920dbc99f7f9406767d" title=" " alt="" coords="5,5,183,47"/>
+<area shape="rect" title=" " alt="" coords="231,39,453,80"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_sphere.html#aa7441ce8c79f48ac667fdafb71f761c0" title=" " alt="" coords="5,5,183,47"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_triangle.html#ad4a3ed849585c920dbc99f7f9406767d" title=" " alt="" coords="5,71,183,112"/>
 </map>
 </div>
 
 </div>
 </div>
 <a id="abf3fefe7695f40e5c08855a9126889f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf3fefe7695f40e5c08855a9126889f1">&#9670;&nbsp;</a></span>prepare_pipline_layout()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf3fefe7695f40e5c08855a9126889f1">&#9670;&nbsp;</a></span>prepare_pipline_layout() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,7 +396,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8cpp_source.html#l00041">41</a> of file <a class="el" href="render__task_8cpp_source.html">render_task.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8cpp_source.html#l00043">43</a> of file <a class="el" href="render__task_8cpp_source.html">render_task.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -395,10 +411,79 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classcruel_engine_1_1cruel_render_1_1_render_task_abf3fefe7695f40e5c08855a9126889f1_icgraph.png" border="0" usemap="#aclasscruel_engine_1_1cruel_render_1_1_render_task_abf3fefe7695f40e5c08855a9126889f1_icgraph" alt=""/></div>
 <map name="aclasscruel_engine_1_1cruel_render_1_1_render_task_abf3fefe7695f40e5c08855a9126889f1_icgraph" id="aclasscruel_engine_1_1cruel_render_1_1_render_task_abf3fefe7695f40e5c08855a9126889f1_icgraph">
-<area shape="rect" title=" " alt="" coords="231,5,493,47"/>
-<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_triangle.html#ad4a3ed849585c920dbc99f7f9406767d" title=" " alt="" coords="5,5,183,47"/>
+<area shape="rect" title=" " alt="" coords="231,39,493,80"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_sphere.html#aa7441ce8c79f48ac667fdafb71f761c0" title=" " alt="" coords="5,5,183,47"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_triangle.html#ad4a3ed849585c920dbc99f7f9406767d" title=" " alt="" coords="5,71,183,112"/>
 </map>
 </div>
+
+</div>
+</div>
+<a id="a1238ca41596624c609ba15b5d485ac5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1238ca41596624c609ba15b5d485ac5c">&#9670;&nbsp;</a></span>prepare_pipline_layout() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cruelEngine::cruelRender::RenderTask::prepare_pipline_layout </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classcruel_engine_1_1cruel_render_1_1_shader_module.html">ShaderModule</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>shaders</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VkPipelineLayoutCreateInfo &amp;&#160;</td>
+          <td class="paramname"><em>pipelineLayoutInfo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="render__task_8cpp_source.html#l00050">50</a> of file <a class="el" href="render__task_8cpp_source.html">render_task.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classcruel_engine_1_1cruel_render_1_1_render_task_a1238ca41596624c609ba15b5d485ac5c_cgraph.png" border="0" usemap="#aclasscruel_engine_1_1cruel_render_1_1_render_task_a1238ca41596624c609ba15b5d485ac5c_cgraph" alt=""/></div>
+<map name="aclasscruel_engine_1_1cruel_render_1_1_render_task_a1238ca41596624c609ba15b5d485ac5c_cgraph" id="aclasscruel_engine_1_1cruel_render_1_1_render_task_a1238ca41596624c609ba15b5d485ac5c_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,268,47"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a3d3e6d2e0d4d3dbdc980ba841beb2b7d" title=" " alt="" coords="316,5,521,47"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aa4e1517f426a6044388a92601de7113a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4e1517f426a6044388a92601de7113a">&#9670;&nbsp;</a></span>render()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cruelEngine::cruelRender::RenderTask::render </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_triangle_task.html#a32969b3381382f73181d07db854b28c0">cruelEngine::cruelScene::TriangleTask</a>, and <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_sphere_task.html#a077bf52d3183640f67aa27e127703e44">cruelEngine::cruelScene::SphereTask</a>.</p>
+
+<p class="definition">Definition at line <a class="el" href="render__task_8cpp_source.html#l00028">28</a> of file <a class="el" href="render__task_8cpp_source.html">render_task.cpp</a>.</p>
 
 </div>
 </div>
@@ -426,7 +511,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00043">43</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00049">49</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
 
 </div>
 </div>
@@ -451,7 +536,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00052">52</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00058">58</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
 
 </div>
 </div>
@@ -475,7 +560,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00050">50</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00056">56</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
 
 </div>
 </div>
@@ -499,7 +584,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00048">48</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00054">54</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
 
 </div>
 </div>
@@ -523,7 +608,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00046">46</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00052">52</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
 
 </div>
 </div>
@@ -547,13 +632,13 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00054">54</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="render__task_8hpp_source.html#l00060">60</a> of file <a class="el" href="render__task_8hpp_source.html">render_task.hpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/render/<a class="el" href="render__task_8hpp_source.html">render_task.hpp</a></li>
-<li>src/render/<a class="el" href="render__task_8cpp_source.html">render_task.cpp</a></li>
+<li>/home/yiwen/program/cruelworld/engine/src/render/<a class="el" href="render__task_8hpp_source.html">render_task.hpp</a></li>
+<li>/home/yiwen/program/cruelworld/engine/src/render/<a class="el" href="render__task_8cpp_source.html">render_task.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

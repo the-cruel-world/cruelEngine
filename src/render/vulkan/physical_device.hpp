@@ -47,15 +47,15 @@ public:
   /*! \brief Reture the information about the driver used by this gpu. */
   DriverVersion get_driver_version() const;
 
-  //! \brief Return all the supported features of this device.
+  // \brief Return all the supported features of this device.
   const VkPhysicalDeviceFeatures &getDeviceFeatures() const { return features; }
 
-  //! \brief Return the required features the must be supported by this device.
+  // \brief Return the required features the must be supported by this device.
   const VkPhysicalDeviceFeatures &getRequiredFeatures() const {
     return requiredFeatures;
   }
 
-  //! \brief Return the memory properties of this device.
+  // \brief Return the memory properties of this device.
   const VkPhysicalDeviceMemoryProperties &getMemoryProperties() const {
     return memoryProperties;
   }

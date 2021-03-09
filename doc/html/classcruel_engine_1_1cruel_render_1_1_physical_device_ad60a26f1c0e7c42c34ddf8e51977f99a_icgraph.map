@@ -1,5 +1,5 @@
 <map id="cruelEngine::cruelRender::PhysicalDevice::getRequiredFeatures" name="cruelEngine::cruelRender::PhysicalDevice::getRequiredFeatures">
-<area shape="rect" id="node1" title="Return the required features the must be supported by this device." alt="" coords="536,5,808,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="536,5,808,47"/>
 <area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#aa92db3190794d31ebef0a78fac3fc9dd" title=" " alt="" coords="273,5,488,47"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#aaefd2c681f65fc01efed31bd5c46bd5c" title="LogicalDevice is the data prototype of a logical Device. LogicalDevice creates objects that contain a..." alt="" coords="5,5,225,47"/>
+<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#aaefd2c681f65fc01efed31bd5c46bd5c" title=" " alt="" coords="5,5,225,47"/>
 </map>

@@ -8,23 +8,23 @@ class CommandBuffer;
 
 class LogicalDevice;
 
-/*! A wrap of vulkan command pool for easy management. */
+/** \brief A wrap of vulkan command pool for easy management. */
 class CommandPool {
 public:
-  /*! Create a command pool, it requires a physical device. */
+  /** Create a command pool, it requires a physical device. */
   CommandPool(LogicalDevice &_device);
 
   virtual ~CommandPool();
 
   // void                    createCommandPool();
 
-  /*! Return the handle of the commandpool. */
+  /** Return the handle of the commandpool. */
   const VkCommandPool &get_handle() const { return handle; }
 
-  /*! Return a reference to the vulkandevice instance. */
+  /** Return a reference to the vulkandevice instance. */
   LogicalDevice &get_device() const { return device; }
 
-  /*! \brief Request a new commandbuffer from the commandPool. */
+  /** \brief Request a new commandbuffer from the commandPool. */
   CommandBuffer &request_commandbuffer(const VkCommandBufferLevel &_level);
 
   VkResult reset_pool();

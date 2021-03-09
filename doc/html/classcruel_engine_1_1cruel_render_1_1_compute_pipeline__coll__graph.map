@@ -1,7 +1,7 @@
 <map id="cruelEngine::cruelRender::ComputePipeline" name="cruelEngine::cruelRender::ComputePipeline">
-<area shape="rect" id="node1" title=" " alt="" coords="1288,278,1472,319"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_pipeline.html" title=" " alt="" coords="1055,278,1239,319"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html" title=" " alt="" coords="775,246,959,287"/>
+<area shape="rect" id="node1" title="compute pipeline" alt="" coords="1288,278,1472,319"/>
+<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_pipeline.html" title="Pipeline base class." alt="" coords="1055,278,1239,319"/>
+<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html" title="LogicalDevice is the data prototype of a logical Device. LogicalDevice creates objects that contain a..." alt="" coords="775,246,959,287"/>
 <area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_pipeline_status.html" title="Special constant not supported here." alt="" coords="775,311,959,353"/>
 <area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_pipeline_layout.html" title=" " alt="" coords="355,17,539,58"/>
 <area shape="rect" id="node6" href="$structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_depth_stencil_state.html" title=" " alt="" coords="323,82,571,123"/>

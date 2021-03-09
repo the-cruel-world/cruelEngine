@@ -28,19 +28,22 @@ public:
     properties.window_prop.height = 720;
     render_context->add_session(properties.window_prop.title, properties);
 
-    properties.window_prop.width = 640;
-    properties.window_prop.height = 480;
-    properties.window_prop.title = "cruelEngine::Triangle::second Window";
-    render_context->add_session(properties.window_prop.title, properties);
+    // properties.window_prop.width = 640;
+    // properties.window_prop.height = 480;
+    // properties.window_prop.title = "cruelEngine::Triangle::second Window";
+    // render_context->add_session(properties.window_prop.title, properties);
 
     scene = std::make_unique<cruelEngine::cruelScene::Scene>(*render_context);
     std::cout << "Scene created." << std::endl;
 
-    scene->addObject("cube", 0,
-                     cruelEngine::cruelScene::SCENE_OBJ_TYPE_TRIANGLE);
+    // scene->addObject("cube", 0,
+    //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_TRIANGLE);
 
-    scene->addObject("tri", 1,
-                     cruelEngine::cruelScene::SCENE_OBJ_TYPE_TRIANGLE);
+    // scene->addObject("tri", 1,
+    //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_TRIANGLE);
+
+    scene->addObject("sphere", 0,
+                     cruelEngine::cruelScene::SCENE_OBJ_TYPE_SPHERE);
 
     render_context->draw();
   }
@@ -75,7 +78,7 @@ private:
       .validationLayers = {"VK_LAYER_KHRONOS_validation"},
       .enabledInstanceExtensions = {},
       .enabledDeviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME},
-      .features = {},
+      .features = {.fillModeNonSolid = true, .wideLines = true},
       .flags = {},
       .vsync = false,
       .overlay = false,

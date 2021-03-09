@@ -33,10 +33,16 @@ public:
 
   void prepare_pipline_layout(const std::vector<ShaderModule> &shaders);
 
+  void
+  prepare_pipline_layout(const std::vector<ShaderModule> &shaders,
+                         const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
+
   void prepare_pipeline(VkPipelineCache pipeline_cache,
                         PipelineStatus &pipeline_state);
 
-  virtual void draw(CommandBuffer &commandBuffer);
+  virtual void draw(cruelRender::CommandBuffer &commandBuffer, int index);
+
+  virtual void render();
 
   RenderTaskStatus get_status() const { return status; }
 

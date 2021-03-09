@@ -23,6 +23,10 @@ class FrameBuffer;
 
 class LogicalDevice;
 
+/**
+ * \brief Resource cache. It manages the resources that creates on gpu includes
+ * framebuffer, buffer, pipeline, renderpass, shadermodule, etc.
+ */
 class ResourceCache {
 public:
   ResourceCache(LogicalDevice &device);

@@ -6,9 +6,11 @@
 
 namespace cruelEngine {
 namespace cruelRender {
+
 class RenderTask;
 class RenderContext;
 class ShaderModule;
+
 } // namespace cruelRender
 
 namespace cruelScene {
@@ -19,6 +21,8 @@ struct Vertex;
 
 enum ObjectType {
   SCENE_OBJ_TYPE_TRIANGLE = 0,
+  SCENE_OBJ_TYPE_CUBE,
+  SCENE_OBJ_TYPE_SPHERE,
 };
 
 class Object {

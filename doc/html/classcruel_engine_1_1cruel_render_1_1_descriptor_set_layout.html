@@ -91,12 +91,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae778d90008af127e7512d59414b9aa5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae48b9013bf0aa488bbddc2b2339bc776"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_descriptor_set_layout.html#ae48b9013bf0aa488bbddc2b2339bc776">set_bindings</a> (const std::vector&lt; VkDescriptorSetLayoutBinding &gt; new_bindings)</td></tr>
 <tr class="separator:ae48b9013bf0aa488bbddc2b2339bc776"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc32c63a308aa2ab104b047b4942c138"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; VkDescriptorSetLayoutBinding &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_descriptor_set_layout.html#afc32c63a308aa2ab104b047b4942c138">get_bindings</a> () const</td></tr>
+<tr class="separator:afc32c63a308aa2ab104b047b4942c138"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a107a343407b09c16ffb1b1b5d0c8b5e6"><td class="memItemLeft" align="right" valign="top">const VkDescriptorSetLayout &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_descriptor_set_layout.html#a107a343407b09c16ffb1b1b5d0c8b5e6">get_handle</a> () const</td></tr>
 <tr class="separator:a107a343407b09c16ffb1b1b5d0c8b5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="descriptor_8hpp_source.html#l00065">65</a> of file <a class="el" href="descriptor_8hpp_source.html">descriptor.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="descriptor_8hpp_source.html#l00071">71</a> of file <a class="el" href="descriptor_8hpp_source.html">descriptor.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4cd58b3f136ee59b81832e1b22ad98bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4cd58b3f136ee59b81832e1b22ad98bf">&#9670;&nbsp;</a></span>DescriptorSetLayout() <span class="overload">[1/3]</span></h2>
@@ -124,7 +126,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="descriptor_8cpp_source.html#l00023">23</a> of file <a class="el" href="descriptor_8cpp_source.html">descriptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="descriptor_8cpp_source.html#l00066">66</a> of file <a class="el" href="descriptor_8cpp_source.html">descriptor.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -197,7 +199,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="descriptor_8cpp_source.html#l00037">37</a> of file <a class="el" href="descriptor_8cpp_source.html">descriptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="descriptor_8cpp_source.html#l00080">80</a> of file <a class="el" href="descriptor_8cpp_source.html">descriptor.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -211,6 +213,33 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="afc32c63a308aa2ab104b047b4942c138"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc32c63a308aa2ab104b047b4942c138">&#9670;&nbsp;</a></span>get_bindings()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;VkDescriptorSetLayoutBinding&gt; cruelEngine::cruelRender::DescriptorSetLayout::get_bindings </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="descriptor_8hpp_source.html#l00090">90</a> of file <a class="el" href="descriptor_8hpp_source.html">descriptor.hpp</a>.</p>
+
+</div>
+</div>
 <a id="a107a343407b09c16ffb1b1b5d0c8b5e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a107a343407b09c16ffb1b1b5d0c8b5e6">&#9670;&nbsp;</a></span>get_handle()</h2>
 
@@ -234,7 +263,16 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="descriptor_8hpp_source.html#l00084">84</a> of file <a class="el" href="descriptor_8hpp_source.html">descriptor.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="descriptor_8hpp_source.html#l00094">94</a> of file <a class="el" href="descriptor_8hpp_source.html">descriptor.hpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classcruel_engine_1_1cruel_render_1_1_descriptor_set_layout_a107a343407b09c16ffb1b1b5d0c8b5e6_icgraph.png" border="0" usemap="#aclasscruel_engine_1_1cruel_render_1_1_descriptor_set_layout_a107a343407b09c16ffb1b1b5d0c8b5e6_icgraph" alt=""/></div>
+<map name="aclasscruel_engine_1_1cruel_render_1_1_descriptor_set_layout_a107a343407b09c16ffb1b1b5d0c8b5e6_icgraph" id="aclasscruel_engine_1_1cruel_render_1_1_descriptor_set_layout_a107a343407b09c16ffb1b1b5d0c8b5e6_icgraph">
+<area shape="rect" title=" " alt="" coords="268,5,452,61"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_render_1_1_descriptor_set.html#abe11830280010a26a1b56467c29f66d0" title=" " alt="" coords="5,13,220,54"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -306,7 +344,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="descriptor_8cpp_source.html#l00042">42</a> of file <a class="el" href="descriptor_8cpp_source.html">descriptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="descriptor_8cpp_source.html#l00087">87</a> of file <a class="el" href="descriptor_8cpp_source.html">descriptor.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -320,8 +358,8 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/render/vulkan/<a class="el" href="descriptor_8hpp_source.html">descriptor.hpp</a></li>
-<li>src/render/vulkan/<a class="el" href="descriptor_8cpp_source.html">descriptor.cpp</a></li>
+<li>/home/yiwen/program/cruelworld/engine/src/render/vulkan/<a class="el" href="descriptor_8hpp_source.html">descriptor.hpp</a></li>
+<li>/home/yiwen/program/cruelworld/engine/src/render/vulkan/<a class="el" href="descriptor_8cpp_source.html">descriptor.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

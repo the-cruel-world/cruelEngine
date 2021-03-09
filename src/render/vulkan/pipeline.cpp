@@ -10,15 +10,6 @@ namespace cruelRender {
 PipelineLayout::PipelineLayout(LogicalDevice &_device,
                                const std::vector<ShaderModule> &shaders)
     : device(_device), shaders{shaders} {
-  createPipelineLayout();
-}
-
-PipelineLayout::~PipelineLayout() {
-  if (handle != VK_NULL_HANDLE)
-    vkDestroyPipelineLayout(device.get_handle(), handle, nullptr);
-}
-
-void PipelineLayout::createPipelineLayout() {
   VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
   pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
   pipelineLayoutInfo.setLayoutCount = 0;            // Optional
@@ -26,20 +17,21 @@ void PipelineLayout::createPipelineLayout() {
   pipelineLayoutInfo.pushConstantRangeCount = 0;    // Optional
   pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 
-  if (vkCreatePipelineLayout(device.get_handle(), &pipelineLayoutInfo, nullptr,
-                             &handle) != VK_SUCCESS) {
-    throw std::runtime_error("createGraphicPipeline: pipelineLayoutCreate: "
-                             "failed to create pipeline layout!");
-  }
+  VK_CHECK_RESULT(vkCreatePipelineLayout(
+      device.get_handle(), &pipelineLayoutInfo, nullptr, &handle));
 }
 
-void PipelineLayout::createPipelineLayout(
-    const VkPipelineLayoutCreateInfo &pipelineLayoutInfo) {
-  if (vkCreatePipelineLayout(device.get_handle(), &pipelineLayoutInfo, nullptr,
-                             &handle) != VK_SUCCESS) {
-    throw std::runtime_error("createGraphicPipeline: pipelineLayoutCreate: "
-                             "failed to create pipeline layout!");
-  }
+PipelineLayout::PipelineLayout(
+    LogicalDevice &_device, const std::vector<ShaderModule> &shaders,
+    const VkPipelineLayoutCreateInfo &pipelineLayoutInfo)
+    : device(_device), shaders{shaders} {
+  VK_CHECK_RESULT(vkCreatePipelineLayout(
+      device.get_handle(), &pipelineLayoutInfo, nullptr, &handle));
+}
+
+PipelineLayout::~PipelineLayout() {
+  if (handle != VK_NULL_HANDLE)
+    vkDestroyPipelineLayout(device.get_handle(), handle, nullptr);
 }
 
 Pipeline::Pipeline(LogicalDevice &device) : device{device} {}

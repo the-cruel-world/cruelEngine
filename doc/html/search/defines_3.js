@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vk_5fcheck_5fresult_1050',['VK_CHECK_RESULT',['../debug_8hpp.html#af6ca3377700f0726448c1b87789848c5',1,'debug.hpp']]]
+  ['str_1082',['STR',['../debug_8cpp.html#ac779b88e1344c9b3606cf4aa4d61f13e',1,'debug.cpp']]]
 ];
