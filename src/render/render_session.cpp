@@ -24,7 +24,7 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
       instance.get_handle(), &(window->get_handle()), nullptr, &surface));
 
   VkExtent2D extent = {};
-  u32 imgCount = 3;
+  u32 imgCount = 5;
 
   graphic_queue = &device.get_suitable_graphics_queue(0);
 
@@ -146,6 +146,10 @@ void RenderSession::draw() {
 }
 
 void RenderSession::render_frame() {
+  vkWaitForFences(device.get_handle(), 1, &inFlightFences[currentFrame],
+                  VK_TRUE, UINT64_MAX);
+  vkResetFences(device.get_handle(), 1, &inFlightFences[currentFrame]);
+
   u32 image_index;
   VkResult result = swapchain->acquire_next_image(
       image_index, imageAvailableSemaphores[currentFrame]);
@@ -176,12 +180,14 @@ void RenderSession::render_frame() {
   submitInfo.waitSemaphoreCount = 1;
   submitInfo.pWaitSemaphores = waitSemaphores;
   submitInfo.pWaitDstStageMask = waitStages;
+
   VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrame]};
   submitInfo.signalSemaphoreCount = 1;
   submitInfo.pSignalSemaphores = signalSemaphores;
 
+  vkResetFences(device.get_handle(), 1, &inFlightFences[currentFrame]);
   VK_CHECK_RESULT(vkQueueSubmit(graphic_queue->get_handle(), 1, &submitInfo,
-                                VK_NULL_HANDLE));
+                                inFlightFences[currentFrame]));
 
   VkPresentInfoKHR presentInfo{};
   presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
@@ -235,8 +241,10 @@ void RenderSession::destroySemaphores() {
 }
 
 bool RenderSession::is_session_alive() {
-  if (!glfwWindowShouldClose(&window->get_handle()))
+  if (!glfwWindowShouldClose(&window->get_handle())) {
+    vkDeviceWaitIdle(device.get_handle());
     return true;
+  }
   return false;
 }
 } // namespace cruelRender

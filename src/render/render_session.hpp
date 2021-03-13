@@ -2,6 +2,7 @@
 #include "vkcommon.h"
 //! cant change the order of vkcommon and window/window it's so weird.
 #include "../window/window.hpp"
+#include "../scene/scene.hpp"
 
 #define MAIN_VER 0
 #define MID_VER 0
@@ -12,6 +13,10 @@ namespace cruelEngine {
 class RenderContext;
 class Window;
 struct WindowProp;
+
+namespace cruelScene {
+  class Scene;
+}
 
 namespace cruelRender {
 
@@ -113,6 +118,8 @@ private:
 
   Queue *graphic_queue;
   Queue *present_queue;
+
+  std::unique_ptr<cruelScene::Scene> scene;
 
   std::vector<std::unique_ptr<FrameBuffer>> frameBuffer;
 

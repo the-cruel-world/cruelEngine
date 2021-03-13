@@ -53,8 +53,8 @@ void LogicalDevice::createDevice() {
     VkDeviceQueueCreateInfo queueInfo{};
     queueInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
     queueInfo.queueFamilyIndex = family_index;
-    queueInfo.queueCount = queueFamilies[family_index].queueCount;
-    queueInfo.pQueuePriorities = queuePriorities[family_index].data();
+    queueInfo.queueCount = 1;
+    queueInfo.pQueuePriorities = &queuePriorities[family_index][0];
 
     queueCreateInfos.push_back(queueInfo);
   }
@@ -99,7 +99,8 @@ void LogicalDevice::query_queues() {
               << "]: " << queueFamilies[family_index].queueCount << std::endl;
     if (queueFamilies[family_index].queueCount > 0) {
       for (size_t queue_index = 0;
-           queue_index < queueFamilies[family_index].queueCount;
+           queue_index < queueFamilies[family_index].queueCount &&
+           queue_index < 1;
            queue_index++) {
         queues.emplace_back(*this, family_index, queue_index,
                             queueFamilies[family_index]);

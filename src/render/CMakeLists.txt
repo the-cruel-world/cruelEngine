@@ -15,4 +15,4 @@ include_directories(../ ./
 
 add_library(cruelRender SHARED ${VULKAN_CORE_SRC} ${RENDER_SRC})
 
-target_link_libraries(cruelRender cruelDebug cruelWindow ${Vulkan_LIBRARIES} ${glm_LIBRARIES})
+target_link_libraries(cruelRender cruelDebug cruelWindow cruelScene ${Vulkan_LIBRARIES} ${glm_LIBRARIES})

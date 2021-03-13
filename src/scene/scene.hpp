@@ -1,49 +1,18 @@
 #pragma once
 #include "../common.h"
-#include "../render/render_header.h"
+#include "node.hpp"
 #include "object.hpp"
 
-namespace cruelEngine {
-class RenderContext;
-namespace cruelRender {
-class RenderContext;
-}
-
-namespace cruelScene {
+namespace cruelEngine::cruelScene {
 
 class Object;
 
-class Node {
-public:
-  Node() {}
-  ~Node() {}
-
-  void update();
-
-private:
-  Node *parent;
-  uint32_t index;
-  std::vector<Node *> children;
-
-  glm::mat3 scale;
-  glm::mat3 translation;
-  glm::quat rotation{};
-};
-
-class Component {
-public:
-  Component() {}
-  ~Component() {}
-
-protected:
-};
-
 class Scene {
 public:
-  Scene(cruelRender::RenderContext &render_context);
+  Scene();
   virtual ~Scene();
 
-  void addObject(std::string name, u32 session_idx, ObjectType type);
+  void addObject(std::unique_ptr<Object> &obj);
 
   void rmObject(std::string name);
 
@@ -58,7 +27,16 @@ public:
 protected:
   std::vector<std::unique_ptr<Object>> sceneObjects{};
 
-  cruelRender::RenderContext &render_context;
+  /**
+   * All nodes in this scene.
+   */
+  std::vector<std::unique_ptr<Node>> nodes;
+  void set_root_node(Node &node) { root = &node; }
+  Node &get_root_node() { return *root; }
+  /**
+   * pointer to the root node.
+   */
+  Node *root = nullptr;
+  Node *find_node(const std::string &name);
 };
-} // namespace cruelScene
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelScene
