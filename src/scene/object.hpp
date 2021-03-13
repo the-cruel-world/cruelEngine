@@ -22,17 +22,19 @@ public:
 
   virtual ~Object();
 
-  virtual void prepare() = 0;
+  // virtual void prepare() = 0;
 
-  virtual void loadAsset(){};
+  // virtual void loadAsset(){};
 
-  virtual void unloadAsset(){};
+  // virtual void unloadAsset(){};
 
   const std::string &get_name() const { return name; }
 
-  bool is_alive() const;
+  const ObjectType get_type() const { return type; }
 
-  void show_name() const { std::cout << "Object : " << name << std::endl; }
+  // bool is_alive() const;
+
+  // void show_name() const { std::cout << "Object : " << name << std::endl; }
 
 protected:
   std::string name;
@@ -40,7 +42,7 @@ protected:
 
   ObjectType type;
 
-  std::vector<Mesh> mesh;
+  // std::vector<Mesh> mesh;
   // std::vector<Texture> textures;
   // std::vector<Vertex> vertices;
 };

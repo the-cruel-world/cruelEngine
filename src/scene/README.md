@@ -20,5 +20,8 @@ We can classify the render object into several types and define the render tasks
 
 ## Scene Graph
 
-## Shape
-
+* Scene graph
+  * Draw graph
+* Object (Component)
+  * Mesh
+    * Shape

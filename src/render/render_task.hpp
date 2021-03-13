@@ -1,11 +1,11 @@
 #pragma once
-#include "vkcommon.h"
 #include "../scene/object.hpp"
+#include "vkcommon.h"
 
 namespace cruelEngine {
 
 namespace cruelScene {
-  class Object;
+class Object;
 }
 
 namespace cruelRender {
@@ -59,13 +59,13 @@ protected:
 
   RenderPass &render_pass;
 
-  std::unique_ptr<PipelineLayout> pipeline_layout {};
+  std::unique_ptr<PipelineLayout> pipeline_layout{};
 
-  std::unique_ptr<Pipeline> pipeline {};
+  std::unique_ptr<Pipeline> pipeline{};
 
-  std::unique_ptr<RenderPass> renderpass {};
+  std::unique_ptr<RenderPass> renderpass{};
 
-  std::shared_ptr<cruelScene::Object> object {};
+  std::shared_ptr<cruelScene::Object> object{};
 
   RenderTaskStatus status = RENDER_TASK_UNINIRED;
 };

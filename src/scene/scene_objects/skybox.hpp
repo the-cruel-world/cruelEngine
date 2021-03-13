@@ -12,51 +12,50 @@ class SkyBox : public Object {
   SkyBox(std::string name) : Object(name) {
     type = SCENE_OBJ_TYPE_GEOM;
 
-    Mesh box;
+    mesh = std::make_unique<Mesh>();
     float a = 0.5;
 
-    box.addVertex(
+    mesh->addVertex(
         (Vertex){glm::normalize(glm::vec3(a, a, a)), glm::vec3(a, a, -a)});
-    box.addVertex(
+    mesh->addVertex(
         (Vertex){glm::normalize(glm::vec3(a, -a, a)), glm::vec3(a, -a, -a)});
-    box.addVertex(
+    mesh->addVertex(
         (Vertex){glm::normalize(glm::vec3(-a, -a, a)), glm::vec3(-a, -a, -a)});
-    box.addVertex(
+    mesh->addVertex(
         (Vertex){glm::normalize(glm::vec3(-a, a, a)), glm::vec3(-a, a, -a)});
 
-    box.addVertex(
+    mesh->addVertex(
         (Vertex){glm::normalize(glm::vec3(a, a, -a)), glm::vec3(a, a, a)});
-    box.addVertex(
+    mesh->addVertex(
         (Vertex){glm::normalize(glm::vec3(a, -a, -a)), glm::vec3(a, -a, a)});
-    box.addVertex(
+    mesh->addVertex(
         (Vertex){glm::normalize(glm::vec3(-a, -a, -a)), glm::vec3(-a, -a, a)});
-    box.addVertex(
+    mesh->addVertex(
         (Vertex){glm::normalize(glm::vec3(-a, a, -a)), glm::vec3(-a, a, a)});
 
-    box.addTriangle(0, 1, 5);
-    box.addTriangle(0, 5, 4);
+    mesh->addTriangle(0, 1, 5);
+    mesh->addTriangle(0, 5, 4);
 
-    box.addTriangle(0, 2, 1);
-    box.addTriangle(0, 3, 2);
+    mesh->addTriangle(0, 2, 1);
+    mesh->addTriangle(0, 3, 2);
 
-    box.addTriangle(1, 2, 5);
-    box.addTriangle(2, 6, 5);
+    mesh->addTriangle(1, 2, 5);
+    mesh->addTriangle(2, 6, 5);
 
-    box.addTriangle(6, 2, 3);
-    box.addTriangle(3, 7, 6);
+    mesh->addTriangle(6, 2, 3);
+    mesh->addTriangle(3, 7, 6);
 
-    box.addTriangle(4, 5, 6);
-    box.addTriangle(6, 7, 4);
+    mesh->addTriangle(4, 5, 6);
+    mesh->addTriangle(6, 7, 4);
 
-    box.addTriangle(0, 4, 3);
-    box.addTriangle(4, 7, 3);
-
-    mesh.push_back(std::move(box));
+    mesh->addTriangle(0, 4, 3);
+    mesh->addTriangle(4, 7, 3);
   }
 
-  ~SkyBox() = default;
+  ~SkyBox() { mesh.reset(); }
 
 private:
   SkyBoxGeomType box_type;
+  std::unique_ptr<Mesh> mesh;
 };
 } // namespace cruelEngine::cruelScene

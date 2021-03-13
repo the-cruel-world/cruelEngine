@@ -9,24 +9,12 @@ So a proper render api is required.
 
 ## Render API
 
-## Backend
-* Vulkan
-  
-    - [x] Device select & creation
-    
-      - [x] Physical device select
-      - [x] Logical device creation & destroy
-    
-    - [x] Swap Chain
+* Render Context
+  * Render Session
+    * Render Tasks
 
-      - [x] Images & Image View
 
-    - [x] Render Pass
 
-    - [x] Graphics PipeLine
+## Light & Shadow
 
-    - [x] Frame Buffer
-    
-* OpenGL
-
-## Lighting techniques
+* 

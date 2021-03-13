@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo $(git diff | grep + | wc -l) additions
+echo $(git diff | grep - | wc -l) deletions

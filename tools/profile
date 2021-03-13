@@ -1,0 +1,7 @@
+#!/bin/bash
+
+BASEDIR=$(dirname "$0")
+
+perf record -F 400 -g --call-graph dwarf -s -- $1
+perf script | ${BASEDIR}/FlameGraph/stackcollapse-perf.pl > perf.perf-folded
+${BASEDIR}/FlameGraph/flamegraph.pl perf.perf-folded > profile.svg

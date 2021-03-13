@@ -1,8 +1,8 @@
 #pragma once
 #include "vkcommon.h"
 //! cant change the order of vkcommon and window/window it's so weird.
-#include "../window/window.hpp"
 #include "../scene/scene.hpp"
+#include "../window/window.hpp"
 
 #define MAIN_VER 0
 #define MID_VER 0
@@ -15,7 +15,7 @@ class Window;
 struct WindowProp;
 
 namespace cruelScene {
-  class Scene;
+class Scene;
 }
 
 namespace cruelRender {

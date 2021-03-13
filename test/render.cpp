@@ -23,17 +23,17 @@ public:
         std::make_unique<cruelEngine::cruelRender::RenderContext>(context_prop);
     std::cout << "Render context created." << std::endl;
 
-    properties.window_prop.title = "cruelEngine::Triangle::main Window";
-    properties.window_prop.width = 1280;
-    properties.window_prop.height = 720;
-    render_context->add_session(properties.window_prop.title, properties);
-
-    // properties.window_prop.width = 640;
-    // properties.window_prop.height = 480;
-    // properties.window_prop.title = "cruelEngine::Triangle::second Window";
+    // properties.window_prop.title = "cruelEngine::Triangle::main Window";
+    // properties.window_prop.width = 1280;
+    // properties.window_prop.height = 720;
     // render_context->add_session(properties.window_prop.title, properties);
 
-    scene = std::make_unique<cruelEngine::cruelScene::Scene>(*render_context);
+    properties.window_prop.width = 640;
+    properties.window_prop.height = 480;
+    properties.window_prop.title = "cruelEngine::Triangle::second Window";
+    render_context->add_session(properties.window_prop.title, properties);
+
+    // scene = std::make_unique<cruelEngine::cruelScene::Scene>(*render_context);
     std::cout << "Scene created." << std::endl;
 
     // scene->addObject("cube", 0,
@@ -42,14 +42,14 @@ public:
     // scene->addObject("tri", 1,
     //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_TRIANGLE);
 
-    scene->addObject("sphere", 0,
-                     cruelEngine::cruelScene::SCENE_OBJ_TYPE_SPHERE);
+    // scene->addObject("sphere", 0,
+    //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_SPHERE);
 
     render_context->draw();
   }
 
   ~Render() {
-    scene.reset();
+    // scene.reset();
     render_context.reset();
   }
 
@@ -86,7 +86,7 @@ private:
   cruelEngine::cruelRender::SessionProp properties = {
       {"cruelEngine::Triangle::main Window", 720, 640, false}};
 
-  std::unique_ptr<cruelEngine::cruelScene::Scene> scene;
+  // std::unique_ptr<cruelEngine::cruelScene::Scene> scene;
 
   std::unique_ptr<cruelEngine::cruelRender::RenderContext> render_context;
 
