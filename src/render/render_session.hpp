@@ -82,10 +82,10 @@ public:
 
 private:
   const int MAX_FRAMES_IN_FLIGHT = 2;
-  VkSemaphore imageAvailableSemaphore;
-  VkSemaphore renderFinishedSemaphore;
-  std::vector<VkSemaphore> imageAvailableSemaphores;
-  std::vector<VkSemaphore> renderFinishedSemaphores;
+  VkSemaphore imageAvailableSemaphore = VK_NULL_HANDLE;
+  VkSemaphore renderFinishedSemaphore = VK_NULL_HANDLE;
+  std::vector<VkSemaphore> imageAvailableSemaphores {};
+  std::vector<VkSemaphore> renderFinishedSemaphores {};
 
   std::vector<VkFence> inFlightFences;
   std::vector<VkFence> imagesInFlight;
@@ -103,7 +103,7 @@ private:
 
   //! \brief The surface of a session. Every session will have one unless it's a
   //! headless render session.
-  VkSurfaceKHR surface;
+  VkSurfaceKHR surface = VK_NULL_HANDLE;
 
   //! \brief The swapchain of this session. Every session should have at least
   //! one swapchain.

@@ -4,6 +4,7 @@
 #include "object.hpp"
 
 namespace cruelEngine::cruelScene {
+  
 class Camera : public Object {
 public:
   Camera(const std::string &name);

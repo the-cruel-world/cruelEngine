@@ -83,14 +83,12 @@ void RenderContext::render_frame() {
 }
 
 bool RenderContext::is_context_alive() {
-  // vkDeviceWaitIdle(device->get_handle());
   sessions.erase(
       std::remove_if(sessions.begin(), sessions.end(),
                      [](std::unique_ptr<RenderSession> const &session) {
                        return !session->is_session_alive();
                      }),
       sessions.end());
-  // vkDeviceWaitIdle(device->get_handle());
   return (sessions.size() > 0);
 }
 

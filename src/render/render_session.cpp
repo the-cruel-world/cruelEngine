@@ -68,8 +68,12 @@ RenderSession::~RenderSession() {
   tasks.clear();
   destroySemaphores();
   frameBuffer.clear();
+  render_pass.reset();
   swapchain.reset();
+  if (surface != VK_NULL_HANDLE){
   vkDestroySurfaceKHR(instance.get_handle(), surface, nullptr);
+  surface = VK_NULL_HANDLE;
+  }
   window.reset();
   std::cout << "Session destroied" << std::endl;
 }
@@ -116,8 +120,10 @@ void RenderSession::prepare_render_pass() {
 
 void RenderSession::draw() {
   std::cout << "Session tasks: " << tasks.size() << std::endl;
-  size_t size = commandBuffers.size();
-  for (size_t i = 0; i < size; i++) {
+  if (tasks.size() == 0)
+    return;
+  
+  for (size_t i = 0; i < commandBuffers.size(); i++) {
     commandBuffers[i].get().begin();
     std::cout << "[session] cmd begin " << i << std::endl;
     VkViewport viewport{};
@@ -242,7 +248,7 @@ void RenderSession::destroySemaphores() {
 
 bool RenderSession::is_session_alive() {
   if (!glfwWindowShouldClose(&window->get_handle())) {
-    vkDeviceWaitIdle(device.get_handle());
+    // vkDeviceWaitIdle(device.get_handle());
     return true;
   }
   return false;

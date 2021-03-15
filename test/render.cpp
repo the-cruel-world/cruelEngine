@@ -23,10 +23,10 @@ public:
         std::make_unique<cruelEngine::cruelRender::RenderContext>(context_prop);
     std::cout << "Render context created." << std::endl;
 
-    // properties.window_prop.title = "cruelEngine::Triangle::main Window";
-    // properties.window_prop.width = 1280;
-    // properties.window_prop.height = 720;
-    // render_context->add_session(properties.window_prop.title, properties);
+    properties.window_prop.title = "cruelEngine::Triangle::main Window";
+    properties.window_prop.width = 1280;
+    properties.window_prop.height = 720;
+    render_context->add_session(properties.window_prop.title, properties);
 
     properties.window_prop.width = 640;
     properties.window_prop.height = 480;
@@ -64,7 +64,7 @@ public:
       // (frame_time - _frame_time) * 1e-3 << " ms" << std::endl;
       if (_frame_time < frame_time)
         usleep(frame_time - _frame_time);
-      render_context->render_frame();
+      // render_context->render_frame();
     }
   }
 
