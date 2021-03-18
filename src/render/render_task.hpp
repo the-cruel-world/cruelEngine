@@ -22,7 +22,16 @@ class ShaderModule;
 
 class RenderTask {
 public:
-  RenderTask(RenderSession &session, RenderPass &render_pass);
+  RenderTask(RenderSession &session,
+             std::shared_ptr<cruelScene::Object> object);
+
+  RenderTask(const RenderSession &) = delete;
+
+  RenderTask(RenderTask &&) = delete;
+
+  RenderTask &operator=(const RenderTask &) = delete;
+
+  RenderTask &operator=(RenderTask &&) = delete;
 
   virtual ~RenderTask();
 
@@ -35,16 +44,16 @@ public:
     RENDER_TASK_DESTROY,
   };
 
-  void prepare();
+  virtual void prepare() = 0;
 
-  void prepare_pipline_layout(const std::vector<ShaderModule> &shaders);
+  void prepare_pipeline_layout(const std::vector<ShaderModule> &shaders);
 
   void
-  prepare_pipline_layout(const std::vector<ShaderModule> &shaders,
-                         const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
+  prepare_pipeline_layout(const std::vector<ShaderModule> &shaders,
+                          const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
 
-  void prepare_pipeline(VkPipelineCache pipeline_cache,
-                        PipelineStatus &pipeline_state);
+  virtual void prepare_pipeline(VkPipelineCache pipeline_cache,
+                                PipelineStatus &pipeline_state);
 
   virtual void draw(cruelRender::CommandBuffer &commandBuffer, int index);
 
@@ -57,13 +66,13 @@ public:
 protected:
   RenderSession &session;
 
-  RenderPass &render_pass;
+  // RenderPass &render_pass;
 
   std::unique_ptr<PipelineLayout> pipeline_layout{};
 
   std::unique_ptr<Pipeline> pipeline{};
 
-  std::unique_ptr<RenderPass> renderpass{};
+  // std::unique_ptr<RenderPass> render_pass{};
 
   std::shared_ptr<cruelScene::Object> object{};
 

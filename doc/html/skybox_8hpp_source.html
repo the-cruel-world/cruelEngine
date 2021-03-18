@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>cruelEngine: /home/yiwen/program/cruelworld/engine/src/scene/objects/skybox.hpp Source File</title>
+<title>cruelEngine: /home/yiwen/program/cruelworld/engine/src/scene/scene_objects/skybox.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -61,7 +61,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_35781f0e74aa8deac19fa31b37174dc2.html">scene</a></li><li class="navelem"><a class="el" href="dir_09d0b95d468ae322cac706671b9f6bf2.html">objects</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_35781f0e74aa8deac19fa31b37174dc2.html">scene</a></li><li class="navelem"><a class="el" href="dir_4c39a77aec5786bd544c65bb410dedcd.html">scene_objects</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -69,7 +69,90 @@ $(function() {
 <div class="title">skybox.hpp</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="skybox_8hpp.html">Go to the documentation of this file.</a><div class="fragment"></div><!-- fragment --></div><!-- contents -->
+<a href="skybox_8hpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;../mesh.hpp&quot;</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;../object.hpp&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacecruel_engine_1_1cruel_scene.html">cruelEngine::cruelScene</a> {</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">class </span>Camera;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4c">    8</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4c">SkyBoxGeomType</a> {</div>
+<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4ca7802e67028b6b797ba8649e9391c172e">    9</a></span>&#160;  <a class="code" href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4ca7802e67028b6b797ba8649e9391c172e">SKY_BOX_GEOM_CUBE</a> = 0,</div>
+<div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4caac61b31b7706c9c501e9c06840d8ce5c">   10</a></span>&#160;  <a class="code" href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4caac61b31b7706c9c501e9c06840d8ce5c">SKY_BOX_GEOM_SPHERE</a>,</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;};</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html">   13</a></span>&#160;<span class="keyword">class </span><a class="code" href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html">SkyBox</a> : <span class="keyword">public</span> <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a> {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#aca7d54c77f2bad817c8f99c75c12644e">   15</a></span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#aca7d54c77f2bad817c8f99c75c12644e">SkyBox</a>(std::string <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_object.html#a3d606aa1d7041e7632bbb2209b2b27df">name</a>, <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_camera.html">Camera</a> &amp;<a class="code" href="classcruel_engine_1_1cruel_scene_1_1_object.html#aed2466fb076dde22dc3070e613cdbb2e">camera</a>) : <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a>(<a class="code" href="classcruel_engine_1_1cruel_scene_1_1_object.html#a3d606aa1d7041e7632bbb2209b2b27df">name</a>, <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_object.html#aed2466fb076dde22dc3070e613cdbb2e">camera</a>) {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_object.html#aa914607fda04a0cbabc43864191bd31c">type</a> = <a class="code" href="namespacecruel_engine_1_1cruel_scene.html#abf32f8c40e417fabc3d365e151f3da00a3171983d943b01748aebaf0ee45ee331">SCENE_OBJ_TYPE_GEOM</a>;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    box_type = <a class="code" href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4caac61b31b7706c9c501e9c06840d8ce5c">SKY_BOX_GEOM_SPHERE</a>;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    mesh = std::make_unique&lt;Mesh&gt;();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">float</span> a = 0.5;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    mesh-&gt;addVertex(</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        (<a class="code" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">Vertex</a>){glm::normalize(glm::vec3(a, a, a)), glm::vec3(a, a, -a)});</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    mesh-&gt;addVertex(</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        (<a class="code" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">Vertex</a>){glm::normalize(glm::vec3(a, -a, a)), glm::vec3(a, -a, -a)});</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    mesh-&gt;addVertex(</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        (<a class="code" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">Vertex</a>){glm::normalize(glm::vec3(-a, -a, a)), glm::vec3(-a, -a, -a)});</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    mesh-&gt;addVertex(</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        (<a class="code" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">Vertex</a>){glm::normalize(glm::vec3(-a, a, a)), glm::vec3(-a, a, -a)});</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    mesh-&gt;addVertex(</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        (<a class="code" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">Vertex</a>){glm::normalize(glm::vec3(a, a, -a)), glm::vec3(a, a, a)});</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    mesh-&gt;addVertex(</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        (<a class="code" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">Vertex</a>){glm::normalize(glm::vec3(a, -a, -a)), glm::vec3(a, -a, a)});</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    mesh-&gt;addVertex(</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        (<a class="code" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">Vertex</a>){glm::normalize(glm::vec3(-a, -a, -a)), glm::vec3(-a, -a, a)});</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    mesh-&gt;addVertex(</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        (<a class="code" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">Vertex</a>){glm::normalize(glm::vec3(-a, a, -a)), glm::vec3(-a, a, a)});</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    mesh-&gt;addTriangle(0, 1, 5);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    mesh-&gt;addTriangle(0, 5, 4);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    mesh-&gt;addTriangle(0, 2, 1);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    mesh-&gt;addTriangle(0, 3, 2);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    mesh-&gt;addTriangle(1, 2, 5);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    mesh-&gt;addTriangle(2, 6, 5);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    mesh-&gt;addTriangle(6, 2, 3);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    mesh-&gt;addTriangle(3, 7, 6);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    mesh-&gt;addTriangle(4, 5, 6);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    mesh-&gt;addTriangle(6, 7, 4);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    mesh-&gt;addTriangle(0, 4, 3);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    mesh-&gt;addTriangle(4, 7, 3);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  }</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#a74daa0ca791fe3570df420a428af8b60">   59</a></span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#a74daa0ca791fe3570df420a428af8b60">~SkyBox</a>() { mesh.reset(); }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#a2c0253d5d4ad2e17b21854bdb2835beb">   61</a></span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_scene_1_1_mesh.html">Mesh</a> &amp;<a class="code" href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#a2c0253d5d4ad2e17b21854bdb2835beb">get_mesh</a>() { <span class="keywordflow">return</span> *mesh; }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <a class="code" href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4c">SkyBoxGeomType</a> box_type;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  std::unique_ptr&lt;Mesh&gt; mesh;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// namespace cruelEngine::cruelScene</span></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_camera_html"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_camera.html">cruelEngine::cruelScene::Camera</a></div><div class="ttdef"><b>Definition:</b> <a href="camera_8hpp_source.html#l00007">camera.hpp:7</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_mesh_html"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_mesh.html">cruelEngine::cruelScene::Mesh</a></div><div class="ttdef"><b>Definition:</b> <a href="mesh_8hpp_source.html#l00029">mesh.hpp:29</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_object_html"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_object.html">cruelEngine::cruelScene::Object</a></div><div class="ttdef"><b>Definition:</b> <a href="object_8hpp_source.html#l00019">object.hpp:19</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_object_html_a3d606aa1d7041e7632bbb2209b2b27df"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_object.html#a3d606aa1d7041e7632bbb2209b2b27df">cruelEngine::cruelScene::Object::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Definition:</b> <a href="object_8hpp_source.html#l00044">object.hpp:44</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_object_html_aa914607fda04a0cbabc43864191bd31c"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_object.html#aa914607fda04a0cbabc43864191bd31c">cruelEngine::cruelScene::Object::type</a></div><div class="ttdeci">ObjectType type</div><div class="ttdef"><b>Definition:</b> <a href="object_8hpp_source.html#l00047">object.hpp:47</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_object_html_aed2466fb076dde22dc3070e613cdbb2e"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_object.html#aed2466fb076dde22dc3070e613cdbb2e">cruelEngine::cruelScene::Object::camera</a></div><div class="ttdeci">Camera &amp; camera</div><div class="ttdef"><b>Definition:</b> <a href="object_8hpp_source.html#l00049">object.hpp:49</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_sky_box_html"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html">cruelEngine::cruelScene::SkyBox</a></div><div class="ttdef"><b>Definition:</b> <a href="skybox_8hpp_source.html#l00013">skybox.hpp:13</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_sky_box_html_a2c0253d5d4ad2e17b21854bdb2835beb"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#a2c0253d5d4ad2e17b21854bdb2835beb">cruelEngine::cruelScene::SkyBox::get_mesh</a></div><div class="ttdeci">Mesh &amp; get_mesh()</div><div class="ttdef"><b>Definition:</b> <a href="skybox_8hpp_source.html#l00061">skybox.hpp:61</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_sky_box_html_a74daa0ca791fe3570df420a428af8b60"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#a74daa0ca791fe3570df420a428af8b60">cruelEngine::cruelScene::SkyBox::~SkyBox</a></div><div class="ttdeci">~SkyBox()</div><div class="ttdef"><b>Definition:</b> <a href="skybox_8hpp_source.html#l00059">skybox.hpp:59</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_scene_1_1_sky_box_html_aca7d54c77f2bad817c8f99c75c12644e"><div class="ttname"><a href="classcruel_engine_1_1cruel_scene_1_1_sky_box.html#aca7d54c77f2bad817c8f99c75c12644e">cruelEngine::cruelScene::SkyBox::SkyBox</a></div><div class="ttdeci">SkyBox(std::string name, Camera &amp;camera)</div><div class="ttdef"><b>Definition:</b> <a href="skybox_8hpp_source.html#l00015">skybox.hpp:15</a></div></div>
+<div class="ttc" id="anamespacecruel_engine_1_1cruel_scene_html"><div class="ttname"><a href="namespacecruel_engine_1_1cruel_scene.html">cruelEngine::cruelScene</a></div><div class="ttdef"><b>Definition:</b> <a href="render__session_8hpp_source.html#l00016">render_session.hpp:16</a></div></div>
+<div class="ttc" id="anamespacecruel_engine_1_1cruel_scene_html_a9652e415e489d213cc65e570b827aa4c"><div class="ttname"><a href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4c">cruelEngine::cruelScene::SkyBoxGeomType</a></div><div class="ttdeci">SkyBoxGeomType</div><div class="ttdef"><b>Definition:</b> <a href="skybox_8hpp_source.html#l00008">skybox.hpp:8</a></div></div>
+<div class="ttc" id="anamespacecruel_engine_1_1cruel_scene_html_a9652e415e489d213cc65e570b827aa4ca7802e67028b6b797ba8649e9391c172e"><div class="ttname"><a href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4ca7802e67028b6b797ba8649e9391c172e">cruelEngine::cruelScene::SKY_BOX_GEOM_CUBE</a></div><div class="ttdeci">@ SKY_BOX_GEOM_CUBE</div><div class="ttdef"><b>Definition:</b> <a href="skybox_8hpp_source.html#l00009">skybox.hpp:9</a></div></div>
+<div class="ttc" id="anamespacecruel_engine_1_1cruel_scene_html_a9652e415e489d213cc65e570b827aa4caac61b31b7706c9c501e9c06840d8ce5c"><div class="ttname"><a href="namespacecruel_engine_1_1cruel_scene.html#a9652e415e489d213cc65e570b827aa4caac61b31b7706c9c501e9c06840d8ce5c">cruelEngine::cruelScene::SKY_BOX_GEOM_SPHERE</a></div><div class="ttdeci">@ SKY_BOX_GEOM_SPHERE</div><div class="ttdef"><b>Definition:</b> <a href="skybox_8hpp_source.html#l00010">skybox.hpp:10</a></div></div>
+<div class="ttc" id="anamespacecruel_engine_1_1cruel_scene_html_abf32f8c40e417fabc3d365e151f3da00a3171983d943b01748aebaf0ee45ee331"><div class="ttname"><a href="namespacecruel_engine_1_1cruel_scene.html#abf32f8c40e417fabc3d365e151f3da00a3171983d943b01748aebaf0ee45ee331">cruelEngine::cruelScene::SCENE_OBJ_TYPE_GEOM</a></div><div class="ttdeci">@ SCENE_OBJ_TYPE_GEOM</div><div class="ttdef"><b>Definition:</b> <a href="object_8hpp_source.html#l00014">object.hpp:14</a></div></div>
+<div class="ttc" id="astructcruel_engine_1_1cruel_scene_1_1_vertex_html"><div class="ttname"><a href="structcruel_engine_1_1cruel_scene_1_1_vertex.html">cruelEngine::cruelScene::Vertex</a></div><div class="ttdef"><b>Definition:</b> <a href="mesh_8hpp_source.html#l00014">mesh.hpp:14</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1

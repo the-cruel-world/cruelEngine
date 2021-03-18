@@ -1,20 +1,16 @@
 var searchData=
 [
-  ['sampler_2ecpp_664',['sampler.cpp',['../sampler_8cpp.html',1,'']]],
-  ['sampler_2ehpp_665',['sampler.hpp',['../sampler_8hpp.html',1,'']]],
-  ['scene_2ecpp_666',['scene.cpp',['../scene_8cpp.html',1,'']]],
-  ['scene_2ehpp_667',['scene.hpp',['../scene_8hpp.html',1,'']]],
-  ['scene_5fheader_2eh_668',['scene_header.h',['../scene__header_8h.html',1,'']]],
-  ['semaphores_2ecpp_669',['semaphores.cpp',['../semaphores_8cpp.html',1,'']]],
-  ['semaphores_2ehpp_670',['semaphores.hpp',['../semaphores_8hpp.html',1,'']]],
-  ['shader_2ecpp_671',['shader.cpp',['../shader_8cpp.html',1,'']]],
-  ['shader_2ehpp_672',['shader.hpp',['../shader_8hpp.html',1,'']]],
-  ['shape_2ecpp_673',['shape.cpp',['../shape_8cpp.html',1,'']]],
-  ['shape_2ehpp_674',['shape.hpp',['../shape_8hpp.html',1,'']]],
-  ['skybox_2ecpp_675',['skybox.cpp',['../skybox_8cpp.html',1,'']]],
-  ['skybox_2ehpp_676',['skybox.hpp',['../skybox_8hpp.html',1,'']]],
-  ['sphere_2ecpp_677',['sphere.cpp',['../basic_2sphere_8cpp.html',1,'(Global Namespace)'],['../objects_2sphere_8cpp.html',1,'(Global Namespace)']]],
-  ['sphere_2ehpp_678',['sphere.hpp',['../basic_2sphere_8hpp.html',1,'(Global Namespace)'],['../objects_2sphere_8hpp.html',1,'(Global Namespace)']]],
-  ['swapchain_2ecpp_679',['swapchain.cpp',['../swapchain_8cpp.html',1,'']]],
-  ['swapchain_2ehpp_680',['swapchain.hpp',['../swapchain_8hpp.html',1,'']]]
+  ['readme_2emd_687',['README.md',['../audio_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../window_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../ui_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../scene_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../render_2vulkan_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../render_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../network_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../io_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../events_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../debug_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../core_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../application_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)'],['../physics_2_r_e_a_d_m_e_8md.html',1,'(Global Namespace)']]],
+  ['render_5fcontext_2ecpp_688',['render_context.cpp',['../render__context_8cpp.html',1,'']]],
+  ['render_5fcontext_2ehpp_689',['render_context.hpp',['../render__context_8hpp.html',1,'']]],
+  ['render_5fheader_2eh_690',['render_header.h',['../render__header_8h.html',1,'']]],
+  ['render_5fpass_2ecpp_691',['render_pass.cpp',['../render__pass_8cpp.html',1,'']]],
+  ['render_5fpass_2ehpp_692',['render_pass.hpp',['../render__pass_8hpp.html',1,'']]],
+  ['render_5fsession_2ecpp_693',['render_session.cpp',['../render__session_8cpp.html',1,'']]],
+  ['render_5fsession_2ehpp_694',['render_session.hpp',['../render__session_8hpp.html',1,'']]],
+  ['render_5ftask_2ecpp_695',['render_task.cpp',['../render__task_8cpp.html',1,'']]],
+  ['render_5ftask_2ehpp_696',['render_task.hpp',['../render__task_8hpp.html',1,'']]],
+  ['render_5ftasks_2ehpp_697',['render_tasks.hpp',['../render__tasks_8hpp.html',1,'']]],
+  ['resource_5fcache_2ecpp_698',['resource_cache.cpp',['../resource__cache_8cpp.html',1,'']]],
+  ['resource_5fcache_2ehpp_699',['resource_cache.hpp',['../resource__cache_8hpp.html',1,'']]]
 ];

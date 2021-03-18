@@ -70,280 +70,315 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a href="render__session_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="render__session_8hpp.html">render_session.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160; </div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="render__task_8hpp.html">render_task.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160; </div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="command__buffer_8hpp.html">vulkan/command_buffer.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="frame__buffer_8hpp.html">vulkan/frame_buffer.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="instance_8hpp.html">vulkan/instance.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="logical__device_8hpp.html">vulkan/logical_device.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="queue_8hpp.html">vulkan/queue.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="render__pass_8hpp.html">vulkan/render_pass.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="swapchain_8hpp.html">vulkan/swapchain.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacecruel_engine.html">cruelEngine</a> {</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>cruelRender {</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="render__task_8hpp.html">render_task.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="command__buffer_8hpp.html">vulkan/command_buffer.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="frame__buffer_8hpp.html">vulkan/frame_buffer.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="instance_8hpp.html">vulkan/instance.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="logical__device_8hpp.html">vulkan/logical_device.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="queue_8hpp.html">vulkan/queue.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="render__pass_8hpp.html">vulkan/render_pass.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="swapchain_8hpp.html">vulkan/swapchain.hpp</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;../scene/object.hpp&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;../scene/scene.hpp&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="render__tasks_8hpp.html">render_tasks/render_tasks.hpp</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8">   16</a></span>&#160;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8">RenderSession::RenderSession</a>(<a class="code" href="classcruel_engine_1_1cruel_render_1_1_instance.html">Instance</a> &amp;instance, <a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html">LogicalDevice</a> &amp;device,</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;                             <a class="code" href="structcruel_engine_1_1cruel_render_1_1_session_prop.html">SessionProp</a> &amp;session_properties)</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    : instance{instance}, device{device}, session_properties{</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;                                              session_properties} {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  window = std::make_unique&lt;Window&gt;(session_properties.<a class="code" href="structcruel_engine_1_1cruel_render_1_1_session_prop.html#ab6a83f60649f102c1a5dc0aa9bc4969d">window_prop</a>);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;  <a class="code" href="debug_8hpp.html#af6ca3377700f0726448c1b87789848c5">VK_CHECK_RESULT</a>(glfwCreateWindowSurface(</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;      instance.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_instance.html#a419303e600d4a1a564c0fe0b086c3b99">get_handle</a>(), &amp;(window-&gt;get_handle()), <span class="keyword">nullptr</span>, &amp;surface));</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  VkExtent2D extent = {};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <a class="code" href="types_8h.html#afaa62991928fb9fb18ff0db62a040aba">u32</a> imgCount = 3;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacecruel_engine.html">cruelEngine</a> {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">namespace </span>cruelRender {</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8">   19</a></span>&#160;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8">RenderSession::RenderSession</a>(<a class="code" href="classcruel_engine_1_1cruel_render_1_1_instance.html">Instance</a> &amp;instance, <a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html">LogicalDevice</a> &amp;device,</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                             <a class="code" href="structcruel_engine_1_1cruel_render_1_1_session_prop.html">SessionProp</a> &amp;session_properties)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    : instance{instance}, device{device}, session_properties{</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                                              session_properties} {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  window = std::make_unique&lt;Window&gt;(session_properties.<a class="code" href="structcruel_engine_1_1cruel_render_1_1_session_prop.html#ab6a83f60649f102c1a5dc0aa9bc4969d">window_prop</a>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <a class="code" href="debug_8hpp.html#af6ca3377700f0726448c1b87789848c5">VK_CHECK_RESULT</a>(glfwCreateWindowSurface(</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;      instance.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_instance.html#a419303e600d4a1a564c0fe0b086c3b99">get_handle</a>(), &amp;(window-&gt;get_handle()), <span class="keyword">nullptr</span>, &amp;surface));</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  graphic_queue = &amp;device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a992d6f9aaf4bbd0fe0cbed6f4f241c70">get_suitable_graphics_queue</a>(0);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  present_queue = &amp;device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a4f4cf815c3dd45d43cd10d4f27dac881">get_suitable_present_queue</a>(surface, 0);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] graphic queue info: &quot;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            &lt;&lt; graphic_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ac0677713f46b0fbf3c5aa6611c802865">get_family_index</a>() &lt;&lt; graphic_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ab4aa5e4aad838ea26aa2fc29c7a7ac52">get_index</a>()</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] present queue info: &quot;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            &lt;&lt; present_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ac0677713f46b0fbf3c5aa6611c802865">get_family_index</a>() &lt;&lt; present_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ab4aa5e4aad838ea26aa2fc29c7a7ac52">get_index</a>()</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  VkExtent2D extent = {};</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <a class="code" href="types_8h.html#afaa62991928fb9fb18ff0db62a040aba">u32</a> imgCount = 5;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  graphic_queue = &amp;device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a992d6f9aaf4bbd0fe0cbed6f4f241c70">get_suitable_graphics_queue</a>(0);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  present_queue = &amp;device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a4f4cf815c3dd45d43cd10d4f27dac881">get_suitable_present_queue</a>(surface, 0);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] graphic queue info: &quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            &lt;&lt; graphic_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ac0677713f46b0fbf3c5aa6611c802865">get_family_index</a>() &lt;&lt; graphic_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ab4aa5e4aad838ea26aa2fc29c7a7ac52">get_index</a>()</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  swapchain = std::make_unique&lt;Swapchain&gt;(device, surface, extent, imgCount,</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                                          VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                                          VK_PRESENT_MODE_FIFO_KHR);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] swapchain creatd!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">prepare_render_pass</a>();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] renderpass creatd!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] present queue info: &quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            &lt;&lt; present_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ac0677713f46b0fbf3c5aa6611c802865">get_family_index</a>() &lt;&lt; present_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ab4aa5e4aad838ea26aa2fc29c7a7ac52">get_index</a>()</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  swapchain = std::make_unique&lt;Swapchain&gt;(device, surface, extent, imgCount,</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                                          VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                                          VK_PRESENT_MODE_FIFO_KHR);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] swapchain creatd!&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;image_view : swapchain-&gt;get_imageViews()) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    frameBuffer.push_back(std::make_unique&lt;FrameBuffer&gt;(</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        device, image_view, swapchain-&gt;get_properties().extent, *render_pass));</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] framebuffers creatd!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">createSemaphores</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] semaphores creatd!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">prepare_render_pass</a>();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="comment">// std::cout &lt;&lt; &quot;[Rendersession] renderpass creatd!&quot; &lt;&lt; std::endl;</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;image_view : swapchain-&gt;get_imageViews()) {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    frameBuffer.push_back(std::make_unique&lt;FrameBuffer&gt;(</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        device, image_view, swapchain-&gt;get_properties().extent, *render_pass));</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] framebuffers creatd!&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; imgCount; i++) {</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    commandBuffers.push_back(</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a926232d546ce7127761e715de2049b71">request_commandBuffer</a>(VK_COMMAND_BUFFER_LEVEL_PRIMARY));</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  }</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] commandbuffers creatd!&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#adc491dced8a714501dfadb7725b1cdc4">   64</a></span>&#160;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#adc491dced8a714501dfadb7725b1cdc4">RenderSession::~RenderSession</a>() {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  vkDeviceWaitIdle(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>());</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  commandBuffers.clear();</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  tasks.clear();</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297">destroySemaphores</a>();</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  frameBuffer.clear();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  swapchain.reset();</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  vkDestroySurfaceKHR(instance.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_instance.html#a419303e600d4a1a564c0fe0b086c3b99">get_handle</a>(), surface, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  window.reset();</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;Session destroied&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;}</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a9d5dfcdbb348a4594839410d412d4bda">   77</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a9d5dfcdbb348a4594839410d412d4bda">RenderSession::add_new_task</a>(std::unique_ptr&lt;RenderTask&gt; task) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  tasks.push_back(std::move(task));</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;}</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">   81</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">RenderSession::prepare_render_pass</a>() {</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  VkAttachmentDescription colorAttachment{};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  colorAttachment.format = swapchain-&gt;get_surface_format().format;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  VkAttachmentReference colorAttachmentRef{};</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  colorAttachmentRef.attachment = 0;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  VkSubpassDescription subpass{};</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  subpass.colorAttachmentCount = 1;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  subpass.pColorAttachments = &amp;colorAttachmentRef;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  VkSubpassDependency dependency{};</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  dependency.srcSubpass = VK_SUBPASS_EXTERNAL;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  dependency.dstSubpass = 0;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  dependency.srcAccessMask = 0;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <a class="code" href="structcruel_engine_1_1cruel_render_1_1_render_pass_attachment.html">RenderPassAttachment</a> attachments = {.<a class="code" href="structcruel_engine_1_1cruel_render_1_1_render_pass_attachment.html#a66dfb84601ceca371c55eb2c2421d8aa">colorAttachment</a> = colorAttachment,</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                                      .colorAttachmentRef = colorAttachmentRef,</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                                      .subpassDependency = dependency,</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                                      .subpass = {subpass}};</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  render_pass = std::make_unique&lt;RenderPass&gt;(device, attachments);</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;}</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#afee03a579dd90402dd13ece276713447">  117</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#afee03a579dd90402dd13ece276713447">RenderSession::draw</a>() {</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;Session tasks: &quot;</span> &lt;&lt; tasks.size() &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keywordtype">size_t</span> size = commandBuffers.size();</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; size; i++) {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    commandBuffers[i].get().begin();</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;[session] cmd begin &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    VkViewport viewport{};</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    viewport.x = 0.0f;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    viewport.y = 0.0f;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    viewport.width = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(swapchain.get()-&gt;get_extent().width);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    viewport.height = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(swapchain.get()-&gt;get_extent().height);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    viewport.minDepth = 0.0f;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    viewport.maxDepth = 1.0f;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    commandBuffers[i].get().setViewport(0, {viewport});</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    VkRect2D scissor{};</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    scissor.offset = {0, 0};</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    scissor.extent = swapchain.get()-&gt;get_extent();</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    commandBuffers[i].get().setScissor(0, {scissor});</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    commandBuffers[i].get().begin_renderpass(</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        render_pass-&gt;get_handle(), frameBuffer[i]-&gt;get_handle(),</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        swapchain-&gt;get_properties().extent);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;task : tasks) {</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;      task-&gt;draw(commandBuffers[i].get(), i);</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    commandBuffers[i].get().end_renderpass();</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    commandBuffers[i].get().end();</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;[session] cmd end &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  }</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a349fe1543634902e976125fb0edebe94">  148</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a349fe1543634902e976125fb0edebe94">RenderSession::render_frame</a>() {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  <a class="code" href="types_8h.html#afaa62991928fb9fb18ff0db62a040aba">u32</a> image_index;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  VkResult result = swapchain-&gt;acquire_next_image(</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      image_index, imageAvailableSemaphores[currentFrame]);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keywordflow">if</span> (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;vkAcquireNextImageKHR Failed&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">createSemaphores</a>();</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] semaphores creatd!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; imgCount; i++) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    commandBuffers.push_back(</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a926232d546ce7127761e715de2049b71">request_commandBuffer</a>(VK_COMMAND_BUFFER_LEVEL_PRIMARY));</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  }</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;[Rendersession] commandbuffers creatd!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#adc491dced8a714501dfadb7725b1cdc4">   67</a></span>&#160;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#adc491dced8a714501dfadb7725b1cdc4">RenderSession::~RenderSession</a>() {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  vkDeviceWaitIdle(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>());</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  commandBuffers.clear();</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  tasks.clear();</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297">destroySemaphores</a>();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  frameBuffer.clear();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  render_pass.reset();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  swapchain.reset();</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="keywordflow">if</span> (surface != VK_NULL_HANDLE) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    vkDestroySurfaceKHR(instance.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_instance.html#a419303e600d4a1a564c0fe0b086c3b99">get_handle</a>(), surface, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    surface = VK_NULL_HANDLE;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  window.reset();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;Session destroied&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a9d5dfcdbb348a4594839410d412d4bda">   84</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a9d5dfcdbb348a4594839410d412d4bda">RenderSession::add_new_task</a>(std::unique_ptr&lt;RenderTask&gt; task) {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  tasks.push_back(std::move(task));</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">   88</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">RenderSession::prepare_render_pass</a>() {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  VkAttachmentDescription colorAttachment{};</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  colorAttachment.format = swapchain-&gt;get_surface_format().format;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  colorAttachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  colorAttachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  colorAttachment.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  VkAttachmentReference colorAttachmentRef{};</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  colorAttachmentRef.attachment = 0;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  colorAttachmentRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  VkSubpassDescription subpass{};</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;  subpass.colorAttachmentCount = 1;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;  subpass.pColorAttachments = &amp;colorAttachmentRef;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  VkSubpassDependency dependency{};</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  dependency.srcSubpass = VK_SUBPASS_EXTERNAL;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  dependency.dstSubpass = 0;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;  dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;  dependency.srcAccessMask = 0;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <a class="code" href="structcruel_engine_1_1cruel_render_1_1_render_pass_attachment.html">RenderPassAttachment</a> attachments = {.<a class="code" href="structcruel_engine_1_1cruel_render_1_1_render_pass_attachment.html#a66dfb84601ceca371c55eb2c2421d8aa">colorAttachment</a> = colorAttachment,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                                      .colorAttachmentRef = colorAttachmentRef,</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;                                      .subpassDependency = dependency,</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;                                      .subpass = {subpass}};</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  render_pass = std::make_unique&lt;RenderPass&gt;(device, attachments);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;}</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00124"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#afee03a579dd90402dd13ece276713447">  124</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#afee03a579dd90402dd13ece276713447">RenderSession::draw</a>() {</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;  std::cout &lt;&lt; <span class="stringliteral">&quot;Session tasks: &quot;</span> &lt;&lt; tasks.size() &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;  <span class="keywordflow">if</span> (tasks.size() == 0)</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; commandBuffers.size(); i++) {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    commandBuffers[i].get().begin();</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;[session] cmd begin &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    VkViewport viewport{};</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    viewport.x = 0.0f;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    viewport.y = 0.0f;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    viewport.width = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(swapchain.get()-&gt;get_extent().width);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    viewport.height = <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(swapchain.get()-&gt;get_extent().height);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    viewport.minDepth = 0.0f;</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    viewport.maxDepth = 1.0f;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    commandBuffers[i].get().setViewport(0, {viewport});</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    VkRect2D scissor{};</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    scissor.offset = {0, 0};</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    scissor.extent = swapchain.get()-&gt;get_extent();</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    commandBuffers[i].get().setScissor(0, {scissor});</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    commandBuffers[i].get().begin_renderpass(</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        render_pass-&gt;get_handle(), frameBuffer[i]-&gt;get_handle(),</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        swapchain-&gt;get_properties().extent);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;task : tasks) {</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      task-&gt;draw(commandBuffers[i].get(), i);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    }</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    commandBuffers[i].get().end_renderpass();</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    commandBuffers[i].get().end();</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;[session] cmd end &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  }</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;}</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  <span class="keywordflow">if</span> (imagesInFlight[image_index] != VK_NULL_HANDLE) {</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    vkWaitForFences(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), 1, &amp;imagesInFlight[image_index],</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    VK_TRUE, UINT64_MAX);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  }</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  imagesInFlight[image_index] = inFlightFences[currentFrame];</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;task : tasks) {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    task-&gt;render();</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  }</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  VkSubmitInfo submitInfo{VK_STRUCTURE_TYPE_SUBMIT_INFO};</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;  submitInfo.commandBufferCount = 1;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  submitInfo.pCommandBuffers =</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;      &amp;(commandBuffers[image_index].get().get_handle());</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrame]};</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  VkPipelineStageFlags waitStages[] = {</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  submitInfo.waitSemaphoreCount = 1;</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  submitInfo.pWaitSemaphores = waitSemaphores;</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  submitInfo.pWaitDstStageMask = waitStages;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrame]};</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  submitInfo.signalSemaphoreCount = 1;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  submitInfo.pSignalSemaphores = signalSemaphores;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  <a class="code" href="debug_8hpp.html#af6ca3377700f0726448c1b87789848c5">VK_CHECK_RESULT</a>(vkQueueSubmit(graphic_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ac90d0a328620769ec9cfb4f6ac565427">get_handle</a>(), 1, &amp;submitInfo,</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                                VK_NULL_HANDLE));</div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a349fe1543634902e976125fb0edebe94">  157</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a349fe1543634902e976125fb0edebe94">RenderSession::render_frame</a>() {</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  vkWaitForFences(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), 1, &amp;inFlightFences[currentFrame],</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                  VK_TRUE, UINT64_MAX);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  vkResetFences(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), 1, &amp;inFlightFences[currentFrame]);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  <a class="code" href="types_8h.html#afaa62991928fb9fb18ff0db62a040aba">u32</a> image_index;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  VkResult result = swapchain-&gt;acquire_next_image(</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;      image_index, imageAvailableSemaphores[currentFrame]);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="keywordflow">if</span> (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    std::cout &lt;&lt; <span class="stringliteral">&quot;vkAcquireNextImageKHR Failed&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  }</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="keywordflow">if</span> (imagesInFlight[image_index] != VK_NULL_HANDLE) {</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    vkWaitForFences(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), 1, &amp;imagesInFlight[image_index],</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;                    VK_TRUE, UINT64_MAX);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  }</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  imagesInFlight[image_index] = inFlightFences[currentFrame];</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;task : tasks) {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    task-&gt;render();</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;  VkSubmitInfo submitInfo{VK_STRUCTURE_TYPE_SUBMIT_INFO};</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;  submitInfo.commandBufferCount = 1;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;  submitInfo.pCommandBuffers =</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      &amp;(commandBuffers[image_index].get().get_handle());</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  VkPresentInfoKHR presentInfo{};</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  presentInfo.waitSemaphoreCount = 1;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  presentInfo.pWaitSemaphores = signalSemaphores;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  VkSwapchainKHR swapChains[] = {swapchain-&gt;get_handle()};</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  presentInfo.swapchainCount = 1;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  presentInfo.pSwapchains = swapChains;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  presentInfo.pImageIndices = &amp;image_index;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  presentInfo.pResults = <span class="keyword">nullptr</span>; <span class="comment">// Optional</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <a class="code" href="debug_8hpp.html#af6ca3377700f0726448c1b87789848c5">VK_CHECK_RESULT</a>(present_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#a61dba323e16f6192c17d7f3da0f41135">present</a>(presentInfo));</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  present_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#acc48b3c1326397d3eff1a1d5e7ffa838">wait_idle</a>();</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;}</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00202"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">  202</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">RenderSession::createSemaphores</a>() {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  imagesInFlight.resize(swapchain-&gt;get_images().size(), VK_NULL_HANDLE);</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160; </div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  VkSemaphoreCreateInfo semaphoreInfo{};</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  VkSemaphore waitSemaphores[] = {imageAvailableSemaphores[currentFrame]};</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  VkPipelineStageFlags waitStages[] = {</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;      VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  submitInfo.waitSemaphoreCount = 1;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  submitInfo.pWaitSemaphores = waitSemaphores;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  submitInfo.pWaitDstStageMask = waitStages;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  VkSemaphore signalSemaphores[] = {renderFinishedSemaphores[currentFrame]};</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  submitInfo.signalSemaphoreCount = 1;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;  submitInfo.pSignalSemaphores = signalSemaphores;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;  vkResetFences(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), 1, &amp;inFlightFences[currentFrame]);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;  <a class="code" href="debug_8hpp.html#af6ca3377700f0726448c1b87789848c5">VK_CHECK_RESULT</a>(vkQueueSubmit(graphic_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#ac90d0a328620769ec9cfb4f6ac565427">get_handle</a>(), 1, &amp;submitInfo,</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;                                inFlightFences[currentFrame]));</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;  VkPresentInfoKHR presentInfo{};</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  presentInfo.waitSemaphoreCount = 1;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;  presentInfo.pWaitSemaphores = signalSemaphores;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  VkSwapchainKHR swapChains[] = {swapchain-&gt;get_handle()};</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;  presentInfo.swapchainCount = 1;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;  presentInfo.pSwapchains = swapChains;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;  presentInfo.pImageIndices = &amp;image_index;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;  presentInfo.pResults = <span class="keyword">nullptr</span>; <span class="comment">// Optional</span></div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  VkFenceCreateInfo fenceInfo{};</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; MAX_FRAMES_IN_FLIGHT; i++) {</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">if</span> (vkCreateSemaphore(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), &amp;semaphoreInfo, <span class="keyword">nullptr</span>,</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;                          &amp;imageAvailableSemaphores[i]) != VK_SUCCESS ||</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        vkCreateSemaphore(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), &amp;semaphoreInfo, <span class="keyword">nullptr</span>,</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;                          &amp;renderFinishedSemaphores[i]) != VK_SUCCESS ||</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        vkCreateFence(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), &amp;fenceInfo, <span class="keyword">nullptr</span>,</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;                      &amp;inFlightFences[i]) != VK_SUCCESS)</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      <span class="keywordflow">throw</span> std::runtime_error(</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;          <span class="stringliteral">&quot;createSemaphores: failed to create semaphores!&quot;</span>);</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  }</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;}</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
-<div class="line"><a name="l00227"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297">  227</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297">RenderSession::destroySemaphores</a>() {</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; MAX_FRAMES_IN_FLIGHT; i++) {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;    vkDestroySemaphore(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), renderFinishedSemaphores[i],</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                       <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    vkDestroySemaphore(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), imageAvailableSemaphores[i],</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                       <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    vkDestroyFence(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), inFlightFences[i], <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#af983bbe30cf0d7dc6ed920c4012edced">  237</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#af983bbe30cf0d7dc6ed920c4012edced">RenderSession::is_session_alive</a>() {</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;  <span class="keywordflow">if</span> (!glfwWindowShouldClose(&amp;window-&gt;get_handle()))</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;}</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;} <span class="comment">// namespace cruelRender</span></div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;} <span class="comment">// namespace cruelEngine</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;  <a class="code" href="debug_8hpp.html#af6ca3377700f0726448c1b87789848c5">VK_CHECK_RESULT</a>(present_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#a61dba323e16f6192c17d7f3da0f41135">present</a>(presentInfo));</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;  present_queue-&gt;<a class="code" href="classcruel_engine_1_1cruel_render_1_1_queue.html#acc48b3c1326397d3eff1a1d5e7ffa838">wait_idle</a>();</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;}</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160; </div>
+<div class="line"><a name="l00217"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">  217</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">RenderSession::createSemaphores</a>() {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;  imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;  renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  imagesInFlight.resize(swapchain-&gt;get_images().size(), VK_NULL_HANDLE);</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  VkSemaphoreCreateInfo semaphoreInfo{};</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;  semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;</div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  VkFenceCreateInfo fenceInfo{};</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;  fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; MAX_FRAMES_IN_FLIGHT; i++) {</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keywordflow">if</span> (vkCreateSemaphore(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), &amp;semaphoreInfo, <span class="keyword">nullptr</span>,</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;                          &amp;imageAvailableSemaphores[i]) != VK_SUCCESS ||</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        vkCreateSemaphore(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), &amp;semaphoreInfo, <span class="keyword">nullptr</span>,</div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;                          &amp;renderFinishedSemaphores[i]) != VK_SUCCESS ||</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        vkCreateFence(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), &amp;fenceInfo, <span class="keyword">nullptr</span>,</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;                      &amp;inFlightFences[i]) != VK_SUCCESS)</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;      <span class="keywordflow">throw</span> std::runtime_error(</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;          <span class="stringliteral">&quot;createSemaphores: failed to create semaphores!&quot;</span>);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  }</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;}</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160; </div>
+<div class="line"><a name="l00242"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297">  242</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297">RenderSession::destroySemaphores</a>() {</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; MAX_FRAMES_IN_FLIGHT; i++) {</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    vkDestroySemaphore(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), renderFinishedSemaphores[i],</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;                       <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;    vkDestroySemaphore(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), imageAvailableSemaphores[i],</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;                       <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    vkDestroyFence(device.<a class="code" href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">get_handle</a>(), inFlightFences[i], <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  }</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;}</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#ad3b602f5e13338bdb6e196fe077e7cc4">  252</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#ad3b602f5e13338bdb6e196fe077e7cc4">RenderSession::load_scene</a>(std::shared_ptr&lt;cruelScene::Scene&gt; new_scene) {</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;  <span class="keywordflow">if</span> (scene != <span class="keyword">nullptr</span>)</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    scene.reset();</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;  scene = new_scene;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;a : scene-&gt;get_objs()) {</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    <span class="keywordflow">switch</span> (a-&gt;get_type()) {</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordflow">case</span> <a class="code" href="namespacecruel_engine_1_1cruel_scene.html#abf32f8c40e417fabc3d365e151f3da00a3171983d943b01748aebaf0ee45ee331">cruelScene::SCENE_OBJ_TYPE_GEOM</a>:</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;      tasks.push_back(std::make_unique&lt;GeomTask&gt;(*<span class="keyword">this</span>, a));</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keywordflow">default</span>:</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;      <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    }</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  }</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;}</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
+<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#af983bbe30cf0d7dc6ed920c4012edced">  267</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#af983bbe30cf0d7dc6ed920c4012edced">RenderSession::is_session_alive</a>() {</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;  <span class="keywordflow">if</span> (!glfwWindowShouldClose(&amp;window-&gt;get_handle())) {</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="comment">// vkDeviceWaitIdle(device.get_handle());</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  }</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;}</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;} <span class="comment">// namespace cruelRender</span></div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;} <span class="comment">// namespace cruelEngine</span></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_instance_html"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_instance.html">cruelEngine::cruelRender::Instance</a></div><div class="ttdef"><b>Definition:</b> <a href="instance_8hpp_source.html#l00007">instance.hpp:7</a></div></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_instance_html_a419303e600d4a1a564c0fe0b086c3b99"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_instance.html#a419303e600d4a1a564c0fe0b086c3b99">cruelEngine::cruelRender::Instance::get_handle</a></div><div class="ttdeci">const VkInstance &amp; get_handle() const</div><div class="ttdef"><b>Definition:</b> <a href="instance_8hpp_source.html#l00027">instance.hpp:27</a></div></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_logical_device_html"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_logical_device.html">cruelEngine::cruelRender::LogicalDevice</a></div><div class="ttdoc">LogicalDevice is the data prototype of a logical Device. LogicalDevice creates objects that contain a...</div><div class="ttdef"><b>Definition:</b> <a href="logical__device_8hpp_source.html#l00024">logical_device.hpp:24</a></div></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_logical_device_html_a1a5a45243654dc5db19b2f9f9cdc8671"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671">cruelEngine::cruelRender::LogicalDevice::get_handle</a></div><div class="ttdeci">const VkDevice &amp; get_handle() const</div><div class="ttdef"><b>Definition:</b> <a href="logical__device_8hpp_source.html#l00048">logical_device.hpp:48</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_logical_device_html_a4f4cf815c3dd45d43cd10d4f27dac881"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a4f4cf815c3dd45d43cd10d4f27dac881">cruelEngine::cruelRender::LogicalDevice::get_suitable_present_queue</a></div><div class="ttdeci">Queue &amp; get_suitable_present_queue(const VkSurfaceKHR &amp;surface, u32 queue_index)</div><div class="ttdef"><b>Definition:</b> <a href="logical__device_8cpp_source.html#l00137">logical_device.cpp:137</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_logical_device_html_a926232d546ce7127761e715de2049b71"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a926232d546ce7127761e715de2049b71">cruelEngine::cruelRender::LogicalDevice::request_commandBuffer</a></div><div class="ttdeci">CommandBuffer &amp; request_commandBuffer(const VkCommandBufferLevel &amp;_level)</div><div class="ttdoc">Request a CommandBuffer with memory from the device.</div><div class="ttdef"><b>Definition:</b> <a href="logical__device_8cpp_source.html#l00152">logical_device.cpp:152</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_logical_device_html_a992d6f9aaf4bbd0fe0cbed6f4f241c70"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a992d6f9aaf4bbd0fe0cbed6f4f241c70">cruelEngine::cruelRender::LogicalDevice::get_suitable_graphics_queue</a></div><div class="ttdeci">Queue &amp; get_suitable_graphics_queue(u32 queue_index)</div><div class="ttdoc">Get a proper graphics queue from the device.</div><div class="ttdef"><b>Definition:</b> <a href="logical__device_8cpp_source.html#l00133">logical_device.cpp:133</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_logical_device_html_a4f4cf815c3dd45d43cd10d4f27dac881"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a4f4cf815c3dd45d43cd10d4f27dac881">cruelEngine::cruelRender::LogicalDevice::get_suitable_present_queue</a></div><div class="ttdeci">Queue &amp; get_suitable_present_queue(const VkSurfaceKHR &amp;surface, u32 queue_index)</div><div class="ttdef"><b>Definition:</b> <a href="logical__device_8cpp_source.html#l00138">logical_device.cpp:138</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_logical_device_html_a926232d546ce7127761e715de2049b71"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a926232d546ce7127761e715de2049b71">cruelEngine::cruelRender::LogicalDevice::request_commandBuffer</a></div><div class="ttdeci">CommandBuffer &amp; request_commandBuffer(const VkCommandBufferLevel &amp;_level)</div><div class="ttdoc">Request a CommandBuffer with memory from the device.</div><div class="ttdef"><b>Definition:</b> <a href="logical__device_8cpp_source.html#l00153">logical_device.cpp:153</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_logical_device_html_a992d6f9aaf4bbd0fe0cbed6f4f241c70"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_logical_device.html#a992d6f9aaf4bbd0fe0cbed6f4f241c70">cruelEngine::cruelRender::LogicalDevice::get_suitable_graphics_queue</a></div><div class="ttdeci">Queue &amp; get_suitable_graphics_queue(u32 queue_index)</div><div class="ttdoc">Get a proper graphics queue from the device.</div><div class="ttdef"><b>Definition:</b> <a href="logical__device_8cpp_source.html#l00134">logical_device.cpp:134</a></div></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_queue_html_a61dba323e16f6192c17d7f3da0f41135"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_queue.html#a61dba323e16f6192c17d7f3da0f41135">cruelEngine::cruelRender::Queue::present</a></div><div class="ttdeci">VkResult present(const VkPresentInfoKHR &amp;presentInfo)</div><div class="ttdef"><b>Definition:</b> <a href="queue_8cpp_source.html#l00040">queue.cpp:40</a></div></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_queue_html_ab4aa5e4aad838ea26aa2fc29c7a7ac52"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_queue.html#ab4aa5e4aad838ea26aa2fc29c7a7ac52">cruelEngine::cruelRender::Queue::get_index</a></div><div class="ttdeci">const u32 get_index() const</div><div class="ttdef"><b>Definition:</b> <a href="queue_8hpp_source.html#l00029">queue.hpp:29</a></div></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_queue_html_ac0677713f46b0fbf3c5aa6611c802865"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_queue.html#ac0677713f46b0fbf3c5aa6611c802865">cruelEngine::cruelRender::Queue::get_family_index</a></div><div class="ttdeci">const u32 get_family_index() const</div><div class="ttdef"><b>Definition:</b> <a href="queue_8hpp_source.html#l00033">queue.hpp:33</a></div></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_queue_html_ac90d0a328620769ec9cfb4f6ac565427"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_queue.html#ac90d0a328620769ec9cfb4f6ac565427">cruelEngine::cruelRender::Queue::get_handle</a></div><div class="ttdeci">const VkQueue &amp; get_handle() const</div><div class="ttdef"><b>Definition:</b> <a href="queue_8hpp_source.html#l00025">queue.hpp:25</a></div></div>
 <div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_queue_html_acc48b3c1326397d3eff1a1d5e7ffa838"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_queue.html#acc48b3c1326397d3eff1a1d5e7ffa838">cruelEngine::cruelRender::Queue::wait_idle</a></div><div class="ttdeci">VkResult wait_idle()</div><div class="ttdef"><b>Definition:</b> <a href="queue_8cpp_source.html#l00052">queue.cpp:52</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a143dc444ad4bec0d417ddff1da017870"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">cruelEngine::cruelRender::RenderSession::prepare_render_pass</a></div><div class="ttdeci">void prepare_render_pass()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00081">render_session.cpp:81</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a3379e3549cc4309181196b2c835e3db8"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8">cruelEngine::cruelRender::RenderSession::RenderSession</a></div><div class="ttdeci">RenderSession(Instance &amp;instance, LogicalDevice &amp;device, SessionProp &amp;session_properties)</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00016">render_session.cpp:16</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a349fe1543634902e976125fb0edebe94"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a349fe1543634902e976125fb0edebe94">cruelEngine::cruelRender::RenderSession::render_frame</a></div><div class="ttdeci">void render_frame()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00148">render_session.cpp:148</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a5dd2342f00426edbf8a3761a02be9297"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297">cruelEngine::cruelRender::RenderSession::destroySemaphores</a></div><div class="ttdeci">void destroySemaphores()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00227">render_session.cpp:227</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a90fb8b6336c28266b5c0b2bcf13127f5"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">cruelEngine::cruelRender::RenderSession::createSemaphores</a></div><div class="ttdeci">void createSemaphores()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00202">render_session.cpp:202</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a9d5dfcdbb348a4594839410d412d4bda"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a9d5dfcdbb348a4594839410d412d4bda">cruelEngine::cruelRender::RenderSession::add_new_task</a></div><div class="ttdeci">void add_new_task(std::unique_ptr&lt; RenderTask &gt; task)</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00077">render_session.cpp:77</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_adc491dced8a714501dfadb7725b1cdc4"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#adc491dced8a714501dfadb7725b1cdc4">cruelEngine::cruelRender::RenderSession::~RenderSession</a></div><div class="ttdeci">~RenderSession()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00064">render_session.cpp:64</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_af983bbe30cf0d7dc6ed920c4012edced"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#af983bbe30cf0d7dc6ed920c4012edced">cruelEngine::cruelRender::RenderSession::is_session_alive</a></div><div class="ttdeci">bool is_session_alive()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00237">render_session.cpp:237</a></div></div>
-<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_afee03a579dd90402dd13ece276713447"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#afee03a579dd90402dd13ece276713447">cruelEngine::cruelRender::RenderSession::draw</a></div><div class="ttdeci">void draw()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00117">render_session.cpp:117</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a143dc444ad4bec0d417ddff1da017870"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">cruelEngine::cruelRender::RenderSession::prepare_render_pass</a></div><div class="ttdeci">void prepare_render_pass()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00088">render_session.cpp:88</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a3379e3549cc4309181196b2c835e3db8"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8">cruelEngine::cruelRender::RenderSession::RenderSession</a></div><div class="ttdeci">RenderSession(Instance &amp;instance, LogicalDevice &amp;device, SessionProp &amp;session_properties)</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00019">render_session.cpp:19</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a349fe1543634902e976125fb0edebe94"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a349fe1543634902e976125fb0edebe94">cruelEngine::cruelRender::RenderSession::render_frame</a></div><div class="ttdeci">void render_frame()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00157">render_session.cpp:157</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a5dd2342f00426edbf8a3761a02be9297"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a5dd2342f00426edbf8a3761a02be9297">cruelEngine::cruelRender::RenderSession::destroySemaphores</a></div><div class="ttdeci">void destroySemaphores()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00242">render_session.cpp:242</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a90fb8b6336c28266b5c0b2bcf13127f5"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">cruelEngine::cruelRender::RenderSession::createSemaphores</a></div><div class="ttdeci">void createSemaphores()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00217">render_session.cpp:217</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_a9d5dfcdbb348a4594839410d412d4bda"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a9d5dfcdbb348a4594839410d412d4bda">cruelEngine::cruelRender::RenderSession::add_new_task</a></div><div class="ttdeci">void add_new_task(std::unique_ptr&lt; RenderTask &gt; task)</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00084">render_session.cpp:84</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_ad3b602f5e13338bdb6e196fe077e7cc4"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#ad3b602f5e13338bdb6e196fe077e7cc4">cruelEngine::cruelRender::RenderSession::load_scene</a></div><div class="ttdeci">void load_scene(std::shared_ptr&lt; cruelScene::Scene &gt; scene)</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00252">render_session.cpp:252</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_adc491dced8a714501dfadb7725b1cdc4"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#adc491dced8a714501dfadb7725b1cdc4">cruelEngine::cruelRender::RenderSession::~RenderSession</a></div><div class="ttdeci">~RenderSession()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00067">render_session.cpp:67</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_af983bbe30cf0d7dc6ed920c4012edced"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#af983bbe30cf0d7dc6ed920c4012edced">cruelEngine::cruelRender::RenderSession::is_session_alive</a></div><div class="ttdeci">bool is_session_alive()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00267">render_session.cpp:267</a></div></div>
+<div class="ttc" id="aclasscruel_engine_1_1cruel_render_1_1_render_session_html_afee03a579dd90402dd13ece276713447"><div class="ttname"><a href="classcruel_engine_1_1cruel_render_1_1_render_session.html#afee03a579dd90402dd13ece276713447">cruelEngine::cruelRender::RenderSession::draw</a></div><div class="ttdeci">void draw()</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8cpp_source.html#l00124">render_session.cpp:124</a></div></div>
 <div class="ttc" id="acommand__buffer_8hpp_html"><div class="ttname"><a href="command__buffer_8hpp.html">command_buffer.hpp</a></div></div>
 <div class="ttc" id="adebug_8hpp_html_af6ca3377700f0726448c1b87789848c5"><div class="ttname"><a href="debug_8hpp.html#af6ca3377700f0726448c1b87789848c5">VK_CHECK_RESULT</a></div><div class="ttdeci">#define VK_CHECK_RESULT(stat)</div><div class="ttdef"><b>Definition:</b> <a href="debug_8hpp_source.html#l00005">debug.hpp:5</a></div></div>
 <div class="ttc" id="aframe__buffer_8hpp_html"><div class="ttname"><a href="frame__buffer_8hpp.html">frame_buffer.hpp</a></div></div>
 <div class="ttc" id="ainstance_8hpp_html"><div class="ttname"><a href="instance_8hpp.html">instance.hpp</a></div></div>
 <div class="ttc" id="alogical__device_8hpp_html"><div class="ttname"><a href="logical__device_8hpp.html">logical_device.hpp</a></div></div>
+<div class="ttc" id="anamespacecruel_engine_1_1cruel_scene_html_abf32f8c40e417fabc3d365e151f3da00a3171983d943b01748aebaf0ee45ee331"><div class="ttname"><a href="namespacecruel_engine_1_1cruel_scene.html#abf32f8c40e417fabc3d365e151f3da00a3171983d943b01748aebaf0ee45ee331">cruelEngine::cruelScene::SCENE_OBJ_TYPE_GEOM</a></div><div class="ttdeci">@ SCENE_OBJ_TYPE_GEOM</div><div class="ttdef"><b>Definition:</b> <a href="object_8hpp_source.html#l00014">object.hpp:14</a></div></div>
 <div class="ttc" id="anamespacecruel_engine_html"><div class="ttname"><a href="namespacecruel_engine.html">cruelEngine</a></div><div class="ttdef"><b>Definition:</b> <a href="application_8cpp_source.html#l00003">application.cpp:3</a></div></div>
 <div class="ttc" id="aqueue_8hpp_html"><div class="ttname"><a href="queue_8hpp.html">queue.hpp</a></div></div>
 <div class="ttc" id="arender__pass_8hpp_html"><div class="ttname"><a href="render__pass_8hpp.html">render_pass.hpp</a></div></div>
 <div class="ttc" id="arender__session_8hpp_html"><div class="ttname"><a href="render__session_8hpp.html">render_session.hpp</a></div></div>
 <div class="ttc" id="arender__task_8hpp_html"><div class="ttname"><a href="render__task_8hpp.html">render_task.hpp</a></div></div>
+<div class="ttc" id="arender__tasks_8hpp_html"><div class="ttname"><a href="render__tasks_8hpp.html">render_tasks.hpp</a></div></div>
 <div class="ttc" id="astructcruel_engine_1_1cruel_render_1_1_render_pass_attachment_html"><div class="ttname"><a href="structcruel_engine_1_1cruel_render_1_1_render_pass_attachment.html">cruelEngine::cruelRender::RenderPassAttachment</a></div><div class="ttdef"><b>Definition:</b> <a href="render__pass_8hpp_source.html#l00009">render_pass.hpp:9</a></div></div>
 <div class="ttc" id="astructcruel_engine_1_1cruel_render_1_1_render_pass_attachment_html_a66dfb84601ceca371c55eb2c2421d8aa"><div class="ttname"><a href="structcruel_engine_1_1cruel_render_1_1_render_pass_attachment.html#a66dfb84601ceca371c55eb2c2421d8aa">cruelEngine::cruelRender::RenderPassAttachment::colorAttachment</a></div><div class="ttdeci">VkAttachmentDescription colorAttachment</div><div class="ttdef"><b>Definition:</b> <a href="render__pass_8hpp_source.html#l00010">render_pass.hpp:10</a></div></div>
-<div class="ttc" id="astructcruel_engine_1_1cruel_render_1_1_session_prop_html"><div class="ttname"><a href="structcruel_engine_1_1cruel_render_1_1_session_prop.html">cruelEngine::cruelRender::SessionProp</a></div><div class="ttdef"><b>Definition:</b> <a href="render__session_8hpp_source.html#l00032">render_session.hpp:32</a></div></div>
-<div class="ttc" id="astructcruel_engine_1_1cruel_render_1_1_session_prop_html_ab6a83f60649f102c1a5dc0aa9bc4969d"><div class="ttname"><a href="structcruel_engine_1_1cruel_render_1_1_session_prop.html#ab6a83f60649f102c1a5dc0aa9bc4969d">cruelEngine::cruelRender::SessionProp::window_prop</a></div><div class="ttdeci">WindowProp window_prop</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8hpp_source.html#l00033">render_session.hpp:33</a></div></div>
+<div class="ttc" id="astructcruel_engine_1_1cruel_render_1_1_session_prop_html"><div class="ttname"><a href="structcruel_engine_1_1cruel_render_1_1_session_prop.html">cruelEngine::cruelRender::SessionProp</a></div><div class="ttdef"><b>Definition:</b> <a href="render__session_8hpp_source.html#l00036">render_session.hpp:36</a></div></div>
+<div class="ttc" id="astructcruel_engine_1_1cruel_render_1_1_session_prop_html_ab6a83f60649f102c1a5dc0aa9bc4969d"><div class="ttname"><a href="structcruel_engine_1_1cruel_render_1_1_session_prop.html#ab6a83f60649f102c1a5dc0aa9bc4969d">cruelEngine::cruelRender::SessionProp::window_prop</a></div><div class="ttdeci">WindowProp window_prop</div><div class="ttdef"><b>Definition:</b> <a href="render__session_8hpp_source.html#l00037">render_session.hpp:37</a></div></div>
 <div class="ttc" id="aswapchain_8hpp_html"><div class="ttname"><a href="swapchain_8hpp.html">swapchain.hpp</a></div></div>
 <div class="ttc" id="atypes_8h_html_afaa62991928fb9fb18ff0db62a040aba"><div class="ttname"><a href="types_8h.html#afaa62991928fb9fb18ff0db62a040aba">u32</a></div><div class="ttdeci">uint32_t u32</div><div class="ttdef"><b>Definition:</b> <a href="types_8h_source.html#l00011">types.h:11</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

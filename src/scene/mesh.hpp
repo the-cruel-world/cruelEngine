@@ -1,5 +1,6 @@
 #pragma once
 #include "../common.h"
+#include "../render/vkcommon.h"
 #include "../types.h"
 
 namespace cruelEngine::cruelScene {
@@ -18,6 +19,11 @@ struct Vertex {
 
   Vertex(const glm::vec3 _pos, const glm::vec3 _color)
       : pos(_pos), color(_color) {}
+
+  static std::array<VkVertexInputAttributeDescription, 2>
+  getAttributeDescriptions();
+
+  static VkVertexInputBindingDescription getBindingDescription();
 };
 
 class Mesh {
@@ -32,7 +38,7 @@ public:
 
   void addTriangle(u16 a, u16 b, u16 c);
 
-  void addVertex(Vertex &vertex);
+  void addVertex(Vertex vertex);
 
   void clear();
 

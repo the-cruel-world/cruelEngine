@@ -1,17 +1,12 @@
 var searchData=
 [
-  ['validation_465',['validation',['../structcruel_engine_1_1cruel_render_1_1_render_prop.html#a5d99dec7afd5b23c3d4e2c32a47c1bf1',1,'cruelEngine::cruelRender::RenderProp']]],
-  ['validationlayers_466',['validationLayers',['../structcruel_engine_1_1cruel_render_1_1_render_prop.html#afdf8f81b716fc147664102e0bba40112',1,'cruelEngine::cruelRender::RenderProp']]],
-  ['vertex_467',['Vertex',['../structcruel_engine_1_1cruel_scene_1_1_triangle_1_1_vertex.html',1,'cruelEngine::cruelScene::Triangle::Vertex'],['../structcruel_engine_1_1cruel_scene_1_1_vertex.html',1,'cruelEngine::cruelScene::Vertex']]],
-  ['vertex_5finput_5fsate_468',['vertex_input_sate',['../classcruel_engine_1_1cruel_render_1_1_pipeline_status.html#a7796a609d80f4121c28464c853999e4b',1,'cruelEngine::cruelRender::PipelineStatus']]],
-  ['vertexinputstate_469',['VertexInputState',['../structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_vertex_input_state.html',1,'cruelEngine::cruelRender::PipelineStatus']]],
-  ['vertices_470',['vertices',['../structcruel_engine_1_1cruel_scene_1_1_mesht.html#ae80c0bfbd33ddc0ee2d4ba7ec73d7df4',1,'cruelEngine::cruelScene::Mesht']]],
-  ['view_471',['view',['../structcruel_engine_1_1cruel_scene_1_1_sphere_1_1_uniform_buffer_object.html#aa56862a1295d765e529b4fb89f3e533f',1,'cruelEngine::cruelScene::Sphere::UniformBufferObject::view()'],['../structcruel_engine_1_1cruel_scene_1_1_triangle_1_1_uniform_buffer_object.html#aff971231f9c6d4b4b57813fdb489f366',1,'cruelEngine::cruelScene::Triangle::UniformBufferObject::view()']]],
-  ['viewport_5fcount_472',['viewport_count',['../structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_viewport_state.html#a816b65cda46e79d2ef3f622db8ffefa7',1,'cruelEngine::cruelRender::PipelineStatus::ViewportState']]],
-  ['viewport_5fstate_473',['viewport_state',['../classcruel_engine_1_1cruel_render_1_1_pipeline_status.html#a23d307bf482679983dd51746746bba72',1,'cruelEngine::cruelRender::PipelineStatus']]],
-  ['viewportstate_474',['ViewportState',['../structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_viewport_state.html',1,'cruelEngine::cruelRender::PipelineStatus']]],
-  ['vk_5fcheck_5fresult_475',['VK_CHECK_RESULT',['../debug_8hpp.html#af6ca3377700f0726448c1b87789848c5',1,'debug.hpp']]],
-  ['vkcommon_2eh_476',['vkcommon.h',['../vkcommon_8h.html',1,'']]],
-  ['vsync_477',['vsync',['../structcruel_engine_1_1cruel_render_1_1_render_prop.html#ac90cdbcd0bed64f6d61d99cdc9c0ac13',1,'cruelEngine::cruelRender::RenderProp']]],
-  ['vulkan_20backend_478',['Vulkan Backend',['../md__home_yiwen_program_cruelworld_engine_src_render_vulkan__r_e_a_d_m_e.html',1,'']]]
+  ['u16_485',['u16',['../types_8h.html#ace9d960e74685e2cd84b36132dbbf8aa',1,'types.h']]],
+  ['u32_486',['u32',['../types_8h.html#afaa62991928fb9fb18ff0db62a040aba',1,'types.h']]],
+  ['u64_487',['u64',['../types_8h.html#a3f7e2bcbb0b4c338f3c4f6c937cd4234',1,'types.h']]],
+  ['u8_488',['u8',['../types_8h.html#a92c50087ca0e64fa93fc59402c55f8ca',1,'types.h']]],
+  ['uniformbuffer_489',['UniformBuffer',['../classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html',1,'cruelEngine::cruelRender::UniformBuffer'],['../classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#a4eced549f109e284cec145271cdee97d',1,'cruelEngine::cruelRender::UniformBuffer::UniformBuffer(LogicalDevice &amp;device, VkDeviceSize bufferSize)'],['../classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#aad46d5a7def35b72d527a026e3b31aae',1,'cruelEngine::cruelRender::UniformBuffer::UniformBuffer(const UniformBuffer &amp;)=delete'],['../classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#a4ec083a3174c51b83606c9a488ae38cf',1,'cruelEngine::cruelRender::UniformBuffer::UniformBuffer(UniformBuffer &amp;&amp;)']]],
+  ['uniformbufferobject_490',['UniformBufferObject',['../structcruel_engine_1_1cruel_render_1_1_geom_task_1_1_uniform_buffer_object.html',1,'cruelEngine::cruelRender::GeomTask']]],
+  ['update_491',['update',['../classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#ac9f4c0ecf1496f42fdd24a5619f973ae',1,'cruelEngine::cruelRender::UniformBuffer::update()'],['../classcruel_engine_1_1cruel_render_1_1_descriptor_set.html#a6efee584b4f073ebd838b81c5313d27b',1,'cruelEngine::cruelRender::DescriptorSet::update()'],['../classcruel_engine_1_1cruel_render_1_1_pipeline.html#a996d26ebf8414c1606de76a954981567',1,'cruelEngine::cruelRender::Pipeline::update()'],['../classcruel_engine_1_1cruel_scene_1_1_node.html#a1ca3f1bdc687f26979ba88220816170f',1,'cruelEngine::cruelScene::Node::update()'],['../classcruel_engine_1_1cruel_scene_1_1_scene.html#a56c43e5e66d12a4745b26124bdc797b0',1,'cruelEngine::cruelScene::Scene::update()']]],
+  ['update_5fdescriptor_5fset_492',['update_descriptor_set',['../classcruel_engine_1_1cruel_render_1_1_resource_cache.html#a88592aec0e5b468dc3d1ed58c8b707ef',1,'cruelEngine::cruelRender::ResourceCache']]],
+  ['update_5fswapchain_493',['update_swapchain',['../classcruel_engine_1_1cruel_render_1_1_render_session.html#a1ab906215a275a3a759fdbe5100dfec9',1,'cruelEngine::cruelRender::RenderSession']]]
 ];

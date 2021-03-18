@@ -1,7 +1,6 @@
 #pragma once
 #include "vkcommon.h"
 //! cant change the order of vkcommon and window/window it's so weird.
-#include "../scene/scene.hpp"
 #include "../window/window.hpp"
 
 #define MAIN_VER 0
@@ -54,6 +53,8 @@ public:
 
   void recreate_swapchain() {}
 
+  void load_scene(std::shared_ptr<cruelScene::Scene> scene);
+
   void add_new_task(std::unique_ptr<RenderTask> task);
 
   void prepare();
@@ -84,8 +85,8 @@ private:
   const int MAX_FRAMES_IN_FLIGHT = 2;
   VkSemaphore imageAvailableSemaphore = VK_NULL_HANDLE;
   VkSemaphore renderFinishedSemaphore = VK_NULL_HANDLE;
-  std::vector<VkSemaphore> imageAvailableSemaphores {};
-  std::vector<VkSemaphore> renderFinishedSemaphores {};
+  std::vector<VkSemaphore> imageAvailableSemaphores{};
+  std::vector<VkSemaphore> renderFinishedSemaphores{};
 
   std::vector<VkFence> inFlightFences;
   std::vector<VkFence> imagesInFlight;
@@ -119,7 +120,7 @@ private:
   Queue *graphic_queue;
   Queue *present_queue;
 
-  std::unique_ptr<cruelScene::Scene> scene;
+  std::shared_ptr<cruelScene::Scene> scene;
 
   std::vector<std::unique_ptr<FrameBuffer>> frameBuffer;
 

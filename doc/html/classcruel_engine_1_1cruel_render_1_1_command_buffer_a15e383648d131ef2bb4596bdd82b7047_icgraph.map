@@ -1,9 +1,8 @@
 <map id="cruelEngine::cruelRender::CommandBuffer::get_handle" name="cruelEngine::cruelRender::CommandBuffer::get_handle">
-<area shape="rect" id="node1" title="Return a reference to the Vulkan CommandBuffer." alt="" coords="469,136,687,177"/>
+<area shape="rect" id="node1" title="Return a reference to the Vulkan CommandBuffer." alt="" coords="469,104,687,145"/>
 <area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_render_task.html#aa1bb5c198623442454001662d1f1bdd4" title=" " alt="" coords="237,5,421,47"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_scene_1_1_sphere_task.html#a5c655534310076e7bec989c6d3062b1d" title=" " alt="" coords="241,71,418,112"/>
-<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_scene_1_1_triangle_task.html#a47a4971c444ebd30754859f045feb1a1" title=" " alt="" coords="241,136,418,177"/>
-<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#aab86a436b97b2c995dc4a171eb567e5d" title=" " alt="" coords="237,201,421,243"/>
-<area shape="rect" id="node7" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#adb2466d736c3d9116228cb82a8d02e9e" title=" " alt="" coords="237,267,421,308"/>
-<area shape="rect" id="node6" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#abe158d1e85f9a35bb30f1969c0774bbd" title=" " alt="" coords="5,201,189,243"/>
+<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#aa6a2f4d4edea27734d23ee25328fcb76" title=" " alt="" coords="237,71,421,112"/>
+<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#aab86a436b97b2c995dc4a171eb567e5d" title=" " alt="" coords="237,136,421,177"/>
+<area shape="rect" id="node6" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#adb2466d736c3d9116228cb82a8d02e9e" title=" " alt="" coords="237,201,421,243"/>
+<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#abe158d1e85f9a35bb30f1969c0774bbd" title=" " alt="" coords="5,136,189,177"/>
 </map>

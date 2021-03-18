@@ -1,9 +1,7 @@
 <map id="cruelEngine::cruelRender::RenderSession::get_swapchain" name="cruelEngine::cruelRender::RenderSession::get_swapchain">
-<area shape="rect" id="node1" title=" " alt="" coords="456,104,687,145"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_scene_1_1_sphere.html#ad425eb7ef46f54727128d7b819600022" title=" " alt="" coords="231,5,408,47"/>
-<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_scene_1_1_triangle.html#a088d298eb66a1f9954bdb881d8a7341a" title=" " alt="" coords="231,71,408,112"/>
-<area shape="rect" id="node6" href="$classcruel_engine_1_1cruel_scene_1_1_sphere_task.html#a077bf52d3183640f67aa27e127703e44" title=" " alt="" coords="231,136,408,177"/>
-<area shape="rect" id="node7" href="$classcruel_engine_1_1cruel_scene_1_1_triangle_task.html#a32969b3381382f73181d07db854b28c0" title=" " alt="" coords="231,201,408,243"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_scene_1_1_sphere.html#aa7441ce8c79f48ac667fdafb71f761c0" title=" " alt="" coords="5,5,183,47"/>
-<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_scene_1_1_triangle.html#ad4a3ed849585c920dbc99f7f9406767d" title=" " alt="" coords="5,71,183,112"/>
+<area shape="rect" id="node1" title=" " alt="" coords="723,39,953,80"/>
+<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#afe303d3bc560fe5b3933acbf56a61e53" title=" " alt="" coords="469,5,675,47"/>
+<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#a7e133179301f36abeed3a1d98a8dde26" title=" " alt="" coords="480,71,664,112"/>
+<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#a00a874f627c7eff1b444daf9608ec339" title=" " alt="" coords="237,5,421,47"/>
+<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#a37558bb5a91ad80a909c3d935fc2d087" title=" " alt="" coords="5,5,189,47"/>
 </map>

@@ -1,12 +1,13 @@
 <map id="/home/yiwen/program/cruelworld/engine/src/scene/scene.hpp" name="/home/yiwen/program/cruelworld/engine/src/scene/scene.hpp">
-<area shape="rect" id="node1" title=" " alt="" coords="1216,5,1381,61"/>
-<area shape="rect" id="node2" href="$common_8h.html" title=" " alt="" coords="1165,184,1267,211"/>
-<area shape="rect" id="node29" href="$render__header_8h.html" title=" " alt="" coords="2956,109,3143,136"/>
-<area shape="rect" id="node50" href="$object_8hpp.html" title=" " alt="" coords="1253,109,1344,136"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,259,91,285"/>
-<area shape="rect" id="node4" title=" " alt="" coords="115,259,189,285"/>
-<area shape="rect" id="node5" title=" " alt="" coords="213,259,283,285"/>
-<area shape="rect" id="node6" title=" " alt="" coords="307,259,373,285"/>
+<area shape="rect" id="node1" title=" " alt="" coords="1039,5,1204,61"/>
+<area shape="rect" id="node2" href="$common_8h.html" title=" " alt="" coords="1114,184,1217,211"/>
+<area shape="rect" id="node29" href="$camera_8hpp.html" title=" " alt="" coords="1116,109,1215,136"/>
+<area shape="rect" id="node30" href="$node_8hpp.html" title=" " alt="" coords="1239,109,1321,136"/>
+<area shape="rect" id="node31" href="$object_8hpp.html" title=" " alt="" coords="951,109,1041,136"/>
+<area shape="rect" id="node3" title=" " alt="" coords="96,259,181,285"/>
+<area shape="rect" id="node4" title=" " alt="" coords="205,259,280,285"/>
+<area shape="rect" id="node5" title=" " alt="" coords="304,259,373,285"/>
+<area shape="rect" id="node6" title=" " alt="" coords="5,259,72,285"/>
 <area shape="rect" id="node7" title=" " alt="" coords="397,259,459,285"/>
 <area shape="rect" id="node8" title=" " alt="" coords="483,259,549,285"/>
 <area shape="rect" id="node9" title=" " alt="" coords="573,259,640,285"/>
@@ -29,24 +30,5 @@
 <area shape="rect" id="node26" title=" " alt="" coords="2215,259,2417,285"/>
 <area shape="rect" id="node27" title=" " alt="" coords="2441,259,2658,285"/>
 <area shape="rect" id="node28" title=" " alt="" coords="2683,259,2840,285"/>
-<area shape="rect" id="node30" href="$render__context_8hpp.html" title=" " alt="" coords="1291,184,1439,211"/>
-<area shape="rect" id="node31" href="$render__session_8hpp.html" title=" " alt="" coords="1463,184,1611,211"/>
-<area shape="rect" id="node32" href="$render__task_8hpp.html" title=" " alt="" coords="1635,184,1762,211"/>
-<area shape="rect" id="node33" href="$buffer_8hpp.html" title=" " alt="" coords="1786,184,1923,211"/>
-<area shape="rect" id="node34" href="$command__buffer_8hpp.html" title=" " alt="" coords="1947,184,2157,211"/>
-<area shape="rect" id="node35" href="$command__pool_8hpp.html" title=" " alt="" coords="2181,184,2379,211"/>
-<area shape="rect" id="node36" href="$descriptor_8hpp.html" title=" " alt="" coords="2404,184,2567,211"/>
-<area shape="rect" id="node37" href="$frame__buffer_8hpp.html" title=" " alt="" coords="2591,184,2774,211"/>
-<area shape="rect" id="node38" href="$image_8hpp.html" title=" " alt="" coords="2799,184,2937,211"/>
-<area shape="rect" id="node39" href="$image__view_8hpp.html" title=" " alt="" coords="2961,184,3137,211"/>
-<area shape="rect" id="node40" href="$instance_8hpp.html" title=" " alt="" coords="3162,184,3315,211"/>
-<area shape="rect" id="node41" href="$logical__device_8hpp.html" title=" " alt="" coords="3339,184,3530,211"/>
-<area shape="rect" id="node42" href="$queue_8hpp.html" title=" " alt="" coords="3456,259,3547,285"/>
-<area shape="rect" id="node43" href="$physical__device_8hpp.html" title=" " alt="" coords="3605,184,3808,211"/>
-<area shape="rect" id="node44" href="$pipeline_8hpp.html" title=" " alt="" coords="3833,184,3935,211"/>
-<area shape="rect" id="node45" href="$shader_8hpp.html" title=" " alt="" coords="3882,259,3977,285"/>
-<area shape="rect" id="node46" href="$render__pass_8hpp.html" title=" " alt="" coords="4011,184,4141,211"/>
-<area shape="rect" id="node47" href="$sampler_8hpp.html" title=" " alt="" coords="4165,184,4315,211"/>
-<area shape="rect" id="node48" href="$semaphores_8hpp.html" title=" " alt="" coords="4340,184,4519,211"/>
-<area shape="rect" id="node49" href="$swapchain_8hpp.html" title=" " alt="" coords="4543,184,4710,211"/>
+<area shape="rect" id="node32" href="$types_8h.html" title=" " alt="" coords="476,184,559,211"/>
 </map>

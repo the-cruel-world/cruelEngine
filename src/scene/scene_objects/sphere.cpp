@@ -88,7 +88,7 @@
 //   pipelineLayoutInfo.pushConstantRangeCount = 0;    // Optional
 //   pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
 
-//   task->prepare_pipline_layout(shaders, pipelineLayoutInfo);
+//   task->prepare_pipeline_layout(shaders, pipelineLayoutInfo);
 //   std::cout << "[" << name << "] PipelineLayout Created." << std::endl;
 
 //   cruelRender::PipelineStatus pipeline_state{};

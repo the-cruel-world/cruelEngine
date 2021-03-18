@@ -1,7 +1,9 @@
 <map id="cruelEngine::cruelRender::RenderSession::get_device" name="cruelEngine::cruelRender::RenderSession::get_device">
-<area shape="rect" id="node1" title=" " alt="" coords="541,39,747,80"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_render_task.html#a192c4b03bd7be53ac6697386ddcbf090" title=" " alt="" coords="251,5,473,47"/>
-<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_render_task.html#abf3fefe7695f40e5c08855a9126889f1" title=" " alt="" coords="231,71,493,112"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_scene_1_1_sphere.html#aa7441ce8c79f48ac667fdafb71f761c0" title=" " alt="" coords="5,5,183,47"/>
-<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_scene_1_1_triangle.html#ad4a3ed849585c920dbc99f7f9406767d" title=" " alt="" coords="5,71,183,112"/>
+<area shape="rect" id="node1" title=" " alt="" coords="788,110,993,152"/>
+<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#a00a874f627c7eff1b444daf9608ec339" title=" " alt="" coords="237,110,421,152"/>
+<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#afe303d3bc560fe5b3933acbf56a61e53" title=" " alt="" coords="502,45,707,86"/>
+<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_render_task.html#a192c4b03bd7be53ac6697386ddcbf090" title=" " alt="" coords="493,110,716,152"/>
+<area shape="rect" id="node6" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#a95d0eba4d650920a95356c70c4229d15" title=" " alt="" coords="497,176,712,217"/>
+<area shape="rect" id="node7" href="$classcruel_engine_1_1cruel_render_1_1_render_task.html#aafb4f075ecbd02eba228bb77b59bf2bf" title=" " alt="" coords="469,241,740,282"/>
+<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_geom_task.html#a37558bb5a91ad80a909c3d935fc2d087" title=" " alt="" coords="5,110,189,152"/>
 </map>

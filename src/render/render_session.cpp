@@ -1,5 +1,4 @@
 #include "render_session.hpp"
-
 #include "render_task.hpp"
 
 #include "vulkan/command_buffer.hpp"
@@ -9,6 +8,10 @@
 #include "vulkan/queue.hpp"
 #include "vulkan/render_pass.hpp"
 #include "vulkan/swapchain.hpp"
+
+#include "../scene/object.hpp"
+#include "../scene/scene.hpp"
+#include "render_tasks/render_tasks.hpp"
 
 namespace cruelEngine {
 namespace cruelRender {
@@ -43,7 +46,7 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
   std::cout << "[Rendersession] swapchain creatd!" << std::endl;
 
   prepare_render_pass();
-  std::cout << "[Rendersession] renderpass creatd!" << std::endl;
+  // std::cout << "[Rendersession] renderpass creatd!" << std::endl;
 
   for (auto &image_view : swapchain->get_imageViews()) {
     frameBuffer.push_back(std::make_unique<FrameBuffer>(
@@ -70,9 +73,9 @@ RenderSession::~RenderSession() {
   frameBuffer.clear();
   render_pass.reset();
   swapchain.reset();
-  if (surface != VK_NULL_HANDLE){
-  vkDestroySurfaceKHR(instance.get_handle(), surface, nullptr);
-  surface = VK_NULL_HANDLE;
+  if (surface != VK_NULL_HANDLE) {
+    vkDestroySurfaceKHR(instance.get_handle(), surface, nullptr);
+    surface = VK_NULL_HANDLE;
   }
   window.reset();
   std::cout << "Session destroied" << std::endl;
@@ -122,7 +125,7 @@ void RenderSession::draw() {
   std::cout << "Session tasks: " << tasks.size() << std::endl;
   if (tasks.size() == 0)
     return;
-  
+
   for (size_t i = 0; i < commandBuffers.size(); i++) {
     commandBuffers[i].get().begin();
     std::cout << "[session] cmd begin " << i << std::endl;
@@ -243,6 +246,21 @@ void RenderSession::destroySemaphores() {
     vkDestroySemaphore(device.get_handle(), imageAvailableSemaphores[i],
                        nullptr);
     vkDestroyFence(device.get_handle(), inFlightFences[i], nullptr);
+  }
+}
+
+void RenderSession::load_scene(std::shared_ptr<cruelScene::Scene> new_scene) {
+  if (scene != nullptr)
+    scene.reset();
+  scene = new_scene;
+  for (auto &a : scene->get_objs()) {
+    switch (a->get_type()) {
+    case cruelScene::SCENE_OBJ_TYPE_GEOM:
+      tasks.push_back(std::make_unique<GeomTask>(*this, a));
+      break;
+    default:
+      break;
+    }
   }
 }
 

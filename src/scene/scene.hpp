@@ -1,5 +1,6 @@
 #pragma once
 #include "../common.h"
+#include "camera.hpp"
 #include "node.hpp"
 #include "object.hpp"
 
@@ -12,20 +13,26 @@ public:
   Scene();
   virtual ~Scene();
 
-  void addObject(std::unique_ptr<Object> &obj);
+  void addObject(std::shared_ptr<Object> obj);
 
   void rmObject(std::string name);
 
-  const std::vector<std::unique_ptr<Object>> &get_objs() const {
+  const std::vector<std::shared_ptr<Object>> &get_objs() const {
     return sceneObjects;
   }
+
+  void prepare_camera();
+
+  Camera &get_camera();
 
   void update();
 
   void render();
 
 protected:
-  std::vector<std::unique_ptr<Object>> sceneObjects{};
+  std::vector<std::shared_ptr<Object>> sceneObjects{};
+
+  std::unique_ptr<Camera> camera;
 
   /**
    * All nodes in this scene.

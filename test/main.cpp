@@ -11,23 +11,35 @@
 u32 cruelEngine::Window::count = 0;
 bool cruelEngine::Window::glfw_inited = false;
 
-int main(int argc, char const *argv[]) {
+struct numptr
+{
+  std::vector<std::shared_ptr<int>> number{};
 
-  std::vector<std::unique_ptr<cruelEngine::Window>> windows{};
-  windows.push_back(std::make_unique<cruelEngine::Window>());
-  windows.push_back(std::make_unique<cruelEngine::Window>());
-  windows.push_back(std::make_unique<cruelEngine::Window>());
-
-  while (windows.size() > 0) {
-    glfwPollEvents();
-    windows.erase(
-        std::remove_if(windows.begin(), windows.end(),
-                       [](std::unique_ptr<cruelEngine::Window> const &window) {
-                         return glfwWindowShouldClose(&window->get_handle());
-                       }),
-        windows.end());
-    usleep(3e5);
+  void load_number(std::shared_ptr<int> new_num)
+  {
+    number.push_back(std::move(new_num));
   }
+  ~numptr() { number.clear(); }
+};
+
+int main(int argc, char const *argv[])
+{
+
+  auto hello = std::make_shared<int>(1);
+  std::cout << "Ref Count: " << hello.use_count() << std::endl;
+  {
+    numptr temp;
+    temp.load_number(hello);
+  std::cout << "Ref Count: " << hello.use_count() << std::endl;
+    temp.load_number(hello);
+  std::cout << "Ref Count: " << hello.use_count() << std::endl;
+    temp.load_number(hello);
+  std::cout << "Ref Count: " << hello.use_count() << std::endl;
+    temp.load_number(hello);
+  std::cout << "Ref Count: " << hello.use_count() << std::endl;
+  }
+  std::cout << "Ref Count: " << hello.use_count() << std::endl;
+
 
   return 0;
 }

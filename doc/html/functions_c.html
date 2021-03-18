@@ -65,14 +65,21 @@ $(function() {
 
 <h3><a id="index_c"></a>- c -</h3><ul>
 <li>Camera()
-: <a class="el" href="classcruel_engine_1_1_camera.html#a6630518f9785844393f5a27b27111ea4">cruelEngine::Camera</a>
+: <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_camera.html#a78436924856b393c3b4e4628663cb30f">cruelEngine::cruelScene::Camera</a>
+</li>
+<li>camera
+: <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html#aed2466fb076dde22dc3070e613cdbb2e">cruelEngine::cruelScene::Object</a>
+, <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a6f4aac3cd7dee5b9e4194b9f68609248">cruelEngine::cruelScene::Scene</a>
 </li>
 <li>can_present()
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_queue.html#a553b135d07bbc5a6a59ab7e259014311">cruelEngine::cruelRender::Queue</a>
 </li>
+<li>children
+: <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html#a6eb66e0614a0c4ccd8bbf0ef11b6a96a">cruelEngine::cruelScene::Node</a>
+</li>
 <li>clear()
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_resource_cache.html#aca3c19cb7be0e7a6ecc1d26640ac49d9">cruelEngine::cruelRender::ResourceCache</a>
-, <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_mesht.html#ad7f2222a5fcffb8cd25629b733750ec5">cruelEngine::cruelScene::Mesht</a>
+, <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_mesh.html#acd46b54ab0158ce09ec1f09955dae579">cruelEngine::cruelScene::Mesh</a>
 </li>
 <li>clear_frame_buffer()
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_resource_cache.html#a67a8cccab1b30acc6506e19b8371982b">cruelEngine::cruelRender::ResourceCache</a>
@@ -84,8 +91,7 @@ $(function() {
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_resource_cache.html#adfc6a1794af8465d301e8996a9eab5bf">cruelEngine::cruelRender::ResourceCache</a>
 </li>
 <li>color
-: <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_triangle_1_1_vertex.html#af9560bb8c90fcb9f826a87934306d1ac">cruelEngine::cruelScene::Triangle::Vertex</a>
-, <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html#a6ee07676aa181a9c578a4df0e0ea8de9">cruelEngine::cruelScene::Vertex</a>
+: <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html#a6ee07676aa181a9c578a4df0e0ea8de9">cruelEngine::cruelScene::Vertex</a>
 </li>
 <li>color_blend_op
 : <a class="el" href="structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_color_blend_attachment_state.html#ac8a5f2691ec190d3523c9a48e4f2d3b7">cruelEngine::cruelRender::PipelineStatus::ColorBlendAttachmentState</a>
@@ -103,7 +109,7 @@ $(function() {
 : <a class="el" href="structcruel_engine_1_1cruel_render_1_1_render_pass_attachment.html#a891ae64295cd780798bd0dd825abe898">cruelEngine::cruelRender::RenderPassAttachment</a>
 </li>
 <li>CommandBuffer()
-: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a9569d8ffb7afd448a301547bbe68bf29">cruelEngine::cruelRender::CommandBuffer</a>
+: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a577017409e15f36a918c8be4e3249dd3">cruelEngine::cruelRender::CommandBuffer</a>
 </li>
 <li>CommandPool()
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_command_pool.html#aa93d8e113f459d0e8e749fb0dc8e6498">cruelEngine::cruelRender::CommandPool</a>
@@ -123,10 +129,6 @@ $(function() {
 <li>count
 : <a class="el" href="classcruel_engine_1_1_window.html#a8897b6534c938b95bc790675cc2ca6c0">cruelEngine::Window</a>
 </li>
-<li>create_buffer()
-: <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_sphere.html#ad425eb7ef46f54727128d7b819600022">cruelEngine::cruelScene::Sphere</a>
-, <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_triangle.html#a088d298eb66a1f9954bdb881d8a7341a">cruelEngine::cruelScene::Triangle</a>
-</li>
 <li>createBuffer()
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_buffer.html#adaabc55d9cd0dbc218d6e5b0df337989">cruelEngine::cruelRender::Buffer</a>
 </li>
@@ -138,6 +140,9 @@ $(function() {
 </li>
 <li>createSemaphores()
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a90fb8b6336c28266b5c0b2bcf13127f5">cruelEngine::cruelRender::RenderSession</a>
+</li>
+<li>Cube()
+: <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_cube.html#ae1eeeac7f58336b3ad3866059725ef81">cruelEngine::cruelScene::Cube</a>
 </li>
 <li>cull_mode
 : <a class="el" href="structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_rasterization_state.html#ac8e7bf210f824cbc7fee1f730459835e">cruelEngine::cruelRender::PipelineStatus::RasterizationState</a>

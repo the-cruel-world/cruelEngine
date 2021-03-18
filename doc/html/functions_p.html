@@ -64,6 +64,9 @@ $(function() {
 <div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
 
 <h3><a id="index_p"></a>- p -</h3><ul>
+<li>parent
+: <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html#ace700ffaffb5f7e445c3b8c6ddd90062">cruelEngine::cruelScene::Node</a>
+</li>
 <li>pass_op
 : <a class="el" href="structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_stencil_op_state.html#a70166ed4b421485217f6374ab5ac8d3f">cruelEngine::cruelRender::PipelineStatus::StencilOpState</a>
 </li>
@@ -93,22 +96,27 @@ $(function() {
 : <a class="el" href="structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_rasterization_state.html#a26cf5ad717933254d738cc75d95ce418">cruelEngine::cruelRender::PipelineStatus::RasterizationState</a>
 </li>
 <li>pos
-: <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_triangle_1_1_vertex.html#a3438377f0d690cf2e03177a8a41a24c4">cruelEngine::cruelScene::Triangle::Vertex</a>
+: <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_texture.html#aeca181a565edd35c4a2505da06ab08c6">cruelEngine::cruelScene::Texture</a>
 , <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_vertex.html#a2d410462b3cbef3b90efa0f81be10b46">cruelEngine::cruelScene::Vertex</a>
 </li>
 <li>prepare()
-: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a4efe769e7113c5de5c7ecf26e0247020">cruelEngine::cruelRender::RenderSession</a>
-, <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#a1a4d3895b7798262b4ca63bd9325037b">cruelEngine::cruelRender::RenderTask</a>
-, <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html#a860c2e094bfa817bceb4a1d26d152498">cruelEngine::cruelScene::Object</a>
-, <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_sphere.html#a727f0a1007fba3161969e917db5c42a6">cruelEngine::cruelScene::Sphere</a>
-, <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_triangle.html#ab633a704e80a028846c7b8bac338d1ec">cruelEngine::cruelScene::Triangle</a>
+: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_geom_task.html#a00a874f627c7eff1b444daf9608ec339">cruelEngine::cruelRender::GeomTask</a>
+, <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a4efe769e7113c5de5c7ecf26e0247020">cruelEngine::cruelRender::RenderSession</a>
+, <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#ae10da2fc27cb716143e421cc84ed2249">cruelEngine::cruelRender::RenderTask</a>
+</li>
+<li>prepare_assets()
+: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_geom_task.html#afe303d3bc560fe5b3933acbf56a61e53">cruelEngine::cruelRender::GeomTask</a>
+</li>
+<li>prepare_camera()
+: <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a9c3343c895f45bd6a80c967c9a044240">cruelEngine::cruelScene::Scene</a>
 </li>
 <li>prepare_pipeline()
-: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#a192c4b03bd7be53ac6697386ddcbf090">cruelEngine::cruelRender::RenderTask</a>
+: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_geom_task.html#a95d0eba4d650920a95356c70c4229d15">cruelEngine::cruelRender::GeomTask</a>
+, <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#a192c4b03bd7be53ac6697386ddcbf090">cruelEngine::cruelRender::RenderTask</a>
 , <a class="el" href="classcruel_engine_1_1_gui.html#a0b0f0a49e51dbe861d414e763e46fa47">cruelEngine::Gui</a>
 </li>
-<li>prepare_pipline_layout()
-: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#abf3fefe7695f40e5c08855a9126889f1">cruelEngine::cruelRender::RenderTask</a>
+<li>prepare_pipeline_layout()
+: <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_task.html#aafb4f075ecbd02eba228bb77b59bf2bf">cruelEngine::cruelRender::RenderTask</a>
 </li>
 <li>prepare_render_pass()
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_session.html#a143dc444ad4bec0d417ddff1da017870">cruelEngine::cruelRender::RenderSession</a>
@@ -129,8 +137,7 @@ $(function() {
 : <a class="el" href="structcruel_engine_1_1cruel_render_1_1_pipeline_status_1_1_input_assembly_state.html#a6c28bd43a5a1ead86a41740172375de1">cruelEngine::cruelRender::PipelineStatus::InputAssemblyState</a>
 </li>
 <li>proj
-: <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_sphere_1_1_uniform_buffer_object.html#afc7720e02b44a8514fbf48774b663ec8">cruelEngine::cruelScene::Sphere::UniformBufferObject</a>
-, <a class="el" href="structcruel_engine_1_1cruel_scene_1_1_triangle_1_1_uniform_buffer_object.html#a0d670a0b7bdbcd364bbb3c7bbad7cd42">cruelEngine::cruelScene::Triangle::UniformBufferObject</a>
+: <a class="el" href="structcruel_engine_1_1cruel_render_1_1_geom_task_1_1_uniform_buffer_object.html#a5a71a4fbe3da0e85f3551396a7817fe4">cruelEngine::cruelRender::GeomTask::UniformBufferObject</a>
 </li>
 <li>properties
 : <a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_context.html#acc12be8c07c4367e55ee08c0271c85b0">cruelEngine::cruelRender::RenderContext</a>

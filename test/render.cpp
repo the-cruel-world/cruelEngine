@@ -33,8 +33,11 @@ public:
     properties.window_prop.title = "cruelEngine::Triangle::second Window";
     render_context->add_session(properties.window_prop.title, properties);
 
-    // scene = std::make_unique<cruelEngine::cruelScene::Scene>(*render_context);
+    scene = std::make_shared<cruelEngine::cruelScene::Scene>();
     std::cout << "Scene created." << std::endl;
+
+    scene->addObject(std::make_shared<cruelEngine::cruelScene::SkyBox>("Sky", scene->get_camera()));
+    std::cout << "Scene object created." << std::endl;
 
     // scene->addObject("cube", 0,
     //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_TRIANGLE);
@@ -44,6 +47,10 @@ public:
 
     // scene->addObject("sphere", 0,
     //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_SPHERE);
+
+    render_context->get_session(0).load_scene(scene);
+    render_context->get_session(1).load_scene(scene);
+    std::cout << "Scene object loaded." << std::endl;
 
     render_context->draw();
   }
@@ -64,7 +71,7 @@ public:
       // (frame_time - _frame_time) * 1e-3 << " ms" << std::endl;
       if (_frame_time < frame_time)
         usleep(frame_time - _frame_time);
-      // render_context->render_frame();
+      render_context->render_frame();
     }
   }
 
@@ -86,7 +93,7 @@ private:
   cruelEngine::cruelRender::SessionProp properties = {
       {"cruelEngine::Triangle::main Window", 720, 640, false}};
 
-  // std::unique_ptr<cruelEngine::cruelScene::Scene> scene;
+  std::shared_ptr<cruelEngine::cruelScene::Scene> scene;
 
   std::unique_ptr<cruelEngine::cruelRender::RenderContext> render_context;
 

@@ -10,12 +10,11 @@
 
 namespace cruelEngine {
 namespace cruelRender {
-RenderTask::RenderTask(RenderSession &session, RenderPass &render_pass)
-    : session{session}, render_pass{render_pass} {}
+RenderTask::RenderTask(RenderSession &session,
+                       std::shared_ptr<cruelScene::Object> object)
+    : session{session}, object{object} {}
 
 RenderTask::~RenderTask() {}
-
-void RenderTask::prepare() {}
 
 void RenderTask::draw(CommandBuffer &commandBuffer, int index) {
   // commandBuffer.bindPipeLine(pipeline->get_handle(),
@@ -29,9 +28,9 @@ void RenderTask::render() {}
 
 void RenderTask::prepare_pipeline(VkPipelineCache pipeline_cache,
                                   PipelineStatus &pipeline_state) {
-  pipeline_state.set_pipeline_layout(*pipeline_layout);
+  // pipeline_state.set_pipeline_layout(*pipeline_layout);
 
-  pipeline_state.set_render_pass(render_pass);
+  // pipeline_state.set_render_pass(*render_pass);
 
   // std::cout << "direct: " << pipeline_layout->get_handle() << std::endl;
   // std::cout << "indire: " <<
@@ -40,14 +39,14 @@ void RenderTask::prepare_pipeline(VkPipelineCache pipeline_cache,
                                                 pipeline_cache, pipeline_state);
 }
 
-void RenderTask::prepare_pipline_layout(
+void RenderTask::prepare_pipeline_layout(
     const std::vector<ShaderModule> &shaders) {
   pipeline_layout =
       std::make_unique<PipelineLayout>(session.get_device(), shaders);
   // std::cout << "direct: " << pipeline_layout->get_handle() << std::endl;
 }
 
-void RenderTask::prepare_pipline_layout(
+void RenderTask::prepare_pipeline_layout(
     const std::vector<ShaderModule> &shaders,
     const VkPipelineLayoutCreateInfo &pipelineLayoutInfo) {
   pipeline_layout = std::make_unique<PipelineLayout>(

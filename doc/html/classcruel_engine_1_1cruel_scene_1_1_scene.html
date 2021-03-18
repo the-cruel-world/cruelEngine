@@ -67,6 +67,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classcruel_engine_1_1cruel_scene_1_1_scene-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -80,42 +81,58 @@ Collaboration diagram for cruelEngine::cruelScene::Scene:</div>
 <div class="dyncontent">
 <div class="center"><img src="classcruel_engine_1_1cruel_scene_1_1_scene__coll__graph.png" border="0" usemap="#acruel_engine_1_1cruel_scene_1_1_scene_coll__map" alt="Collaboration graph"/></div>
 <map name="acruel_engine_1_1cruel_scene_1_1_scene_coll__map" id="acruel_engine_1_1cruel_scene_1_1_scene_coll__map">
-<area shape="rect" title=" " alt="" coords="9,213,186,255"/>
-<area shape="rect" href="classcruel_engine_1_1cruel_render_1_1_render_context.html" title=" " alt="" coords="5,109,189,151"/>
-<area shape="rect" href="structcruel_engine_1_1cruel_render_1_1_render_prop.html" title=" " alt="" coords="5,5,189,47"/>
+<area shape="rect" title=" " alt="" coords="5,109,183,151"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_node.html" title=" " alt="" coords="5,5,183,47"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aed4f9f9479854089c7edcff9e96daeb0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#aed4f9f9479854089c7edcff9e96daeb0">Scene</a> (<a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_context.html">cruelRender::RenderContext</a> &amp;<a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a61e091073d682e4361dabd8b399c785e">render_context</a>)</td></tr>
-<tr class="separator:aed4f9f9479854089c7edcff9e96daeb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1e09b89dfc09fe23893cf7d28cc9b1c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#ad1e09b89dfc09fe23893cf7d28cc9b1c">Scene</a> ()</td></tr>
+<tr class="separator:ad1e09b89dfc09fe23893cf7d28cc9b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a774838ebbcbe180961bb78cd8a8663c1"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a774838ebbcbe180961bb78cd8a8663c1">~Scene</a> ()</td></tr>
 <tr class="separator:a774838ebbcbe180961bb78cd8a8663c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc74f076f2f8b13309d17306ecef8727"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#abc74f076f2f8b13309d17306ecef8727">addObject</a> (std::string name, <a class="el" href="types_8h.html#afaa62991928fb9fb18ff0db62a040aba">u32</a> session_idx, <a class="el" href="namespacecruel_engine_1_1cruel_scene.html#abf32f8c40e417fabc3d365e151f3da00">ObjectType</a> type)</td></tr>
-<tr class="separator:abc74f076f2f8b13309d17306ecef8727"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9799012253a878703fcc08a4ef626981"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a9799012253a878703fcc08a4ef626981">addObject</a> (std::shared_ptr&lt; <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a> &gt; obj)</td></tr>
+<tr class="separator:a9799012253a878703fcc08a4ef626981"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae45f3dc703c2251375d5524f88b5b598"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#ae45f3dc703c2251375d5524f88b5b598">rmObject</a> (std::string name)</td></tr>
 <tr class="separator:ae45f3dc703c2251375d5524f88b5b598"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af25790ac32045a190250b07d34603bf6"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::unique_ptr&lt; <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#af25790ac32045a190250b07d34603bf6">get_objs</a> () const</td></tr>
-<tr class="separator:af25790ac32045a190250b07d34603bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a3cd7a326efdfbdb3befb1b6367b098"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::shared_ptr&lt; <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a6a3cd7a326efdfbdb3befb1b6367b098">get_objs</a> () const</td></tr>
+<tr class="separator:a6a3cd7a326efdfbdb3befb1b6367b098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c3343c895f45bd6a80c967c9a044240"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a9c3343c895f45bd6a80c967c9a044240">prepare_camera</a> ()</td></tr>
+<tr class="separator:a9c3343c895f45bd6a80c967c9a044240"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3383edfa1d3ab40c47541ac1c673641"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_camera.html">Camera</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#ad3383edfa1d3ab40c47541ac1c673641">get_camera</a> ()</td></tr>
+<tr class="separator:ad3383edfa1d3ab40c47541ac1c673641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56c43e5e66d12a4745b26124bdc797b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a56c43e5e66d12a4745b26124bdc797b0">update</a> ()</td></tr>
 <tr class="separator:a56c43e5e66d12a4745b26124bdc797b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a293e8d986f699a2a8f5d330cf1bac844"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a293e8d986f699a2a8f5d330cf1bac844">render</a> ()</td></tr>
 <tr class="separator:a293e8d986f699a2a8f5d330cf1bac844"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a72e21f5ebf3a8e51bfe7050861e8cf27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a72e21f5ebf3a8e51bfe7050861e8cf27">set_root_node</a> (<a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a> &amp;node)</td></tr>
+<tr class="separator:a72e21f5ebf3a8e51bfe7050861e8cf27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca4c03f3842f9c7c853254adf3fe7652"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#aca4c03f3842f9c7c853254adf3fe7652">get_root_node</a> ()</td></tr>
+<tr class="separator:aca4c03f3842f9c7c853254adf3fe7652"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb27040c5a908e1c9b29e19df65b105f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#afb27040c5a908e1c9b29e19df65b105f">find_node</a> (const std::string &amp;name)</td></tr>
+<tr class="separator:afb27040c5a908e1c9b29e19df65b105f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
-<tr class="memitem:abffdaa0eea70da62ed95bbed11ad121f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#abffdaa0eea70da62ed95bbed11ad121f">sceneObjects</a> {}</td></tr>
-<tr class="separator:abffdaa0eea70da62ed95bbed11ad121f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61e091073d682e4361dabd8b399c785e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_context.html">cruelRender::RenderContext</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a61e091073d682e4361dabd8b399c785e">render_context</a></td></tr>
-<tr class="separator:a61e091073d682e4361dabd8b399c785e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb469efe5903551a7fa6db66ea31408"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#aacb469efe5903551a7fa6db66ea31408">sceneObjects</a> {}</td></tr>
+<tr class="separator:aacb469efe5903551a7fa6db66ea31408"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f4aac3cd7dee5b9e4194b9f68609248"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_camera.html">Camera</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a6f4aac3cd7dee5b9e4194b9f68609248">camera</a></td></tr>
+<tr class="separator:a6f4aac3cd7dee5b9e4194b9f68609248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9190268d2d7f8bd279b28c9acb1db011"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a9190268d2d7f8bd279b28c9acb1db011">nodes</a></td></tr>
+<tr class="separator:a9190268d2d7f8bd279b28c9acb1db011"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84b80fdfc9216647e53e1ada4ea8bfcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a84b80fdfc9216647e53e1ada4ea8bfcd">root</a> = nullptr</td></tr>
+<tr class="separator:a84b80fdfc9216647e53e1ada4ea8bfcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00041">41</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00011">11</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aed4f9f9479854089c7edcff9e96daeb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed4f9f9479854089c7edcff9e96daeb0">&#9670;&nbsp;</a></span>Scene()</h2>
+<a id="ad1e09b89dfc09fe23893cf7d28cc9b1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1e09b89dfc09fe23893cf7d28cc9b1c">&#9670;&nbsp;</a></span>Scene()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -123,14 +140,22 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">cruelEngine::cruelScene::Scene::Scene </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_context.html">cruelRender::RenderContext</a> &amp;&#160;</td>
-          <td class="paramname"><em>render_context</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00009">9</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00005">5</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classcruel_engine_1_1cruel_scene_1_1_scene_ad1e09b89dfc09fe23893cf7d28cc9b1c_cgraph.png" border="0" usemap="#aclasscruel_engine_1_1cruel_scene_1_1_scene_ad1e09b89dfc09fe23893cf7d28cc9b1c_cgraph" alt=""/></div>
+<map name="aclasscruel_engine_1_1cruel_scene_1_1_scene_ad1e09b89dfc09fe23893cf7d28cc9b1c_cgraph" id="aclasscruel_engine_1_1cruel_scene_1_1_scene_ad1e09b89dfc09fe23893cf7d28cc9b1c_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,183,47"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#a9c3343c895f45bd6a80c967c9a044240" title=" " alt="" coords="231,5,413,47"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -157,13 +182,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00012">12</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00007">7</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="abc74f076f2f8b13309d17306ecef8727"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc74f076f2f8b13309d17306ecef8727">&#9670;&nbsp;</a></span>addObject()</h2>
+<a id="a9799012253a878703fcc08a4ef626981"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9799012253a878703fcc08a4ef626981">&#9670;&nbsp;</a></span>addObject()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,35 +196,19 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">void cruelEngine::cruelScene::Scene::addObject </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a> &gt;&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="types_8h.html#afaa62991928fb9fb18ff0db62a040aba">u32</a>&#160;</td>
-          <td class="paramname"><em>session_idx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacecruel_engine_1_1cruel_scene.html#abf32f8c40e417fabc3d365e151f3da00">ObjectType</a>&#160;</td>
-          <td class="paramname"><em>type</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00014">14</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00009">9</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
 
 </div>
 </div>
-<a id="af25790ac32045a190250b07d34603bf6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af25790ac32045a190250b07d34603bf6">&#9670;&nbsp;</a></span>get_objs()</h2>
+<a id="afb27040c5a908e1c9b29e19df65b105f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb27040c5a908e1c9b29e19df65b105f">&#9670;&nbsp;</a></span>find_node()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,7 +217,52 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt;std::unique_ptr&lt;<a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a>&gt; &gt;&amp; cruelEngine::cruelScene::Scene::get_objs </td>
+          <td class="memname"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a>* cruelEngine::cruelScene::Scene::find_node </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad3383edfa1d3ab40c47541ac1c673641"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3383edfa1d3ab40c47541ac1c673641">&#9670;&nbsp;</a></span>get_camera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_camera.html">Camera</a> &amp; cruelEngine::cruelScene::Scene::get_camera </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00022">22</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a6a3cd7a326efdfbdb3befb1b6367b098"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a3cd7a326efdfbdb3befb1b6367b098">&#9670;&nbsp;</a></span>get_objs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt;std::shared_ptr&lt;<a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a>&gt; &gt;&amp; cruelEngine::cruelScene::Scene::get_objs </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -221,7 +275,62 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00050">50</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00020">20</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aca4c03f3842f9c7c853254adf3fe7652"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca4c03f3842f9c7c853254adf3fe7652">&#9670;&nbsp;</a></span>get_root_node()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a>&amp; cruelEngine::cruelScene::Scene::get_root_node </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00042">42</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a9c3343c895f45bd6a80c967c9a044240"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c3343c895f45bd6a80c967c9a044240">&#9670;&nbsp;</a></span>prepare_camera()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cruelEngine::cruelScene::Scene::prepare_camera </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00020">20</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classcruel_engine_1_1cruel_scene_1_1_scene_a9c3343c895f45bd6a80c967c9a044240_icgraph.png" border="0" usemap="#aclasscruel_engine_1_1cruel_scene_1_1_scene_a9c3343c895f45bd6a80c967c9a044240_icgraph" alt=""/></div>
+<map name="aclasscruel_engine_1_1cruel_scene_1_1_scene_a9c3343c895f45bd6a80c967c9a044240_icgraph" id="aclasscruel_engine_1_1cruel_scene_1_1_scene_a9c3343c895f45bd6a80c967c9a044240_icgraph">
+<area shape="rect" title=" " alt="" coords="231,5,413,47"/>
+<area shape="rect" href="classcruel_engine_1_1cruel_scene_1_1_scene.html#ad1e09b89dfc09fe23893cf7d28cc9b1c" title=" " alt="" coords="5,5,183,47"/>
+</map>
+</div>
 
 </div>
 </div>
@@ -240,7 +349,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00034">34</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00018">18</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
 
 </div>
 </div>
@@ -260,7 +369,35 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00030">30</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00014">14</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a72e21f5ebf3a8e51bfe7050861e8cf27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72e21f5ebf3a8e51bfe7050861e8cf27">&#9670;&nbsp;</a></span>set_root_node()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void cruelEngine::cruelScene::Scene::set_root_node </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a> &amp;&#160;</td>
+          <td class="paramname"><em>node</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00041">41</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
 
 </div>
 </div>
@@ -279,13 +416,13 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00032">32</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8cpp_source.html#l00016">16</a> of file <a class="el" href="scene_8cpp_source.html">scene.cpp</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a61e091073d682e4361dabd8b399c785e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61e091073d682e4361dabd8b399c785e">&#9670;&nbsp;</a></span>render_context</h2>
+<a id="a6f4aac3cd7dee5b9e4194b9f68609248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f4aac3cd7dee5b9e4194b9f68609248">&#9670;&nbsp;</a></span>camera</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,7 +431,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classcruel_engine_1_1cruel_render_1_1_render_context.html">cruelRender::RenderContext</a>&amp; cruelEngine::cruelScene::Scene::render_context</td>
+          <td class="memname">std::unique_ptr&lt;<a class="el" href="classcruel_engine_1_1cruel_scene_1_1_camera.html">Camera</a>&gt; cruelEngine::cruelScene::Scene::camera</td>
         </tr>
       </table>
   </td>
@@ -304,12 +441,12 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00061">61</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00035">35</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
 
 </div>
 </div>
-<a id="abffdaa0eea70da62ed95bbed11ad121f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abffdaa0eea70da62ed95bbed11ad121f">&#9670;&nbsp;</a></span>sceneObjects</h2>
+<a id="a9190268d2d7f8bd279b28c9acb1db011"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9190268d2d7f8bd279b28c9acb1db011">&#9670;&nbsp;</a></span>nodes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -318,7 +455,57 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;std::unique_ptr&lt;<a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a>&gt; &gt; cruelEngine::cruelScene::Scene::sceneObjects {}</td>
+          <td class="memname">std::vector&lt;std::unique_ptr&lt;<a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a>&gt; &gt; cruelEngine::cruelScene::Scene::nodes</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>All nodes in this scene. </p>
+
+<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00040">40</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a84b80fdfc9216647e53e1ada4ea8bfcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84b80fdfc9216647e53e1ada4ea8bfcd">&#9670;&nbsp;</a></span>root</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classcruel_engine_1_1cruel_scene_1_1_node.html">Node</a>* cruelEngine::cruelScene::Scene::root = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>pointer to the root node. </p>
+
+<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00046">46</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aacb469efe5903551a7fa6db66ea31408"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacb469efe5903551a7fa6db66ea31408">&#9670;&nbsp;</a></span>sceneObjects</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::shared_ptr&lt;<a class="el" href="classcruel_engine_1_1cruel_scene_1_1_object.html">Object</a>&gt; &gt; cruelEngine::cruelScene::Scene::sceneObjects {}</td>
         </tr>
       </table>
   </td>
@@ -328,7 +515,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00059">59</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scene_8hpp_source.html#l00033">33</a> of file <a class="el" href="scene_8hpp_source.html">scene.hpp</a>.</p>
 
 </div>
 </div>
