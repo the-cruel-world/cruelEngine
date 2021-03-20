@@ -18,4 +18,3 @@
 #include "vulkan/semaphores.hpp"
 #include "vulkan/shader.hpp"
 #include "vulkan/swapchain.hpp"
-#include "vulkan/texture.hpp"

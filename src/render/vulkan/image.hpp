@@ -15,6 +15,8 @@ public:
 
   Image operator=(const Image &) = delete;
 
+  Image operator=(Image &&) = delete;
+
   ~Image();
 
   LogicalDevice &get_device() const { return device; }
@@ -30,11 +32,15 @@ private:
 
   VkImage handle = VK_NULL_HANDLE;
 
-  VkImageType type = {};
+  VkDeviceMemory imageMemory = VK_NULL_HANDLE;
 
-  VkFormat format = {};
+  VkImageType type {};
 
-  // VkImageUsageFlags usage{};
+  VkFormat format {};
+
+  VkImageTiling tiling {};
+
+  VkImageUsageFlags usage {};
 };
 } // namespace cruelRender
 } // namespace cruelEngine

@@ -118,7 +118,6 @@ void GeomTask::prepare_pipeline() {
       cruelScene::Vertex::getAttributeDescriptions()[0]);
   vertex_input_state.attributes.push_back(
       cruelScene::Vertex::getAttributeDescriptions()[1]);
-  VkVertexInputAttributeDescription attributeDescriptions;
 
   vertex_input_state.bindings.push_back(
       cruelScene::Vertex::getBindingDescription());

@@ -76,6 +76,9 @@ void RenderContext::draw() {
   }
 }
 
+/**
+ * Need Multi thread!
+*/
 void RenderContext::render_frame() {
   // std::cout << "session num: " << sessions.size() << std::endl;
   for (auto &session : sessions) {

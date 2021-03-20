@@ -45,7 +45,6 @@ VkBool32 Queue::can_present(const VkSurfaceKHR &surface) {
   VkBool32 can_present = false;
   vkGetPhysicalDeviceSurfaceSupportKHR(device.get_physicalDevice().get_handle(),
                                        family_index, surface, &can_present);
-  //! How can you even forget to return this important value?
   return can_present;
 }
 
