@@ -1,9 +1,0 @@
-<map id="cruelEngine::cruelRender::LogicalDevice::get_queue_by_flags" name="cruelEngine::cruelRender::LogicalDevice::get_queue_by_flags">
-<area shape="rect" id="node1" title="Get a queue from the device by types." alt="" coords="791,35,988,91"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a208b1fd8f87f5fec9a53e31cc78d9384" title="End the record of one time command." alt="" coords="516,5,743,47"/>
-<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a992d6f9aaf4bbd0fe0cbed6f4f241c70" title="Get a proper graphics queue from the device." alt="" coords="525,71,734,127"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#aab86a436b97b2c995dc4a171eb567e5d" title=" " alt="" coords="261,5,445,47"/>
-<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_buffer.html#abe158d1e85f9a35bb30f1969c0774bbd" title=" " alt="" coords="5,5,189,47"/>
-<area shape="rect" id="node6" href="$classcruel_engine_1_1cruel_render_1_1_command_pool.html#aa93d8e113f459d0e8e749fb0dc8e6498" title=" " alt="" coords="239,75,467,116"/>
-<area shape="rect" id="node7" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#a3379e3549cc4309181196b2c835e3db8" title=" " alt="" coords="237,140,468,181"/>
-</map>

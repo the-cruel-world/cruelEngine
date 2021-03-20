@@ -1,6 +1,9 @@
 #include "render_session.hpp"
-#include "render_task.hpp"
 
+#include "../scene/object.hpp"
+#include "../scene/scene.hpp"
+#include "render_task.hpp"
+#include "render_tasks/render_tasks.hpp"
 #include "vulkan/command_buffer.hpp"
 #include "vulkan/frame_buffer.hpp"
 #include "vulkan/instance.hpp"
@@ -8,10 +11,6 @@
 #include "vulkan/queue.hpp"
 #include "vulkan/render_pass.hpp"
 #include "vulkan/swapchain.hpp"
-
-#include "../scene/object.hpp"
-#include "../scene/scene.hpp"
-#include "render_tasks/render_tasks.hpp"
 
 namespace cruelEngine {
 namespace cruelRender {
@@ -22,12 +21,15 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
                                               session_properties} {
   //! Create a new window for this session.
   window = std::make_unique<Window>(session_properties.window_prop);
+  on_window_resize_callback = on_window_resize_cb;
+  glfwSetFramebufferSizeCallback(&window->get_handle(),
+                                 on_window_resize_callback);
+
   //! create a render surface for this session.
   VK_CHECK_RESULT(glfwCreateWindowSurface(
       instance.get_handle(), &(window->get_handle()), nullptr, &surface));
 
   VkExtent2D extent = {};
-  u32 imgCount = 5;
 
   graphic_queue = &device.get_suitable_graphics_queue(0);
 
@@ -62,6 +64,15 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
         device.request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
   }
   std::cout << "[Rendersession] commandbuffers creatd!" << std::endl;
+}
+
+void on_window_resize_cb(GLFWwindow *window, int width, int height) {
+  // std::cout <<
+  // "resizedresizedresizedresizedresizedresizedresizedresizedresized"
+  //              "resized"
+  // << std::endl;
+  // auto app = reinterpret_cast<Texture*>(glfwGetWindowUserPointer(window));
+  // app->resize_time = clock();
 }
 
 RenderSession::~RenderSession() {
@@ -163,8 +174,9 @@ void RenderSession::render_frame() {
   VkResult result = swapchain->acquire_next_image(
       image_index, imageAvailableSemaphores[currentFrame]);
 
-  if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {
-    std::cout << "vkAcquireNextImageKHR Failed" << std::endl;
+  if (result == VK_ERROR_OUT_OF_DATE_KHR) {
+    update_swapchain();
+    return;
   }
 
   if (imagesInFlight[image_index] != VK_NULL_HANDLE) {
@@ -208,8 +220,12 @@ void RenderSession::render_frame() {
   presentInfo.pImageIndices = &image_index;
   presentInfo.pResults = nullptr; // Optional
 
-  VK_CHECK_RESULT(present_queue->present(presentInfo));
+  result = present_queue->present(presentInfo);
   present_queue->wait_idle();
+
+  if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR) {
+    update_swapchain();
+  }
 
   currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 }
@@ -247,6 +263,12 @@ void RenderSession::destroySemaphores() {
                        nullptr);
     vkDestroyFence(device.get_handle(), inFlightFences[i], nullptr);
   }
+
+  inFlightFences.clear();
+  imagesInFlight.clear();
+
+  imageAvailableSemaphores.clear();
+  renderFinishedSemaphores.clear();
 }
 
 void RenderSession::load_scene(std::shared_ptr<cruelScene::Scene> new_scene) {
@@ -271,5 +293,45 @@ bool RenderSession::is_session_alive() {
   }
   return false;
 }
+
+void RenderSession::update_swapchain() {
+  int width = 0, height = 0;
+  glfwGetFramebufferSize(&window->get_handle(), &width, &height);
+  while (width == 0 || height == 0) {
+    glfwGetFramebufferSize(&window->get_handle(), &width, &height);
+    glfwWaitEvents();
+  }
+  vkDeviceWaitIdle(device.get_handle());
+
+  commandBuffers.clear();
+  destroySemaphores();
+  frameBuffer.clear();
+  render_pass.reset();
+  swapchain = std::make_unique<Swapchain>(
+      *swapchain, VkExtent2D({(u32)width, (u32)height}));
+
+  prepare_render_pass();
+
+  for (auto &image_view : swapchain->get_imageViews()) {
+    frameBuffer.push_back(std::make_unique<FrameBuffer>(
+        device, image_view, swapchain->get_properties().extent, *render_pass));
+  }
+
+  createSemaphores();
+
+  for (size_t i = 0; i < imgCount; i++) {
+    commandBuffers.push_back(
+        device.request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
+  }
+
+  for (auto &task : tasks) {
+    task->update_render_pass(*render_pass);
+  }
+
+  draw();
+}
+
+void RenderSession::set_session_id(u32 new_id) { session_id = new_id; }
+
 } // namespace cruelRender
 } // namespace cruelEngine

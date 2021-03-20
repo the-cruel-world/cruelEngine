@@ -52,10 +52,14 @@ public:
   prepare_pipeline_layout(const std::vector<ShaderModule> &shaders,
                           const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
 
+  virtual void prepare_pipeline() = 0;
+
   virtual void prepare_pipeline(VkPipelineCache pipeline_cache,
                                 PipelineStatus &pipeline_state);
 
   virtual void draw(cruelRender::CommandBuffer &commandBuffer, int index);
+
+  virtual void update_render_pass(RenderPass &render_pass) = 0;
 
   virtual void render();
 

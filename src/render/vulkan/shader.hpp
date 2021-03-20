@@ -12,6 +12,33 @@ size_t readFile(const std::string &filename, std::vector<char> &source);
 VkShaderModule createShaderModule(const VkDevice logicalDevice,
                                   const std::vector<char> &code);
 
+enum ShaderResourceType {
+  Input = 0,
+  InputAttachment,
+  Output,
+  Image,
+  ImageSampler,
+  Sampler,
+  BufferUniform,
+  PushConstant,
+  All
+};
+
+struct ShaderResource {
+  VkShaderStageFlags stages;
+  ShaderResourceType type;
+
+  u32 set;
+  u32 binding;
+  u32 location;
+  u32 vecSize;
+  u32 arraySize;
+  u32 offSet;
+  u32 size;
+
+  std::string name;
+};
+
 class ShaderModule {
 public:
   ShaderModule(const LogicalDevice &device, const std::string &filename,

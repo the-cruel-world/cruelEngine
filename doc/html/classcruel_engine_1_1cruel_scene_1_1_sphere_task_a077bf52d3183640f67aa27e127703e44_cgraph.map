@@ -1,7 +1,0 @@
-<map id="cruelEngine::cruelScene::SphereTask::render" name="cruelEngine::cruelScene::SphereTask::render">
-<area shape="rect" id="node1" title=" " alt="" coords="5,71,183,112"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_swapchain.html#a2f53a95841f46fd677f89bd1c171fd52" title=" " alt="" coords="254,5,438,47"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#adb374c48ea848838bddff142dc3043d9" title=" " alt="" coords="231,71,461,112"/>
-<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_uniform_buffer.html#ac9f4c0ecf1496f42fdd24a5619f973ae" title=" " alt="" coords="254,136,438,177"/>
-<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671" title=" " alt="" coords="509,136,711,177"/>
-</map>

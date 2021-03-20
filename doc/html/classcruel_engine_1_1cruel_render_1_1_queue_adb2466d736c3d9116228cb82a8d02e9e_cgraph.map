@@ -1,5 +1,0 @@
-<map id="cruelEngine::cruelRender::Queue::submit" name="cruelEngine::cruelRender::Queue::submit">
-<area shape="rect" id="node1" title=" " alt="" coords="5,39,189,80"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a15e383648d131ef2bb4596bdd82b7047" title="Return a reference to the Vulkan CommandBuffer." alt="" coords="237,5,455,47"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#a2d474cba0ea8b3b01932ae2d6daba4f8" title=" " alt="" coords="254,71,438,112"/>
-</map>

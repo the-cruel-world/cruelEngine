@@ -1,6 +1,7 @@
 #pragma once
-#include <string>
 #include <vulkan/vulkan.h>
+
+#include <string>
 
 #define VK_CHECK_RESULT(stat)                                                  \
   do {                                                                         \

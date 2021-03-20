@@ -16,22 +16,16 @@ bool cruelEngine::Window::glfw_inited = false;
 
 class Render : cruelEngine::Application {
 public:
-  Render() {
+  Render(size_t size) {
     std::cout << "frame time: " << frame_time << std::endl;
 
     render_context =
         std::make_unique<cruelEngine::cruelRender::RenderContext>(context_prop);
     std::cout << "Render context created." << std::endl;
 
-    properties.window_prop.title = "cruelEngine::Triangle::main Window";
-    properties.window_prop.width = 1280;
-    properties.window_prop.height = 720;
-    render_context->add_session(properties.window_prop.title, properties);
-
     properties.window_prop.width = 640;
     properties.window_prop.height = 480;
-    properties.window_prop.title = "cruelEngine::Triangle::second Window";
-    render_context->add_session(properties.window_prop.title, properties);
+    properties.window_prop.title = "cruelEngine::Triangle::new Window";
 
     scene = std::make_shared<cruelEngine::cruelScene::Scene>();
     std::cout << "Scene created." << std::endl;
@@ -39,17 +33,10 @@ public:
     scene->addObject(std::make_shared<cruelEngine::cruelScene::SkyBox>("Sky", scene->get_camera()));
     std::cout << "Scene object created." << std::endl;
 
-    // scene->addObject("cube", 0,
-    //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_TRIANGLE);
-
-    // scene->addObject("tri", 1,
-    //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_TRIANGLE);
-
-    // scene->addObject("sphere", 0,
-    //                  cruelEngine::cruelScene::SCENE_OBJ_TYPE_SPHERE);
-
-    render_context->get_session(0).load_scene(scene);
-    render_context->get_session(1).load_scene(scene);
+    for (size_t i = 0; i < size; i++) {
+      render_context->add_session(properties.window_prop.title, properties);
+      render_context->get_session(i).load_scene(scene);
+    }
     std::cout << "Scene object loaded." << std::endl;
 
     render_context->draw();
@@ -101,9 +88,15 @@ private:
 };
 
 int main(int argc, char const *argv[]) {
-  Render render;
 
-  render.main_loop();
+  if (argc < 2)
+  {
+    printf("Usage: \n"
+    "  <%s>   [num of windows]\n", argv[0]);
+    return -1;
+  }
+
+  Render(atoi(argv[1])).main_loop();
 
   return 0;
 }

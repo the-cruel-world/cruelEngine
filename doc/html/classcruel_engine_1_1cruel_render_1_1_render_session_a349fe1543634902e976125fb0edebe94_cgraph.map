@@ -1,7 +1,0 @@
-<map id="cruelEngine::cruelRender::RenderSession::render_frame" name="cruelEngine::cruelRender::RenderSession::render_frame">
-<area shape="rect" id="node1" title=" " alt="" coords="5,104,228,145"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671" title=" " alt="" coords="276,5,477,47"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#ac90d0a328620769ec9cfb4f6ac565427" title=" " alt="" coords="285,71,469,112"/>
-<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#a61dba323e16f6192c17d7f3da0f41135" title=" " alt="" coords="285,136,469,177"/>
-<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#acc48b3c1326397d3eff1a1d5e7ffa838" title=" " alt="" coords="285,201,469,243"/>
-</map>

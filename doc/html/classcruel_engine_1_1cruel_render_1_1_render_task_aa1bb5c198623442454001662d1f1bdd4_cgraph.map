@@ -1,4 +1,0 @@
-<map id="cruelEngine::cruelRender::RenderTask::draw" name="cruelEngine::cruelRender::RenderTask::draw">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,189,47"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_command_buffer.html#a15e383648d131ef2bb4596bdd82b7047" title="Return a reference to the Vulkan CommandBuffer." alt="" coords="237,5,455,47"/>
-</map>

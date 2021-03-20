@@ -20,7 +20,7 @@ public:
 
   ~Sampler();
 
-  VkSampler get_handle() const { return handle; }
+  VkSampler get_handle() const;
 
 private:
   LogicalDevice &device;

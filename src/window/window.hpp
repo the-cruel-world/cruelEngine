@@ -1,7 +1,9 @@
 #pragma once
-#include "../types.h"
 #include <GLFW/glfw3.h>
+
 #include <string>
+
+#include "../types.h"
 
 namespace cruelEngine {
 struct WindowProp {

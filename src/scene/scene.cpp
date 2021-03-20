@@ -1,4 +1,5 @@
 #include "scene.hpp"
+
 #include "object.hpp"
 
 namespace cruelEngine::cruelScene {

@@ -3,7 +3,6 @@
 #include "../render_session.hpp"
 #include "../render_task.hpp"
 #include "../vkcommon.h"
-
 #include "../vulkan/buffer.hpp"
 #include "../vulkan/buffer_pool.hpp"
 #include "../vulkan/command_buffer.hpp"
@@ -30,7 +29,11 @@ public:
   void prepare_pipeline(VkPipelineCache pipeline_cache,
                         PipelineStatus &pipeline_state);
 
+  void prepare_pipeline();
+
   void render();
+
+  void update_render_pass(RenderPass &render_pass);
 
   //   void prepare_render_pass();
 

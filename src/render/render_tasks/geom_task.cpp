@@ -10,6 +10,32 @@ GeomTask::GeomTask(RenderSession &session,
   prepare();
 };
 
+void GeomTask::update_render_pass(RenderPass &render_pass) {
+  pipeline.reset();
+  pipeline_layout.reset();
+  std::vector<ShaderModule> shaders{};
+  shaders.emplace_back(session.get_device(),
+                       "/home/yiwen/program/cruelworld/engine/data/shaders/"
+                       "wireframe/frag.spv",
+                       "main", VK_SHADER_STAGE_FRAGMENT_BIT);
+
+  shaders.emplace_back(session.get_device(),
+                       "/home/yiwen/program/cruelworld/engine/data/shaders/"
+                       "wireframe/vert.spv",
+                       "main", VK_SHADER_STAGE_VERTEX_BIT);
+
+  VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
+  pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+  pipelineLayoutInfo.setLayoutCount = 1;
+  pipelineLayoutInfo.pSetLayouts =
+      &descriptor_set_layout->get_handle();         // Optional
+  pipelineLayoutInfo.pushConstantRangeCount = 0;    // Optional
+  pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
+
+  prepare_pipeline_layout(shaders, pipelineLayoutInfo);
+  prepare_pipeline();
+}
+
 void GeomTask::draw(cruelRender::CommandBuffer &commandBuffer, int index) {
   vkCmdBindPipeline(commandBuffer.get_handle(), VK_PIPELINE_BIND_POINT_GRAPHICS,
                     pipeline->get_handle());
@@ -40,8 +66,11 @@ void GeomTask::render() {
 
   UniformBufferObject ubo{};
 
-  ubo.model = glm::rotate(glm::mat4(1.0f), time * glm::radians(90.0f),
+  ubo.model = glm::rotate(glm::mat4(1.0f), time * 0.1f * glm::radians(90.0f),
                           glm::vec3(0.0f, 1.0f, 0.0f));
+
+  ubo.model = glm::scale(ubo.model, glm::vec3(5.0f));
+
   ubo.view = glm::lookAt(
       glm::normalize(glm::vec3(1.0f, -1.0f, -2.0f)) * glm::vec3(3.0),
       glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
@@ -71,14 +100,17 @@ void GeomTask::prepare() {
 
   VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
   pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-  pipelineLayoutInfo.setLayoutCount = 1; // Optional
+  pipelineLayoutInfo.setLayoutCount = 1;
   pipelineLayoutInfo.pSetLayouts =
       &descriptor_set_layout->get_handle();         // Optional
   pipelineLayoutInfo.pushConstantRangeCount = 0;    // Optional
   pipelineLayoutInfo.pPushConstantRanges = nullptr; // Optional
-
   prepare_pipeline_layout(shaders, pipelineLayoutInfo);
 
+  prepare_pipeline();
+}
+
+void GeomTask::prepare_pipeline() {
   PipelineStatus pipeline_state{};
   PipelineStatus::VertexInputState vertex_input_state;
 
@@ -95,9 +127,9 @@ void GeomTask::prepare() {
   PipelineStatus::RasterizationState rasterization_state = {
       VK_FALSE,
       VK_FALSE,
-      VK_POLYGON_MODE_LINE,
+      VK_POLYGON_MODE_FILL,
       VK_CULL_MODE_BACK_BIT,
-      VK_FRONT_FACE_COUNTER_CLOCKWISE,
+      VK_FRONT_FACE_CLOCKWISE,
       VK_FALSE};
   PipelineStatus::ViewportState viewport_state;
   PipelineStatus::MultisampleState multisample_state = {
@@ -127,6 +159,8 @@ void GeomTask::prepare() {
   pipeline_state.set_depth_stencil_state(depth_stencil_state);
   pipeline_state.set_color_blend_state(color_blend_state);
   pipeline_state.set_dynamic_state(dynamic_state);
+  pipeline_state.set_pipeline_layout(*pipeline_layout);
+  pipeline_state.set_render_pass(session.get_render_pass());
 
   pipeline_state.set_subpass_index(0);
 
@@ -135,13 +169,6 @@ void GeomTask::prepare() {
 
 void GeomTask::prepare_pipeline(VkPipelineCache pipeline_cache,
                                 PipelineStatus &pipeline_state) {
-  pipeline_state.set_pipeline_layout(*pipeline_layout);
-
-  pipeline_state.set_render_pass(session.get_render_pass());
-
-  // std::cout << "direct: " << pipeline_layout->get_handle() << std::endl;
-  // std::cout << "indire: " <<
-  // pipeline_state.get_pipeline_layout()->get_handle() << std::endl;
   pipeline = std::make_unique<GraphicsPipeline>(session.get_device(),
                                                 pipeline_cache, pipeline_state);
 }

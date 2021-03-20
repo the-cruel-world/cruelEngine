@@ -1,8 +1,0 @@
-<map id="cruelEngine::cruelRender::CommandBuffer::endOneTime" name="cruelEngine::cruelRender::CommandBuffer::endOneTime">
-<area shape="rect" id="node1" title="End the record of one time command." alt="" coords="5,136,232,177"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_command_pool.html#aac3834e97b6836b70583f23f5d5b2f6c" title=" " alt="" coords="281,5,485,47"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_command_pool.html#a1ba2eab8d4f2463bd5aa5f0b3142ee9a" title=" " alt="" coords="280,71,485,112"/>
-<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a1a5a45243654dc5db19b2f9f9cdc8671" title=" " alt="" coords="282,136,483,177"/>
-<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_queue.html#ac90d0a328620769ec9cfb4f6ac565427" title=" " alt="" coords="291,201,475,243"/>
-<area shape="rect" id="node6" href="$classcruel_engine_1_1cruel_render_1_1_logical_device.html#a20da049e506d61fa17ceb80d128f1f11" title="Get a queue from the device by types." alt="" coords="284,267,481,323"/>
-</map>

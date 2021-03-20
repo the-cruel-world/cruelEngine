@@ -62,10 +62,12 @@ RenderSession &RenderContext::get_session(u32 index) const {
 
 void RenderContext::add_session(std::string session_name,
                                 SessionProp &properties) {
+  u32 id = sessions.size();
   sessions.push_back(
       std::make_unique<RenderSession>(*instance, *device, properties));
+  sessions.back()->set_session_id(id);
   std::cout << "[RenderContext] Render Session created : " << session_name
-            << std::endl;
+            << "\tid:" << sessions.back()->get_session_id() << std::endl;
 }
 
 void RenderContext::draw() {

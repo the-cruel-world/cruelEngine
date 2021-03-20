@@ -1,9 +1,0 @@
-<map id="cruelEngine::cruelScene::Sphere::create_buffer" name="cruelEngine::cruelScene::Sphere::create_buffer">
-<area shape="rect" id="node1" title=" " alt="" coords="5,136,183,177"/>
-<area shape="rect" id="node2" href="$classcruel_engine_1_1cruel_render_1_1_render_context.html#ab937f9431962133a1cf77ae419afb31f" title=" " alt="" coords="243,5,449,47"/>
-<area shape="rect" id="node3" href="$classcruel_engine_1_1cruel_render_1_1_swapchain.html#acac6a19c973f83e541b64458dcafca90" title=" " alt="" coords="254,71,438,112"/>
-<area shape="rect" id="node4" href="$classcruel_engine_1_1cruel_render_1_1_render_context.html#ab194b9d8a834a6641b902559adb1fc4e" title=" " alt="" coords="240,136,452,177"/>
-<area shape="rect" id="node5" href="$classcruel_engine_1_1cruel_render_1_1_render_session.html#adb374c48ea848838bddff142dc3043d9" title=" " alt="" coords="231,201,461,243"/>
-<area shape="rect" id="node6" href="$namespacecruel_engine_1_1cruel_scene.html#a6db2a4f50f5ec400e49dd254af605ce6" title=" " alt="" coords="257,267,435,308"/>
-<area shape="rect" id="node7" href="$structcruel_engine_1_1cruel_scene_1_1_mesht.html#ad05e3a944d9b95975be471e50bb60c31" title=" " alt="" coords="509,267,687,308"/>
-</map>

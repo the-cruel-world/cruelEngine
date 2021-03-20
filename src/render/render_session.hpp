@@ -48,8 +48,12 @@ public:
 
   ~RenderSession();
 
-  // different types of update_swapchain
-  void update_swapchain() {}
+  /**
+   * \brief update the swapchain
+   * When the a window_resize event is captured, execute this function
+   * to rebuild a new swapchain.
+   */
+  void update_swapchain();
 
   void recreate_swapchain() {}
 
@@ -59,6 +63,10 @@ public:
 
   void prepare();
 
+  /**
+   * Create a proper render pass according to the render properties.
+   * Use subpasses. see [render pass best practice];
+   */
   void prepare_render_pass();
 
   void draw();
@@ -81,15 +89,24 @@ public:
 
   void destroySemaphores();
 
+  void set_session_id(u32 new_id);
+
+  u32 get_session_id() const { return session_id; }
+
 private:
+  u32 session_id = 0;
+
+  u32 imgCount = 5;
+
   const int MAX_FRAMES_IN_FLIGHT = 2;
+
   VkSemaphore imageAvailableSemaphore = VK_NULL_HANDLE;
   VkSemaphore renderFinishedSemaphore = VK_NULL_HANDLE;
   std::vector<VkSemaphore> imageAvailableSemaphores{};
   std::vector<VkSemaphore> renderFinishedSemaphores{};
 
-  std::vector<VkFence> inFlightFences;
-  std::vector<VkFence> imagesInFlight;
+  std::vector<VkFence> inFlightFences{};
+  std::vector<VkFence> imagesInFlight{};
   size_t currentFrame = 0;
 
   //! \brief The reference points to the instance of the render context
@@ -117,6 +134,12 @@ private:
   //! \brief The redner properties of a render session.
   SessionProp session_properties;
 
+  /**
+   * The callback function react to window_resize_event.
+   */
+  void (*on_window_resize_callback)(GLFWwindow *window, int width,
+                                    int height) = nullptr;
+
   Queue *graphic_queue;
   Queue *present_queue;
 
@@ -128,5 +151,7 @@ private:
 
   std::vector<std::unique_ptr<RenderTask>> tasks;
 };
+
+void on_window_resize_cb(GLFWwindow *window, int width, int height);
 } // namespace cruelRender
 } // namespace cruelEngine

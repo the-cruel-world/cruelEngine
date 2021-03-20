@@ -28,7 +28,6 @@ DescriptorPool::~DescriptorPool() {
 DescriptorSet::DescriptorSet(LogicalDevice &device, DescriptorSetLayout &layout,
                              DescriptorPool &pool)
     : device{device}, layout{layout}, pool{pool} {
-
   VkDescriptorSetAllocateInfo allocInfo{};
   allocInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
   allocInfo.descriptorPool = pool.get_handle();
