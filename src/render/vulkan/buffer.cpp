@@ -164,8 +164,10 @@ void Buffer::destroyBuffer() {
 
 void Buffer::load(void *data) {
   if (buffer_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT) {
-    load_stage(data,
-               device.request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
+
+    CommandBuffer cmdBuffer(device.get_commanfPool(),
+                            VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+    load_stage(data, cmdBuffer);
     return;
   }
   void *_data;

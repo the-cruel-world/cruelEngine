@@ -3,14 +3,29 @@
 #include "command_buffer.hpp"
 #include "logical_device.hpp"
 
-namespace cruelEngine {
-namespace cruelRender {
-CommandPool::CommandPool(LogicalDevice &_device) : device(_device) {
+namespace cruelEngine::cruelRender {
+CommandPool::CommandPool(LogicalDevice &device, u32 queueFamilyIndex,
+                         CommandBuffer::ResetMode resetMode)
+    : device{device}, queueFamilyIndex{queueFamilyIndex}, resetMode{resetMode} {
+
+  VkCommandPoolCreateFlags flags;
+
+  switch (resetMode) {
+  case CommandBuffer::ResetMode::ResetIndividually:
+  case CommandBuffer::ResetMode::ReAllocate:
+    flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    break;
+
+  case CommandBuffer::ResetMode::ResetPool:
+  default:
+    flags = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
+    break;
+  }
+
   VkCommandPoolCreateInfo poolInfo{};
   poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-  poolInfo.queueFamilyIndex =
-      device.get_suitable_graphics_queue(0).get_family_index();
-  poolInfo.flags = 0; // Optional
+  poolInfo.queueFamilyIndex = queueFamilyIndex;
+  poolInfo.flags = flags;
 
   if (vkCreateCommandPool(device.get_handle(), &poolInfo, nullptr, &handle) !=
       VK_SUCCESS) {
@@ -29,7 +44,14 @@ CommandPool::~CommandPool() {
 }
 
 CommandBuffer &
-CommandPool::request_commandbuffer(const VkCommandBufferLevel &_level) {
+CommandPool::RequestCommandBuffer(const VkCommandBufferLevel &_level) {
+
+  fprintf(stdout, "[CommandPool] Pool %p: active primary command buffers: %d\n",
+          this, active_primary_command_buffer_count);
+  fprintf(stdout,
+          "[CommandPool] Pool %p: active secondary command buffers: %d\n", this,
+          active_secondary_command_buffer_count);
+
   if (_level == VK_COMMAND_BUFFER_LEVEL_PRIMARY) {
     if (active_primary_command_buffer_count < primary_command_buffers.size()) {
       return *primary_command_buffers.at(active_primary_command_buffer_count++);
@@ -56,5 +78,57 @@ CommandPool::request_commandbuffer(const VkCommandBufferLevel &_level) {
     throw std::runtime_error("Wrong command level. primary or secondary.");
   }
 }
-} // namespace cruelRender
-} // namespace cruelEngine
+
+VkResult CommandPool::ResetPool() {
+  VkResult result = VK_SUCCESS;
+  switch (resetMode) {
+  case CommandBuffer::ResetMode::ResetIndividually: {
+    result = ResetCommandBuffers();
+
+    break;
+  }
+  case CommandBuffer::ResetMode::ResetPool: {
+    result = vkResetCommandPool(device.get_handle(), handle, 0);
+
+    if (result != VK_SUCCESS)
+      return result;
+
+    result = ResetCommandBuffers();
+
+    break;
+  }
+  case CommandBuffer::ResetMode::ReAllocate: {
+    primary_command_buffers.clear();
+    active_primary_command_buffer_count = 0;
+
+    secondary_command_buffers.clear();
+    active_secondary_command_buffer_count = 0;
+
+    break;
+  }
+  default:
+    throw std::runtime_error("[CommandPool] : Reset : Unknown reset mode.");
+  }
+  return VK_SUCCESS;
+}
+
+VkResult CommandPool::ResetCommandBuffers() {
+  VkResult result = VK_SUCCESS;
+
+  for (auto &cmdBuffer : primary_command_buffers) {
+    result = cmdBuffer->reset(resetMode);
+    if (result != VK_SUCCESS)
+      return result;
+  }
+  active_primary_command_buffer_count = 0;
+
+  for (auto &cmdBuffer : secondary_command_buffers) {
+    result = cmdBuffer->reset(resetMode);
+    if (result != VK_SUCCESS)
+      return result;
+  }
+  active_secondary_command_buffer_count = 0;
+
+  return result;
+}
+} // namespace cruelEngine::cruelRender

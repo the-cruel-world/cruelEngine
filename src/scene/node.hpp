@@ -4,6 +4,14 @@
 
 namespace cruelEngine::cruelScene {
 
+class Component {
+public:
+  Component() {}
+  ~Component() {}
+
+protected:
+};
+
 class Node {
 public:
   Node() {}
@@ -13,20 +21,17 @@ public:
 
 protected:
   Node *parent;
+  
   uint32_t index;
+
   std::vector<Node *> children;
+
+  std::vector<std::shared_ptr<Component>> components;
 
   glm::mat3 scale;
   glm::mat3 translation;
-  glm::quat rotation{};
+  glm::quat rotation {};
 };
 
-class Component {
-public:
-  Component() {}
-  ~Component() {}
-
-protected:
-};
 
 } // namespace cruelEngine::cruelScene

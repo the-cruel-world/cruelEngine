@@ -5,6 +5,7 @@
 #include "render_task.hpp"
 #include "render_tasks/render_tasks.hpp"
 #include "vulkan/command_buffer.hpp"
+#include "vulkan/command_pool.hpp"
 #include "vulkan/frame_buffer.hpp"
 #include "vulkan/instance.hpp"
 #include "vulkan/logical_device.hpp"
@@ -59,9 +60,13 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
   createSemaphores();
   std::cout << "[Rendersession] semaphores creatd!" << std::endl;
 
+  commandPool = std::make_unique<CommandPool>(
+      device, graphic_queue->get_family_index(),
+      CommandBuffer::ResetMode::ResetIndividually);
+
   for (size_t i = 0; i < imgCount; i++) {
     commandBuffers.push_back(
-        device.request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
+        commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
   }
   std::cout << "[Rendersession] commandbuffers creatd!" << std::endl;
 }
@@ -79,6 +84,7 @@ RenderSession::~RenderSession() {
   //! run destructor until all the render process ends.
   vkDeviceWaitIdle(device.get_handle());
   commandBuffers.clear();
+  commandPool.reset();
   tasks.clear();
   destroySemaphores();
   frameBuffer.clear();
@@ -303,7 +309,6 @@ void RenderSession::update_swapchain() {
   }
   vkDeviceWaitIdle(device.get_handle());
 
-  commandBuffers.clear();
   destroySemaphores();
   frameBuffer.clear();
   render_pass.reset();
@@ -319,9 +324,11 @@ void RenderSession::update_swapchain() {
 
   createSemaphores();
 
+  commandBuffers.clear();
+  commandPool->ResetPool();
   for (size_t i = 0; i < imgCount; i++) {
     commandBuffers.push_back(
-        device.request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
+        commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
   }
 
   for (auto &task : tasks) {

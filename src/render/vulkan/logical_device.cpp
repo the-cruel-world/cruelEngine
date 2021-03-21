@@ -22,7 +22,9 @@ LogicalDevice::LogicalDevice(const PhysicalDevice &_physicalDevice,
   query_queues();
   // std::cout << "[logical] queue pool created. time: " << (clock() -
   // start_time) * 1e-5  << "ms" << std::endl;
-  commandPool = std::make_unique<CommandPool>(*this);
+  commandPool = std::make_unique<CommandPool>(
+      *this, get_queue_by_flags(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_COMPUTE_BIT, 0)
+                 .get_family_index());
 }
 
 LogicalDevice::~LogicalDevice() {
@@ -151,7 +153,7 @@ Queue &LogicalDevice::get_suitable_present_queue(const VkSurfaceKHR &surface,
 
 CommandBuffer &
 LogicalDevice::request_commandBuffer(const VkCommandBufferLevel &_level) {
-  return commandPool->request_commandbuffer(_level);
+  return commandPool->RequestCommandBuffer(_level);
 }
 } // namespace cruelRender
 } // namespace cruelEngine

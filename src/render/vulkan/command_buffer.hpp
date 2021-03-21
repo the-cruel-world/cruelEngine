@@ -10,6 +10,12 @@ class CommandPool;
  * of vulkan command. */
 class CommandBuffer {
 public:
+  enum ResetMode {
+    ResetPool,
+    ResetIndividually,
+    ReAllocate,
+  };
+
   /*! \brief Init the command buffer, allocate space for it.
 \param _commandPool is the commandPool that this commandbuffer belongs to
 \param _level is the level of the commandBuffer, can be
@@ -65,6 +71,8 @@ VK_COMMAND_BUFFER_LEVEL_PRIMARY or VK_COMMAND_BUFFER_LEVEL_SECONDARY
 
   void setScissor(uint32_t first_scissor,
                   const std::vector<VkRect2D> &scissors);
+
+  VkResult reset(ResetMode resetMode);
 
 private:
   const CommandPool &commandPool;

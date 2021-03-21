@@ -63,7 +63,7 @@ public:
   std::vector<Queue> &get_queues();
 
   /** \brief Get the reference to the commandPool. */
-  void get_commanfPool(){};
+  CommandPool &get_commanfPool() const { return *commandPool; }
 
   /** \brief Request a buffer with memory from the device. */
   void request_buffer(){};

@@ -7,8 +7,7 @@
 #include "render_pass.hpp"
 #include "shader.hpp"
 
-namespace cruelEngine {
-namespace cruelRender {
+namespace cruelEngine ::cruelRender {
 
 class ShaderModule;
 class Pipeline;
@@ -112,5 +111,4 @@ private:
 
   std::mutex framebuffer_mutex;
 };
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

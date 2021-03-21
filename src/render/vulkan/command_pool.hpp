@@ -1,5 +1,6 @@
 #pragma once
 #include "../vkcommon.h"
+#include "command_buffer.hpp"
 
 namespace cruelEngine {
 namespace cruelRender {
@@ -12,31 +13,38 @@ class LogicalDevice;
 class CommandPool {
 public:
   /** Create a command pool, it requires a physical device. */
-  CommandPool(LogicalDevice &_device);
+  CommandPool(LogicalDevice &_device, u32 queueFamilyIndex,
+              CommandBuffer::ResetMode resetMode = CommandBuffer::ResetPool);
 
   virtual ~CommandPool();
 
   // void                    createCommandPool();
 
   /** Return the handle of the commandpool. */
-  const VkCommandPool &get_handle() const { return handle; }
+  VkCommandPool GetHandle() const { return handle; }
 
   /** Return a reference to the vulkandevice instance. */
-  LogicalDevice &get_device() const { return device; }
+  LogicalDevice &GetDevice() const { return device; }
 
   /** \brief Request a new commandbuffer from the commandPool. */
-  CommandBuffer &request_commandbuffer(const VkCommandBufferLevel &_level);
+  CommandBuffer &RequestCommandBuffer(const VkCommandBufferLevel &_level);
 
-  VkResult reset_pool();
+  VkResult ResetPool();
+
+  u32 GetQueueFamilyIndex() const { return queueFamilyIndex; }
+
+  CommandBuffer::ResetMode GetResetMode() const { return resetMode; }
 
 private:
   LogicalDevice &device;
 
   VkCommandPool handle = VK_NULL_HANDLE;
 
-  size_t thread_index = 0;
+  u32 queueFamilyIndex = 0;
 
-  u32 queue_family_index = 0;
+  CommandBuffer::ResetMode resetMode = CommandBuffer::ResetPool;
+
+  size_t thread_index = 0;
 
   std::vector<std::unique_ptr<CommandBuffer>> primary_command_buffers;
 
@@ -45,6 +53,8 @@ private:
   std::vector<std::unique_ptr<CommandBuffer>> secondary_command_buffers;
 
   u32 active_secondary_command_buffer_count = 0;
+
+  VkResult ResetCommandBuffers();
 };
 } // namespace cruelRender
 } // namespace cruelEngine

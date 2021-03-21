@@ -34,13 +34,13 @@ private:
 
   VkDeviceMemory imageMemory = VK_NULL_HANDLE;
 
-  VkImageType type {};
+  VkImageType type{};
 
-  VkFormat format {};
+  VkFormat format{};
 
-  VkImageTiling tiling {};
+  VkImageTiling tiling{};
 
-  VkImageUsageFlags usage {};
+  VkImageUsageFlags usage{};
 };
 } // namespace cruelRender
 } // namespace cruelEngine

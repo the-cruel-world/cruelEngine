@@ -22,6 +22,7 @@ namespace cruelRender {
 class LogicalDevice;
 class PhysicalDevice;
 class CommandBuffer;
+class CommandPool;
 class Swapchain;
 class RenderPass;
 class FrameBuffer;
@@ -146,6 +147,8 @@ private:
   std::shared_ptr<cruelScene::Scene> scene;
 
   std::vector<std::unique_ptr<FrameBuffer>> frameBuffer;
+
+  std::unique_ptr<CommandPool> commandPool;
 
   std::vector<std::reference_wrapper<CommandBuffer>> commandBuffers;
 

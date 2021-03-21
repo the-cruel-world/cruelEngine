@@ -13,18 +13,18 @@ CommandBuffer::CommandBuffer(const CommandPool &_commandPool,
   VkCommandBufferAllocateInfo allocate_info{
       VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO};
 
-  allocate_info.commandPool = commandPool.get_handle();
+  allocate_info.commandPool = commandPool.GetHandle();
   allocate_info.commandBufferCount = 1;
   allocate_info.level = level;
 
-  VK_CHECK_RESULT(vkAllocateCommandBuffers(
-      commandPool.get_device().get_handle(), &allocate_info, &handle));
+  VK_CHECK_RESULT(vkAllocateCommandBuffers(commandPool.GetDevice().get_handle(),
+                                           &allocate_info, &handle));
 }
 
 CommandBuffer::~CommandBuffer() {
   if (handle != VK_NULL_HANDLE) {
-    vkFreeCommandBuffers(commandPool.get_device().get_handle(),
-                         commandPool.get_handle(), 1, &handle);
+    vkFreeCommandBuffers(commandPool.GetDevice().get_handle(),
+                         commandPool.GetHandle(), 1, &handle);
   }
 }
 
@@ -60,12 +60,12 @@ void CommandBuffer::endOneTime() {
   submitInfo.pCommandBuffers = &handle;
 
   Queue &queue =
-      commandPool.get_device().get_queue_by_flags(VK_QUEUE_TRANSFER_BIT, 0);
+      commandPool.GetDevice().get_queue_by_flags(VK_QUEUE_TRANSFER_BIT, 0);
 
   vkQueueSubmit(queue.get_handle(), 1, &submitInfo, VK_NULL_HANDLE);
   vkQueueWaitIdle(queue.get_handle());
-  vkFreeCommandBuffers(commandPool.get_device().get_handle(),
-                       commandPool.get_handle(), 1, &handle);
+  vkFreeCommandBuffers(commandPool.GetDevice().get_handle(),
+                       commandPool.GetHandle(), 1, &handle);
   //! Vulkan doesn't reset handle to VK_NULL_HANDLE after freecommandbuffer.
   handle = VK_NULL_HANDLE;
 }
@@ -103,6 +103,21 @@ void CommandBuffer::setViewport(uint32_t first_viewport,
 void CommandBuffer::setScissor(uint32_t first_scissor,
                                const std::vector<VkRect2D> &scissors) {
   vkCmdSetScissor(handle, first_scissor, u32(scissors.size()), scissors.data());
+}
+
+VkResult CommandBuffer::reset(ResetMode resetMode) {
+  VkResult result = VK_SUCCESS;
+
+  assert(resetMode == commandPool.GetResetMode() &&
+         "[CommandBuffer] : Reset : Fatal! the reset mode must match the reset "
+         "mode of the command pool.");
+
+  if (resetMode == ResetMode::ResetIndividually) {
+    result = vkResetCommandBuffer(
+        handle, VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
+  }
+
+  return result;
 }
 
 } // namespace cruelRender
