@@ -7,7 +7,7 @@
 #include "render_pass.hpp"
 #include "shader.hpp"
 
-namespace cruelEngine ::cruelRender {
+namespace cruelEngine::cruelRender {
 
 class ShaderModule;
 class Pipeline;

@@ -21,7 +21,7 @@ public:
 
 protected:
   Node *parent;
-  
+
   uint32_t index;
 
   std::vector<Node *> children;
@@ -30,8 +30,7 @@ protected:
 
   glm::mat3 scale;
   glm::mat3 translation;
-  glm::quat rotation {};
+  glm::quat rotation{};
 };
-
 
 } // namespace cruelEngine::cruelScene

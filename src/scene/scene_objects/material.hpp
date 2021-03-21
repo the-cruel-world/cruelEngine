@@ -1,8 +1,25 @@
 #pragma once
 
 namespace cruelEngine::cruelScene {
-    class Material {
-        Material ();
-        ~Material ();
-    };
-}
+
+/**
+ * \brief AlphaMode defines different types of transparent.
+ */
+enum AlphaMode {
+  ALPHAMODE_OPAQUE = 0,
+  ALPHAMODE_MASK,
+  ALPHAMODE_BLEND,
+};
+
+/**
+ * \brief Material defines the physical properties of objects.
+ */
+class Material {
+public:
+  Material();
+  ~Material();
+
+private:
+  AlphaMode mode;
+};
+} // namespace cruelEngine::cruelScene

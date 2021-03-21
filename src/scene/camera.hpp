@@ -10,9 +10,9 @@ public:
 
   virtual ~Camera();
 
-  virtual glm::mat4 get_projection(){};
+  virtual glm::mat4 get_projection() { return glm::mat4(1.0f); }
 
-  glm::mat4 get_view(){};
+  glm::mat4 get_view() { return glm::mat4(1.0f); }
 
   float get_aspect_ratio() const { return aspect_ratio; }
   void set_aspect_ratio(float ratio);

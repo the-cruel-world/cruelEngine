@@ -2,8 +2,7 @@
 
 #include "../vkcommon.h"
 
-namespace cruelEngine {
-namespace cruelRender {
+namespace cruelEngine::cruelRender {
 class LogicalDevice;
 
 class Sampler {
@@ -27,5 +26,4 @@ private:
 
   VkSampler handle = VK_NULL_HANDLE;
 };
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

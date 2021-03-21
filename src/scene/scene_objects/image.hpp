@@ -4,9 +4,12 @@
 namespace cruelEngine::cruelScene {
 
 /**
- * \brief Base class of light.
+ * \brief Image class to load images from file.
  */
-class Light : public Component {
+class Image : Component {
 public:
+  Image(const std::string &name);
+
+private:
 };
 } // namespace cruelEngine::cruelScene

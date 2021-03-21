@@ -7,13 +7,13 @@
 
 namespace cruelEngine {
 
-namespace VulkanContext {
+namespace cruelRender {
 class LogicalDevice;
 }
 
 class Gui {
 public:
-  Gui(const VulkanContext::LogicalDevice &_device);
+  Gui(const cruelRender::LogicalDevice &_device);
   ~Gui(){};
 
   void draw();
@@ -26,7 +26,7 @@ public:
   void destroy_pipeline();
 
 private:
-  const VulkanContext::LogicalDevice &device;
+  const cruelRender::LogicalDevice &device;
   VkDescriptorPool descriptorPool = VK_NULL_HANDLE;
   VkDescriptorSetLayout descriptorSetLayout = VK_NULL_HANDLE;
   VkDescriptorSet descriptorSet = VK_NULL_HANDLE;

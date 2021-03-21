@@ -5,7 +5,7 @@
 #include "../render/vulkan/physical_device.hpp"
 
 namespace cruelEngine {
-Gui::Gui(const VulkanContext::LogicalDevice &_device) : device(_device) {
+Gui::Gui(const cruelRender::LogicalDevice &_device) : device(_device) {
   ImGui::CreateContext();
   // Color scheme
   ImGuiStyle &style = ImGui::GetStyle();
@@ -64,7 +64,7 @@ void Gui::prepare_resource() {
   vkGetImageMemoryRequirements(device.get_handle(), fontImage, &memReqs);
   VkMemoryAllocateInfo memAllocInfo = {VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO};
   memAllocInfo.allocationSize = memReqs.size;
-  memAllocInfo.memoryTypeIndex = VulkanContext::findMemoryType(
+  memAllocInfo.memoryTypeIndex = cruelRender::findMemoryType(
       device.get_physicalDevice().get_handle(), memReqs.memoryTypeBits,
       VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
   VK_CHECK_RESULT(vkAllocateMemory(device.get_handle(), &memAllocInfo, nullptr,
@@ -84,12 +84,12 @@ void Gui::prepare_resource() {
 
   VkBuffer stagingBuffer;
   VkDeviceMemory stagingBufferMemory;
-  VulkanContext::createBuffer(device.get_handle(),
-                              device.get_physicalDevice().get_handle(),
-                              uploadSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
-                              VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
-                                  VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-                              stagingBuffer, stagingBufferMemory);
+  //   cruelRender::createBuffer(device.get_handle(),
+  //                               device.get_physicalDevice().get_handle(),
+  //                               uploadSize, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+  //                               VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT |
+  //                                   VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+  //                               stagingBuffer, stagingBufferMemory);
 
   void *data;
   vkMapMemory(device.get_handle(), stagingBufferMemory, 0, uploadSize, 0,
@@ -97,7 +97,7 @@ void Gui::prepare_resource() {
   memcpy(data, fontData, (size_t)uploadSize);
   vkUnmapMemory(device.get_handle(), stagingBufferMemory);
 
-  // VulkanContext::CommandBuffer;
+  // cruelRender::CommandBuffer;
 }
 
 } // namespace cruelEngine

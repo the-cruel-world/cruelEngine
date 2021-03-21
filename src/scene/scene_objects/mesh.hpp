@@ -1,8 +1,31 @@
 #pragma once
+#include "../component.hpp"
+#include "aabb.hpp"
 
 namespace cruelEngine::cruelScene {
-    class Mesh2 {
-        Mesh2 ();
-        ~Mesh2 ();
-    };
-}
+
+struct VertexAttribute {
+  u32 stride = 0;
+
+  u32 offset = 0;
+};
+
+/**
+ * \brief Mesh2 stores the geom data.
+ */
+class Mesh2 : Component {
+
+  Mesh2(const std::string &name);
+
+  ~Mesh2();
+
+  void UpdateBounds();
+
+  const AABB &GetBounds() const { return bounds; }
+
+private:
+  AABB bounds;
+
+  std::vector<VertexAttribute> vertexAttributes{};
+};
+} // namespace cruelEngine::cruelScene
