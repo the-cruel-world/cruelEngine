@@ -1,36 +1,44 @@
 
 #pragma once
 #include "../common.h"
-
+// #include "component.hpp"
+#include "components/transform.hpp"
 namespace cruelEngine::cruelScene {
 
-class Component {
-public:
-  Component() {}
-  ~Component() {}
-
-protected:
-};
+class Component;
 
 class Node {
 public:
-  Node() {}
-  ~Node() {}
+  Node(const size_t id, const std::string &name);
+
+  virtual ~Node() = default;
 
   void update();
 
+  void SetParent(std::shared_ptr<Node> node);
+
+  const std::shared_ptr<Node> &GetParent() const { return parent; }
+
+  void AddChild(std::shared_ptr<Node> node);
+
+  const std::vector<std::shared_ptr<Node>> &GetChildren() const {
+    return children;
+  }
+
 protected:
-  Node *parent;
+  size_t id;
+
+  std::string name;
+
+  std::shared_ptr<Node> parent;
 
   uint32_t index;
 
-  std::vector<Node *> children;
+  Transform transform;
 
-  std::vector<std::shared_ptr<Component>> components;
+  std::vector<std::shared_ptr<Node>> children;
 
-  glm::mat3 scale;
-  glm::mat3 translation;
-  glm::quat rotation{};
+  std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
 };
 
 } // namespace cruelEngine::cruelScene

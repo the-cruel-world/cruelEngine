@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-enum ENGINE_RESULT {
+enum class ENGINE_RESULT {
   ENGINE_SUCCESS = 1,
   ENGINE_FAIL = 0,
 };

@@ -17,9 +17,9 @@ class Mesh2 : Component {
 
   Mesh2(const std::string &name);
 
-  ~Mesh2();
+  ~Mesh2() = default;
 
-  void UpdateBounds();
+  void UpdateBounds(){};
 
   const AABB &GetBounds() const { return bounds; }
 

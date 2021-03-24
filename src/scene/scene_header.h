@@ -1,6 +1,4 @@
-#include "camera.hpp"
+#include "components/skybox.hpp"
 #include "mesh.hpp"
 #include "object.hpp"
-#include "scene_objects/skybox.hpp"
-// #include "objects/triangle.hpp"
 #include "scene.hpp"

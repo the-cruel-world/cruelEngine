@@ -5,7 +5,7 @@ namespace cruelEngine::cruelScene {
 /**
  * \brief AlphaMode defines different types of transparent.
  */
-enum AlphaMode {
+enum class AlphaMode {
   ALPHAMODE_OPAQUE = 0,
   ALPHAMODE_MASK,
   ALPHAMODE_BLEND,

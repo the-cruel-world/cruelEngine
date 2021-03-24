@@ -1,10 +1,9 @@
 #pragma once
-
-#include "../common.h"
+#include "../component.hpp"
 
 namespace cruelEngine::cruelScene {
 
-class Camera {
+class Camera : public Component {
 public:
   Camera(const std::string &name);
 
@@ -27,8 +26,6 @@ public:
   void set_near_plane(float znear){};
 
 private:
-  std::string name;
-
   float aspect_ratio{1.0f};
 
   float fov{glm::radians(60.0f)};

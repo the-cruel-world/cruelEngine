@@ -1,5 +1,5 @@
+#include "../../scene/components/skybox.hpp"
 #include "../../scene/mesh.hpp"
-#include "../../scene/scene_objects/skybox.hpp"
 #include "render_tasks.hpp"
 
 namespace cruelEngine::cruelRender {

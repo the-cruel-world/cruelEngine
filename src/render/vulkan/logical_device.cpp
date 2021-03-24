@@ -6,8 +6,7 @@
 #include "physical_device.hpp"
 #include "queue.hpp"
 
-namespace cruelEngine {
-namespace cruelRender {
+namespace cruelEngine::cruelRender {
 LogicalDevice::LogicalDevice(const PhysicalDevice &_physicalDevice,
                              std::vector<const char *> &_layerNames,
                              std::vector<const char *> &_requiredExtensions,
@@ -155,5 +154,4 @@ CommandBuffer &
 LogicalDevice::request_commandBuffer(const VkCommandBufferLevel &_level) {
   return commandPool->RequestCommandBuffer(_level);
 }
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

@@ -76,6 +76,8 @@ private:
 
   VkPipelineCache pipeline_cache = VK_NULL_HANDLE;
 
+  //! The first value is the hash value of elements
+  /// Hash map
   std::unordered_map<std::size_t, ShaderModule> shader_modules;
 
   std::unordered_map<std::size_t, PipelineLayout> pipeline_layouts;
@@ -95,6 +97,8 @@ private:
   std::unordered_map<std::size_t, FrameBuffer> framebuffers;
 
   // mutex
+  std::mutex pipeline_cache_mutex;
+
   std::mutex descriptor_set_mutex;
 
   std::mutex pipeline_layout_mutex;

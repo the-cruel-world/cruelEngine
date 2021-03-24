@@ -5,7 +5,7 @@ namespace cruelEngine::cruelScene {
 
 class Camera;
 
-enum SkyBoxGeomType {
+enum class SkyBoxGeomType {
   SKY_BOX_GEOM_CUBE = 0,
   SKY_BOX_GEOM_SPHERE,
 };
@@ -13,8 +13,8 @@ enum SkyBoxGeomType {
 class SkyBox : public Object {
 public:
   SkyBox(std::string name, Camera &camera) : Object(name, camera) {
-    type = SCENE_OBJ_TYPE_GEOM;
-    box_type = SKY_BOX_GEOM_SPHERE;
+    type = ObjectType::SCENE_OBJ_TYPE_GEOM;
+    box_type = SkyBoxGeomType::SKY_BOX_GEOM_SPHERE;
 
     mesh = std::make_unique<Mesh>();
     float a = 0.5;

@@ -35,7 +35,7 @@ public:
 
   virtual ~RenderTask();
 
-  enum RenderTaskStatus {
+  enum class RenderTaskStatus {
     RENDER_TASK_UNINIRED = 0,
     RENDER_TASK_INIRED,
     RENDER_TASK_BUSY,
@@ -80,7 +80,7 @@ protected:
 
   std::shared_ptr<cruelScene::Object> object{};
 
-  RenderTaskStatus status = RENDER_TASK_UNINIRED;
+  RenderTaskStatus status = RenderTaskStatus::RENDER_TASK_UNINIRED;
 };
 } // namespace cruelRender
 } // namespace cruelEngine

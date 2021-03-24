@@ -11,6 +11,7 @@ Queue::Queue(LogicalDevice &_device, const u32 _family_index, const u32 _index,
     : device(_device), family_index(_family_index), index(_index),
       properties(_properties) {
   vkGetDeviceQueue(device.get_handle(), family_index, index, &handle);
+  state = QueueState::QUEUE_STATE_IDLE;
 }
 
 Queue::Queue(Queue &&other)

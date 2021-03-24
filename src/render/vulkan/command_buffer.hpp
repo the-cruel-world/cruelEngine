@@ -10,7 +10,7 @@ class CommandPool;
  * of vulkan command. */
 class CommandBuffer {
 public:
-  enum ResetMode {
+  enum class ResetMode {
     ResetPool,
     ResetIndividually,
     ReAllocate,

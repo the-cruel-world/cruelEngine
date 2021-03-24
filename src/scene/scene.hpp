@@ -1,6 +1,7 @@
 #pragma once
 #include "../common.h"
-#include "camera.hpp"
+#include "component.hpp"
+#include "components/camera.hpp"
 #include "node.hpp"
 #include "object.hpp"
 
@@ -38,12 +39,20 @@ protected:
    * All nodes in this scene.
    */
   std::vector<std::unique_ptr<Node>> nodes;
+
   void set_root_node(Node &node) { root = &node; }
+
   Node &get_root_node() { return *root; }
   /**
    * pointer to the root node.
    */
   Node *root = nullptr;
+
   Node *find_node(const std::string &name);
+
+  /**
+   * Components
+   */
+  std::unordered_map<std::type_index, Component> components;
 };
 } // namespace cruelEngine::cruelScene

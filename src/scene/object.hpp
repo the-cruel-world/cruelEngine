@@ -10,7 +10,7 @@ struct Texture;
 struct Vertex;
 class Camera;
 
-enum ObjectType {
+enum class ObjectType {
   SCENE_OBJ_TYPE_GEOM = 0,
   SCENE_OBJ_TYPE_CUBE,
   SCENE_OBJ_TYPE_SPHERE,

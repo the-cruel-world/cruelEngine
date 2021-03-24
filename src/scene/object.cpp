@@ -1,6 +1,6 @@
 #include "object.hpp"
 
-#include "camera.hpp"
+#include "components/camera.hpp"
 #include "mesh.hpp"
 
 namespace cruelEngine::cruelScene {

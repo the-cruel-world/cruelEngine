@@ -12,7 +12,7 @@ size_t readFile(const std::string &filename, std::vector<char> &source);
 VkShaderModule createShaderModule(const VkDevice logicalDevice,
                                   const std::vector<char> &code);
 
-enum ShaderResourceType {
+enum class ShaderResourceType {
   Input = 0,
   InputAttachment,
   Output,

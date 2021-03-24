@@ -3,10 +3,11 @@
 
 namespace cruelEngine::cruelScene {
 
-/**
- * \brief Base class of light.
- */
-class Light : public Component {
+class Script : public Component {
 public:
+  Script(const std::string &name);
+
+private:
 };
+
 } // namespace cruelEngine::cruelScene

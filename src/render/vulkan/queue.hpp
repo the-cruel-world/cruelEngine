@@ -7,6 +7,11 @@ namespace cruelRender {
 class LogicalDevice;
 class CommandBuffer;
 
+enum class QueueState {
+  QUEUE_STATE_BUSY,
+  QUEUE_STATE_IDLE,
+};
+
 class Queue {
 public:
   Queue(LogicalDevice &_device, const u32 _family_index, const u32 _index,
@@ -29,6 +34,8 @@ public:
   const u32 get_index() const { return index; }
 
   VkBool32 can_present(const VkSurfaceKHR &surface);
+
+  QueueState GetQueueState() const { return state; }
 
   const u32 get_family_index() const { return family_index; }
 
@@ -53,7 +60,7 @@ private:
 
   VkQueueFamilyProperties properties{};
 
-  // bool            busy = false;
+  QueueState state = QueueState::QUEUE_STATE_IDLE;
 };
 } // namespace cruelRender
 } // namespace cruelEngine
