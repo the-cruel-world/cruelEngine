@@ -3,9 +3,10 @@
 #include "queue.hpp"
 #include "resource_cache.hpp"
 
-namespace cruelEngine {
-namespace cruelRender {
-
+namespace cruelEngine
+{
+namespace cruelRender
+{
 class PhysicalDevice;
 class CommandPool;
 class CommandBuffer;
@@ -21,87 +22,94 @@ class ResourceCache;
  * extensions that the device should enable. \param _flags are types of queue
  * that this device should support.
  */
-class LogicalDevice {
+class LogicalDevice
+{
 public:
-  LogicalDevice(const PhysicalDevice &_physicalDevice,
-                std::vector<const char *> &_layerNames,
-                std::vector<const char *> &_requiredExtensions,
-                const VkQueueFlags &_flags);
+    LogicalDevice(const PhysicalDevice &_physicalDevice, std::vector<const char *> &_layerNames,
+                  std::vector<const char *> &_requiredExtensions, const VkQueueFlags &_flags);
 
-  LogicalDevice(const LogicalDevice &) = delete;
+    LogicalDevice(const LogicalDevice &) = delete;
 
-  LogicalDevice(LogicalDevice &&) = delete;
+    LogicalDevice(LogicalDevice &&) = delete;
 
-  LogicalDevice operator=(const LogicalDevice &) = delete;
+    LogicalDevice operator=(const LogicalDevice &) = delete;
 
-  LogicalDevice operator=(LogicalDevice &&) = delete;
+    LogicalDevice operator=(LogicalDevice &&) = delete;
 
-  ~LogicalDevice();
+    ~LogicalDevice();
 
 public:
-  void createDevice();
+    void createDevice();
 
-  void destroyLogicalDevice();
+    void destroyLogicalDevice();
 
-  VkFramebuffer &createFrameBuffer();
+    VkFramebuffer &createFrameBuffer();
 
-  const VkDevice &get_handle() const { return handle; };
+    const VkDevice &get_handle() const
+    {
+        return handle;
+    };
 
-  const PhysicalDevice &get_physicalDevice() const { return physicalDevice; }
+    const PhysicalDevice &get_physicalDevice() const
+    {
+        return physicalDevice;
+    }
 
-  bool is_surface_supported(const VkSurfaceKHR &surface);
+    bool is_surface_supported(const VkSurfaceKHR &surface);
 
-  /** \brief Get a queue from the device by types. */
-  Queue &get_queue_by_flags(VkQueueFlags queue_flags, u32 queue_index);
+    /** \brief Get a queue from the device by types. */
+    Queue &get_queue_by_flags(VkQueueFlags queue_flags, u32 queue_index);
 
-  /** \brief Get a proper graphics queue from the device. */
-  Queue &get_suitable_graphics_queue(u32 queue_index);
+    /** \brief Get a proper graphics queue from the device. */
+    Queue &get_suitable_graphics_queue(u32 queue_index);
 
-  Queue &get_suitable_present_queue(const VkSurfaceKHR &surface,
-                                    u32 queue_index);
+    Queue &get_suitable_present_queue(const VkSurfaceKHR &surface, u32 queue_index);
 
-  std::vector<Queue> &get_queues();
+    std::vector<Queue> &get_queues();
 
-  /** \brief Get the reference to the commandPool. */
-  CommandPool &get_commanfPool() const { return *commandPool; }
+    /** \brief Get the reference to the commandPool. */
+    CommandPool &get_commanfPool() const
+    {
+        return *commandPool;
+    }
 
-  /** \brief Request a buffer with memory from the device. */
-  void request_buffer(){};
+    /** \brief Request a buffer with memory from the device. */
+    void request_buffer(){};
 
-  // copy_buffer();
+    // copy_buffer();
 
-  /*! \brief Request a CommandBuffer with memory from the device. */
-  CommandBuffer &request_commandBuffer(const VkCommandBufferLevel &_level);
+    /*! \brief Request a CommandBuffer with memory from the device. */
+    CommandBuffer &request_commandBuffer(const VkCommandBufferLevel &_level);
 
-  // request_frameBuffer();
+    // request_frameBuffer();
 
-  // request_Fence();
+    // request_Fence();
 
-  /** \brief Wait for the device the finish the task it is running. */
-  VkResult wait_idle();
+    /** \brief Wait for the device the finish the task it is running. */
+    VkResult wait_idle();
 
 private:
-  const PhysicalDevice &physicalDevice;
+    const PhysicalDevice &physicalDevice;
 
-  VkDevice handle;
+    VkDevice handle;
 
-  std::vector<const char *> &layerNames;
+    std::vector<const char *> &layerNames;
 
-  std::vector<const char *> &requiredExtensions;
+    std::vector<const char *> &requiredExtensions;
 
-  //! The required queue family flags
-  const VkQueueFlags &flags;
+    //! The required queue family flags
+    const VkQueueFlags &flags;
 
-  //! All supported device queue
-  std::vector<Queue> queues{};
+    //! All supported device queue
+    std::vector<Queue> queues{};
 
-  //! command pool
-  std::unique_ptr<CommandPool> commandPool;
+    //! command pool
+    std::unique_ptr<CommandPool> commandPool;
 
-  //! RenderCache
-  ResourceCache resource_cache;
+    //! RenderCache
+    ResourceCache resource_cache;
 
-  void query_queues();
+    void query_queues();
 };
 } // namespace cruelRender
 } // namespace cruelEngine

@@ -3,42 +3,47 @@
 #include "../common.h"
 // #include "component.hpp"
 #include "components/transform.hpp"
-namespace cruelEngine::cruelScene {
-
+namespace cruelEngine::cruelScene
+{
 class Component;
 
-class Node {
+class Node
+{
 public:
-  Node(const size_t id, const std::string &name);
+    Node(const size_t id, const std::string &name);
 
-  virtual ~Node() = default;
+    virtual ~Node() = default;
 
-  void update();
+    void update();
 
-  void SetParent(std::shared_ptr<Node> node);
+    void SetParent(std::shared_ptr<Node> node);
 
-  const std::shared_ptr<Node> &GetParent() const { return parent; }
+    const std::shared_ptr<Node> &GetParent() const
+    {
+        return parent;
+    }
 
-  void AddChild(std::shared_ptr<Node> node);
+    void AddChild(std::shared_ptr<Node> node);
 
-  const std::vector<std::shared_ptr<Node>> &GetChildren() const {
-    return children;
-  }
+    const std::vector<std::shared_ptr<Node>> &GetChildren() const
+    {
+        return children;
+    }
 
 protected:
-  size_t id;
+    size_t id;
 
-  std::string name;
+    std::string name;
 
-  std::shared_ptr<Node> parent;
+    std::shared_ptr<Node> parent;
 
-  uint32_t index;
+    uint32_t index;
 
-  Transform transform;
+    Transform transform;
 
-  std::vector<std::shared_ptr<Node>> children;
+    std::vector<std::shared_ptr<Node>> children;
 
-  std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
+    std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
 };
 
 } // namespace cruelEngine::cruelScene

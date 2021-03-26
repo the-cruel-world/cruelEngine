@@ -1,39 +1,42 @@
 #pragma once
 #include "../vkcommon.h"
 
-namespace cruelEngine {
-namespace cruelRender {
-
+namespace cruelEngine
+{
+namespace cruelRender
+{
 class LogicDevice;
 class Buffer;
 
-class BufferBlock {
+class BufferBlock
+{
 public:
-  BufferBlock(LogicDevice &device, VkDeviceSize size, VkBufferUsageFlags usage,
-              VkMemoryPropertyFlags memory_usage);
+    BufferBlock(LogicDevice &device, VkDeviceSize size, VkBufferUsageFlags usage,
+                VkMemoryPropertyFlags memory_usage);
 
-  ~BufferBlock();
+    ~BufferBlock();
 
 private:
-  LogicDevice &device;
+    LogicDevice &device;
 
-  std::unique_ptr<Buffer> buffer;
+    std::unique_ptr<Buffer> buffer;
 
-  VkDeviceSize alignment = 0;
+    VkDeviceSize alignment = 0;
 
-  VkDeviceSize offset = 0;
+    VkDeviceSize offset = 0;
 };
 
-class BufferPool {
+class BufferPool
+{
 public:
-  BufferPool(LogicDevice &device);
+    BufferPool(LogicDevice &device);
 
-  ~BufferPool();
+    ~BufferPool();
 
 private:
-  LogicDevice &device;
+    LogicDevice &device;
 
-  std::vector<std::unique_ptr<BufferBlock>> buffer_blocks;
+    std::vector<std::unique_ptr<BufferBlock>> buffer_blocks;
 };
 } // namespace cruelRender
 } // namespace cruelEngine

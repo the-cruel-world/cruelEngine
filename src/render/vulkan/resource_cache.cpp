@@ -2,11 +2,14 @@
 
 #include "logical_device.hpp"
 
-namespace cruelEngine {
-namespace cruelRender {
+namespace cruelEngine
+{
+namespace cruelRender
+{
+ResourceCache::ResourceCache(LogicalDevice &device) : device{device}
+{}
 
-ResourceCache::ResourceCache(LogicalDevice &device) : device{device} {}
-
-ResourceCache::~ResourceCache() {}
+ResourceCache::~ResourceCache()
+{}
 } // namespace cruelRender
 } // namespace cruelEngine

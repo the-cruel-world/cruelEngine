@@ -2,11 +2,15 @@
 
 #include "logical_device.hpp"
 
-namespace cruelEngine {
-namespace cruelRender {
-Image::Image(LogicalDevice &device) : device{device} {}
+namespace cruelEngine
+{
+namespace cruelRender
+{
+Image::Image(LogicalDevice &device) : device{device}
+{}
 
-Image::~Image() {}
+Image::~Image()
+{}
 
 } // namespace cruelRender
 } // namespace cruelEngine

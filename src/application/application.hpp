@@ -5,16 +5,18 @@
 
 #include "../window/window.hpp"
 
-namespace cruelEngine {
-
-struct ApplicationInfo {
-  std::string applicationName;
-  ApplicationInfo(std::string name) : applicationName(name){};
+namespace cruelEngine
+{
+struct ApplicationInfo
+{
+    std::string applicationName;
+    ApplicationInfo(std::string name) : applicationName(name){};
 };
-class Application {
+class Application
+{
 public:
-  Application();
-  virtual ~Application();
+    Application();
+    virtual ~Application();
 
 protected:
 private:

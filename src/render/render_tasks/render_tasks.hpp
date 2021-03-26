@@ -13,48 +13,49 @@
 #include "../vulkan/shader.hpp"
 #include "../vulkan/swapchain.hpp"
 
-namespace cruelEngine::cruelRender {
-
+namespace cruelEngine::cruelRender
+{
 // register new render tasks
-class GeomTask : public RenderTask {
+class GeomTask : public RenderTask
+{
 public:
-  GeomTask(RenderSession &session, std::shared_ptr<cruelScene::Object> object);
+    GeomTask(RenderSession &session, std::shared_ptr<cruelScene::Object> object);
 
-  void draw(cruelRender::CommandBuffer &commandBuffer, int index);
+    void draw(cruelRender::CommandBuffer &commandBuffer, int index);
 
-  void prepare();
+    void prepare();
 
-  void prepare_assets();
+    void prepare_assets();
 
-  void prepare_pipeline(VkPipelineCache pipeline_cache,
-                        PipelineStatus &pipeline_state);
+    void prepare_pipeline(VkPipelineCache pipeline_cache, PipelineStatus &pipeline_state);
 
-  void prepare_pipeline();
+    void prepare_pipeline();
 
-  void render();
+    void render();
 
-  void update_render_pass(RenderPass &render_pass);
+    void update_render_pass(RenderPass &render_pass);
 
-  //   void prepare_render_pass();
+    //   void prepare_render_pass();
 
-  struct UniformBufferObject {
-    glm::mat4 model;
-    glm::mat4 view;
-    glm::mat4 proj;
-  };
+    struct UniformBufferObject
+    {
+        glm::mat4 model;
+        glm::mat4 view;
+        glm::mat4 proj;
+    };
 
 private:
-  std::unique_ptr<DescriptorPool> descriptor_pool;
+    std::unique_ptr<DescriptorPool> descriptor_pool;
 
-  std::vector<std::unique_ptr<cruelRender::DescriptorSet>> descriptor_set;
+    std::vector<std::unique_ptr<cruelRender::DescriptorSet>> descriptor_set;
 
-  std::unique_ptr<DescriptorSetLayout> descriptor_set_layout;
+    std::unique_ptr<DescriptorSetLayout> descriptor_set_layout;
 
-  std::unique_ptr<Buffer> vertex_buffer;
+    std::unique_ptr<Buffer> vertex_buffer;
 
-  std::unique_ptr<Buffer> index_buffer;
+    std::unique_ptr<Buffer> index_buffer;
 
-  std::unique_ptr<UniformBuffer> uniform_buffer;
+    std::unique_ptr<UniformBuffer> uniform_buffer;
 };
 
 } // namespace cruelEngine::cruelRender

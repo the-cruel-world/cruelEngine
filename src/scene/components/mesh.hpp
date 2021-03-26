@@ -2,30 +2,34 @@
 #include "../component.hpp"
 #include "aabb.hpp"
 
-namespace cruelEngine::cruelScene {
+namespace cruelEngine::cruelScene
+{
+struct VertexAttribute
+{
+    u32 stride = 0;
 
-struct VertexAttribute {
-  u32 stride = 0;
-
-  u32 offset = 0;
+    u32 offset = 0;
 };
 
 /**
  * \brief Mesh2 stores the geom data.
  */
-class Mesh2 : Component {
+class Mesh2 : Component
+{
+    Mesh2(const std::string &name);
 
-  Mesh2(const std::string &name);
+    ~Mesh2() = default;
 
-  ~Mesh2() = default;
+    void UpdateBounds(){};
 
-  void UpdateBounds(){};
-
-  const AABB &GetBounds() const { return bounds; }
+    const AABB &GetBounds() const
+    {
+        return bounds;
+    }
 
 private:
-  AABB bounds;
+    AABB bounds;
 
-  std::vector<VertexAttribute> vertexAttributes{};
+    std::vector<VertexAttribute> vertexAttributes{};
 };
 } // namespace cruelEngine::cruelScene

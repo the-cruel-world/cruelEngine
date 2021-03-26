@@ -1,9 +1,10 @@
 #pragma once
 #include "../vkcommon.h"
 
-namespace cruelEngine {
-namespace cruelRender {
-
+namespace cruelEngine
+{
+namespace cruelRender
+{
 class LogicalDevice;
 class DescriptorSetLayout;
 class DescriptorPool;
@@ -13,92 +14,105 @@ class DescriptorSet;
  * \brief Descriptor pool. Manages a vkdescriptor pool and is able to create
  * new descriptor set.
  */
-class DescriptorPool {
+class DescriptorPool
+{
 public:
-  DescriptorPool(LogicalDevice &device, const VkDescriptorPoolSize pool_size);
+    DescriptorPool(LogicalDevice &device, const VkDescriptorPoolSize pool_size);
 
-  DescriptorPool(const DescriptorPool &) = delete;
+    DescriptorPool(const DescriptorPool &) = delete;
 
-  DescriptorPool(DescriptorPool &&) = default;
+    DescriptorPool(DescriptorPool &&) = default;
 
-  DescriptorPool &operator=(const DescriptorPool &) = delete;
+    DescriptorPool &operator=(const DescriptorPool &) = delete;
 
-  DescriptorPool &operator=(DescriptorPool &&) = delete;
+    DescriptorPool &operator=(DescriptorPool &&) = delete;
 
-  ~DescriptorPool();
+    ~DescriptorPool();
 
-  const VkDescriptorPool &get_handle() const { return handle; }
+    const VkDescriptorPool &get_handle() const
+    {
+        return handle;
+    }
 
 private:
-  LogicalDevice &device;
+    LogicalDevice &device;
 
-  VkDescriptorPoolSize pool_size;
+    VkDescriptorPoolSize pool_size;
 
-  VkDescriptorPool handle = VK_NULL_HANDLE;
+    VkDescriptorPool handle = VK_NULL_HANDLE;
 };
 
-class DescriptorSet {
+class DescriptorSet
+{
 public:
-  DescriptorSet(LogicalDevice &device, DescriptorSetLayout &layout,
-                DescriptorPool &pool);
+    DescriptorSet(LogicalDevice &device, DescriptorSetLayout &layout, DescriptorPool &pool);
 
-  DescriptorSet(const DescriptorSet &) = delete;
+    DescriptorSet(const DescriptorSet &) = delete;
 
-  DescriptorSet(DescriptorSet &&other);
+    DescriptorSet(DescriptorSet &&other);
 
-  DescriptorSet &operator=(const DescriptorSet &) = delete;
+    DescriptorSet &operator=(const DescriptorSet &) = delete;
 
-  DescriptorSet &operator=(DescriptorSet &&) = delete;
+    DescriptorSet &operator=(DescriptorSet &&) = delete;
 
-  ~DescriptorSet();
+    ~DescriptorSet();
 
-  const VkDescriptorSet &get_handle() const { return handle; }
+    const VkDescriptorSet &get_handle() const
+    {
+        return handle;
+    }
 
-  const DescriptorSetLayout &get_layout() const { return layout; }
+    const DescriptorSetLayout &get_layout() const
+    {
+        return layout;
+    }
 
-  void update(VkDescriptorBufferInfo &bufferInfo);
+    void update(VkDescriptorBufferInfo &bufferInfo);
 
 private:
-  LogicalDevice &device;
+    LogicalDevice &device;
 
-  DescriptorSetLayout &layout;
+    DescriptorSetLayout &layout;
 
-  DescriptorPool &pool;
+    DescriptorPool &pool;
 
-  VkDescriptorSet handle = VK_NULL_HANDLE;
+    VkDescriptorSet handle = VK_NULL_HANDLE;
 };
 
-class DescriptorSetLayout {
+class DescriptorSetLayout
+{
 public:
-  DescriptorSetLayout(
-      LogicalDevice &device,
-      const std::vector<VkDescriptorSetLayoutBinding> new_bindings);
+    DescriptorSetLayout(LogicalDevice &                                 device,
+                        const std::vector<VkDescriptorSetLayoutBinding> new_bindings);
 
-  DescriptorSetLayout(const DescriptorSetLayout &) = delete;
+    DescriptorSetLayout(const DescriptorSetLayout &) = delete;
 
-  DescriptorSetLayout(DescriptorSetLayout &&other);
+    DescriptorSetLayout(DescriptorSetLayout &&other);
 
-  DescriptorSetLayout &operator=(const DescriptorSetLayout &) = delete;
+    DescriptorSetLayout &operator=(const DescriptorSetLayout &) = delete;
 
-  DescriptorSetLayout &operator=(DescriptorSetLayout &&) = delete;
+    DescriptorSetLayout &operator=(DescriptorSetLayout &&) = delete;
 
-  ~DescriptorSetLayout();
+    ~DescriptorSetLayout();
 
-  void
-  set_bindings(const std::vector<VkDescriptorSetLayoutBinding> new_bindings);
+    void set_bindings(const std::vector<VkDescriptorSetLayoutBinding> new_bindings);
 
-  const std::vector<VkDescriptorSetLayoutBinding> get_bindings() const {
-    return bindings;
-  }
+    const std::vector<VkDescriptorSetLayoutBinding> get_bindings() const
+    {
+        return bindings;
+    }
 
-  const VkDescriptorSetLayout &get_handle() const { return handle; }
+    const VkDescriptorSetLayout &get_handle() const
+    {
+        return handle;
+    }
 
 private:
-  LogicalDevice &device;
+    LogicalDevice &device;
 
-  std::vector<VkDescriptorSetLayoutBinding> bindings;
+    std::vector<VkDescriptorSetLayoutBinding> bindings;
 
-  VkDescriptorSetLayout handle = VK_NULL_HANDLE;
+    VkDescriptorSetLayout handle = VK_NULL_HANDLE;
 };
 } // namespace cruelRender
 } // namespace cruelEngine

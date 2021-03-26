@@ -1,13 +1,14 @@
 #pragma once
 #include "../component.hpp"
 
-namespace cruelEngine::cruelScene {
-
-class Texture : Component {
+namespace cruelEngine::cruelScene
+{
+class Texture : Component
+{
 public:
-  Texture(const std::string &name);
+    Texture(const std::string &name);
 
-  virtual ~Texture() = default;
+    virtual ~Texture() = default;
 
 private:
 };

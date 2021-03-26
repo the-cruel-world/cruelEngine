@@ -1,33 +1,47 @@
 #include "../component.hpp"
 #include "../object.hpp"
 
-namespace cruelEngine::cruelScene {
+namespace cruelEngine::cruelScene
+{
 /**
  * \brief AABB bound box for bvh acceleration structure.
  */
-class AABB : public Component {
+class AABB : public Component
+{
 public:
-  AABB();
+    AABB();
 
-  AABB(const glm::vec3 &min, const glm::vec3 &max);
+    AABB(const glm::vec3 &min, const glm::vec3 &max);
 
-  virtual ~AABB() = default;
+    virtual ~AABB() = default;
 
-  //   void update(const glm::vec3 &point);
+    //   void update(const glm::vec3 &point);
 
-  glm::vec3 GetScale() const { return (max - min); }
+    glm::vec3 GetScale() const
+    {
+        return (max - min);
+    }
 
-  glm::vec3 GetCenter() const { return (max + min) * 0.5f; }
+    glm::vec3 GetCenter() const
+    {
+        return (max + min) * 0.5f;
+    }
 
-  glm::vec3 GetMax() const { return max; }
+    glm::vec3 GetMax() const
+    {
+        return max;
+    }
 
-  glm::vec3 GetMin() const { return min; }
+    glm::vec3 GetMin() const
+    {
+        return min;
+    }
 
-  void Reset();
+    void Reset();
 
 private:
-  glm::vec3 min;
+    glm::vec3 min;
 
-  glm::vec3 max;
+    glm::vec3 max;
 };
 } // namespace cruelEngine::cruelScene

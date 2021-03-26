@@ -1,14 +1,16 @@
 #pragma once
 #include "../mesh.hpp"
 
-namespace cruelEngine::cruelScene {
-class Sphere : public Mesh {
+namespace cruelEngine::cruelScene
+{
+class Sphere : public Mesh
+{
 public:
-  Sphere(bool face_out);
+    Sphere(bool face_out);
 
-  Sphere();
+    Sphere();
 
 private:
-  bool face_out = true;
+    bool face_out = true;
 };
 } // namespace cruelEngine::cruelScene

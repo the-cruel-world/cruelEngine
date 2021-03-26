@@ -2,28 +2,30 @@
 
 #include "../vkcommon.h"
 
-namespace cruelEngine::cruelRender {
+namespace cruelEngine::cruelRender
+{
 class LogicalDevice;
 
-class Sampler {
+class Sampler
+{
 public:
-  Sampler(LogicalDevice &device, const VkSamplerCreateInfo &info);
+    Sampler(LogicalDevice &device, const VkSamplerCreateInfo &info);
 
-  Sampler(const Sampler &) = delete;
+    Sampler(const Sampler &) = delete;
 
-  Sampler(Sampler &&sampler);
+    Sampler(Sampler &&sampler);
 
-  Sampler &operator=(const Sampler &) = delete;
+    Sampler &operator=(const Sampler &) = delete;
 
-  Sampler &operator=(Sampler &&) = delete;
+    Sampler &operator=(Sampler &&) = delete;
 
-  ~Sampler();
+    ~Sampler();
 
-  VkSampler get_handle() const;
+    VkSampler get_handle() const;
 
 private:
-  LogicalDevice &device;
+    LogicalDevice &device;
 
-  VkSampler handle = VK_NULL_HANDLE;
+    VkSampler handle = VK_NULL_HANDLE;
 };
 } // namespace cruelEngine::cruelRender

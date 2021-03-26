@@ -1,40 +1,54 @@
 #pragma once
 #include "../vkcommon.h"
 
-namespace cruelEngine {
-namespace cruelRender {
-
+namespace cruelEngine
+{
+namespace cruelRender
+{
 class LogicalDevice;
 class Image;
 
-class ImageView {
+class ImageView
+{
 public:
-  ImageView(LogicalDevice &device, VkImage *image, VkFormat &format);
+    ImageView(LogicalDevice &device, VkImage *image, VkFormat &format);
 
-  ImageView(ImageView &) = delete;
+    ImageView(ImageView &) = delete;
 
-  ImageView operator=(const ImageView &) = delete;
+    ImageView operator=(const ImageView &) = delete;
 
-  ImageView(ImageView &&other);
+    ImageView(ImageView &&other);
 
-  ~ImageView();
+    ~ImageView();
 
-  VkImageView get_handle() const { return handle; }
+    VkImageView get_handle() const
+    {
+        return handle;
+    }
 
-  LogicalDevice &get_device() const { return device; }
+    LogicalDevice &get_device() const
+    {
+        return device;
+    }
 
-  const VkImage &get_image() const { return *image; }
+    const VkImage &get_image() const
+    {
+        return *image;
+    }
 
-  VkFormat get_format() const { return format; }
+    VkFormat get_format() const
+    {
+        return format;
+    }
 
-  void set_image(VkImage &image);
+    void set_image(VkImage &image);
 
 private:
-  LogicalDevice &device;
-  VkImage *image;
-  VkImageView handle;
+    LogicalDevice &device;
+    VkImage *      image;
+    VkImageView    handle;
 
-  VkFormat format;
+    VkFormat format;
 };
 
 } // namespace cruelRender

@@ -1,43 +1,52 @@
 #pragma once
 #include "../vkcommon.h"
 
-namespace cruelEngine {
-namespace cruelRender {
-
+namespace cruelEngine
+{
+namespace cruelRender
+{
 class LogicalDevice;
 
-struct RenderPassAttachment {
-  VkAttachmentDescription colorAttachment;
-  VkAttachmentReference colorAttachmentRef;
-  VkSubpassDependency subpassDependency;
-  std::vector<VkSubpassDescription> subpass;
+struct RenderPassAttachment
+{
+    VkAttachmentDescription           colorAttachment;
+    VkAttachmentReference             colorAttachmentRef;
+    VkSubpassDependency               subpassDependency;
+    std::vector<VkSubpassDescription> subpass;
 };
 
-class RenderPass {
+class RenderPass
+{
 public:
-  RenderPass(LogicalDevice &device, const RenderPassAttachment &attachments);
+    RenderPass(LogicalDevice &device, const RenderPassAttachment &attachments);
 
-  RenderPass(RenderPass &&other);
+    RenderPass(RenderPass &&other);
 
-  RenderPass(const RenderPass &) = delete;
+    RenderPass(const RenderPass &) = delete;
 
-  RenderPass &operator=(const RenderPass &) = delete;
+    RenderPass &operator=(const RenderPass &) = delete;
 
-  RenderPass &operator=(RenderPass &&) = delete;
+    RenderPass &operator=(RenderPass &&) = delete;
 
-  ~RenderPass();
+    ~RenderPass();
 
 public:
-  const VkRenderPass &get_handle() const { return handle; }
+    const VkRenderPass &get_handle() const
+    {
+        return handle;
+    }
 
-  const LogicalDevice &get_device() const { return device; }
+    const LogicalDevice &get_device() const
+    {
+        return device;
+    }
 
 private:
-  LogicalDevice &device;
+    LogicalDevice &device;
 
-  RenderPassAttachment attachments{};
+    RenderPassAttachment attachments{};
 
-  VkRenderPass handle = VK_NULL_HANDLE;
+    VkRenderPass handle = VK_NULL_HANDLE;
 };
 } // namespace cruelRender
 } // namespace cruelEngine
