@@ -2,9 +2,7 @@
 
 #include "../vkcommon.h"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 class LogicalDevice;
 
@@ -74,5 +72,4 @@ private:
     std::vector<char>     source;
     VkShaderStageFlagBits shader_stage;
 };
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

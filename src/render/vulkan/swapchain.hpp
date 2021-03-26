@@ -1,7 +1,5 @@
 #pragma once
 #include "../vkcommon.h"
-// #include "image.hpp"
-// #include "image_view.hpp"
 
 namespace cruelEngine
 {
@@ -63,8 +61,6 @@ public:
     ~Swapchain();
 
 public:
-    // void                    createSwapchain(u32 &_imageCount);
-
     bool is_valid() const
     {
         return false;
