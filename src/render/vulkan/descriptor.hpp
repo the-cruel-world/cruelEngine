@@ -34,6 +34,11 @@ public:
         return handle;
     }
 
+    const VkDescriptorPoolSize &getPoolSize() const
+    {
+        return pool_size;
+    }
+
 private:
     LogicalDevice &device;
 
