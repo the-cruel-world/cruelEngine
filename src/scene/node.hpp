@@ -23,7 +23,21 @@ public:
         return parent;
     }
 
+    size_t GetId() const
+    {
+        return id;
+    }
+
+    const std::string &GetName() const
+    {
+        return name;
+    }
+
     void AddChild(std::shared_ptr<Node> node);
+
+    const std::shared_ptr<Node> &GetChild(size_t id);
+
+    const std::shared_ptr<Node> &GetChild(std::string name);
 
     const std::vector<std::shared_ptr<Node>> &GetChildren() const
     {

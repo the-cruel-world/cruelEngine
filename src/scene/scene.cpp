@@ -6,6 +6,7 @@ namespace cruelEngine::cruelScene
 {
 Scene::Scene()
 {
+    set_root_node(std::make_shared<Node>(0, "Root"));
     prepare_camera();
 }
 
@@ -22,6 +23,21 @@ void Scene::addObject(std::shared_ptr<Object> obj)
 
 void Scene::rmObject(std::string name)
 {}
+
+void Scene::add_node(std::shared_ptr<Node> node)
+{
+    nodes.push_back(std::move(node));
+}
+
+const std::vector<std::shared_ptr<Node>> &Scene::get_nodes() const
+{
+    return nodes;
+}
+
+void Scene::add_component(std::shared_ptr<Component> component)
+{
+    components[typeid(component)].push_back(std::move(component));
+}
 
 void Scene::update()
 {}

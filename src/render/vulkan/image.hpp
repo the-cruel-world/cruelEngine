@@ -1,9 +1,7 @@
 #pragma once
 #include "../vkcommon.h"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 class LogicalDevice;
 
@@ -11,15 +9,15 @@ class Image
 {
 public:
     Image(LogicalDevice &device, const VkExtent3D &extent, const VkFormat &format,
-          const VkImageUsageFlags &image_usage,
+          VkImageUsageFlags image_usage, VkMemoryPropertyFlags memory_flags,
           VkSampleCountFlagBits sample_count = VK_SAMPLE_COUNT_1_BIT, uint32_t mip_levels = 1,
           uint32_t array_layers = 1, VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL,
           VkImageCreateFlags flags = 0, uint32_t num_queue_families = 0,
           const uint32_t *queue_families = nullptr);
 
     Image(LogicalDevice &device, const VkImage &handle, const VkExtent3D &extent,
-          const VkFormat &format, const VkImageUsageFlags &imageUsage,
-          const VkSampleCountFlags sampleCount = VK_SAMPLE_COUNT_1_BIT);
+          const VkFormat &format, VkImageUsageFlags imageUsage,
+          VkSampleCountFlags sampleCount = VK_SAMPLE_COUNT_1_BIT);
 
     Image(const Image &) = delete;
 
@@ -31,25 +29,19 @@ public:
 
     ~Image();
 
-    LogicalDevice &get_device() const
-    {
-        return device;
-    }
+    LogicalDevice &get_device() const;
 
-    VkImage get_handle() const
-    {
-        return handle;
-    }
+    VkImage get_handle() const;
 
-    const VkImageType &get_image_type() const
-    {
-        return type;
-    }
+    VkDeviceMemory get_memory() const;
 
-    const VkFormat &get_format() const
-    {
-        return format;
-    }
+    VkImageSubresource get_subresource() const;
+
+    const VkImageType &get_image_type() const;
+
+    const VkFormat &get_format() const;
+
+    u32 getArrayLayers() const;
 
 private:
     LogicalDevice &device;
@@ -64,8 +56,8 @@ private:
     VkImageTiling      tiling{};
     VkImageUsageFlags  usage{};
     VkImageSubresource subresource{};
+    u32                arrayLayers;
 
     VkImageType findImageType(VkExtent3D extent);
 };
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

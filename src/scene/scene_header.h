@@ -1,4 +1,6 @@
+#include "component.hpp"
 #include "components/skybox.hpp"
 #include "mesh.hpp"
+#include "node.hpp"
 #include "object.hpp"
 #include "scene.hpp"

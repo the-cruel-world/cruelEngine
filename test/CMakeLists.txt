@@ -1,6 +1,6 @@
 add_executable(main main.cpp)
 
-target_link_libraries(main cruelWindow)
+target_link_libraries(main cruelWindow cruelScene)
 
 add_executable(render render.cpp)
 

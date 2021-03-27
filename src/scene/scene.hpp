@@ -24,6 +24,22 @@ public:
         return sceneObjects;
     }
 
+    void add_node(std::shared_ptr<Node> node);
+
+    const std::vector<std::shared_ptr<Node>> &get_nodes() const;
+
+    void set_root_node(std::shared_ptr<Node> node)
+    {
+        root = std::move(node);
+    }
+
+    std::shared_ptr<Node> get_root_node()
+    {
+        return root;
+    }
+
+    void add_component(std::shared_ptr<Component> component);
+
     void prepare_camera();
 
     Camera &get_camera();
@@ -40,27 +56,18 @@ protected:
     /**
      * All nodes in this scene.
      */
-    std::vector<std::unique_ptr<Node>> nodes;
+    std::vector<std::shared_ptr<Node>> nodes;
 
-    void set_root_node(Node &node)
-    {
-        root = &node;
-    }
-
-    Node &get_root_node()
-    {
-        return *root;
-    }
     /**
      * pointer to the root node.
      */
-    Node *root = nullptr;
+    std::shared_ptr<Node> root = nullptr;
 
     Node *find_node(const std::string &name);
 
     /**
      * Components
      */
-    std::unordered_map<std::type_index, Component> components;
+    std::unordered_map<std::type_index, std::vector<std::shared_ptr<Component>>> components;
 };
 } // namespace cruelEngine::cruelScene
