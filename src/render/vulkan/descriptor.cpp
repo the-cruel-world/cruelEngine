@@ -18,6 +18,19 @@ DescriptorPool::DescriptorPool(LogicalDevice &device, const VkDescriptorPoolSize
     VK_CHECK_RESULT(vkCreateDescriptorPool(device.get_handle(), &poolInfo, nullptr, &handle));
 }
 
+DescriptorPool::DescriptorPool(LogicalDevice &device, const VkDescriptorPoolSize pool_size,
+                               u32 maxSets) :
+    device{device}, pool_size{pool_size}
+{
+    VkDescriptorPoolCreateInfo poolInfo{};
+    poolInfo.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    poolInfo.poolSizeCount = 1;
+    poolInfo.pPoolSizes    = &pool_size;
+    poolInfo.maxSets       = maxSets;
+
+    VK_CHECK_RESULT(vkCreateDescriptorPool(device.get_handle(), &poolInfo, nullptr, &handle));
+}
+
 DescriptorPool::~DescriptorPool()
 {
     if (handle != VK_NULL_HANDLE)

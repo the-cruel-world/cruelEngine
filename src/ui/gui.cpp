@@ -125,6 +125,8 @@ void Gui::prepare_resource()
                                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, singleTimeCmd);
     singleTimeCmd.endOneTime();
+    vkDestroyBuffer(session.get_device().get_handle(), stagingBuffer, nullptr);
+    vkFreeMemory(session.get_device().get_handle(), stagingBufferMemory, nullptr);
 
     // Create a Sampler
     VkSamplerCreateInfo samplerCI{VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO};
@@ -139,18 +141,23 @@ void Gui::prepare_resource()
 
     // Create descriptor (sets, pool, setlayouts)
     VkDescriptorPoolSize poolSize;
-    poolSize.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    poolSize.type            = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
     poolSize.descriptorCount = 1;
 
-    descriptorPool = std::make_shared<cruelRender::DescriptorPool>(session.get_device(), poolSize);
+    descriptorPool =
+        std::make_shared<cruelRender::DescriptorPool>(session.get_device(), poolSize, 2);
 
     VkDescriptorSetLayoutBinding layoutBinding;
-    layoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-    layoutBinding.stageFlags     = VK_SHADER_STAGE_FRAGMENT_BIT;
-    layoutBinding.binding        = 0;
+    layoutBinding.descriptorType     = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    layoutBinding.stageFlags         = VK_SHADER_STAGE_FRAGMENT_BIT;
+    layoutBinding.binding            = 0;
+    layoutBinding.descriptorCount    = 1;
+    layoutBinding.pImmutableSamplers = nullptr;
+
     std::vector<VkDescriptorSetLayoutBinding> layoutBindings = {
         layoutBinding,
     };
+
     descriptorSetLayout =
         std::make_shared<cruelRender::DescriptorSetLayout>(session.get_device(), layoutBindings);
 
@@ -163,9 +170,9 @@ void Gui::prepare_resource()
     imageInfo.imageView   = fontView->get_handle();
     imageInfo.sampler     = sampler->get_handle();
 
-    VkWriteDescriptorSet              descriptorWriteInfo{VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET};
+    VkWriteDescriptorSet descriptorWriteInfo{VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET};
     descriptorWriteInfo.dstSet          = descriptorSet->get_handle();
-    descriptorWriteInfo.dstBinding      = 1;
+    descriptorWriteInfo.dstBinding      = 0;
     descriptorWriteInfo.dstArrayElement = 0;
     descriptorWriteInfo.descriptorType  = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
     descriptorWriteInfo.descriptorCount = 1;
@@ -181,24 +188,41 @@ void Gui::prepare_resource()
 void Gui::prepare_pipeline()
 {
     std::vector<cruelRender::ShaderModule> shaderModules{};
+    shaderModules.emplace_back(session.get_device(),
+                               "/home/yiwen/program/cruelworld/cruelEngine/data/shaders/"
+                               "frag.spv",
+                               "main", VK_SHADER_STAGE_FRAGMENT_BIT);
+
+    shaderModules.emplace_back(session.get_device(),
+                               "/home/yiwen/program/cruelworld/cruelEngine/data/shaders/"
+                               "vert.spv",
+                               "main", VK_SHADER_STAGE_VERTEX_BIT);
+
+    VkPushConstantRange pushConstantRange{};
+    pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    pushConstantRange.size       = sizeof(PushConstBlock);
+    pushConstantRange.offset     = 0;
 
     VkPipelineLayoutCreateInfo pipelineLayoutCI{VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO};
     pipelineLayoutCI.setLayoutCount         = 1;
     pipelineLayoutCI.pSetLayouts            = &descriptorSetLayout->get_handle();
-    pipelineLayoutCI.pushConstantRangeCount = 0;
-    pipelineLayoutCI.pPushConstantRanges    = nullptr;
+    pipelineLayoutCI.pushConstantRangeCount = 1;
+    pipelineLayoutCI.pPushConstantRanges    = &pushConstantRange;
 
     pipelineLayout = std::make_shared<cruelRender::PipelineLayout>(session.get_device(),
                                                                    shaderModules, pipelineLayoutCI);
     cruelRender::PipelineStatus                   pipelineState{};
     cruelRender::PipelineStatus::VertexInputState vertex_input_state;
 
+    VkVertexInputAttributeDescription;
+    VkVertexInputBindingDescription;
+
     vertex_input_state.attributes.push_back(
         {0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(ImDrawVert, pos)});
     vertex_input_state.attributes.push_back(
-        {0, 1, VK_FORMAT_R32G32_SFLOAT, offsetof(ImDrawVert, uv)});
+        {1, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(ImDrawVert, uv)});
     vertex_input_state.attributes.push_back(
-        {0, 2, VK_FORMAT_R8G8B8A8_UNORM, offsetof(ImDrawVert, col)});
+        {2, 0, VK_FORMAT_R8G8B8A8_UNORM, offsetof(ImDrawVert, col)});
 
     vertex_input_state.bindings.push_back({0, sizeof(ImDrawVert), VK_VERTEX_INPUT_RATE_VERTEX});
 

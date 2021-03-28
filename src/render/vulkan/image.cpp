@@ -86,7 +86,8 @@ Image::Image(LogicalDevice &device, const VkExtent3D &extent, const VkFormat &fo
 
     if (num_queue_families > 0)
     {
-        imageCI.sharingMode           = VK_SHARING_MODE_CONCURRENT;
+        if (num_queue_families > 1)
+            imageCI.sharingMode = VK_SHARING_MODE_CONCURRENT;
         imageCI.queueFamilyIndexCount = num_queue_families;
         imageCI.pQueueFamilyIndices   = queue_families;
     }

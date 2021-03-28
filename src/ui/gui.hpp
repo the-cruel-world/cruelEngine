@@ -45,6 +45,12 @@ private:
     std::shared_ptr<cruelRender::ImageView> fontView{};
     std::shared_ptr<cruelRender::Sampler>   sampler{};
 
+    struct PushConstBlock
+    {
+        glm::vec2 scale;
+        glm::vec2 translate;
+    } pushConstBlock;
+
     float scale   = 0.5;
     bool  visible = true;
     bool  updated = false;

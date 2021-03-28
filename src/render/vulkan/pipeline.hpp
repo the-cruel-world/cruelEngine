@@ -103,7 +103,7 @@ public:
         VkFrontFace front_face{VK_FRONT_FACE_COUNTER_CLOCKWISE};
         VkBool32    depth_bias_enable{VK_FALSE};
 
-        float depth_bias_clamp{1.0f};
+        float depth_bias_clamp{0.0f};
         float depth_bias_slope_factor{1.0f};
         float line_width{1.0f};
     };
