@@ -30,6 +30,7 @@ class FrameBuffer;
 class Instance;
 class RenderTask;
 class Queue;
+class GuiOverlay;
 
 // Todo
 // 1. The rendersession should support headless render.
@@ -57,13 +58,14 @@ public:
      * to rebuild a new swapchain.
      */
     void update_swapchain();
-
     void recreate_swapchain()
     {}
 
     void load_scene(std::shared_ptr<cruelScene::Scene> scene);
 
     void add_new_task(std::unique_ptr<RenderTask> task);
+
+    void setGuiOverlay(std::unique_ptr<GuiOverlay> gui);
 
     void prepare();
 
@@ -77,43 +79,26 @@ public:
 
     void render_frame();
 
-    LogicalDevice &get_device() const
-    {
-        return device;
-    }
+    LogicalDevice &get_device() const;
 
-    Swapchain &get_swapchain() const
-    {
-        return *swapchain;
-    }
+    Swapchain &get_swapchain() const;
 
-    Window &get_window() const
-    {
-        return *window;
-    }
+    Window &get_window() const;
 
-    VkSurfaceKHR &get_surface()
-    {
-        return surface;
-    }
+    VkSurfaceKHR &get_surface();
 
-    RenderPass &get_render_pass()
-    {
-        return *render_pass;
-    }
+    RenderPass &get_render_pass();
 
     bool is_session_alive();
 
     void createSemaphores();
-
     void destroySemaphores();
 
     void set_session_id(u32 new_id);
+    u32  get_session_id() const;
 
-    u32 get_session_id() const
-    {
-        return session_id;
-    }
+    Queue *get_graphic_queue() const;
+    Queue *get_present_queue() const;
 
 private:
     u32 session_id = 0;
@@ -155,6 +140,8 @@ private:
 
     //! \brief The redner properties of a render session.
     SessionProp session_properties;
+
+    std::unique_ptr<GuiOverlay> guiOverlay{};
 
     /**
      * The callback function react to window_resize_event.

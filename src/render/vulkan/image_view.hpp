@@ -8,10 +8,18 @@ namespace cruelRender
 class LogicalDevice;
 class Image;
 
+bool is_depth_only_format(VkFormat format);
+
+bool is_depth_stencil_format(VkFormat format);
+
 class ImageView
 {
 public:
-    ImageView(LogicalDevice &device, VkImage *image, VkFormat &format);
+    ImageView(LogicalDevice &device, Image *image, VkFormat format = VK_FORMAT_UNDEFINED);
+
+    ImageView(LogicalDevice &device, Image *image, VkImageViewType view_type,
+              VkFormat format = VK_FORMAT_UNDEFINED, u32 base_mip_level = 0,
+              u32 base_array_layer = 0, u32 mip_levels = 0, u32 array_layers = 0);
 
     ImageView(ImageView &) = delete;
 
@@ -31,7 +39,7 @@ public:
         return device;
     }
 
-    const VkImage &get_image() const
+    const Image &get_image() const
     {
         return *image;
     }
@@ -41,14 +49,16 @@ public:
         return format;
     }
 
-    void set_image(VkImage &image);
+    void set_image(Image &image);
 
 private:
     LogicalDevice &device;
-    VkImage *      image;
+    Image *        image;
     VkImageView    handle;
 
     VkFormat format;
+
+    VkImageSubresourceRange subresourceRange{};
 };
 
 } // namespace cruelRender

@@ -21,11 +21,11 @@ public:
 
     Image(const Image &) = delete;
 
-    Image(Image &&) = delete;
+    // Image(Image &&) = delete;
 
     Image operator=(const Image &) = delete;
 
-    Image operator=(Image &&) = delete;
+    // Image operator=(Image &&) = delete;
 
     ~Image();
 

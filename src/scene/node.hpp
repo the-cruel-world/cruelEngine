@@ -18,20 +18,13 @@ public:
 
     void SetParent(std::shared_ptr<Node> node);
 
-    const std::shared_ptr<Node> &GetParent() const
-    {
-        return parent;
-    }
+    const std::shared_ptr<Node> &GetParent() const;
 
-    size_t GetId() const
-    {
-        return id;
-    }
+    void SetId(size_t new_id);
 
-    const std::string &GetName() const
-    {
-        return name;
-    }
+    size_t GetId() const;
+
+    const std::string &GetName() const;
 
     void AddChild(std::shared_ptr<Node> node);
 
@@ -39,10 +32,7 @@ public:
 
     const std::shared_ptr<Node> &GetChild(std::string name);
 
-    const std::vector<std::shared_ptr<Node>> &GetChildren() const
-    {
-        return children;
-    }
+    const std::vector<std::shared_ptr<Node>> &GetChildren() const;
 
 protected:
     size_t id;

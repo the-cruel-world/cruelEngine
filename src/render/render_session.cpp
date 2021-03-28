@@ -1,8 +1,9 @@
 #include "render_session.hpp"
+#include "gui_overlay.hpp"
+#include "render_task.hpp"
 
 #include "../scene/object.hpp"
 #include "../scene/scene.hpp"
-#include "render_task.hpp"
 #include "render_tasks/render_tasks.hpp"
 #include "vulkan/command_buffer.hpp"
 #include "vulkan/command_pool.hpp"
@@ -34,7 +35,7 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 
     graphic_queue = &device.get_suitable_graphics_queue(0);
 
-    present_queue = &device.get_suitable_present_queue(surface, 0);
+    present_queue = &device.get_suitable_present_queue(surface, 1);
 
     std::cout << "[Rendersession] graphic queue info: " << graphic_queue->get_family_index()
               << graphic_queue->get_index() << std::endl;
@@ -105,6 +106,11 @@ void RenderSession::add_new_task(std::unique_ptr<RenderTask> task)
     tasks.push_back(std::move(task));
 }
 
+void RenderSession::setGuiOverlay(std::unique_ptr<GuiOverlay> gui)
+{
+    guiOverlay = std::move(gui);
+}
+
 void RenderSession::prepare_render_pass()
 {
     VkAttachmentDescription colorAttachment{};
@@ -172,6 +178,9 @@ void RenderSession::draw()
         {
             task->draw(commandBuffers[i].get(), i);
         }
+
+        if (guiOverlay != nullptr)
+            guiOverlay->Draw(commandBuffers[i].get());
         commandBuffers[i].get().end_renderpass();
         commandBuffers[i].get().end();
         std::cout << "[session] cmd end " << i << std::endl;
@@ -242,6 +251,31 @@ void RenderSession::render_frame()
     }
 
     currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+}
+
+LogicalDevice &RenderSession::get_device() const
+{
+    return device;
+}
+
+Swapchain &RenderSession::get_swapchain() const
+{
+    return *swapchain;
+}
+
+Window &RenderSession::get_window() const
+{
+    return *window;
+}
+
+VkSurfaceKHR &RenderSession::get_surface()
+{
+    return surface;
+}
+
+RenderPass &RenderSession::get_render_pass()
+{
+    return *render_pass;
 }
 
 void RenderSession::createSemaphores()
@@ -359,6 +393,21 @@ void RenderSession::update_swapchain()
 void RenderSession::set_session_id(u32 new_id)
 {
     session_id = new_id;
+}
+
+u32 RenderSession::get_session_id() const
+{
+    return session_id;
+}
+
+Queue *RenderSession::get_graphic_queue() const
+{
+    return graphic_queue;
+}
+
+Queue *RenderSession::get_present_queue() const
+{
+    return present_queue;
 }
 
 } // namespace cruelRender
