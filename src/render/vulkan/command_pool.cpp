@@ -48,11 +48,12 @@ CommandPool::~CommandPool()
 
 CommandBuffer &CommandPool::RequestCommandBuffer(const VkCommandBufferLevel &_level)
 {
+#ifdef RENDER_DEBUG
     fprintf(stdout, "[CommandPool] Pool %p: active primary command buffers: %d\n", this,
             active_primary_command_buffer_count);
     fprintf(stdout, "[CommandPool] Pool %p: active secondary command buffers: %d\n", this,
             active_secondary_command_buffer_count);
-
+#endif
     if (_level == VK_COMMAND_BUFFER_LEVEL_PRIMARY)
     {
         if (active_primary_command_buffer_count < primary_command_buffers.size())

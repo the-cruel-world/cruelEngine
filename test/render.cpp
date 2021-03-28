@@ -10,9 +10,12 @@
 #include "../src/render/render_header.h"
 #include "../src/render/vkcommon.h"
 #include "../src/scene/scene_header.h"
+#include "../src/ui/gui.hpp"
 
 u32 cruelEngine::Window::count = 0;
 bool cruelEngine::Window::glfw_inited = false;
+
+using namespace cruelEngine;
 
 class Render : cruelEngine::Application {
 public:
@@ -36,6 +39,8 @@ public:
     for (size_t i = 0; i < size; i++) {
       render_context->add_session(properties.window_prop.title, properties);
       render_context->get_session(i).load_scene(scene);
+      render_context->get_session(i).setGuiOverlay(
+          std::make_unique<cruelGui::Gui>(render_context->get_session(i)));
     }
     std::cout << "Scene object loaded." << std::endl;
 

@@ -32,6 +32,19 @@ Gui::Gui(cruelRender::RenderSession &session) : GuiOverlay{session}
     // Dimensions
     ImGuiIO &io        = ImGui::GetIO();
     io.FontGlobalScale = scale;
+
+    std::cout << "imgui inited!" << std::endl;
+
+    prepare_resource();
+    std::cout << "Resource prepared!" << std::endl;
+
+    prepare_pipeline();
+    std::cout << "Pipeline created!" << std::endl;
+}
+
+Gui::~Gui()
+{
+    free_resource();
 }
 
 void Gui::Draw(cruelRender::CommandBuffer &commandBuffer)
@@ -82,11 +95,36 @@ void Gui::prepare_resource()
     memcpy(data, fontData, (size_t) uploadSize);
     vkUnmapMemory(session.get_device().get_handle(), stagingBufferMemory);
 
-    /** Create texture image
+    /** Todo
+     * Create texture image
      * 1. set image layout
      * 2. copy data to image
      * 3. set image layout again
      */
+    auto &singleTimeCmd =
+        session.get_device().request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+
+    singleTimeCmd.beginOneTime();
+
+    //! Set image layout
+    cruelRender::SetImageLayout(fontImage->get_handle(), fontImage->get_format(),
+                                VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                                singleTimeCmd);
+
+    //! copy buffer to image
+    VkBufferImageCopy bufferCopyRegion           = {};
+    bufferCopyRegion.imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    bufferCopyRegion.imageSubresource.layerCount = 1;
+    bufferCopyRegion.imageExtent.width           = texWidth;
+    bufferCopyRegion.imageExtent.height          = texHeight;
+    bufferCopyRegion.imageExtent.depth           = 1;
+    vkCmdCopyBufferToImage(singleTimeCmd.get_handle(), stagingBuffer, fontImage->get_handle(),
+                           VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &bufferCopyRegion);
+
+    cruelRender::SetImageLayout(fontImage->get_handle(), fontImage->get_format(),
+                                VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                                VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, singleTimeCmd);
+    singleTimeCmd.endOneTime();
 
     // Create a Sampler
     VkSamplerCreateInfo samplerCI{VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO};
@@ -97,7 +135,6 @@ void Gui::prepare_resource()
     samplerCI.addressModeV = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
     samplerCI.addressModeW = VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
     samplerCI.borderColor  = VK_BORDER_COLOR_FLOAT_OPAQUE_WHITE;
-
     sampler = std::make_shared<cruelRender::Sampler>(session.get_device(), samplerCI);
 
     // Create descriptor (sets, pool, setlayouts)
@@ -116,6 +153,7 @@ void Gui::prepare_resource()
     };
     descriptorSetLayout =
         std::make_shared<cruelRender::DescriptorSetLayout>(session.get_device(), layoutBindings);
+
     descriptorSet = std::make_shared<cruelRender::DescriptorSet>(
         session.get_device(), *descriptorSetLayout, *descriptorPool);
 
@@ -125,7 +163,6 @@ void Gui::prepare_resource()
     imageInfo.imageView   = fontView->get_handle();
     imageInfo.sampler     = sampler->get_handle();
 
-    std::vector<VkWriteDescriptorSet> writeDescriptorSets = {};
     VkWriteDescriptorSet              descriptorWriteInfo{VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET};
     descriptorWriteInfo.dstSet          = descriptorSet->get_handle();
     descriptorWriteInfo.dstBinding      = 1;
@@ -134,7 +171,7 @@ void Gui::prepare_resource()
     descriptorWriteInfo.descriptorCount = 1;
     descriptorWriteInfo.pImageInfo      = &imageInfo;
 
-    writeDescriptorSets.push_back(descriptorWriteInfo);
+    std::vector<VkWriteDescriptorSet> writeDescriptorSets = {descriptorWriteInfo};
 
     vkUpdateDescriptorSets(session.get_device().get_handle(),
                            static_cast<u32>(writeDescriptorSets.size()), writeDescriptorSets.data(),
@@ -221,8 +258,7 @@ void Gui::free_resource()
     fontView.reset();
     fontImage.reset();
 
-    pipeline.reset();
-    pipelineLayout.reset();
+    destroy_pipeline();
 
     descriptorSet.reset();
     descriptorSetLayout.reset();
@@ -232,7 +268,10 @@ void Gui::free_resource()
 }
 
 void Gui::destroy_pipeline()
-{}
+{
+    pipeline.reset();
+    pipelineLayout.reset();
+}
 
 bool Gui::header(const char *caption)
 {

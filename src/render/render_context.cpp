@@ -8,9 +8,7 @@
 #include "vulkan/physical_device.hpp"
 #include "vulkan/swapchain.hpp"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 RenderContext::RenderContext(RenderProp properties) : properties{properties}
 {
@@ -20,7 +18,9 @@ RenderContext::RenderContext(RenderProp properties) : properties{properties}
                                           properties.validationLayers,
                                           properties.enabledInstanceExtensions);
     glfwTerminate();
+#ifdef RENDER_DEBUG
     std::cout << "[RenderContext] Instance created" << std::endl;
+#endif
 
     // pick suitable physical device aka gpu.
     for (auto &gpu : instance->get_gpus())
@@ -31,12 +31,16 @@ RenderContext::RenderContext(RenderProp properties) : properties{properties}
             physicalDevice = std::make_unique<PhysicalDevice>(gpu, properties.features);
         }
     }
+#ifdef RENDER_DEBUG
     std::cout << "[RenderContext] Physical device created" << std::endl;
+#endif
 
     // Create Logical device
     device = std::make_unique<LogicalDevice>(*physicalDevice, properties.validationLayers,
                                              properties.enabledDeviceExtensions, properties.flags);
+#ifdef RENDER_DEBUG
     std::cout << "[RenderContext] Logical device created" << std::endl;
+#endif
 }
 
 void RenderContext::prepareRender()
@@ -59,7 +63,9 @@ RenderSession &RenderContext::get_session(u32 index) const
         return *(sessions[index]);
     else
     {
+#ifdef RENDER_DEBUG
         std::cout << "[RenderContext] Get render session: out of range" << std::endl;
+#endif
         return *(sessions[0]);
     }
 }
@@ -69,8 +75,10 @@ void RenderContext::add_session(std::string session_name, SessionProp &propertie
     u32 id = sessions.size();
     sessions.push_back(std::make_unique<RenderSession>(*instance, *device, properties));
     sessions.back()->set_session_id(id);
+#ifdef RENDER_DEBUG
     std::cout << "[RenderContext] Render Session created : " << session_name
               << "\tid:" << sessions.back()->get_session_id() << std::endl;
+#endif
 }
 
 void RenderContext::draw()
@@ -114,5 +122,5 @@ bool RenderContext::is_context_alive()
 // {
 
 // }
-} // namespace cruelRender
+
 } // namespace cruelEngine

@@ -12,7 +12,7 @@ class Gui : public cruelRender::GuiOverlay
 public:
     Gui(cruelRender::RenderSession &session);
 
-    ~Gui(){};
+    ~Gui();
 
     void Draw(cruelRender::CommandBuffer &commandBuffer);
 

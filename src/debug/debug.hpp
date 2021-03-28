@@ -1,7 +1,6 @@
 #pragma once
-#include <vulkan/vulkan.h>
-
 #include <string>
+#include <vulkan/vulkan.h>
 
 #define VK_CHECK_RESULT(stat)                                               \
     do                                                                      \
@@ -16,3 +15,15 @@
     } while (0)
 
 std::string errorString(VkResult errorCode);
+
+#ifdef RENDER_DEBUG
+#    define RENDER_LOG(x) \
+        do                \
+        {                 \
+        } while (0)
+#else
+#    define RENDER_LOG(x) \
+        do                \
+        {                 \
+        } while (0)
+#endif

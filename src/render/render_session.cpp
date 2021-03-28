@@ -14,9 +14,7 @@
 #include "vulkan/render_pass.hpp"
 #include "vulkan/swapchain.hpp"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
                              SessionProp &session_properties) :
@@ -37,15 +35,19 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 
     present_queue = &device.get_suitable_present_queue(surface, 1);
 
+#ifdef RENDER_DEBUG
     std::cout << "[Rendersession] graphic queue info: " << graphic_queue->get_family_index()
               << graphic_queue->get_index() << std::endl;
     std::cout << "[Rendersession] present queue info: " << present_queue->get_family_index()
               << present_queue->get_index() << std::endl;
+#endif
 
     swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount,
                                             VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
                                             VK_PRESENT_MODE_FIFO_KHR);
+#ifdef RENDER_DEBUG
     std::cout << "[Rendersession] swapchain creatd!" << std::endl;
+#endif
 
     prepare_render_pass();
     // std::cout << "[Rendersession] renderpass creatd!" << std::endl;
@@ -55,10 +57,14 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
         frameBuffer.push_back(std::make_unique<FrameBuffer>(
             device, image_view, swapchain->get_properties().extent, *render_pass));
     }
+#ifdef RENDER_DEBUG
     std::cout << "[Rendersession] framebuffers creatd!" << std::endl;
-
+#endif
     createSemaphores();
+
+#ifdef RENDER_DEBUG
     std::cout << "[Rendersession] semaphores creatd!" << std::endl;
+#endif
 
     commandPool = std::make_unique<CommandPool>(device, graphic_queue->get_family_index(),
                                                 CommandBuffer::ResetMode::ResetIndividually);
@@ -68,7 +74,9 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
         commandBuffers.push_back(
             commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
     }
+#ifdef RENDER_DEBUG
     std::cout << "[Rendersession] commandbuffers creatd!" << std::endl;
+#endif
 }
 
 void on_window_resize_cb(GLFWwindow *window, int width, int height)
@@ -98,7 +106,9 @@ RenderSession::~RenderSession()
         surface = VK_NULL_HANDLE;
     }
     window.reset();
+#ifdef RENDER_DEBUG
     std::cout << "Session destroied" << std::endl;
+#endif
 }
 
 void RenderSession::add_new_task(std::unique_ptr<RenderTask> task)
@@ -150,14 +160,18 @@ void RenderSession::prepare_render_pass()
 
 void RenderSession::draw()
 {
+#ifdef RENDER_DEBUG
     std::cout << "Session tasks: " << tasks.size() << std::endl;
+#endif
     if (tasks.size() == 0)
         return;
 
     for (size_t i = 0; i < commandBuffers.size(); i++)
     {
         commandBuffers[i].get().begin();
+#ifdef RENDER_DEBUG
         std::cout << "[session] cmd begin " << i << std::endl;
+#endif
         VkViewport viewport{};
         viewport.x        = 0.0f;
         viewport.y        = 0.0f;
@@ -183,7 +197,9 @@ void RenderSession::draw()
             guiOverlay->Draw(commandBuffers[i].get());
         commandBuffers[i].get().end_renderpass();
         commandBuffers[i].get().end();
+#ifdef RENDER_DEBUG
         std::cout << "[session] cmd end " << i << std::endl;
+#endif
     }
 }
 
@@ -243,7 +259,7 @@ void RenderSession::render_frame()
     presentInfo.pResults           = nullptr; // Optional
 
     result = present_queue->present(presentInfo);
-    present_queue->wait_idle();
+    // present_queue->wait_idle();
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
     {
@@ -390,6 +406,11 @@ void RenderSession::update_swapchain()
     draw();
 }
 
+CommandPool &RenderSession::getCommandPool()
+{
+    return *commandPool;
+}
+
 void RenderSession::set_session_id(u32 new_id)
 {
     session_id = new_id;
@@ -410,5 +431,4 @@ Queue *RenderSession::get_present_queue() const
     return present_queue;
 }
 
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

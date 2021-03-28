@@ -4,6 +4,10 @@
 namespace cruelEngine::cruelRender
 {
 class LogicalDevice;
+class CommandBuffer;
+
+void SetImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout,
+                    VkImageLayout newLayout, CommandBuffer &singleTimeCmd);
 
 class Image
 {

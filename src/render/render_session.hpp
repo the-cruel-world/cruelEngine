@@ -94,6 +94,8 @@ public:
     void createSemaphores();
     void destroySemaphores();
 
+    CommandPool &getCommandPool();
+
     void set_session_id(u32 new_id);
     u32  get_session_id() const;
 

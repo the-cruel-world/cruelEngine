@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <vector>
 
-// #include <GLFW/glfw3.h>
 #include "../src/scene/scene_header.h"
 #include <../src/window/window.hpp>
 
