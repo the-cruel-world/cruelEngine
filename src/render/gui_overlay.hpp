@@ -23,6 +23,8 @@ public:
 
     virtual void Draw(CommandBuffer &commandBuffer) = 0;
 
+    virtual bool needUpdate() const = 0;
+
     virtual void newFrame() = 0;
 
     virtual void prepare_pipeline() = 0;

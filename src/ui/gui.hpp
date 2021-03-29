@@ -14,9 +14,25 @@ public:
 
     ~Gui();
 
+    bool needUpdate() const
+    {
+        return updated;
+    }
+
     void Draw(cruelRender::CommandBuffer &commandBuffer);
 
+    void updateBuffer();
+
+    const float getScale() const
+    {
+        return scale;
+    }
+
     void newFrame();
+
+    cruelRender::RenderSession &getSession();
+
+    void resize(uint32_t width, uint32_t height);
 
     void prepare_resource();
     void prepare_pipeline();
@@ -40,10 +56,34 @@ private:
     std::shared_ptr<cruelRender::PipelineLayout>      pipelineLayout{};
     std::shared_ptr<cruelRender::Pipeline>            pipeline{};
     std::shared_ptr<cruelRender::Queue>               queue{};
+    // std::shared_ptr<cruelRender::CommandBuffer>       singleTimeCmd{};
 
     std::shared_ptr<cruelRender::Image>     fontImage{};
     std::shared_ptr<cruelRender::ImageView> fontView{};
     std::shared_ptr<cruelRender::Sampler>   sampler{};
+
+#ifdef guiVertexblockSize
+#    undef guiVertexblockSize
+#endif
+#define guiVertexblockSize 500
+
+#ifdef guiVertexmaxSize
+#    undef guiVertexmaxSize
+#endif
+#define guiVertexmaxSize 100 * guiVertexblockSize
+
+    std::shared_ptr<cruelRender::Buffer> vertexBuffer{};
+
+#ifdef guiIndexblockSize
+#    undef guiIndexblockSize
+#endif
+#define guiIndexblockSize 500
+
+#ifdef guiIndexmaxSize
+#    undef guiIndexmaxSize
+#endif
+#define guiIndexmaxSize 100 * guiIndexblockSize
+    std::shared_ptr<cruelRender::Buffer> indexBuffer{};
 
     struct PushConstBlock
     {
@@ -51,8 +91,9 @@ private:
         glm::vec2 translate;
     } pushConstBlock;
 
-    float scale   = 0.5;
-    bool  visible = true;
-    bool  updated = false;
+    float scale         = 1;
+    bool  visible       = true;
+    bool  bufferUpdated = false;
+    bool  updated       = false;
 };
 } // namespace cruelEngine::cruelGui

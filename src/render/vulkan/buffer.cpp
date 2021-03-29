@@ -176,37 +176,47 @@ void Buffer::destroyBuffer()
 
 void Buffer::load(void *data)
 {
+    load(data, buffer_size);
+}
+
+void Buffer::load(void *data, VkDeviceSize new_buffer_size)
+{
     if (buffer_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT)
     {
         CommandBuffer cmdBuffer(device.get_commanfPool(), VK_COMMAND_BUFFER_LEVEL_PRIMARY);
-        load_stage(data, cmdBuffer);
+        load_stage(data, cmdBuffer, new_buffer_size);
         return;
     }
     void *_data;
-    vkMapMemory(device.get_handle(), memory, 0, buffer_size, 0, &_data);
-    memcpy(_data, data, (size_t) buffer_size);
+    vkMapMemory(device.get_handle(), memory, 0, new_buffer_size, 0, &_data);
+    memcpy(_data, data, (size_t) new_buffer_size);
     vkUnmapMemory(device.get_handle(), memory);
 }
 
 void Buffer::load_stage(void *data, CommandBuffer &cmdBuffer)
 {
+    load_stage(data, cmdBuffer, buffer_size);
+}
+
+void Buffer::load_stage(void *data, CommandBuffer &cmdBuffer, VkDeviceSize new_buffer_size)
+{
     VkBuffer       staging_buffer        = VK_NULL_HANDLE;
     VkDeviceMemory staging_buffer_memory = VK_NULL_HANDLE;
-    create_buffer(device.get_handle(), device.get_physicalDevice().get_handle(), buffer_size,
+    create_buffer(device.get_handle(), device.get_physicalDevice().get_handle(), new_buffer_size,
                   VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
                   VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
                   staging_buffer, staging_buffer_memory);
 
     void *temp_data;
-    vkMapMemory(device.get_handle(), staging_buffer_memory, 0, buffer_size, 0, &temp_data);
-    memcpy(temp_data, data, buffer_size);
+    vkMapMemory(device.get_handle(), staging_buffer_memory, 0, new_buffer_size, 0, &temp_data);
+    memcpy(temp_data, data, new_buffer_size);
     vkUnmapMemory(device.get_handle(), staging_buffer_memory);
 
     cmdBuffer.beginOneTime();
     VkBufferCopy copyRegion{};
     copyRegion.srcOffset = 0; // Optional
     copyRegion.dstOffset = 0; // Optional
-    copyRegion.size      = buffer_size;
+    copyRegion.size      = new_buffer_size;
     vkCmdCopyBuffer(cmdBuffer.get_handle(), staging_buffer, handle, 1, &copyRegion);
     cmdBuffer.endOneTime();
 

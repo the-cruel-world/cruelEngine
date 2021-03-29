@@ -7,6 +7,11 @@ GuiOverlay::GuiOverlay(RenderSession &session) : session{session}
 void GuiOverlay::Draw(CommandBuffer &commandBuffer)
 {}
 
+bool GuiOverlay::needUpdate() const
+{
+    return false;
+}
+
 void GuiOverlay::newFrame()
 {}
 

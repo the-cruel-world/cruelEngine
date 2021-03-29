@@ -165,4 +165,10 @@ CommandBuffer &LogicalDevice::request_commandBuffer(const VkCommandBufferLevel &
 {
     return commandPool->RequestCommandBuffer(_level);
 }
+
+VkResult LogicalDevice::wait_idle()
+{
+    return vkDeviceWaitIdle(handle);
+}
+
 } // namespace cruelEngine::cruelRender

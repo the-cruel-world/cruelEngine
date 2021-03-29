@@ -65,7 +65,11 @@ public:
 
     void add_new_task(std::unique_ptr<RenderTask> task);
 
-    void setGuiOverlay(std::unique_ptr<GuiOverlay> gui);
+    void setGuiOverlay(std::shared_ptr<GuiOverlay> gui);
+
+    std::shared_ptr<GuiOverlay> getGuiOverlay();
+
+    void setGuiOverlayUpdateCb(void (*callback)(void *));
 
     void prepare();
 
@@ -143,7 +147,9 @@ private:
     //! \brief The redner properties of a render session.
     SessionProp session_properties;
 
-    std::unique_ptr<GuiOverlay> guiOverlay{};
+    std::shared_ptr<GuiOverlay> guiOverlay{};
+
+    void (*guiUpdateCb)(void *) = nullptr;
 
     /**
      * The callback function react to window_resize_event.

@@ -92,14 +92,24 @@ void on_window_resize_cb(GLFWwindow *window, int width, int height)
 RenderSession::~RenderSession()
 {
     //! run destructor until all the render process ends.
-    vkDeviceWaitIdle(device.get_handle());
+    device.wait_idle();
+
     commandBuffers.clear();
+    commandPool->ResetPool();
     commandPool.reset();
+
+    device.get_commanfPool().ResetPool();
+
     tasks.clear();
+    guiOverlay.reset();
+
     destroySemaphores();
     frameBuffer.clear();
     render_pass.reset();
     swapchain.reset();
+#ifdef RENDER_DEBUG
+    std::cout << "[RenderSession::destructor] destroy guiOverlay finally" << std::endl;
+#endif
     if (surface != VK_NULL_HANDLE)
     {
         vkDestroySurfaceKHR(instance.get_handle(), surface, nullptr);
@@ -116,9 +126,19 @@ void RenderSession::add_new_task(std::unique_ptr<RenderTask> task)
     tasks.push_back(std::move(task));
 }
 
-void RenderSession::setGuiOverlay(std::unique_ptr<GuiOverlay> gui)
+void RenderSession::setGuiOverlay(std::shared_ptr<GuiOverlay> gui)
 {
-    guiOverlay = std::move(gui);
+    guiOverlay = gui;
+}
+
+std::shared_ptr<GuiOverlay> RenderSession::getGuiOverlay()
+{
+    return guiOverlay;
+}
+
+void RenderSession::setGuiOverlayUpdateCb(void (*callback)(void *))
+{
+    guiUpdateCb = callback;
 }
 
 void RenderSession::prepare_render_pass()
@@ -163,8 +183,10 @@ void RenderSession::draw()
 #ifdef RENDER_DEBUG
     std::cout << "Session tasks: " << tasks.size() << std::endl;
 #endif
-    if (tasks.size() == 0)
+    if (tasks.size() == 0 && guiOverlay == nullptr)
         return;
+
+    graphic_queue->wait_idle();
 
     for (size_t i = 0; i < commandBuffers.size(); i++)
     {
@@ -194,7 +216,15 @@ void RenderSession::draw()
         }
 
         if (guiOverlay != nullptr)
+        {
+#ifdef RENDER_DEBUG
+            std::cout << "[session] draw ui overlay. cmd" << i << std::endl;
+#endif
+            vkCmdSetViewport(commandBuffers[i].get().get_handle(), 0, 1, &viewport);
+            vkCmdSetScissor(commandBuffers[i].get().get_handle(), 0, 1, &scissor);
             guiOverlay->Draw(commandBuffers[i].get());
+        }
+
         commandBuffers[i].get().end_renderpass();
         commandBuffers[i].get().end();
 #ifdef RENDER_DEBUG
@@ -223,6 +253,25 @@ void RenderSession::render_frame()
         vkWaitForFences(device.get_handle(), 1, &imagesInFlight[image_index], VK_TRUE, UINT64_MAX);
     }
     imagesInFlight[image_index] = inFlightFences[currentFrame];
+
+    if (guiOverlay != nullptr)
+    {
+        if (guiUpdateCb != nullptr)
+        {
+            guiUpdateCb(guiOverlay.get());
+        }
+        if (guiOverlay->needUpdate())
+        {
+#ifdef RENDER_DEBUG
+            std::cout << "[Session::render_frame] guiOverlay needs Update." << std::endl;
+#endif
+            draw();
+        }
+#ifdef RENDER_DEBUG
+        else
+            std::cout << "[Session::render_frame] guiOverlay doesn't need Update." << std::endl;
+#endif
+    }
 
     for (auto &task : tasks)
     {

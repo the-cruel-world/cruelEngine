@@ -19,6 +19,14 @@ public:
         ReAllocate,
     };
 
+    enum class CmdState
+    {
+        CMD_STATE_IDLE = 0,
+        CMD_STATE_BUSY,
+        CMD_STATE_RECORDING,
+        CMD_STATE_RESETED
+    };
+
     /*! \brief Init the command buffer, allocate space for it.
 \param _commandPool is the commandPool that this commandbuffer belongs to
 \param _level is the level of the commandBuffer, can be
@@ -85,6 +93,8 @@ private:
     VkCommandBuffer handle = VK_NULL_HANDLE;
 
     bool isRecord = false;
+
+    CmdState cmdState = CmdState::CMD_STATE_IDLE;
 
     VkCommandBufferLevel level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 };

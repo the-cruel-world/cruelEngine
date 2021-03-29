@@ -32,14 +32,24 @@ Gui::Gui(cruelRender::RenderSession &session) : GuiOverlay{session}
     // Dimensions
     ImGuiIO &io        = ImGui::GetIO();
     io.FontGlobalScale = scale;
-
-    std::cout << "imgui inited!" << std::endl;
-
+#ifdef GUI_DEBUG
+    std::cout << "[Gui::Constructor] imgui inited!" << std::endl;
+#endif
     prepare_resource();
-    std::cout << "Resource prepared!" << std::endl;
+#ifdef GUI_DEBUG
+    std::cout << "[Gui::Constructor] Resource prepared!" << std::endl;
+#endif
 
     prepare_pipeline();
-    std::cout << "Pipeline created!" << std::endl;
+#ifdef GUI_DEBUG
+    std::cout << "[Gui::Constructor] Pipeline created!" << std::endl;
+#endif
+
+    resize(session.get_swapchain().get_properties().extent.width,
+           session.get_swapchain().get_properties().extent.height);
+#ifdef GUI_DEBUG
+    std::cout << "[Gui::Constructor] display size setted!" << std::endl;
+#endif
 }
 
 Gui::~Gui()
@@ -48,11 +58,162 @@ Gui::~Gui()
 }
 
 void Gui::Draw(cruelRender::CommandBuffer &commandBuffer)
-{}
+{
+#ifdef GUI_DEBUG
+    std::cout << "[Gui::Draw] recording draw commands." << commandBuffer.get_handle() << std::endl;
+#endif
+    ImDrawData *imDrawData = ImGui::GetDrawData();
+    bool        updated    = false;
+
+    u32 vertexOffset = 0;
+    u32 indexOffset  = 0;
+
+    if ((!imDrawData) || (imDrawData->CmdListsCount == 0))
+    {
+        return;
+    }
+
+    ImGuiIO &io = ImGui::GetIO();
+
+    commandBuffer.bindPipeLine(pipeline->get_handle(), VK_PIPELINE_BIND_POINT_GRAPHICS);
+    vkCmdBindDescriptorSets(commandBuffer.get_handle(), VK_PIPELINE_BIND_POINT_GRAPHICS,
+                            pipelineLayout->get_handle(), 0, 1, &descriptorSet->get_handle(), 0,
+                            nullptr);
+
+    pushConstBlock.scale     = glm::vec2(2.0f / io.DisplaySize.x, 2.0f / io.DisplaySize.y);
+    pushConstBlock.translate = glm::vec2(-1.0f);
+    vkCmdPushConstants(commandBuffer.get_handle(), pipelineLayout->get_handle(),
+                       VK_SHADER_STAGE_VERTEX_BIT, 0, sizeof(PushConstBlock), &pushConstBlock);
+
+    VkDeviceSize offsets[1] = {0};
+    vkCmdBindVertexBuffers(commandBuffer.get_handle(), 0, 1, &vertexBuffer->get_handle(), offsets);
+    vkCmdBindIndexBuffer(commandBuffer.get_handle(), indexBuffer->get_handle(), 0,
+                         VK_INDEX_TYPE_UINT16);
+
+    for (int32_t i = 0; i < imDrawData->CmdListsCount; i++)
+    {
+        const ImDrawList *cmd_list = imDrawData->CmdLists[i];
+        for (int32_t j = 0; j < cmd_list->CmdBuffer.Size; j++)
+        {
+            const ImDrawCmd *pcmd = &cmd_list->CmdBuffer[j];
+            VkRect2D         scissorRect;
+            scissorRect.offset.x      = std::max((int32_t)(pcmd->ClipRect.x), 0);
+            scissorRect.offset.y      = std::max((int32_t)(pcmd->ClipRect.y), 0);
+            scissorRect.extent.width  = (uint32_t)(pcmd->ClipRect.z - pcmd->ClipRect.x);
+            scissorRect.extent.height = (uint32_t)(pcmd->ClipRect.w - pcmd->ClipRect.y);
+            vkCmdSetScissor(commandBuffer.get_handle(), 0, 1, &scissorRect);
+            vkCmdDrawIndexed(commandBuffer.get_handle(), pcmd->ElemCount, 1, indexOffset,
+                             vertexOffset, 0);
+            indexOffset += pcmd->ElemCount;
+        }
+        vertexOffset += cmd_list->VtxBuffer.Size;
+    }
+#ifdef GUI_DEBUG
+    std::cout << "[Gui::Draw] recorded draw commands." << std::endl;
+#endif
+}
+
+void Gui::updateBuffer()
+{
+#ifdef GUI_DEBUG
+    std::cout << "[Gui::updateBuffer] updating buffers!" << std::endl;
+#endif
+    ImDrawData *draw_data = ImGui::GetDrawData();
+    if (!draw_data)
+    {
+        return;
+    }
+
+    size_t vertex_buffer_size = draw_data->TotalVtxCount * sizeof(ImDrawVert);
+    size_t index_buffer_size  = draw_data->TotalIdxCount * sizeof(ImDrawIdx);
+
+    if ((vertex_buffer_size == 0) || (index_buffer_size == 0))
+    {
+        return;
+    }
+
+    if (vertexBuffer != nullptr)
+    {
+        auto last_buffer_size = vertexBuffer->get_size();
+        if (last_buffer_size < vertex_buffer_size)
+        {
+            vertexBuffer.reset();
+            VkDeviceSize buffer_size =
+                std::ceil((float) vertex_buffer_size / (float) guiVertexblockSize) *
+                guiVertexblockSize;
+            assert(buffer_size >= vertex_buffer_size &&
+                   "blocked size must larger than original size");
+            vertexBuffer = std::make_shared<cruelRender::Buffer>(
+                session.get_device(), buffer_size, VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+        }
+    }
+    else
+    {
+        VkDeviceSize buffer_size =
+            std::ceil((float) vertex_buffer_size / (float) guiVertexblockSize) * guiVertexblockSize;
+        assert(buffer_size >= vertex_buffer_size && "blocked size must larger than original size");
+
+        vertexBuffer = std::make_shared<cruelRender::Buffer>(session.get_device(), buffer_size,
+                                                             VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+                                                             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+    }
+    if (indexBuffer != nullptr)
+    {
+        auto last_buffer_size = indexBuffer->get_size();
+        if (last_buffer_size < index_buffer_size)
+        {
+            indexBuffer.reset();
+            VkDeviceSize buffer_size =
+                std::ceil((float) index_buffer_size / (float) guiIndexblockSize) *
+                guiIndexblockSize;
+            assert(buffer_size >= index_buffer_size &&
+                   "blocked size must larger than original size");
+            indexBuffer = std::make_shared<cruelRender::Buffer>(
+                session.get_device(), buffer_size, VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
+                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+        }
+    }
+    else
+    {
+        VkDeviceSize buffer_size =
+            std::ceil((float) index_buffer_size / (float) guiIndexblockSize) * guiIndexblockSize;
+        assert(buffer_size >= index_buffer_size && "blocked size must larger than original size");
+        indexBuffer = std::make_shared<cruelRender::Buffer>(session.get_device(), buffer_size,
+                                                            VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
+                                                            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+    }
+
+    // copy data
+    void *vtx_data, *idx_data;
+    vkMapMemory(vertexBuffer->get_device().get_handle(), vertexBuffer->get_handleMem(), 0,
+                vertex_buffer_size, 0, &vtx_data);
+    vkMapMemory(indexBuffer->get_device().get_handle(), indexBuffer->get_handleMem(), 0,
+                index_buffer_size, 0, &idx_data);
+
+    ImDrawVert *vtx_dest = (ImDrawVert *) vtx_data;
+    ImDrawIdx * idx_dest = (ImDrawIdx *) idx_data;
+
+    for (int n = 0; n < draw_data->CmdListsCount; n++)
+    {
+        const ImDrawList *cmd_list = draw_data->CmdLists[n];
+        memcpy(vtx_dest, cmd_list->VtxBuffer.Data, cmd_list->VtxBuffer.Size * sizeof(ImDrawVert));
+        memcpy(idx_dest, cmd_list->IdxBuffer.Data, cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx));
+        vtx_dest += cmd_list->VtxBuffer.Size; // Update the offset
+        idx_dest += cmd_list->IdxBuffer.Size; // Update the offset
+    }
+    vkUnmapMemory(vertexBuffer->get_device().get_handle(), vertexBuffer->get_handleMem());
+    vkUnmapMemory(indexBuffer->get_device().get_handle(), indexBuffer->get_handleMem());
+}
 
 void Gui::newFrame()
 {
     ImGui::NewFrame();
+}
+
+cruelRender::RenderSession &Gui::getSession()
+{
+    return session;
 }
 
 void Gui::prepare_resource()
@@ -185,6 +346,12 @@ void Gui::prepare_resource()
                            0, nullptr);
 }
 
+void Gui::resize(uint32_t width, uint32_t height)
+{
+    ImGuiIO &io    = ImGui::GetIO();
+    io.DisplaySize = ImVec2((float) (width), (float) (height));
+}
+
 void Gui::prepare_pipeline()
 {
     std::vector<cruelRender::ShaderModule> shaderModules{};
@@ -278,6 +445,8 @@ void Gui::prepare_pipeline()
 
 void Gui::free_resource()
 {
+    ImGui::DestroyContext();
+
     sampler.reset();
     fontView.reset();
     fontImage.reset();
@@ -287,6 +456,9 @@ void Gui::free_resource()
     descriptorSet.reset();
     descriptorSetLayout.reset();
     descriptorPool.reset();
+
+    indexBuffer.reset();
+    vertexBuffer.reset();
 
     queue.reset();
 }
@@ -392,6 +564,7 @@ void Gui::text(const char *formatstr, ...)
     va_list args;
     va_start(args, formatstr);
     ImGui::TextV(formatstr, args);
+    updated = true;
     va_end(args);
 }
 

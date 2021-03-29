@@ -43,7 +43,11 @@ public:
 
     void load(void *data);
 
+    void load(void *data, VkDeviceSize buffer_size);
+
     void load_stage(void *data, CommandBuffer &cmdBuffer);
+
+    void load_stage(void *data, CommandBuffer &cmdBuffer, VkDeviceSize buffer_size);
 
     const VkBuffer &get_handle() const
     {
@@ -58,6 +62,11 @@ public:
     const LogicalDevice &get_device() const
     {
         return device;
+    }
+
+    VkDeviceSize get_size() const
+    {
+        return buffer_size;
     }
 
     // VkBool32            map(VkDeviceSize size, VkDeviceSize offset);
