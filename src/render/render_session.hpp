@@ -85,6 +85,8 @@ public:
 
     LogicalDevice &get_device() const;
 
+    Instance &getInstance() const {return instance;}
+
     Swapchain &get_swapchain() const;
 
     Window &get_window() const;

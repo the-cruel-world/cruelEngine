@@ -1,3 +1,7 @@
+set (IMGUI_DIR ../../external/imgui)
+
+include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends)
+
 add_executable(main main.cpp)
 
 target_link_libraries(main cruelWindow cruelScene)

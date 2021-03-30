@@ -6,29 +6,25 @@
 #include "../render/vulkan/logical_device.hpp"
 #include "../render/vulkan/physical_device.hpp"
 
+#include "../../external/imgui/backends/imgui_impl_glfw.h"
+#include "../../external/imgui/backends/imgui_impl_vulkan.h"
+#include "../../external/imgui/imgui.h"
+
 namespace cruelEngine::cruelGui
 {
 Gui::Gui(cruelRender::RenderSession &session) : GuiOverlay{session}
 {
     ImGui::CreateContext();
     // Color scheme
-    ImGuiStyle &style                       = ImGui::GetStyle();
-    style.Colors[ImGuiCol_TitleBg]          = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-    style.Colors[ImGuiCol_TitleBgActive]    = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
-    style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.0f, 0.0f, 0.0f, 0.1f);
-    style.Colors[ImGuiCol_MenuBarBg]        = ImVec4(1.0f, 0.0f, 0.0f, 0.4f);
-    style.Colors[ImGuiCol_Header]           = ImVec4(0.8f, 0.0f, 0.0f, 0.4f);
-    style.Colors[ImGuiCol_HeaderActive]     = ImVec4(1.0f, 0.0f, 0.0f, 0.4f);
-    style.Colors[ImGuiCol_HeaderHovered]    = ImVec4(1.0f, 0.0f, 0.0f, 0.4f);
-    style.Colors[ImGuiCol_FrameBg]          = ImVec4(0.0f, 0.0f, 0.0f, 0.8f);
-    style.Colors[ImGuiCol_CheckMark]        = ImVec4(1.0f, 0.0f, 0.0f, 0.8f);
-    style.Colors[ImGuiCol_SliderGrab]       = ImVec4(1.0f, 0.0f, 0.0f, 0.4f);
-    style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 0.0f, 0.0f, 0.8f);
-    style.Colors[ImGuiCol_FrameBgHovered]   = ImVec4(1.0f, 1.0f, 1.0f, 0.1f);
-    style.Colors[ImGuiCol_FrameBgActive]    = ImVec4(1.0f, 1.0f, 1.0f, 0.2f);
-    style.Colors[ImGuiCol_Button]           = ImVec4(1.0f, 0.0f, 0.0f, 0.4f);
-    style.Colors[ImGuiCol_ButtonHovered]    = ImVec4(1.0f, 0.0f, 0.0f, 0.6f);
-    style.Colors[ImGuiCol_ButtonActive]     = ImVec4(1.0f, 0.0f, 0.0f, 0.8f);
+    ImGui::StyleColorsLight();
+    ImGui::GetStyle().WindowRounding    = 5.0f;
+    ImGui::GetStyle().ChildRounding     = 1.0f;
+    ImGui::GetStyle().FrameRounding     = 3.0f;
+    ImGui::GetStyle().PopupRounding     = 6.0f;
+    ImGui::GetStyle().GrabRounding      = 3.0f;
+    ImGui::GetStyle().ScrollbarRounding = 2.0f;
+    ImGui::GetStyle().Alpha             = 0.90f;
+
     // Dimensions
     ImGuiIO &io        = ImGui::GetIO();
     io.FontGlobalScale = scale;
@@ -50,6 +46,19 @@ Gui::Gui(cruelRender::RenderSession &session) : GuiOverlay{session}
 #ifdef GUI_DEBUG
     std::cout << "[Gui::Constructor] display size setted!" << std::endl;
 #endif
+    ImGui_ImplGlfw_InitForVulkan(&session.get_window().get_handle(), true);
+    // ImGui_ImplVulkan_InitInfo init_info = {};
+    // init_info.Instance                  = session.getInstance().get_handle();
+    // init_info.PhysicalDevice            = session.get_device().get_physicalDevice().get_handle();
+    // init_info.Device                    = session.get_device().get_handle();
+    // init_info.QueueFamily               = session.get_graphic_queue()->get_family_index();
+    // init_info.Queue                     = session.get_graphic_queue()->get_handle();
+    // init_info.PipelineCache             = VK_NULL_HANDLE;
+    // init_info.DescriptorPool            = descriptorPool->get_handle();
+    // init_info.Allocator                 = nullptr;
+    // init_info.MinImageCount             = session.get_swapchain().get_properties().image_count;
+    // init_info.ImageCount                = session.get_swapchain().get_properties().image_count;
+    // ImGui_ImplVulkan_Init(&init_info, session.get_render_pass().get_handle());
 }
 
 Gui::~Gui()
@@ -208,6 +217,7 @@ void Gui::updateBuffer()
 
 void Gui::newFrame()
 {
+    ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
 

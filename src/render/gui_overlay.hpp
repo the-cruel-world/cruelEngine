@@ -27,6 +27,8 @@ public:
 
     virtual void newFrame() = 0;
 
+    virtual void resize(uint32_t width, uint32_t height) = 0;
+
     virtual void prepare_pipeline() = 0;
     virtual void prepare_resource() = 0;
     virtual void free_resource()    = 0;

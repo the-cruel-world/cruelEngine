@@ -13,7 +13,7 @@ set (IMGUI_SRC
     ${IMGUI_DIR}/imgui_widgets.cpp
 )
 
-include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends ..)
+include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends)
 
 add_library(cruelGui SHARED ${SRC} ${IMGUI_SRC})
 

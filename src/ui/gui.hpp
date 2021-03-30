@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../../external/imgui/imgui.h"
 #include "../common.h"
 #include "../render/render_header.h"
 #include "../types.h"
+
+#include "../../external/imgui/imgui.h"
 
 namespace cruelEngine::cruelGui
 {

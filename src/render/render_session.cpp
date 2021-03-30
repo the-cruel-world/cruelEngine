@@ -129,6 +129,10 @@ void RenderSession::add_new_task(std::unique_ptr<RenderTask> task)
 void RenderSession::setGuiOverlay(std::shared_ptr<GuiOverlay> gui)
 {
     guiOverlay = gui;
+    if (guiUpdateCb != nullptr && guiOverlay != nullptr)
+    {
+        guiUpdateCb(guiOverlay.get());
+    }
 }
 
 std::shared_ptr<GuiOverlay> RenderSession::getGuiOverlay()
@@ -139,6 +143,10 @@ std::shared_ptr<GuiOverlay> RenderSession::getGuiOverlay()
 void RenderSession::setGuiOverlayUpdateCb(void (*callback)(void *))
 {
     guiUpdateCb = callback;
+    if (guiUpdateCb != nullptr && guiOverlay != nullptr)
+    {
+        guiUpdateCb(guiOverlay.get());
+    }
 }
 
 void RenderSession::prepare_render_pass()
@@ -256,12 +264,12 @@ void RenderSession::render_frame()
 
     if (guiOverlay != nullptr)
     {
-        if (guiUpdateCb != nullptr)
-        {
-            guiUpdateCb(guiOverlay.get());
-        }
         if (guiOverlay->needUpdate())
         {
+            if (guiUpdateCb != nullptr)
+            {
+                guiUpdateCb(guiOverlay.get());
+            }
 #ifdef RENDER_DEBUG
             std::cout << "[Session::render_frame] guiOverlay needs Update." << std::endl;
 #endif
@@ -445,6 +453,26 @@ void RenderSession::update_swapchain()
     {
         commandBuffers.push_back(
             commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
+    }
+
+    if (guiOverlay != nullptr)
+    {
+        guiOverlay->resize(swapchain->get_properties().extent.width,
+                           swapchain->get_properties().extent.height);
+        if (guiOverlay->needUpdate())
+        {
+            if (guiUpdateCb != nullptr)
+            {
+                guiUpdateCb(guiOverlay.get());
+            }
+#ifdef RENDER_DEBUG
+            std::cout << "[Session::render_frame] guiOverlay needs Update." << std::endl;
+#endif
+        }
+#ifdef RENDER_DEBUG
+        else
+            std::cout << "[Session::render_frame] guiOverlay doesn't need Update." << std::endl;
+#endif
     }
 
     for (auto &task : tasks)
