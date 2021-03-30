@@ -69,8 +69,6 @@ public:
 
     std::shared_ptr<GuiOverlay> getGuiOverlay();
 
-    void setGuiOverlayUpdateCb(void (*callback)(void *));
-
     void prepare();
 
     /**
@@ -85,7 +83,10 @@ public:
 
     LogicalDevice &get_device() const;
 
-    Instance &getInstance() const {return instance;}
+    Instance &getInstance() const
+    {
+        return instance;
+    }
 
     Swapchain &get_swapchain() const;
 
@@ -108,7 +109,23 @@ public:
     Queue *get_graphic_queue() const;
     Queue *get_present_queue() const;
 
+    float getRenderTime() const
+    {
+        return render_time;
+    }
+
+    float getFrameTime() const
+    {
+        return frame_time;
+    }
+
 private:
+    float render_time = 0;
+    float frame_time  = 0;
+
+    std::chrono::time_point<std::chrono::high_resolution_clock> render_time_marker{};
+    std::chrono::time_point<std::chrono::high_resolution_clock> frame_time_marker{};
+
     u32 session_id = 0;
 
     u32 imgCount = 5;
@@ -150,8 +167,6 @@ private:
     SessionProp session_properties;
 
     std::shared_ptr<GuiOverlay> guiOverlay{};
-
-    void (*guiUpdateCb)(void *) = nullptr;
 
     /**
      * The callback function react to window_resize_event.

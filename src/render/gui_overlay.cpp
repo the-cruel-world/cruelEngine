@@ -4,23 +4,19 @@ namespace cruelEngine::cruelRender
 GuiOverlay::GuiOverlay(RenderSession &session) : session{session}
 {}
 
-void GuiOverlay::Draw(CommandBuffer &commandBuffer)
-{}
+RenderSession &GuiOverlay::getSession()
+{
+    return session;
+}
+
+void GuiOverlay::setGuiOverlayUpdateCb(void (*callback)(void *))
+{
+    guiUpdateCb = callback;
+}
 
 bool GuiOverlay::needUpdate() const
 {
     return false;
 }
 
-void GuiOverlay::newFrame()
-{}
-
-void GuiOverlay::prepare_pipeline()
-{}
-void GuiOverlay::prepare_resource()
-{}
-void GuiOverlay::free_resource()
-{}
-void GuiOverlay::destroy_pipeline()
-{}
 } // namespace cruelEngine::cruelRender

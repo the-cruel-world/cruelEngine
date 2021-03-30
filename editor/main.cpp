@@ -47,9 +47,16 @@ public:
         {
             render_context->add_session(properties.window_prop.title, properties);
             render_context->get_session(i).load_scene(scene);
-            render_context->get_session(i).setGuiOverlay(
-                std::make_shared<cruelGui::Gui>(render_context->get_session(i)));
-            render_context->get_session(i).setGuiOverlayUpdateCb(updateOverlay);
+            render_context->get_session(i).setGuiOverlay(std::make_shared<cruelGui::Gui>(
+                render_context->get_session(i),
+                cruelGui::Gui::GuiUsageFlagBits::GUI_ENABLE_IMPLOT));
+#ifdef DEBUG
+            std::cout << "loading gui overlay" << std::endl;
+#endif
+            render_context->get_session(i).getGuiOverlay()->setGuiOverlayUpdateCb(updateOverlay);
+#ifdef DEBUG
+            std::cout << "loaded gui overlay" << std::endl;
+#endif
         }
 #ifdef DEBUG
         std::cout << "Scene object loaded." << std::endl;
@@ -64,15 +71,16 @@ public:
 
     void main_loop()
     {
-        clock_t past_time   = clock();
-        clock_t _frame_time = clock();
+        static clock_t past_time   = clock();
+        static clock_t _frame_time = clock();
         while (render_context->is_context_alive())
         {
             glfwPollEvents();
             _frame_time = clock() - past_time;
             past_time   = clock();
-            std::cout << "frame time: " << _frame_time * 1e-3
-                      << " ms\tusleep: " << (frame_time - _frame_time) * 1e-3 << " ms" << std::endl;
+            // std::cout << "frame time: " << _frame_time * 1e-3
+            //           << " ms\tusleep: " << (frame_time - _frame_time) * 1e-3 << " ms" <<
+            //           std::endl;
             if (_frame_time < frame_time)
                 usleep(frame_time - _frame_time);
             render_context->render_frame();
@@ -105,15 +113,9 @@ private:
 
 void updateOverlay(void *gui)
 {
-    auto UIOverlay = (cruelGui::Gui *) gui;
-    if (UIOverlay == nullptr)
+    auto uiOverlay = (cruelGui::Gui *) gui;
+    if (uiOverlay == nullptr)
         std::cerr << "[Render::main_loop::updateOverlay] updating guiOverlay" << std::endl;
-
-    ImGuiIO &io    = ImGui::GetIO();
-    io.DisplaySize = ImVec2(UIOverlay->getSession().get_swapchain().get_properties().extent.width,
-                            UIOverlay->getSession().get_swapchain().get_properties().extent.height);
-
-    UIOverlay->newFrame();
 
     if (ImGui::BeginMainMenuBar())
     {
@@ -214,19 +216,50 @@ void updateOverlay(void *gui)
         ImGui::EndMainMenuBar();
     }
 
-    ImGui::Begin("magicDick", nullptr, 0);
-
+    ImGui::Begin("Magic Dick", nullptr, 0);
     static bool show_demo_window = true;
-    UIOverlay->checkBox("Show demo", &show_demo_window);
-    UIOverlay->text("This is a text label, and it will not wrap to new lines.");
+    uiOverlay->checkBox("Show demo", &show_demo_window);
+    uiOverlay->text("Application average %.3f ms/frame (%.1f FPS)",
+                    1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+    static float frame_times[120]     = {0};
+    static float rendering_times[120] = {0};
+    static int   offset               = 0;
+    {
+        frame_times[offset]     = uiOverlay->getSession().getFrameTime();
+        rendering_times[offset] = uiOverlay->getSession().getRenderTime();
+        offset                  = (offset + 1) % IM_ARRAYSIZE(frame_times);
+    }
+
+    {
+        float average = 0.0f;
+        for (int n = 0; n < IM_ARRAYSIZE(frame_times); n++)
+            average += frame_times[n];
+        average /= (float) IM_ARRAYSIZE(frame_times);
+        char overlay[32];
+        sprintf(overlay, "avg %.3f ms/frame", average);
+        ImGui::PlotLines("Frame time", frame_times, IM_ARRAYSIZE(frame_times), offset, overlay,
+                         -1.1f, 1.1f, ImVec2(0, 80.0f));
+    }
+    {
+        float average = 0.0f;
+        for (int n = 0; n < IM_ARRAYSIZE(rendering_times); n++)
+            average += rendering_times[n];
+        average /= (float) IM_ARRAYSIZE(rendering_times);
+        char overlay[32];
+        sprintf(overlay, "avg %.3f ms/frame", average);
+        ImGui::PlotLines("Render time", rendering_times, IM_ARRAYSIZE(rendering_times), offset,
+                         overlay, -1.1f, 1.1f, ImVec2(0, 80.0f));
+    }
+    uiOverlay->requireUpdate();
+
     ImGui::End();
 
     if (show_demo_window)
+    {
         ImGui::ShowDemoWindow(&show_demo_window);
-
-    ImGui::Render();
-
-    UIOverlay->updateBuffer();
+        ImPlot::ShowDemoWindow(&show_demo_window);
+    }
 }
 
 int main(int argc, char const *argv[])

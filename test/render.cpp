@@ -53,7 +53,7 @@ public:
             render_context->get_session(i).load_scene(scene);
             render_context->get_session(i).setGuiOverlay(
                 std::make_shared<cruelGui::Gui>(render_context->get_session(i)));
-            render_context->get_session(i).setGuiOverlayUpdateCb(updateOverlay);
+            render_context->get_session(i).getGuiOverlay()->setGuiOverlayUpdateCb(updateOverlay);
         }
 #ifdef DEBUG
         std::cout << "Scene object loaded." << std::endl;
@@ -113,12 +113,6 @@ void updateOverlay(void *gui)
     auto UIOverlay = (cruelGui::Gui *) gui;
     if (UIOverlay == nullptr)
         std::cerr << "[Render::main_loop::updateOverlay] updating guiOverlay" << std::endl;
-
-    ImGuiIO &io    = ImGui::GetIO();
-    io.DisplaySize = ImVec2(UIOverlay->getSession().get_swapchain().get_properties().extent.width,
-                            UIOverlay->getSession().get_swapchain().get_properties().extent.height);
-
-    UIOverlay->newFrame();
 
     if (ImGui::BeginMainMenuBar())
     {
@@ -228,10 +222,6 @@ void updateOverlay(void *gui)
 
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
-
-    ImGui::Render();
-
-    UIOverlay->updateBuffer();
 }
 
 int main(int argc, char const *argv[])

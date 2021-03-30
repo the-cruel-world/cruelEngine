@@ -77,6 +77,9 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 #ifdef RENDER_DEBUG
     std::cout << "[Rendersession] commandbuffers creatd!" << std::endl;
 #endif
+
+    frame_time_marker  = std::chrono::high_resolution_clock::now();
+    render_time_marker = std::chrono::high_resolution_clock::now();
 }
 
 void on_window_resize_cb(GLFWwindow *window, int width, int height)
@@ -129,24 +132,11 @@ void RenderSession::add_new_task(std::unique_ptr<RenderTask> task)
 void RenderSession::setGuiOverlay(std::shared_ptr<GuiOverlay> gui)
 {
     guiOverlay = gui;
-    if (guiUpdateCb != nullptr && guiOverlay != nullptr)
-    {
-        guiUpdateCb(guiOverlay.get());
-    }
 }
 
 std::shared_ptr<GuiOverlay> RenderSession::getGuiOverlay()
 {
     return guiOverlay;
-}
-
-void RenderSession::setGuiOverlayUpdateCb(void (*callback)(void *))
-{
-    guiUpdateCb = callback;
-    if (guiUpdateCb != nullptr && guiOverlay != nullptr)
-    {
-        guiUpdateCb(guiOverlay.get());
-    }
 }
 
 void RenderSession::prepare_render_pass()
@@ -243,6 +233,7 @@ void RenderSession::draw()
 
 void RenderSession::render_frame()
 {
+    render_time_marker = std::chrono::high_resolution_clock::now();
     vkWaitForFences(device.get_handle(), 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
     vkResetFences(device.get_handle(), 1, &inFlightFences[currentFrame]);
 
@@ -264,12 +255,10 @@ void RenderSession::render_frame()
 
     if (guiOverlay != nullptr)
     {
+        guiOverlay->renderFrame();
         if (guiOverlay->needUpdate())
         {
-            if (guiUpdateCb != nullptr)
-            {
-                guiUpdateCb(guiOverlay.get());
-            }
+            guiOverlay->update();
 #ifdef RENDER_DEBUG
             std::cout << "[Session::render_frame] guiOverlay needs Update." << std::endl;
 #endif
@@ -324,6 +313,14 @@ void RenderSession::render_frame()
     }
 
     currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+
+    render_time = std::chrono::duration<float, std::chrono::milliseconds::period>(
+                      std::chrono::high_resolution_clock::now() - render_time_marker)
+                      .count();
+    frame_time = std::chrono::duration<float, std::chrono::milliseconds::period>(
+                     std::chrono::high_resolution_clock::now() - frame_time_marker)
+                     .count();
+    frame_time_marker = std::chrono::high_resolution_clock::now();
 }
 
 LogicalDevice &RenderSession::get_device() const
@@ -461,10 +458,7 @@ void RenderSession::update_swapchain()
                            swapchain->get_properties().extent.height);
         if (guiOverlay->needUpdate())
         {
-            if (guiUpdateCb != nullptr)
-            {
-                guiUpdateCb(guiOverlay.get());
-            }
+            guiOverlay->update();
 #ifdef RENDER_DEBUG
             std::cout << "[Session::render_frame] guiOverlay needs Update." << std::endl;
 #endif

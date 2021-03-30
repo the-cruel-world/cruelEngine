@@ -123,4 +123,4 @@ bool RenderContext::is_context_alive()
 
 // }
 
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

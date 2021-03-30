@@ -21,21 +21,24 @@ public:
 
     virtual ~GuiOverlay() = default;
 
+    RenderSession &getSession();
+
+    void setGuiOverlayUpdateCb(void (*callback)(void *));
+
     virtual void Draw(CommandBuffer &commandBuffer) = 0;
 
     virtual bool needUpdate() const = 0;
 
-    virtual void newFrame() = 0;
+    virtual void update() = 0;
+
+    virtual void renderFrame() = 0;
 
     virtual void resize(uint32_t width, uint32_t height) = 0;
 
-    virtual void prepare_pipeline() = 0;
-    virtual void prepare_resource() = 0;
-    virtual void free_resource()    = 0;
-    virtual void destroy_pipeline() = 0;
-
 protected:
     RenderSession &session;
+
+    void (*guiUpdateCb)(void *) = nullptr;
 };
 
 } // namespace cruelEngine::cruelRender

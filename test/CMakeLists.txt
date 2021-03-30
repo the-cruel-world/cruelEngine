@@ -1,6 +1,7 @@
-set (IMGUI_DIR ../../external/imgui)
+set (IMGUI_DIR ../external/imgui)
+set (IMPLOT_DIR ../external/implot)
 
-include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends)
+include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends ${IMPLOT_DIR})
 
 add_executable(main main.cpp)
 

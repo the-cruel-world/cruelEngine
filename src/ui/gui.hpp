@@ -4,13 +4,23 @@
 #include "../render/render_header.h"
 #include "../types.h"
 
-#include "../../external/imgui/imgui.h"
+#include "imgui.h"
+#include "implot.h"
 
 namespace cruelEngine::cruelGui
 {
 class Gui : public cruelRender::GuiOverlay
 {
 public:
+    enum GuiUsageFlagBits
+    {
+        GUI_ONLY_IMGUI    = 0x00000001,
+        GUI_ENABLE_IMPLOT = 0x00000002
+    };
+    typedef u32 GuiUsageFlags;
+
+    Gui(cruelRender::RenderSession &session, GuiUsageFlags usage);
+
     Gui(cruelRender::RenderSession &session);
 
     ~Gui();
@@ -20,18 +30,21 @@ public:
         return updated;
     }
 
+    void requireUpdate()
+    {
+        updated = true;
+    }
+
     void Draw(cruelRender::CommandBuffer &commandBuffer);
 
-    void updateBuffer();
+    void update();
 
     const float getScale() const
     {
         return scale;
     }
 
-    void newFrame();
-
-    cruelRender::RenderSession &getSession();
+    void renderFrame();
 
     void resize(uint32_t width, uint32_t height);
 
@@ -96,5 +109,7 @@ private:
     bool  visible       = true;
     bool  bufferUpdated = false;
     bool  updated       = false;
+
+    GuiUsageFlags flags{GuiUsageFlagBits::GUI_ONLY_IMGUI};
 };
 } // namespace cruelEngine::cruelGui

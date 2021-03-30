@@ -6,15 +6,23 @@
 #include "../render/vulkan/logical_device.hpp"
 #include "../render/vulkan/physical_device.hpp"
 
-#include "../../external/imgui/backends/imgui_impl_glfw.h"
-#include "../../external/imgui/backends/imgui_impl_vulkan.h"
-#include "../../external/imgui/imgui.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_vulkan.h"
+#include "implot.h"
 
 namespace cruelEngine::cruelGui
 {
-Gui::Gui(cruelRender::RenderSession &session) : GuiOverlay{session}
+Gui::Gui(cruelRender::RenderSession &session) : Gui{session, GuiUsageFlagBits::GUI_ONLY_IMGUI}
+{}
+
+Gui::Gui(cruelRender::RenderSession &session, GuiUsageFlags usage) :
+    GuiOverlay{session}, flags{usage}
 {
     ImGui::CreateContext();
+    if (flags & GuiUsageFlagBits::GUI_ENABLE_IMPLOT)
+        ImPlot::CreateContext();
+
     // Color scheme
     ImGui::StyleColorsLight();
     ImGui::GetStyle().WindowRounding    = 5.0f;
@@ -47,6 +55,7 @@ Gui::Gui(cruelRender::RenderSession &session) : GuiOverlay{session}
     std::cout << "[Gui::Constructor] display size setted!" << std::endl;
 #endif
     ImGui_ImplGlfw_InitForVulkan(&session.get_window().get_handle(), true);
+
     // ImGui_ImplVulkan_InitInfo init_info = {};
     // init_info.Instance                  = session.getInstance().get_handle();
     // init_info.PhysicalDevice            = session.get_device().get_physicalDevice().get_handle();
@@ -122,11 +131,14 @@ void Gui::Draw(cruelRender::CommandBuffer &commandBuffer)
 #endif
 }
 
-void Gui::updateBuffer()
+void Gui::update()
 {
 #ifdef GUI_DEBUG
     std::cout << "[Gui::updateBuffer] updating buffers!" << std::endl;
 #endif
+    updated = false;
+    session.get_graphic_queue()->wait_idle();
+
     ImDrawData *draw_data = ImGui::GetDrawData();
     if (!draw_data)
     {
@@ -213,17 +225,25 @@ void Gui::updateBuffer()
     }
     vkUnmapMemory(vertexBuffer->get_device().get_handle(), vertexBuffer->get_handleMem());
     vkUnmapMemory(indexBuffer->get_device().get_handle(), indexBuffer->get_handleMem());
+
+#ifdef GUI_DEBUG
+    std::cout << "[Gui::updateBuffer] updated buffers!" << std::endl;
+#endif
 }
 
-void Gui::newFrame()
+void Gui::renderFrame()
 {
+    ImGuiIO &io    = ImGui::GetIO();
+    io.DisplaySize = ImVec2(getSession().get_swapchain().get_properties().extent.width,
+                            getSession().get_swapchain().get_properties().extent.height);
+
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-}
-
-cruelRender::RenderSession &Gui::getSession()
-{
-    return session;
+    if (guiUpdateCb != nullptr)
+    {
+        guiUpdateCb(this);
+    }
+    ImGui::Render();
 }
 
 void Gui::prepare_resource()
@@ -366,12 +386,12 @@ void Gui::prepare_pipeline()
 {
     std::vector<cruelRender::ShaderModule> shaderModules{};
     shaderModules.emplace_back(session.get_device(),
-                               "/home/yiwen/program/cruelworld/cruelEngine/data/shaders/"
+                               "../data/shaders/"
                                "frag.spv",
                                "main", VK_SHADER_STAGE_FRAGMENT_BIT);
 
     shaderModules.emplace_back(session.get_device(),
-                               "/home/yiwen/program/cruelworld/cruelEngine/data/shaders/"
+                               "../data/shaders/"
                                "vert.spv",
                                "main", VK_SHADER_STAGE_VERTEX_BIT);
 
@@ -455,6 +475,8 @@ void Gui::prepare_pipeline()
 
 void Gui::free_resource()
 {
+    if (flags & GuiUsageFlagBits::GUI_ENABLE_IMPLOT)
+        ImPlot::DestroyContext();
     ImGui::DestroyContext();
 
     sampler.reset();
