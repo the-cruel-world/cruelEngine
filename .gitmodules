@@ -25,3 +25,6 @@
 [submodule "external/imnodes"]
 	path = external/imnodes
 	url = https://github.com/Nelarius/imnodes
+[submodule "external/imgui_markdown"]
+	path = external/imgui_markdown
+	url = https://github.com/juliettef/imgui_markdown

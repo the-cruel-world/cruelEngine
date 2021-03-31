@@ -6,11 +6,6 @@
 #include "../render/vulkan/logical_device.hpp"
 #include "../render/vulkan/physical_device.hpp"
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_vulkan.h"
-#include "implot.h"
-
 namespace cruelEngine::cruelGui
 {
 Gui::Gui(cruelRender::RenderSession &session) : Gui{session, GuiUsageFlagBits::GUI_ONLY_IMGUI}
@@ -31,11 +26,21 @@ Gui::Gui(cruelRender::RenderSession &session, GuiUsageFlags usage) :
     ImGui::GetStyle().PopupRounding     = 6.0f;
     ImGui::GetStyle().GrabRounding      = 3.0f;
     ImGui::GetStyle().ScrollbarRounding = 2.0f;
-    ImGui::GetStyle().Alpha             = 0.90f;
+    ImGui::GetStyle().Alpha             = 1.0f;
 
     // Dimensions
     ImGuiIO &io        = ImGui::GetIO();
     io.FontGlobalScale = scale;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
+
+    if (flags & GuiUsageFlagBits::GUI_ENABLE_DOCKING)
+    {
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        io.ConfigDockingTransparentPayload = true;
+    }
+
 #ifdef GUI_DEBUG
     std::cout << "[Gui::Constructor] imgui inited!" << std::endl;
 #endif
@@ -106,7 +111,7 @@ void Gui::Draw(cruelRender::CommandBuffer &commandBuffer)
     VkDeviceSize offsets[1] = {0};
     vkCmdBindVertexBuffers(commandBuffer.get_handle(), 0, 1, &vertexBuffer->get_handle(), offsets);
     vkCmdBindIndexBuffer(commandBuffer.get_handle(), indexBuffer->get_handle(), 0,
-                         VK_INDEX_TYPE_UINT16);
+                         VK_INDEX_TYPE_UINT32);
 
     for (int32_t i = 0; i < imDrawData->CmdListsCount; i++)
     {

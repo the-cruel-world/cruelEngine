@@ -5,7 +5,21 @@
 #include "../types.h"
 
 #include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_vulkan.h"
+
+#include "TextEditor.h"
+#include "imgui_markdown.h"
 #include "implot.h"
+
+// #ifdef ImDrawIdx
+// #    undef ImDrawIdx
+// #    define ImDrawIdx unsigned int
+// #endif
+
+// #ifndef ImDrawIdx
+// #    define ImDrawIdx unsigned int
+// #endif
 
 namespace cruelEngine::cruelGui
 {
@@ -14,8 +28,10 @@ class Gui : public cruelRender::GuiOverlay
 public:
     enum GuiUsageFlagBits
     {
-        GUI_ONLY_IMGUI    = 0x00000001,
-        GUI_ENABLE_IMPLOT = 0x00000002
+        GUI_ONLY_IMGUI      = 0x00000001,
+        GUI_ENABLE_IMPLOT   = 0x00000002,
+        GUI_ENABLE_MARKDOWN = 0x00000004,
+        GUI_ENABLE_DOCKING  = 0x00000008,
     };
     typedef u32 GuiUsageFlags;
 
@@ -42,6 +58,11 @@ public:
     const float getScale() const
     {
         return scale;
+    }
+
+    const GuiUsageFlags getGuiFlags() const
+    {
+        return flags;
     }
 
     void renderFrame();
@@ -105,7 +126,7 @@ private:
         glm::vec2 translate;
     } pushConstBlock;
 
-    float scale         = 1;
+    float scale         = 1.0;
     bool  visible       = true;
     bool  bufferUpdated = false;
     bool  updated       = false;

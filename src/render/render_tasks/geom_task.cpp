@@ -16,12 +16,12 @@ void GeomTask::update_render_pass(RenderPass &render_pass)
     pipeline_layout.reset();
     std::vector<ShaderModule> shaders{};
     shaders.emplace_back(session.get_device(),
-                         "/home/yiwen/program/cruelworld/engine/data/shaders/"
+                         "../data/shaders/"
                          "wireframe/frag.spv",
                          "main", VK_SHADER_STAGE_FRAGMENT_BIT);
 
     shaders.emplace_back(session.get_device(),
-                         "/home/yiwen/program/cruelworld/engine/data/shaders/"
+                         "../data/shaders/"
                          "wireframe/vert.spv",
                          "main", VK_SHADER_STAGE_VERTEX_BIT);
 
