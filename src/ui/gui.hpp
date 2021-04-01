@@ -12,15 +12,9 @@
 #include "imgui_markdown.h"
 #include "implot.h"
 
-// #ifdef ImDrawIdx
-// #    undef ImDrawIdx
-// #    define ImDrawIdx unsigned int
-// #endif
-
-// #ifndef ImDrawIdx
-// #    define ImDrawIdx unsigned int
-// #endif
-
+/**
+ * \brief cruelGui is the namespace for toplevel gui.
+ */
 namespace cruelEngine::cruelGui
 {
 class Gui : public cruelRender::GuiOverlay
@@ -41,11 +35,17 @@ public:
 
     ~Gui();
 
+    /**
+     * \brief needUpdate returns whether the gui needs update or not.
+     */
     bool needUpdate() const
     {
         return updated;
     }
 
+    /**
+     * \brief requireUpdate changes the status of gui.
+     */
     void requireUpdate()
     {
         updated = true;
@@ -84,6 +84,9 @@ public:
     bool button(const char *caption);
     void text(const char *formatstr, ...);
 
+    void  setGuiData(void *data_ptr);
+    void *getGuiData();
+
 private:
     std::shared_ptr<cruelRender::DescriptorPool>      descriptorPool{};
     std::shared_ptr<cruelRender::DescriptorSetLayout> descriptorSetLayout{};
@@ -91,11 +94,12 @@ private:
     std::shared_ptr<cruelRender::PipelineLayout>      pipelineLayout{};
     std::shared_ptr<cruelRender::Pipeline>            pipeline{};
     std::shared_ptr<cruelRender::Queue>               queue{};
-    // std::shared_ptr<cruelRender::CommandBuffer>       singleTimeCmd{};
 
     std::shared_ptr<cruelRender::Image>     fontImage{};
     std::shared_ptr<cruelRender::ImageView> fontView{};
     std::shared_ptr<cruelRender::Sampler>   sampler{};
+
+    void *guiData = nullptr;
 
 #ifdef guiVertexblockSize
 #    undef guiVertexblockSize

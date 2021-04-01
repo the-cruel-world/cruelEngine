@@ -1,4 +1,4 @@
-# Cruel Engine
+# CruelEngine
 
 ## Components of a game engine
 1. Entry point

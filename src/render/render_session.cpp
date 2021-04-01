@@ -328,6 +328,11 @@ LogicalDevice &RenderSession::get_device() const
     return device;
 }
 
+Instance &RenderSession::getInstance() const
+{
+    return instance;
+}
+
 Swapchain &RenderSession::get_swapchain() const
 {
     return *swapchain;
@@ -502,4 +507,13 @@ Queue *RenderSession::get_present_queue() const
     return present_queue;
 }
 
+float RenderSession::getRenderTime() const
+{
+    return render_time;
+}
+
+float RenderSession::getFrameTime() const
+{
+    return frame_time;
+}
 } // namespace cruelEngine::cruelRender

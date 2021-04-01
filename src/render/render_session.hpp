@@ -1,6 +1,6 @@
 #pragma once
 #include "vkcommon.h"
-/** BUG
+/** \bug
  * cant change the order of vkcommon and window/window it's so weird.
  */
 #include "../window/window.hpp"
@@ -92,16 +92,6 @@ public:
     void add_new_task(std::unique_ptr<RenderTask> task);
 
     /**
-     * \brief SetGuiOverlay
-     *
-     * Set the guiOverlay for the RenderSession. If the pointer to guiOverlay is "null_ptr", the
-     * session will not render the guioverlay.
-     */
-    void setGuiOverlay(std::shared_ptr<GuiOverlay> gui);
-
-    std::shared_ptr<GuiOverlay> getGuiOverlay();
-
-    /**
      * \brief Prepare
      *
      * Run the preparation work for renderSession.
@@ -124,6 +114,49 @@ public:
     void draw();
 
     /**
+     * \brief CreateGuiStaff
+     *
+     * CreateGuiStaff creates swapchain, renderpass.
+     */
+    void CreateGuiStaff();
+
+    /**
+     * \brief CreateSceneStaff
+     *
+     * CreateSceneStaff creates render tasks for scene.
+     */
+    void CreateSceneStaff();
+
+    /**
+     * \brief DrawGui
+     *
+     * DrawGui draws gui. Records all draw commands related to the gui.
+     */
+    void DrawGui();
+
+    /**
+     * \brief DrawScene
+     *
+     * DrawScene records all draw commands related to the scene. Infact, it just call all
+     * renderTasks' draw command.
+     */
+    void DrawScene();
+
+    /**
+     * \brief RenderGui
+     *
+     * RenderGui submit the draw commands of gui to graphic queue.
+     */
+    void RenderGui();
+
+    /**
+     * \brief RenderScene
+     *
+     * RenderGui submit the draw commands of gui to graphic queue.
+     */
+    void RenderScene();
+
+    /**
      * \brief RenderFrame
      *
      * Draw a new frame.
@@ -131,38 +164,32 @@ public:
     void render_frame();
 
     LogicalDevice &get_device() const;
+    Instance &     getInstance() const;
+    Swapchain &    get_swapchain() const;
+    Window &       get_window() const;
+    VkSurfaceKHR & get_surface();
+    RenderPass &   get_render_pass();
+    CommandPool &  getCommandPool();
+    void           set_session_id(u32 new_id);
+    u32            get_session_id() const;
+    Queue *        get_graphic_queue() const;
+    Queue *        get_present_queue() const;
+    float          getRenderTime() const;
+    float          getFrameTime() const;
 
-    Instance &getInstance() const
-    {
-        return instance;
-    }
+    /**
+     * \brief SetGuiOverlay
+     *
+     * Set the guiOverlay for the RenderSession. If the pointer to guiOverlay is "null_ptr", the
+     * session will not render the guioverlay.
+     */
+    void setGuiOverlay(std::shared_ptr<GuiOverlay> gui);
 
-    Swapchain &   get_swapchain() const;
-    Window &      get_window() const;
-    VkSurfaceKHR &get_surface();
-    RenderPass &  get_render_pass();
+    std::shared_ptr<GuiOverlay> getGuiOverlay();
 
     bool is_session_alive();
-
     void createSemaphores();
     void destroySemaphores();
-
-    CommandPool &getCommandPool();
-
-    void   set_session_id(u32 new_id);
-    u32    get_session_id() const;
-    Queue *get_graphic_queue() const;
-    Queue *get_present_queue() const;
-
-    float getRenderTime() const
-    {
-        return render_time;
-    }
-
-    float getFrameTime() const
-    {
-        return frame_time;
-    }
 
 private:
     float render_time = 0;

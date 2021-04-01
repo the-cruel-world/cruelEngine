@@ -23,6 +23,7 @@ struct SessionProp;
  * togather to make the creation of Contexts cleaner.
  *
  * \todo
+ * 1. hello world
  */
 struct RenderProp
 {
@@ -67,7 +68,6 @@ struct RenderProp
  * application to render something on GPU.  It will create an Vulcan instance, enumerate  all GPU
  * devices, and pick the proper once if possible. Of course, you can also pick the best GPU
  * manually.
- * \todo
  */
 class RenderContext
 {
@@ -76,18 +76,22 @@ public:
 
     ~RenderContext();
 
-    //! Tasks to prepare/create vulkan objects for RenderContext.
+    /** Tasks to prepare/create vulkan objects for RenderContext. */
     void prepareRender();
 
-    //! \todo remove.
-    //! draw will record all the draw commands for all render sessions. it's not a good design. the
-    //! render sessions should manage draw recordings by theirselves.
+    /** \todo
+     * 1. remove.
+     * 2. draw will record all the draw commands for all render sessions. it's not a good
+     * design. the render sessions should manage draw recordings by theirselves.
+     * */
     void draw();
 
-    //! \todo remove.
-    //! render_frame will send signal to every RenderSession`s to submit and present a new
-    //! frame. It's not a good design. the render sessions should manage draw recordings by
-    //! theirselves.
+    /** \todo
+     * 1. remove.
+     * 2. render_frame will send signal to every RenderSession`s to submit and present a new
+     * frame. It's not a good design. the render sessions should manage draw recordings
+     * by theirselves.
+     * */
     void render_frame();
 
     //! Get the handle of vulkan instance

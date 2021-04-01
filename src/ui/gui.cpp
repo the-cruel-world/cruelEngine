@@ -297,12 +297,6 @@ void Gui::prepare_resource()
     memcpy(data, fontData, (size_t) uploadSize);
     vkUnmapMemory(session.get_device().get_handle(), stagingBufferMemory);
 
-    /** Todo
-     * Create texture image
-     * 1. set image layout
-     * 2. copy data to image
-     * 3. set image layout again
-     */
     auto &singleTimeCmd =
         session.get_device().request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 

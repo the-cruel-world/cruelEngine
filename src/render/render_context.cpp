@@ -12,7 +12,7 @@ namespace cruelEngine::cruelRender
 {
 RenderContext::RenderContext(RenderProp properties) : properties{properties}
 {
-    /** create Instance.
+    /** \brief create Instance.
      * Running glfwInit() before creating instance, because glfw requires extra instance extensions.
      * Only after glfwInit(), the instance can find the proper glfw extensions. Maybe I need to put
      * it into constructor of the instance.
