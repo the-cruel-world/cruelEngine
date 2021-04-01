@@ -12,7 +12,11 @@ namespace cruelEngine::cruelRender
 {
 RenderContext::RenderContext(RenderProp properties) : properties{properties}
 {
-    // create Instance.
+    /** create Instance.
+     * Running glfwInit() before creating instance, because glfw requires extra instance extensions.
+     * Only after glfwInit(), the instance can find the proper glfw extensions. Maybe I need to put
+     * it into constructor of the instance.
+     * */
     glfwInit();
     instance = std::make_unique<Instance>(properties.appInfo, properties.validation,
                                           properties.validationLayers,
@@ -48,12 +52,16 @@ void RenderContext::prepareRender()
 
 RenderContext::~RenderContext()
 {
+    /* Destroy all sessions before the device. */
     sessions.clear();
 
+    /* Release the logical device. */
     device.reset();
 
+    /* Clear all gpu candidates. */
     physicalDevice.reset();
 
+    /* Destroy instance. */
     instance.reset();
 }
 
@@ -100,6 +108,21 @@ void RenderContext::render_frame()
         if (session->is_session_alive())
             session->render_frame();
     }
+}
+
+Instance &RenderContext::get_instance() const
+{
+    return *instance;
+}
+
+PhysicalDevice &RenderContext::get_gpu() const
+{
+    return *physicalDevice;
+}
+
+LogicalDevice &RenderContext::get_device() const
+{
+    return *device;
 }
 
 bool RenderContext::is_context_alive()

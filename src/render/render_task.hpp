@@ -21,6 +21,15 @@ class CommandBuffer;
 class Queue;
 class ShaderModule;
 
+/**
+ * \brief RenderTask renders one primitive in a scene.
+ *
+ * RenderTask adds draw tasks to draw commands.
+ *
+ * \todo
+ * 1. Base class of calss
+ * 2. Add more render Tasks, for example, geom_task, light_task, etc.
+ */
 class RenderTask
 {
 public:

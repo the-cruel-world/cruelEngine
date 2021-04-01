@@ -19,7 +19,7 @@ Gui::Gui(cruelRender::RenderSession &session, GuiUsageFlags usage) :
         ImPlot::CreateContext();
 
     // Color scheme
-    ImGui::StyleColorsLight();
+    ImGui::StyleColorsDark();
     ImGui::GetStyle().WindowRounding    = 5.0f;
     ImGui::GetStyle().ChildRounding     = 1.0f;
     ImGui::GetStyle().FrameRounding     = 3.0f;
@@ -27,6 +27,12 @@ Gui::Gui(cruelRender::RenderSession &session, GuiUsageFlags usage) :
     ImGui::GetStyle().GrabRounding      = 3.0f;
     ImGui::GetStyle().ScrollbarRounding = 2.0f;
     ImGui::GetStyle().Alpha             = 1.0f;
+
+    ImVec4 *colors = ImGui::GetStyle().Colors;
+    if (flags & GuiUsageFlagBits::GUI_ENABLE_DOCKING)
+    {
+        colors[ImGuiCol_DockingEmptyBg] = ImVec4(0.20f, 0.20f, 0.20f, 0.00f);
+    }
 
     // Dimensions
     ImGuiIO &io        = ImGui::GetIO();

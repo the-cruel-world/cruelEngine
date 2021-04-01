@@ -38,8 +38,8 @@ public:
 #ifdef DEBUG
         std::cout << "Scene created." << std::endl;
 #endif
-        scene->addObject(
-            std::make_shared<cruelEngine::cruelScene::SkyBox>("Sky", scene->get_camera()));
+        // scene->addObject(
+        //     std::make_shared<cruelEngine::cruelScene::SkyBox>("Sky", scene->get_camera()));
 #ifdef DEBUG
         std::cout << "Scene object created." << std::endl;
 #endif
@@ -63,6 +63,7 @@ public:
 #endif
 
         {
+            // editor.SetPalette(TextEditor::GetLightPalette());
             std::ifstream t(fileToEdit);
             if (t.good())
             {
@@ -327,7 +328,6 @@ void updateOverlay(void *gui)
         auto cpos = editor.GetCursorPosition();
         ImGui::Begin("Text Editor", &show_editor_window,
                      ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_MenuBar);
-        ImGui::SetWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
         if (ImGui::BeginMenuBar())
         {
             if (ImGui::BeginMenu("File"))

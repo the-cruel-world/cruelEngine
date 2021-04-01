@@ -14,6 +14,14 @@ namespace cruelEngine::cruelRender
 class LogicalDevice;
 class RenderSession;
 
+/**
+ * \brief GuiOverlay is the base class for top guis.
+ *
+ * GuiOverlay adds draw tasks to renderSessions.
+ *
+ * \todo
+ * 1. Add more vulkan objects to the guiOverlay, instead of putting them in cruelGui::Gui.
+ */
 class GuiOverlay
 {
 public:

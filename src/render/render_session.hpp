@@ -1,11 +1,9 @@
 #pragma once
 #include "vkcommon.h"
-//! cant change the order of vkcommon and window/window it's so weird.
+/** BUG
+ * cant change the order of vkcommon and window/window it's so weird.
+ */
 #include "../window/window.hpp"
-
-#define MAIN_VER 0
-#define MID_VER 0
-#define END_VER 1
 
 namespace cruelEngine
 {
@@ -32,18 +30,33 @@ class RenderTask;
 class Queue;
 class GuiOverlay;
 
-// Todo
-// 1. The rendersession should support headless render.
-// 2. Session should support multi swapchains/renderpass.
-
 struct SessionProp
 {
     WindowProp window_prop;
 };
 
+/**
+ * \brief RenderSession renders one scene.
+ *
+ * The RenderSession creates and maintains windows. It also creates surface, guioverlay, swapchain,
+ * renderpass and rendertasks. If the gui overlay is enabled, the render of tasks should be
+ * seperated form the gui render process. This is for the better performance.
+ *
+ * \todo
+ * 1. RenderSession should support headless render.
+ * 2. Sessions should support multi swapchains/renderpass.
+ * 3. Sessions should run seperated thread.
+ */
 class RenderSession
 {
 public:
+    /**
+     * \brief RenderSession Constructor.
+     *
+     * @param instance is needed to create vulkan khr surface.
+     * @param device is required to process the rendering task.
+     * @param session_properties is the settings for a RenderSession.
+     */
     RenderSession(Instance &instance, LogicalDevice &device, SessionProp &session_properties);
 
     RenderSession(const RenderSession &) = delete;
@@ -54,31 +67,67 @@ public:
 
     /**
      * \brief update the swapchain
+     *
      * When the a window_resize event is captured, execute this function
-     * to rebuild a new swapchain.
+     * to rebuild a new swapchain. Okay, it should be the resize function.
      */
     void update_swapchain();
+
     void recreate_swapchain()
     {}
 
+    /**
+     * \brief LoadScene
+     *
+     * Load a scene for rendering, The load process will also create rendertasks for all primitives
+     * in the scene.
+     */
     void load_scene(std::shared_ptr<cruelScene::Scene> scene);
 
+    /**
+     * \brief AddTasks
+     *
+     * Add new tasks to the RenderSession. This is for external tasks.
+     */
     void add_new_task(std::unique_ptr<RenderTask> task);
 
+    /**
+     * \brief SetGuiOverlay
+     *
+     * Set the guiOverlay for the RenderSession. If the pointer to guiOverlay is "null_ptr", the
+     * session will not render the guioverlay.
+     */
     void setGuiOverlay(std::shared_ptr<GuiOverlay> gui);
 
     std::shared_ptr<GuiOverlay> getGuiOverlay();
 
+    /**
+     * \brief Prepare
+     *
+     * Run the preparation work for renderSession.
+     */
     void prepare();
 
     /**
+     * \brief Create render_pass
+     *
      * Create a proper render pass according to the render properties.
      * Use subpasses. see [render pass best practice];
      */
     void prepare_render_pass();
 
+    /**
+     * \brief Draw
+     *
+     * Draw all render tasks, gui included.
+     */
     void draw();
 
+    /**
+     * \brief RenderFrame
+     *
+     * Draw a new frame.
+     */
     void render_frame();
 
     LogicalDevice &get_device() const;
@@ -88,13 +137,10 @@ public:
         return instance;
     }
 
-    Swapchain &get_swapchain() const;
-
-    Window &get_window() const;
-
+    Swapchain &   get_swapchain() const;
+    Window &      get_window() const;
     VkSurfaceKHR &get_surface();
-
-    RenderPass &get_render_pass();
+    RenderPass &  get_render_pass();
 
     bool is_session_alive();
 
@@ -103,9 +149,8 @@ public:
 
     CommandPool &getCommandPool();
 
-    void set_session_id(u32 new_id);
-    u32  get_session_id() const;
-
+    void   set_session_id(u32 new_id);
+    u32    get_session_id() const;
     Queue *get_graphic_queue() const;
     Queue *get_present_queue() const;
 
@@ -126,10 +171,8 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> render_time_marker{};
     std::chrono::time_point<std::chrono::high_resolution_clock> frame_time_marker{};
 
-    u32 session_id = 0;
-
-    u32 imgCount = 5;
-
+    u32       session_id           = 0;
+    u32       imgCount             = 5;
     const int MAX_FRAMES_IN_FLIGHT = 2;
 
     VkSemaphore              imageAvailableSemaphore = VK_NULL_HANDLE;
