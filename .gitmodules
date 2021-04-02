@@ -1,0 +1,30 @@
+[submodule "external/imgui"]
+	path = external/imgui
+	url = https://github.com/ocornut/imgui
+[submodule "external/glfw"]
+	path = external/glfw
+	url = https://github.com/glfw/glfw
+[submodule "external/glm"]
+	path = external/glm
+	url = https://github.com/g-truc/glm
+[submodule "external/implot"]
+	path = external/implot
+	url = https://github.com/epezent/implot.git
+[submodule "external/ImGuiColorTextEdit"]
+	path = external/ImGuiColorTextEdit
+	url = https://github.com/BalazsJako/ImGuiColorTextEdit.git
+[submodule "external/ImFileDialog"]
+	path = external/ImFileDialog
+	url = https://github.com/dfranx/ImFileDialog.git
+[submodule "external/ImGuizmo"]
+	path = external/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo
+[submodule "external/imgui_club"]
+	path = external/imgui_club
+	url = https://github.com/ocornut/imgui_club/
+[submodule "external/imnodes"]
+	path = external/imnodes
+	url = https://github.com/Nelarius/imnodes
+[submodule "external/imgui_markdown"]
+	path = external/imgui_markdown
+	url = https://github.com/juliettef/imgui_markdown
