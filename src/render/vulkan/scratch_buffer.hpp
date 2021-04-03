@@ -1,14 +1,19 @@
 #pragma once
+
 #include "../vkcommon.h"
 
 namespace cruelEngine::cruelRender
 {
-class TextureImage
+class LogicalDevice;
+
+class ScratchBuffer
 {
 public:
-    TextureImage();
-    ~TextureImage() = default;
+    ScratchBuffer(LogicalDevice &device);
+
+    ~ScratchBuffer();
 
 private:
+    LogicalDevice &device;
 };
 } // namespace cruelEngine::cruelRender

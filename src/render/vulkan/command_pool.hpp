@@ -16,7 +16,7 @@ class CommandPool
 public:
     /** Create a command pool, it requires a physical device. */
     CommandPool(LogicalDevice &_device, u32 queueFamilyIndex,
-                CommandBuffer::ResetMode resetMode = CommandBuffer::ResetMode::ResetPool);
+                CommandBuffer::ResetModeFlags resetMode = CommandBuffer::ResetModeFlags::ResetPool);
 
     virtual ~CommandPool();
 
@@ -44,7 +44,7 @@ public:
         return queueFamilyIndex;
     }
 
-    CommandBuffer::ResetMode GetResetMode() const
+    CommandBuffer::ResetModeFlags GetResetMode() const
     {
         return resetMode;
     }
@@ -56,7 +56,7 @@ private:
 
     u32 queueFamilyIndex = 0;
 
-    CommandBuffer::ResetMode resetMode = CommandBuffer::ResetMode::ResetPool;
+    CommandBuffer::ResetModeFlags resetMode = CommandBuffer::ResetModeFlags::ResetPool;
 
     size_t thread_index = 0;
 

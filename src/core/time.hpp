@@ -15,6 +15,8 @@ public:
 
     chrono::time_point<chrono::high_resolution_clock> CurrentTime() const;
 
+    chrono::time_point<chrono::system_clock> CurrentDate() const;
+
 protected:
     vector<chrono::time_point<chrono::high_resolution_clock>> markers;
 };

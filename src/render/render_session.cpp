@@ -67,7 +67,7 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 #endif
 
     commandPool = std::make_unique<CommandPool>(device, graphic_queue->get_family_index(),
-                                                CommandBuffer::ResetMode::ResetIndividually);
+                                                CommandBuffer::ResetModeFlags::ResetIndividually);
 
     for (size_t i = 0; i < imgCount; i++)
     {

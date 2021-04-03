@@ -64,7 +64,7 @@ public:
 #endif
 
         {
-            // editor.SetPalette(TextEditor::GetLightPalette());
+            editor.SetPalette(TextEditor::GetLightPalette());
             std::ifstream t(fileToEdit);
             if (t.good())
             {

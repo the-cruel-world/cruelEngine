@@ -1,16 +1,18 @@
 add_subdirectory(core)
 
+add_subdirectory(platform)
+
 add_subdirectory(application)
 
 add_subdirectory(window)
 
 add_subdirectory(debug)
 
-# add_subdirectory(event)
+add_subdirectory(events)
 
-# add_subdirectory(io)
+add_subdirectory(io)
 
-# add_subdirectory(network)
+add_subdirectory(network)
 
 add_subdirectory(render)
 

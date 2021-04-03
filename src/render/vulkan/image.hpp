@@ -12,6 +12,11 @@ void SetImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout,
 class Image
 {
 public:
+    enum class ImageType
+    {
+        ImageType_Swapchain = 1 << 0,
+        ImageType_Others    = 1 << 1
+    };
     Image(LogicalDevice &device, const VkExtent3D &extent, const VkFormat &format,
           VkImageUsageFlags image_usage, VkMemoryPropertyFlags memory_flags,
           VkSampleCountFlagBits sample_count = VK_SAMPLE_COUNT_1_BIT, uint32_t mip_levels = 1,
@@ -33,25 +38,24 @@ public:
 
     ~Image();
 
-    LogicalDevice &get_device() const;
-
-    VkImage get_handle() const;
-
-    VkDeviceMemory get_memory() const;
-
+    LogicalDevice &    get_device() const;
+    VkImage            get_handle() const;
+    VkDeviceMemory     get_memory() const;
+    VkDeviceSize       get_memory_size() const;
     VkImageSubresource get_subresource() const;
-
     const VkImageType &get_image_type() const;
-
-    const VkFormat &get_format() const;
-
-    u32 getArrayLayers() const;
+    const VkFormat &   get_format() const;
+    u32                getArrayLayers() const;
+    void               copyData(void *data, VkDeviceSize size);
 
 private:
     LogicalDevice &device;
 
+    ImageType imageType = {ImageType::ImageType_Others};
+
     VkImage        handle      = VK_NULL_HANDLE;
     VkDeviceMemory imageMemory = VK_NULL_HANDLE;
+    VkDeviceSize   imageMemorySize{};
 
     VkImageType        type{};
     VkExtent3D         extent{};

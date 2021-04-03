@@ -1,30 +1,30 @@
 #pragma once
 #include "../vkcommon.h"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 class CommandPool;
+class Queue;
 
 /*! The data prototype of the commandBuffer. It will include all different types
  * of vulkan command. */
 class CommandBuffer
 {
 public:
-    enum class ResetMode
+    enum ResetModeFlags
     {
         ResetPool,
         ResetIndividually,
         ReAllocate,
     };
 
-    enum class CmdState
+    enum CmdStateFlags
     {
-        CMD_STATE_IDLE = 0,
-        CMD_STATE_BUSY,
-        CMD_STATE_RECORDING,
-        CMD_STATE_RESETED
+        CMD_STATE_FREE      = 0,
+        CMD_STATE_RESETED   = 0,
+        CMD_STATE_IDLE      = 1,
+        CMD_STATE_RECORDING = 2,
+        CMD_STATE_BUSY      = 3,
     };
 
     /*! \brief Init the command buffer, allocate space for it.
@@ -83,7 +83,11 @@ VK_COMMAND_BUFFER_LEVEL_PRIMARY or VK_COMMAND_BUFFER_LEVEL_SECONDARY
 
     void setScissor(uint32_t first_scissor, const std::vector<VkRect2D> &scissors);
 
-    VkResult reset(ResetMode resetMode);
+    VkResult reset(ResetModeFlags resetMode);
+
+    void Release();
+
+    void SetOccupied();
 
 private:
     const CommandPool &commandPool;
@@ -92,11 +96,9 @@ private:
 
     VkCommandBuffer handle = VK_NULL_HANDLE;
 
-    bool isRecord = false;
-
-    CmdState cmdState = CmdState::CMD_STATE_IDLE;
+    CmdStateFlags cmdState = CmdStateFlags::CMD_STATE_IDLE;
 
     VkCommandBufferLevel level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 };
-} // namespace cruelRender
-} // namespace cruelEngine
+
+} // namespace cruelEngine::cruelRender

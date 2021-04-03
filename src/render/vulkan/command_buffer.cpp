@@ -4,9 +4,7 @@
 #include "logical_device.hpp"
 #include "queue.hpp"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 CommandBuffer::CommandBuffer(const CommandPool &_commandPool, VkCommandBufferLevel _level) :
     commandPool(_commandPool), level(_level)
@@ -19,6 +17,8 @@ CommandBuffer::CommandBuffer(const CommandPool &_commandPool, VkCommandBufferLev
 
     VK_CHECK_RESULT(
         vkAllocateCommandBuffers(commandPool.GetDevice().get_handle(), &allocate_info, &handle));
+
+    cmdState = CmdStateFlags::CMD_STATE_FREE;
 }
 
 CommandBuffer::~CommandBuffer()
@@ -32,19 +32,21 @@ CommandBuffer::~CommandBuffer()
 
 void CommandBuffer::begin()
 {
-    isRecord = true;
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType            = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags            = VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT;
     beginInfo.pInheritanceInfo = nullptr; // Optional
-
+    if (cmdState == CmdStateFlags::CMD_STATE_RECORDING)
+        throw std::runtime_error("CommandBuffer::beginOneTime : can't start a new recording when "
+                                 "commandbuffer is in another record.");
     VK_CHECK_RESULT(vkBeginCommandBuffer(handle, &beginInfo));
+    cmdState = CmdStateFlags::CMD_STATE_RECORDING;
 }
 
 void CommandBuffer::end()
 {
-    isRecord = false;
     VK_CHECK_RESULT(vkEndCommandBuffer(handle));
+    cmdState = CmdStateFlags::CMD_STATE_IDLE;
 }
 
 void CommandBuffer::beginOneTime()
@@ -53,25 +55,35 @@ void CommandBuffer::beginOneTime()
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
+    if (cmdState == CmdStateFlags::CMD_STATE_RECORDING)
+        throw std::runtime_error("CommandBuffer::beginOneTime : can't start a new recording when "
+                                 "commandbuffer is in another record.");
     VK_CHECK_RESULT(vkBeginCommandBuffer(handle, &beginInfo));
+    cmdState = CmdStateFlags::CMD_STATE_RECORDING;
 }
 
 void CommandBuffer::endOneTime()
 {
     vkEndCommandBuffer(handle);
+    cmdState = CmdStateFlags::CMD_STATE_IDLE;
+
+    VkFenceCreateInfo fenceInfo{};
+    fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+    VkFence fence{};
+    vkCreateFence(commandPool.GetDevice().get_handle(), &fenceInfo, nullptr, &fence);
+    vkResetFences(commandPool.GetDevice().get_handle(), 1, &fence);
 
     VkSubmitInfo submitInfo{};
     submitInfo.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     submitInfo.commandBufferCount = 1;
     submitInfo.pCommandBuffers    = &handle;
-
     Queue &queue = commandPool.GetDevice().get_queue_by_flags(VK_QUEUE_TRANSFER_BIT, 0);
 
-    vkQueueSubmit(queue.get_handle(), 1, &submitInfo, VK_NULL_HANDLE);
-    vkQueueWaitIdle(queue.get_handle());
-    vkFreeCommandBuffers(commandPool.GetDevice().get_handle(), commandPool.GetHandle(), 1, &handle);
-    //! Vulkan doesn't reset handle to VK_NULL_HANDLE after freecommandbuffer.
-    handle = VK_NULL_HANDLE;
+    // wait for the queue to finish this command call using a fence instead wait for idle.
+    vkQueueSubmit(queue.get_handle(), 1, &submitInfo, fence);
+    vkWaitForFences(commandPool.GetDevice().get_handle(), 1, &fence, VK_TRUE, UINT64_MAX);
+    vkDestroyFence(commandPool.GetDevice().get_handle(), fence, nullptr);
 }
 
 void CommandBuffer::begin_renderpass(const VkRenderPass & renderPass,
@@ -112,7 +124,7 @@ void CommandBuffer::setScissor(uint32_t first_scissor, const std::vector<VkRect2
     vkCmdSetScissor(handle, first_scissor, u32(scissors.size()), scissors.data());
 }
 
-VkResult CommandBuffer::reset(ResetMode resetMode)
+VkResult CommandBuffer::reset(ResetModeFlags resetMode)
 {
     VkResult result = VK_SUCCESS;
 
@@ -120,13 +132,23 @@ VkResult CommandBuffer::reset(ResetMode resetMode)
            "[CommandBuffer] : Reset : Fatal! the reset mode must match the reset "
            "mode of the command pool.");
 
-    if (resetMode == ResetMode::ResetIndividually)
+    if (resetMode == ResetModeFlags::ResetIndividually)
     {
         result = vkResetCommandBuffer(handle, VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT);
     }
+    cmdState = CmdStateFlags::CMD_STATE_RESETED;
 
     return result;
 }
 
-} // namespace cruelRender
-} // namespace cruelEngine
+void CommandBuffer::Release()
+{
+    cmdState = CmdStateFlags::CMD_STATE_FREE;
+}
+
+void CommandBuffer::SetOccupied()
+{
+    cmdState = CmdStateFlags::CMD_STATE_IDLE;
+}
+
+} // namespace cruelEngine::cruelRender
