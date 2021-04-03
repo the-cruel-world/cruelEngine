@@ -55,6 +55,8 @@ CommandBuffer &CommandPool::RequestCommandBuffer(const VkCommandBufferLevel &_le
             active_secondary_command_buffer_count);
 #endif
 
+    SortCommandBuffers();
+
     if (_level == VK_COMMAND_BUFFER_LEVEL_PRIMARY)
     {
         if (active_primary_command_buffer_count < primary_command_buffers.size())
@@ -64,7 +66,7 @@ CommandBuffer &CommandPool::RequestCommandBuffer(const VkCommandBufferLevel &_le
         primary_command_buffers.push_back(
             std::make_unique<CommandBuffer>(*this, VK_COMMAND_BUFFER_LEVEL_PRIMARY));
 
-        active_primary_command_buffer_count++;
+        // active_primary_command_buffer_count++;
         primary_command_buffers.back()->SetOccupied();
         return *primary_command_buffers.back();
     }
@@ -77,8 +79,7 @@ CommandBuffer &CommandPool::RequestCommandBuffer(const VkCommandBufferLevel &_le
         secondary_command_buffers.push_back(
             std::make_unique<CommandBuffer>(*this, VK_COMMAND_BUFFER_LEVEL_SECONDARY));
 
-        active_secondary_command_buffer_count++;
-
+        // active_secondary_command_buffer_count++;
         secondary_command_buffers.back()->SetOccupied();
         return *secondary_command_buffers.back();
     }
@@ -122,6 +123,30 @@ VkResult CommandPool::ResetPool()
     return VK_SUCCESS;
 }
 
+void CommandPool::test_list_commands()
+{
+    std::cout << "[primary commandbuffers] all:" << primary_command_buffers.size()
+              << "\tactive: " << active_primary_command_buffer_count << std::endl;
+    size_t i = 0;
+    for (auto &cmdBuffer : primary_command_buffers)
+    {
+        std::cout << "\tid: " << i++;
+        std::cout << "\taddr: " << cmdBuffer.get();
+        std::cout << "\tStatus: " << cmdBuffer->GetCmdState() << std::endl;
+    }
+    // std::cout << std::endl;
+    i = 0;
+    std::cout << "[secondary commandbuffers] all:" << secondary_command_buffers.size()
+              << "\tactive: " << active_secondary_command_buffer_count << std::endl;
+    for (auto &cmdBuffer : secondary_command_buffers)
+    {
+        std::cout << "\tid: " << i++;
+        std::cout << "\taddr: " << cmdBuffer.get();
+        std::cout << "\tStatus: " << cmdBuffer->GetCmdState() << std::endl;
+    }
+    std::cout << std::endl;
+}
+
 VkResult CommandPool::ResetCommandBuffers()
 {
     VkResult result = VK_SUCCESS;
@@ -144,4 +169,23 @@ VkResult CommandPool::ResetCommandBuffers()
 
     return result;
 }
+
+void CommandPool::SortCommandBuffers()
+{
+    std::sort(primary_command_buffers.begin(), primary_command_buffers.end());
+    std::sort(secondary_command_buffers.begin(), secondary_command_buffers.end());
+
+    active_primary_command_buffer_count = std::count_if(
+        primary_command_buffers.begin(), primary_command_buffers.end(),
+        [](std::unique_ptr<CommandBuffer> const &cmdbuffer) { return cmdbuffer->GetCmdState(); });
+    active_secondary_command_buffer_count = std::count_if(
+        secondary_command_buffers.begin(), secondary_command_buffers.end(),
+        [](std::unique_ptr<CommandBuffer> const &cmdbuffer) { return cmdbuffer->GetCmdState(); });
+}
+
+bool CommandPool::CheckOccupation(std::unique_ptr<CommandBuffer> const &cmdbuffer)
+{
+    return (cmdbuffer->GetCmdState());
+}
+
 } // namespace cruelEngine::cruelRender

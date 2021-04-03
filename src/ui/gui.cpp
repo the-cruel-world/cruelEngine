@@ -307,6 +307,7 @@ void Gui::prepare_resource()
                                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, singleTimeCmd);
     singleTimeCmd.endOneTime();
+    singleTimeCmd.Release();
     vkDestroyBuffer(session.get_device().get_handle(), stagingBuffer, nullptr);
     vkFreeMemory(session.get_device().get_handle(), stagingBufferMemory, nullptr);
 

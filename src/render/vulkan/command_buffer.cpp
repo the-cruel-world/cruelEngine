@@ -151,4 +151,9 @@ void CommandBuffer::SetOccupied()
     cmdState = CmdStateFlags::CMD_STATE_IDLE;
 }
 
+CommandBuffer::CmdStateFlags CommandBuffer::GetCmdState()
+{
+    return cmdState;
+}
+
 } // namespace cruelEngine::cruelRender

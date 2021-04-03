@@ -13,7 +13,7 @@ target_link_libraries(core cruelCore)
 
 add_executable(main main.cpp)
 
-target_link_libraries(main cruelWindow cruelScene)
+target_link_libraries(main cruelWindow cruelApplication cruelDebug cruelGui cruelScene cruelRender)
 
 add_executable(render render.cpp)
 

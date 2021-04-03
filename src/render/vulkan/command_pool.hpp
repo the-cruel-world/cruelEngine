@@ -49,6 +49,8 @@ public:
         return resetMode;
     }
 
+    void test_list_commands();
+
 private:
     LogicalDevice &device;
 
@@ -69,6 +71,12 @@ private:
     u32 active_secondary_command_buffer_count = 0;
 
     VkResult ResetCommandBuffers();
+
+    void SortCommandBuffers();
+
+    bool CheckOccupation(std::unique_ptr<CommandBuffer> const &cmdbuffer);
+
+    std::mutex pool_mutex;
 };
 } // namespace cruelRender
 } // namespace cruelEngine
