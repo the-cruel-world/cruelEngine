@@ -29,6 +29,7 @@ class Instance;
 class RenderTask;
 class Queue;
 class GuiOverlay;
+class RenderFrame;
 
 struct SessionProp
 {
@@ -251,6 +252,8 @@ private:
     std::vector<std::unique_ptr<FrameBuffer>> frameBuffer;
 
     std::unique_ptr<CommandPool> commandPool;
+
+    std::vector<std::unique_ptr<RenderFrame>> renderFrames{};
 
     std::vector<std::reference_wrapper<CommandBuffer>> commandBuffers;
 

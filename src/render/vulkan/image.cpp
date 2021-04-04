@@ -112,6 +112,7 @@ Image::Image(LogicalDevice &device, const VkExtent3D &extent, const VkFormat &fo
         throw std::runtime_error("failed to allocate image memory!");
     }
     vkBindImageMemory(device.get_handle(), handle, imageMemory, 0);
+    std::cout << "x---x Image created! id: " << get_handle() << std::endl;
 }
 
 Image::Image(LogicalDevice &device, const VkImage &handle, const VkExtent3D &extent,
@@ -128,10 +129,34 @@ Image::Image(LogicalDevice &device, const VkImage &handle, const VkExtent3D &ext
     subresource.arrayLayer = 1;
 
     imageType = ImageType::ImageType_Swapchain;
+
+    std::cout << "x---x Image created! id: " << get_handle() << std::endl;
+}
+
+Image::Image(Image &&other) :
+    device{other.device},
+    imageType{other.imageType},
+    handle{other.handle},
+    imageMemory{other.imageMemory},
+    imageMemorySize{other.imageMemorySize},
+    type{other.type},
+    extent{other.extent},
+    format{other.format},
+    sampleCount{other.sampleCount},
+    tiling{other.tiling},
+    usage{other.usage},
+    subresource{other.subresource},
+    arrayLayers{other.arrayLayers}
+{
+    std::cout << "x---x Image moving! id: " << get_handle() << std::endl;
+    other.handle      = VK_NULL_HANDLE;
+    other.imageMemory = VK_NULL_HANDLE;
 }
 
 Image::~Image()
 {
+    std::cout << "x---x Image destroy! id: " << get_handle() << std::endl;
+
     if (handle != VK_NULL_HANDLE && imageMemory != VK_NULL_HANDLE)
     {
         vkDestroyImage(device.get_handle(), handle, nullptr);

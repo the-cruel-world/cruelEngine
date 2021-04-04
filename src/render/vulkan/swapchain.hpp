@@ -1,9 +1,7 @@
 #pragma once
 #include "../vkcommon.h"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 class Instance;
 class LogicalDevice;
@@ -34,13 +32,13 @@ struct SwapchainProperties
 class Swapchain
 {
 public:
-    Swapchain(LogicalDevice &_device, const VkSurfaceKHR &_surface, const VkExtent2D _extent,
+    Swapchain(LogicalDevice &_device, VkSurfaceKHR &_surface, const VkExtent2D _extent,
               const u32 _imageCount, const VkSurfaceTransformFlagBitsKHR transform,
               const VkPresentModeKHR                   _presentMode,
               const std::vector<VkImageUsageFlagBits> &image_usage = {
                   VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT, VK_IMAGE_USAGE_TRANSFER_SRC_BIT});
 
-    Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, const VkSurfaceKHR &_surface,
+    Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, VkSurfaceKHR &_surface,
               const VkExtent2D _extent, const u32 _imageCount,
               const VkSurfaceTransformFlagBitsKHR transform, const VkPresentModeKHR _presentMode,
               const std::vector<VkImageUsageFlagBits> &image_usage = {
@@ -104,12 +102,12 @@ public:
         return imageViews;
     }
 
-    const std::vector<VkImage> &get_images() const
+    std::vector<VkImage> &get_images()
     {
         return images;
     }
 
-    const VkSurfaceKHR &get_surface() const
+    VkSurfaceKHR &get_surface()
     {
         return surface;
     };
@@ -117,7 +115,7 @@ public:
 private:
     LogicalDevice &device;
 
-    const VkSurfaceKHR &surface;
+    VkSurfaceKHR &surface;
 
     SwapchainProperties properties;
 
@@ -138,5 +136,4 @@ private:
 
     std::vector<VkImageUsageFlagBits> image_usage{};
 };
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

@@ -1,5 +1,6 @@
 #include "gui_overlay.hpp"
 #include "render_context.hpp"
+#include "render_frame.hpp"
 #include "render_session.hpp"
 #include "render_task.hpp"
 

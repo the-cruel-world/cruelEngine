@@ -1,5 +1,6 @@
 #include "render_session.hpp"
 #include "gui_overlay.hpp"
+#include "render_frame.hpp"
 #include "render_task.hpp"
 
 #include "../scene/object.hpp"
@@ -45,26 +46,13 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
     swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount,
                                             VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
                                             VK_PRESENT_MODE_FIFO_KHR);
+
 #ifdef RENDER_DEBUG
     std::cout << "[Rendersession] swapchain creatd!" << std::endl;
 #endif
 
     prepare_render_pass();
     // std::cout << "[Rendersession] renderpass creatd!" << std::endl;
-
-    for (auto &image_view : swapchain->get_imageViews())
-    {
-        frameBuffer.push_back(std::make_unique<FrameBuffer>(
-            device, image_view, swapchain->get_properties().extent, *render_pass));
-    }
-#ifdef RENDER_DEBUG
-    std::cout << "[Rendersession] framebuffers creatd!" << std::endl;
-#endif
-    createSemaphores();
-
-#ifdef RENDER_DEBUG
-    std::cout << "[Rendersession] semaphores creatd!" << std::endl;
-#endif
 
     commandPool = std::make_unique<CommandPool>(device, graphic_queue->get_family_index(),
                                                 CommandBuffer::ResetModeFlags::ResetIndividually);
@@ -78,6 +66,38 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 #ifdef RENDER_DEBUG
     commandPool->test_list_commands();
     std::cout << "[Rendersession] commandbuffers creatd!" << std::endl;
+#endif
+
+    VkExtent3D extent3D{swapchain->get_extent().width, swapchain->get_extent().height, 1};
+
+    for (auto &image : swapchain->get_images())
+    {
+        Image     swapchain_image(device, image, extent3D, swapchain->get_surface_format().format,
+                              swapchain->get_properties().image_usage);
+        ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
+
+        FrameBuffer swapchain_frameBuffer(device, swapchain_imageView.get_handle(),
+                                          swapchain->get_extent(), *render_pass);
+
+        renderFrames.push_back(std::make_unique<RenderFrame>(
+            (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
+            commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY)));
+
+        std::cout << "Create frameBuffer" << std::endl;
+    }
+
+    for (auto &image_view : swapchain->get_imageViews())
+    {
+        frameBuffer.push_back(std::make_unique<FrameBuffer>(
+            device, image_view, swapchain->get_properties().extent, *render_pass));
+    }
+#ifdef RENDER_DEBUG
+    std::cout << "[Rendersession] framebuffers creatd!" << std::endl;
+#endif
+    createSemaphores();
+
+#ifdef RENDER_DEBUG
+    std::cout << "[Rendersession] semaphores creatd!" << std::endl;
 #endif
 
     // Init time_markers
@@ -112,6 +132,8 @@ RenderSession::~RenderSession()
     destroySemaphores();
     frameBuffer.clear();
     render_pass.reset();
+    std::cout << "renderFrame size: " << renderFrames.size() << std::endl;
+    renderFrames.clear();
     swapchain.reset();
 #ifdef RENDER_DEBUG
     std::cout << "[RenderSession::destructor] destroy guiOverlay finally" << std::endl;

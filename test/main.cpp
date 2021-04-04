@@ -17,6 +17,8 @@ bool cruelEngine::Window::glfw_inited = false;
 using namespace cruelEngine::cruelScene;
 using namespace cruelEngine::cruelRender;
 
+using namespace std;
+
 void print_tree(int level, std::shared_ptr<Node> root)
 {
     for (size_t i = 0; i < level; i++)
@@ -38,9 +40,39 @@ void print_tree(int level, std::shared_ptr<Node> root)
     }
 }
 
-using namespace std;
+class test
+{
+public:
+    test(int a) : elm{a}
+    {
+        cout << "create" << endl;
+    }
 
-int main(int argc, char const *argv[])
+    test(const test &other) : elm{other.elm}
+    {
+        cout << "copy" << endl;
+    }
+
+    test(test &&other) : elm{other.elm}
+    {
+        cout << "move" << endl;
+        other.elm = 0;
+    }
+    ~test()
+    {
+        cout << "Destroy" << endl;
+    };
+
+    int elm = 1000;
+};
+
+void sprite(test &&other)
+{
+    test val2 = move(other);
+    cout << "sprite: " << val2.elm << endl;
+}
+
+    int main(int argc, char const *argv[])
 {
     {
         /**
@@ -87,6 +119,16 @@ int main(int argc, char const *argv[])
             cmd.Release();
             commandPool->test_list_commands();
         }
+    }
+
+    {
+        // vector<test> mylists{};
+        test val(21);
+        // mylists.push_back(move(val));
+        // test val2(std::move(val));
+        // sprite(move(val));
+        cout << "ori: " << val.elm << endl;
+        // cout << "sprite: " << val2.elm << endl;
     }
 
     return 0;

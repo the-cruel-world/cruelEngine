@@ -123,14 +123,14 @@ VkImageUsageFlags composite_image_flags(std::vector<VkImageUsageFlagBits> &image
     return image_usage;
 }
 
-Swapchain::Swapchain(LogicalDevice &_device, const VkSurfaceKHR &_surface, const VkExtent2D _extent,
+Swapchain::Swapchain(LogicalDevice &_device, VkSurfaceKHR &_surface, const VkExtent2D _extent,
                      const u32 _imageCount, const VkSurfaceTransformFlagBitsKHR _transform,
                      const VkPresentModeKHR                   _presentMode,
                      const std::vector<VkImageUsageFlagBits> &_image_usage) :
     Swapchain{*this, _device, _surface, _extent, _imageCount, _transform, _presentMode}
 {}
 
-Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, const VkSurfaceKHR &_surface,
+Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, VkSurfaceKHR &_surface,
                      const VkExtent2D _extent, const u32 _imageCount,
                      const VkSurfaceTransformFlagBitsKHR      _transform,
                      const VkPresentModeKHR                   _presentMode,
