@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <vector>
 
+#include "../src/render/render_header.h"
 #include "../src/scene/scene_header.h"
 #include <../src/window/window.hpp>
 
@@ -14,6 +15,7 @@ u32  cruelEngine::Window::count       = 0;
 bool cruelEngine::Window::glfw_inited = false;
 
 using namespace cruelEngine::cruelScene;
+using namespace cruelEngine::cruelRender;
 
 void print_tree(int level, std::shared_ptr<Node> root)
 {
@@ -36,28 +38,56 @@ void print_tree(int level, std::shared_ptr<Node> root)
     }
 }
 
+using namespace std;
+
 int main(int argc, char const *argv[])
 {
-    auto scene = std::make_unique<Scene>();
+    {
+        /**
+         * Scene Tree structure test.
+         */
+        cout << "Scene Tree structure test." << endl;
+        auto scene = std::make_unique<Scene>();
 
-    auto nodes = scene->get_root_node();
+        auto nodes = scene->get_root_node();
 
-    if (nodes == nullptr)
-        return -1;
+        if (nodes == nullptr)
+            return -1;
 
-    nodes->AddChild(std::make_shared<Node>(1, "world"));
+        nodes->AddChild(std::make_shared<Node>(1, "world"));
 
-    nodes->GetChild("world")->AddChild(std::make_shared<Node>(1, "terrian"));
+        nodes->GetChild("world")->AddChild(std::make_shared<Node>(1, "terrian"));
 
-    nodes->GetChild("world")->AddChild(std::make_shared<Node>(1, "skybox"));
+        nodes->GetChild("world")->AddChild(std::make_shared<Node>(1, "skybox"));
 
-    nodes->AddChild(std::make_shared<Node>(1, "player1"));
+        nodes->AddChild(std::make_shared<Node>(1, "player1"));
 
-    nodes->AddChild(std::make_shared<Node>(1, "player2"));
+        nodes->AddChild(std::make_shared<Node>(1, "player2"));
 
-    nodes->GetChild("player2")->AddChild(std::make_shared<Node>(1, "clothes"));
+        nodes->GetChild("player2")->AddChild(std::make_shared<Node>(1, "clothes"));
 
-    print_tree(0, nodes);
+        print_tree(0, nodes);
+    }
+
+    {
+        /**
+         * CommandBuffer and CommandPool test.
+         */
+        auto renderprop = std::make_unique<RenderProp>();
+        cout << "CommandBuffer and CommandPool test." << endl;
+        auto context = std::make_unique<RenderContext>(*renderprop);
+
+        auto commandPool = std::make_unique<CommandPool>(
+            context->get_device(),
+            context->get_device().get_suitable_graphics_queue(0).get_family_index());
+
+        for (size_t i = 0; i < 5; i++)
+        {
+            CommandBuffer &cmd = commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+            cmd.Release();
+            commandPool->test_list_commands();
+        }
+    }
 
     return 0;
 }

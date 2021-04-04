@@ -7,9 +7,13 @@ set (IMEDITOR_DIR ../external/ImGuiColorTextEdit)
 
 include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends ${IMPLOT_DIR} ${IMGUI_MARKDOWN_DIR} ${IMGUIZMO_DIR} ${IMNODE_DIR} ${IMEDITOR_DIR})
 
+add_executable(core core.cpp)
+
+target_link_libraries(core cruelCore)
+
 add_executable(main main.cpp)
 
-target_link_libraries(main cruelWindow cruelScene)
+target_link_libraries(main cruelWindow cruelApplication cruelDebug cruelGui cruelScene cruelRender)
 
 add_executable(render render.cpp)
 

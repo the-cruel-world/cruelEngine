@@ -72,6 +72,7 @@ public:
     // VkBool32            map(VkDeviceSize size, VkDeviceSize offset);
 
     // void                unmap();
+
 private:
     LogicalDevice &device;
 

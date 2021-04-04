@@ -20,4 +20,9 @@ chrono::time_point<chrono::high_resolution_clock> Timer::CurrentTime() const
     return chrono::high_resolution_clock::now();
 }
 
+chrono::time_point<chrono::system_clock> Timer::CurrentDate() const
+{
+    return chrono::system_clock::now();
+}
+
 } // namespace cruelEngine::cruelCore

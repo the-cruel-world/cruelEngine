@@ -19,7 +19,7 @@ Gui::Gui(cruelRender::RenderSession &session, GuiUsageFlags usage) :
         ImPlot::CreateContext();
 
     // Color scheme
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
     ImGui::GetStyle().WindowRounding    = 5.0f;
     ImGui::GetStyle().ChildRounding     = 1.0f;
     ImGui::GetStyle().FrameRounding     = 3.0f;
@@ -66,19 +66,6 @@ Gui::Gui(cruelRender::RenderSession &session, GuiUsageFlags usage) :
     std::cout << "[Gui::Constructor] display size setted!" << std::endl;
 #endif
     ImGui_ImplGlfw_InitForVulkan(&session.get_window().get_handle(), true);
-
-    // ImGui_ImplVulkan_InitInfo init_info = {};
-    // init_info.Instance                  = session.getInstance().get_handle();
-    // init_info.PhysicalDevice            = session.get_device().get_physicalDevice().get_handle();
-    // init_info.Device                    = session.get_device().get_handle();
-    // init_info.QueueFamily               = session.get_graphic_queue()->get_family_index();
-    // init_info.Queue                     = session.get_graphic_queue()->get_handle();
-    // init_info.PipelineCache             = VK_NULL_HANDLE;
-    // init_info.DescriptorPool            = descriptorPool->get_handle();
-    // init_info.Allocator                 = nullptr;
-    // init_info.MinImageCount             = session.get_swapchain().get_properties().image_count;
-    // init_info.ImageCount                = session.get_swapchain().get_properties().image_count;
-    // ImGui_ImplVulkan_Init(&init_info, session.get_render_pass().get_handle());
 }
 
 Gui::~Gui()
@@ -92,7 +79,6 @@ void Gui::Draw(cruelRender::CommandBuffer &commandBuffer)
     std::cout << "[Gui::Draw] recording draw commands." << commandBuffer.get_handle() << std::endl;
 #endif
     ImDrawData *imDrawData = ImGui::GetDrawData();
-    bool        updated    = false;
 
     u32 vertexOffset = 0;
     u32 indexOffset  = 0;
@@ -300,6 +286,8 @@ void Gui::prepare_resource()
     auto &singleTimeCmd =
         session.get_device().request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
+    session.get_device().get_commandPool().test_list_commands();
+
     singleTimeCmd.beginOneTime();
 
     //! Set image layout
@@ -321,6 +309,8 @@ void Gui::prepare_resource()
                                 VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, singleTimeCmd);
     singleTimeCmd.endOneTime();
+    singleTimeCmd.Release();
+
     vkDestroyBuffer(session.get_device().get_handle(), stagingBuffer, nullptr);
     vkFreeMemory(session.get_device().get_handle(), stagingBufferMemory, nullptr);
 
@@ -415,9 +405,6 @@ void Gui::prepare_pipeline()
                                                                    shaderModules, pipelineLayoutCI);
     cruelRender::PipelineStatus                   pipelineState{};
     cruelRender::PipelineStatus::VertexInputState vertex_input_state;
-
-    VkVertexInputAttributeDescription;
-    VkVertexInputBindingDescription;
 
     vertex_input_state.attributes.push_back(
         {0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(ImDrawVert, pos)});

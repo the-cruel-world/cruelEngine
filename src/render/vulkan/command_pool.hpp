@@ -16,7 +16,7 @@ class CommandPool
 public:
     /** Create a command pool, it requires a physical device. */
     CommandPool(LogicalDevice &_device, u32 queueFamilyIndex,
-                CommandBuffer::ResetMode resetMode = CommandBuffer::ResetMode::ResetPool);
+                CommandBuffer::ResetModeFlags resetMode = CommandBuffer::ResetModeFlags::ResetPool);
 
     virtual ~CommandPool();
 
@@ -44,10 +44,12 @@ public:
         return queueFamilyIndex;
     }
 
-    CommandBuffer::ResetMode GetResetMode() const
+    CommandBuffer::ResetModeFlags GetResetMode() const
     {
         return resetMode;
     }
+
+    void test_list_commands();
 
 private:
     LogicalDevice &device;
@@ -56,7 +58,7 @@ private:
 
     u32 queueFamilyIndex = 0;
 
-    CommandBuffer::ResetMode resetMode = CommandBuffer::ResetMode::ResetPool;
+    CommandBuffer::ResetModeFlags resetMode = CommandBuffer::ResetModeFlags::ResetPool;
 
     size_t thread_index = 0;
 
@@ -69,6 +71,8 @@ private:
     u32 active_secondary_command_buffer_count = 0;
 
     VkResult ResetCommandBuffers();
+
+    std::mutex pool_mutex;
 };
 } // namespace cruelRender
 } // namespace cruelEngine

@@ -27,7 +27,8 @@ LogicalDevice::LogicalDevice(const PhysicalDevice &     _physicalDevice,
     // start_time) * 1e-5  << "ms" << std::endl;
     commandPool = std::make_unique<CommandPool>(
         *this,
-        get_queue_by_flags(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_COMPUTE_BIT, 0).get_family_index());
+        get_queue_by_flags(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_COMPUTE_BIT, 0).get_family_index(),
+        CommandBuffer::ResetModeFlags::ResetIndividually);
 }
 
 LogicalDevice::~LogicalDevice()
