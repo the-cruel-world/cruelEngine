@@ -15,6 +15,7 @@
 
 u32                cruelEngine::Window::count       = 0;
 bool               cruelEngine::Window::glfw_inited = false;
+
 TextEditor         editor;
 static const char *fileToEdit = "main.cpp";
 
@@ -39,8 +40,8 @@ public:
 #ifdef DEBUG
         std::cout << "Scene created." << std::endl;
 #endif
-        // scene->addObject(
-        //     std::make_shared<cruelEngine::cruelScene::SkyBox>("Sky", scene->get_camera()));
+        scene->addObject(
+            std::make_shared<cruelEngine::cruelScene::SkyBox>("Sky", scene->get_camera()));
 #ifdef DEBUG
         std::cout << "Scene object created." << std::endl;
 #endif

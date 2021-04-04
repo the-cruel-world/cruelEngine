@@ -72,10 +72,6 @@ private:
 
     VkResult ResetCommandBuffers();
 
-    void SortCommandBuffers();
-
-    bool CheckOccupation(std::unique_ptr<CommandBuffer> const &cmdbuffer);
-
     std::mutex pool_mutex;
 };
 } // namespace cruelRender

@@ -68,7 +68,7 @@ public:
     std::vector<Queue> &get_queues();
 
     /** \brief Get the reference to the commandPool. */
-    CommandPool &get_commanfPool() const
+    CommandPool &get_commandPool() const
     {
         return *commandPool;
     }

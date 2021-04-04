@@ -5,9 +5,7 @@
 #include "physical_device.hpp"
 #include "queue.hpp"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 uint32_t findMemoryType(const VkPhysicalDevice &device, uint32_t typeFilter,
                         VkMemoryPropertyFlags properties)
@@ -183,7 +181,7 @@ void Buffer::load(void *data, VkDeviceSize new_buffer_size)
 {
     if (buffer_usage & VK_BUFFER_USAGE_TRANSFER_DST_BIT)
     {
-        CommandBuffer cmdBuffer(device.get_commanfPool(), VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+        CommandBuffer cmdBuffer(device.get_commandPool(), VK_COMMAND_BUFFER_LEVEL_PRIMARY);
         load_stage(data, cmdBuffer, new_buffer_size);
         return;
     }
@@ -252,5 +250,4 @@ void UniformBuffer::update(void *new_data)
     memcpy(data, new_data, buffer_size);
     vkUnmapMemory(device.get_handle(), memory);
 }
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

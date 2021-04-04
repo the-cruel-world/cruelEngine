@@ -74,10 +74,13 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
         commandBuffers.push_back(
             commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
     }
+
 #ifdef RENDER_DEBUG
+    commandPool->test_list_commands();
     std::cout << "[Rendersession] commandbuffers creatd!" << std::endl;
 #endif
 
+    // Init time_markers
     frame_time_marker  = std::chrono::high_resolution_clock::now();
     render_time_marker = std::chrono::high_resolution_clock::now();
 }
@@ -101,7 +104,7 @@ RenderSession::~RenderSession()
     commandPool->ResetPool();
     commandPool.reset();
 
-    device.get_commanfPool().ResetPool();
+    device.get_commandPool().ResetPool();
 
     tasks.clear();
     guiOverlay.reset();
@@ -451,11 +454,16 @@ void RenderSession::update_swapchain()
 
     commandBuffers.clear();
     commandPool->ResetPool();
+
     for (size_t i = 0; i < imgCount; i++)
     {
         commandBuffers.push_back(
             commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
     }
+
+#ifdef RENDER_DEBUG
+    commandPool->test_list_commands();
+#endif
 
     if (guiOverlay != nullptr)
     {

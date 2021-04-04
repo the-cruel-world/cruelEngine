@@ -286,6 +286,8 @@ void Gui::prepare_resource()
     auto &singleTimeCmd =
         session.get_device().request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
+    session.get_device().get_commandPool().test_list_commands();
+
     singleTimeCmd.beginOneTime();
 
     //! Set image layout
@@ -308,6 +310,7 @@ void Gui::prepare_resource()
                                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, singleTimeCmd);
     singleTimeCmd.endOneTime();
     singleTimeCmd.Release();
+
     vkDestroyBuffer(session.get_device().get_handle(), stagingBuffer, nullptr);
     vkFreeMemory(session.get_device().get_handle(), stagingBufferMemory, nullptr);
 

@@ -55,31 +55,42 @@ CommandBuffer &CommandPool::RequestCommandBuffer(const VkCommandBufferLevel &_le
             active_secondary_command_buffer_count);
 #endif
 
-    SortCommandBuffers();
+    // SortCommandBuffers();
+
+    std::vector<std::unique_ptr<CommandBuffer>>::iterator command_it;
+
+    auto isOccupied = [](std::unique_ptr<CommandBuffer> const &cmd) {
+        return cmd->GetCmdState() == 0;
+    };
 
     if (_level == VK_COMMAND_BUFFER_LEVEL_PRIMARY)
     {
-        if (active_primary_command_buffer_count < primary_command_buffers.size())
+        command_it = std::find_if(primary_command_buffers.begin(), primary_command_buffers.end(),
+                                  isOccupied);
+        if (command_it != primary_command_buffers.end())
         {
-            return *primary_command_buffers.at(active_primary_command_buffer_count++);
+            (*command_it)->SetOccupied();
+            return *(*command_it);
         }
+
         primary_command_buffers.push_back(
             std::make_unique<CommandBuffer>(*this, VK_COMMAND_BUFFER_LEVEL_PRIMARY));
 
-        // active_primary_command_buffer_count++;
         primary_command_buffers.back()->SetOccupied();
         return *primary_command_buffers.back();
     }
     else if (_level == VK_COMMAND_BUFFER_LEVEL_SECONDARY)
     {
-        if (active_secondary_command_buffer_count < secondary_command_buffers.size())
+        command_it = std::find_if(secondary_command_buffers.begin(),
+                                  secondary_command_buffers.end(), isOccupied);
+        if (command_it != secondary_command_buffers.end())
         {
-            return *secondary_command_buffers.at(active_secondary_command_buffer_count++);
+            (*command_it)->SetOccupied();
+            return *(*command_it);
         }
         secondary_command_buffers.push_back(
             std::make_unique<CommandBuffer>(*this, VK_COMMAND_BUFFER_LEVEL_SECONDARY));
 
-        // active_secondary_command_buffer_count++;
         secondary_command_buffers.back()->SetOccupied();
         return *secondary_command_buffers.back();
     }
@@ -169,23 +180,4 @@ VkResult CommandPool::ResetCommandBuffers()
 
     return result;
 }
-
-void CommandPool::SortCommandBuffers()
-{
-    std::sort(primary_command_buffers.begin(), primary_command_buffers.end());
-    std::sort(secondary_command_buffers.begin(), secondary_command_buffers.end());
-
-    active_primary_command_buffer_count = std::count_if(
-        primary_command_buffers.begin(), primary_command_buffers.end(),
-        [](std::unique_ptr<CommandBuffer> const &cmdbuffer) { return cmdbuffer->GetCmdState(); });
-    active_secondary_command_buffer_count = std::count_if(
-        secondary_command_buffers.begin(), secondary_command_buffers.end(),
-        [](std::unique_ptr<CommandBuffer> const &cmdbuffer) { return cmdbuffer->GetCmdState(); });
-}
-
-bool CommandPool::CheckOccupation(std::unique_ptr<CommandBuffer> const &cmdbuffer)
-{
-    return (cmdbuffer->GetCmdState());
-}
-
 } // namespace cruelEngine::cruelRender

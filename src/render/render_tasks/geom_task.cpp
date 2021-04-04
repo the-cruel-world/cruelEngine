@@ -2,6 +2,8 @@
 #include "../../scene/mesh.hpp"
 #include "render_tasks.hpp"
 
+#include "../vulkan/logical_device.hpp"
+
 namespace cruelEngine::cruelRender
 {
 GeomTask::GeomTask(RenderSession &session, std::shared_ptr<cruelScene::Object> object) :
@@ -164,15 +166,18 @@ void GeomTask::prepare_pipeline(VkPipelineCache pipeline_cache, PipelineStatus &
 
 void GeomTask::prepare_assets()
 {
+    auto &cmd     = session.get_device().request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
     vertex_buffer = std::make_unique<cruelRender::Buffer>(
         session.get_device(), sizeof(cruelScene::Vertex) * object->get_mesh().get_vertices().size(),
         VK_BUFFER_USAGE_VERTEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-    vertex_buffer->load((void *) object->get_mesh().get_vertices().data());
+    vertex_buffer->load_stage((void *) object->get_mesh().get_vertices().data(), cmd);
 
     index_buffer = std::make_unique<cruelRender::Buffer>(
         session.get_device(), sizeof(uint16_t) * object->get_mesh().get_triangles().size(),
         VK_BUFFER_USAGE_INDEX_BUFFER_BIT, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
-    index_buffer->load((void *) object->get_mesh().get_triangles().data());
+    index_buffer->load_stage((void *) object->get_mesh().get_triangles().data(), cmd);
+
+    cmd.Release();
 
     uniform_buffer = std::make_unique<cruelRender::UniformBuffer>(session.get_device(),
                                                                   sizeof(UniformBufferObject));
