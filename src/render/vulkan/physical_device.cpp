@@ -25,13 +25,11 @@ bool isPhysicalDeviceSuitable(const VkPhysicalDevice &        physicalDevice,
             for (auto ext : extensions)
             {
                 supportedExtensions.push_back(ext.extensionName);
-                // std::cout << ext.extensionName << std::endl;
             }
         }
     }
     for (const auto &requiredExtension : requiredExtensions)
     {
-        // std::cout << "Required: " << requiredExtension << std::endl;
         if (find(supportedExtensions.begin(), supportedExtensions.end(), requiredExtension) ==
             supportedExtensions.end())
         {
@@ -124,13 +122,13 @@ PhysicalDevice::PhysicalDevice(const VkPhysicalDevice &  _physicalDevice,
     vkGetPhysicalDeviceFeatures(handle, &features);
     vkGetPhysicalDeviceMemoryProperties(handle, &memoryProperties);
     vkGetPhysicalDeviceProperties(handle, &properties);
-    // std::cout << "apiVersion: " << properties.apiVersion << std::endl;
-    // std::cout << "driverVersion: " << properties.driverVersion << std::endl;
 }
 
 PhysicalDevice::~PhysicalDevice()
 {
+#ifdef RENDER_DEBUG
     std::cout << "gpu destroied" << std::endl;
+#endif
 }
 
 const u32 PhysicalDevice::getMemoryTypeIndex(const u32 &                  filter,

@@ -27,10 +27,22 @@ public:
 
     void Present();
 
+    CommandBuffer &GetCommandBuffer();
+
+    VkSemaphore &GetImageAvaiable();
+
+    VkSemaphore &GetRenderFinished();
+
+    VkFence &GetFence();
+
 private:
     Image       image;
     ImageView   imageView;
     FrameBuffer frameBuffer;
+
+    VkFence     fence          = VK_NULL_HANDLE;
+    VkSemaphore renderFinished = VK_NULL_HANDLE;
+    VkSemaphore imageAvailable = VK_NULL_HANDLE;
 
     RenderPass &   renderPass;
     CommandBuffer &commandBuffer;

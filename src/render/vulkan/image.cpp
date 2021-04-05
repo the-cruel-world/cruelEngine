@@ -112,7 +112,9 @@ Image::Image(LogicalDevice &device, const VkExtent3D &extent, const VkFormat &fo
         throw std::runtime_error("failed to allocate image memory!");
     }
     vkBindImageMemory(device.get_handle(), handle, imageMemory, 0);
+#ifdef RENDER_DEBUG
     std::cout << "x---x Image created! id: " << get_handle() << std::endl;
+#endif
 }
 
 Image::Image(LogicalDevice &device, const VkImage &handle, const VkExtent3D &extent,
@@ -130,7 +132,9 @@ Image::Image(LogicalDevice &device, const VkImage &handle, const VkExtent3D &ext
 
     imageType = ImageType::ImageType_Swapchain;
 
+#ifdef RENDER_DEBUG
     std::cout << "x---x Image created! id: " << get_handle() << std::endl;
+#endif
 }
 
 Image::Image(Image &&other) :
@@ -148,14 +152,18 @@ Image::Image(Image &&other) :
     subresource{other.subresource},
     arrayLayers{other.arrayLayers}
 {
+#ifdef RENDER_DEBUG
     std::cout << "x---x Image moving! id: " << get_handle() << std::endl;
+#endif
     other.handle      = VK_NULL_HANDLE;
     other.imageMemory = VK_NULL_HANDLE;
 }
 
 Image::~Image()
 {
+#ifdef RENDER_DEBUG
     std::cout << "x---x Image destroy! id: " << get_handle() << std::endl;
+#endif
 
     if (handle != VK_NULL_HANDLE && imageMemory != VK_NULL_HANDLE)
     {
@@ -243,6 +251,11 @@ VkDeviceSize Image::get_memory_size() const
     if (imageMemory != VK_NULL_HANDLE)
         return imageMemorySize;
     return 0;
+}
+
+const VkExtent3D Image::GetExtent() const
+{
+    return extent;
 }
 
 void Image::copyData(void *data, VkDeviceSize size)

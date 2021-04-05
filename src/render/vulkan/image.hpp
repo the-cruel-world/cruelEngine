@@ -47,6 +47,7 @@ public:
     const VkFormat &   get_format() const;
     u32                getArrayLayers() const;
     void               copyData(void *data, VkDeviceSize size);
+    const VkExtent3D   GetExtent() const;
 
 private:
     LogicalDevice &device;

@@ -216,29 +216,29 @@ Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, VkSurface
     // imageViews.resize(available_images);
     // ImageView newimage_view(device, &image);
     // imageViews.emplace_back(device, &image, properties.surface_format.format);
-    imageViews.resize(images.size());
-    for (size_t i = 0; i < images.size(); i++)
-    {
-        VkImageViewCreateInfo createInfo{};
-        createInfo.sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-        createInfo.image    = images[i];
-        createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-        createInfo.format   = properties.surface_format.format;
+    // imageViews.resize(images.size());
+    // for (size_t i = 0; i < images.size(); i++)
+    // {
+    //     VkImageViewCreateInfo createInfo{};
+    //     createInfo.sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    //     createInfo.image    = images[i];
+    //     createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    //     createInfo.format   = properties.surface_format.format;
 
-        createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+    //     createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+    //     createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+    //     createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+    //     createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
 
-        createInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
-        createInfo.subresourceRange.baseMipLevel   = 0;
-        createInfo.subresourceRange.levelCount     = 1;
-        createInfo.subresourceRange.baseArrayLayer = 0;
-        createInfo.subresourceRange.layerCount     = 1;
+    //     createInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+    //     createInfo.subresourceRange.baseMipLevel   = 0;
+    //     createInfo.subresourceRange.levelCount     = 1;
+    //     createInfo.subresourceRange.baseArrayLayer = 0;
+    //     createInfo.subresourceRange.layerCount     = 1;
 
-        VK_CHECK_RESULT(
-            vkCreateImageView(device.get_handle(), &createInfo, nullptr, &imageViews[i]));
-    }
+    //     VK_CHECK_RESULT(
+    //         vkCreateImageView(device.get_handle(), &createInfo, nullptr, &imageViews[i]));
+    // }
 }
 
 Swapchain::Swapchain(Swapchain &old_swapchain, const VkExtent2D _extent) :
@@ -251,11 +251,11 @@ Swapchain::~Swapchain()
 {
     if (handle != VK_NULL_HANDLE)
         vkDestroySwapchainKHR(device.get_handle(), handle, nullptr);
-    for (auto &image_view : imageViews)
-    {
-        if (image_view != VK_NULL_HANDLE)
-            vkDestroyImageView(device.get_handle(), image_view, nullptr);
-    }
+    // for (auto &image_view : imageViews)
+    // {
+    //     if (image_view != VK_NULL_HANDLE)
+    //         vkDestroyImageView(device.get_handle(), image_view, nullptr);
+    // }
 }
 
 VkResult Swapchain::acquire_next_image(uint32_t &image_index, VkSemaphore image_acquired_semaphore,

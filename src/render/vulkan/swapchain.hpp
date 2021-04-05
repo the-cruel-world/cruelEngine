@@ -97,10 +97,10 @@ public:
         return properties.present_mode;
     }
 
-    const std::vector<VkImageView> &get_imageViews() const
-    {
-        return imageViews;
-    }
+    // const std::vector<VkImageView> &get_imageViews() const
+    // {
+    //     return imageViews;
+    // }
 
     std::vector<VkImage> &get_images()
     {
@@ -121,7 +121,7 @@ private:
 
     std::vector<VkImage> images;
 
-    std::vector<VkImageView> imageViews;
+    // std::vector<VkImageView> imageViews;
 
     VkSwapchainKHR handle = VK_NULL_HANDLE;
 

@@ -199,18 +199,20 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> render_time_marker{};
     std::chrono::time_point<std::chrono::high_resolution_clock> frame_time_marker{};
 
-    u32       session_id           = 0;
-    u32       imgCount             = 5;
-    const int MAX_FRAMES_IN_FLIGHT = 2;
+    u32 session_id = 0;
+    u32 imgCount   = 3;
+    // const int MAX_FRAMES_IN_FLIGHT = 2;
 
-    VkSemaphore              imageAvailableSemaphore = VK_NULL_HANDLE;
-    VkSemaphore              renderFinishedSemaphore = VK_NULL_HANDLE;
-    std::vector<VkSemaphore> imageAvailableSemaphores{};
-    std::vector<VkSemaphore> renderFinishedSemaphores{};
+    VkSemaphore imageAvailableSemaphore = VK_NULL_HANDLE;
+    VkSemaphore renderFinishedSemaphore = VK_NULL_HANDLE;
+    VkFence     inFlightFences          = VK_NULL_HANDLE;
+    u32         image_index             = 0;
+    // std::vector<VkSemaphore> imageAvailableSemaphores{};
+    // std::vector<VkSemaphore> renderFinishedSemaphores{};
 
-    std::vector<VkFence> inFlightFences{};
-    std::vector<VkFence> imagesInFlight{};
-    size_t               currentFrame = 0;
+    // std::vector<VkFence> inFlightFences{};
+    // std::vector<VkFence> imagesInFlight{};
+    // size_t               currentFrame = 0;
 
     //! \brief The reference points to the instance of the render context
     Instance &instance;
@@ -249,13 +251,13 @@ private:
 
     std::shared_ptr<cruelScene::Scene> scene;
 
-    std::vector<std::unique_ptr<FrameBuffer>> frameBuffer;
+    // std::vector<std::unique_ptr<FrameBuffer>> frameBuffer;
 
     std::unique_ptr<CommandPool> commandPool;
 
     std::vector<std::unique_ptr<RenderFrame>> renderFrames{};
 
-    std::vector<std::reference_wrapper<CommandBuffer>> commandBuffers;
+    // std::vector<std::reference_wrapper<CommandBuffer>> commandBuffers;
 
     std::vector<std::unique_ptr<RenderTask>> tasks;
 };

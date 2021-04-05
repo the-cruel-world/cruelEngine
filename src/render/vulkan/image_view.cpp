@@ -40,7 +40,9 @@ ImageView::ImageView(LogicalDevice &device, Image *image, VkFormat format) :
     createInfo.subresourceRange = subresourceRange;
 
     VK_CHECK_RESULT(vkCreateImageView(device.get_handle(), &createInfo, nullptr, &handle));
+#ifdef RENDER_DEBUG
     std::cout << "x---x ImageView Created! id: " << get_handle() << std::endl;
+#endif
 }
 
 ImageView::ImageView(LogicalDevice &device, Image *image, VkImageViewType view_type,
@@ -72,7 +74,9 @@ ImageView::ImageView(LogicalDevice &device, Image *image, VkImageViewType view_t
     createInfo.subresourceRange = subresourceRange;
 
     VK_CHECK_RESULT(vkCreateImageView(device.get_handle(), &createInfo, nullptr, &handle));
+#ifdef RENDER_DEBUG
     std::cout << "x---x ImageView Created! id: " << get_handle() << std::endl;
+#endif
 }
 
 ImageView::ImageView(ImageView &&other) :
@@ -80,12 +84,16 @@ ImageView::ImageView(ImageView &&other) :
 {
     other.handle = VK_NULL_HANDLE;
     other.image  = nullptr;
+#ifdef RENDER_DEBUG
     std::cout << "x---x ImageView Moved! id: " << get_handle() << std::endl;
+#endif
 }
 
 ImageView::~ImageView()
 {
+#ifdef RENDER_DEBUG
     std::cout << "x---x ImageView Destroyed! id: " << get_handle() << std::endl;
+#endif
 
     if (handle != VK_NULL_HANDLE)
         vkDestroyImageView(device.get_handle(), handle, nullptr);

@@ -64,16 +64,18 @@ public:
         std::cout << "Scene object loaded." << std::endl;
 #endif
 
-        {
-            editor.SetPalette(TextEditor::GetLightPalette());
-            std::ifstream t(fileToEdit);
-            if (t.good())
-            {
-                std::string str((std::istreambuf_iterator<char>(t)),
-                                std::istreambuf_iterator<char>());
-                editor.SetText(str);
-            }
-        }
+        RENDER_LOG("%s", "Scene object loaded");
+
+        // {
+        //     editor.SetPalette(TextEditor::GetLightPalette());
+        //     std::ifstream t(fileToEdit);
+        //     if (t.good())
+        //     {
+        //         std::string str((std::istreambuf_iterator<char>(t)),
+        //                         std::istreambuf_iterator<char>());
+        //         editor.SetText(str);
+        //     }
+        // }
         // TextEditor::ErrorMarkers markers;
         // markers.insert(std::make_pair<int, std::string>(
         //     6, "Example error here:\nInclude file not found: \"TextEditor.h\""));
