@@ -1,14 +1,15 @@
 #pragma once
 #include "../vkcommon.h"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 class RenderPass;
-
 class LogicalDevice;
 
+
+/**
+ * \todo framebuffer multi image support.
+*/
 class FrameBuffer
 {
 public:
@@ -47,5 +48,4 @@ private:
 
     VkExtent2D extent{};
 };
-} // namespace cruelRender
 } // namespace cruelEngine

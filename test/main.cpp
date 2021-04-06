@@ -72,7 +72,7 @@ void sprite(test &&other)
     cout << "sprite: " << val2.elm << endl;
 }
 
-    int main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
     {
         /**

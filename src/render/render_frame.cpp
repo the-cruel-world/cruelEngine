@@ -5,11 +5,13 @@
 
 namespace cruelEngine::cruelRender
 {
-RenderFrame::RenderFrame(Image &image, ImageView &imageView, FrameBuffer &frameBuffer,
-                         RenderPass &renderPass, CommandBuffer &commandBuffer) :
+RenderFrame::RenderFrame(LogicalDevice &device, Image &image, ImageView &imageView,
+                         FrameBuffer &frameBuffer, RenderPass &renderPass,
+                         CommandBuffer &commandBuffer) :
     image{std::move(image)},
     imageView{std::move(imageView)},
     frameBuffer{std::move(frameBuffer)},
+    device{device},
     renderPass{renderPass},
     commandBuffer{commandBuffer}
 {
@@ -86,6 +88,26 @@ VkSemaphore &RenderFrame::GetRenderFinished()
 VkFence &RenderFrame::GetFence()
 {
     return fence;
+}
+
+void RenderFrame::WaitForFence(u64 timeout)
+{
+    vkWaitForFences(device.get_handle(), 1, &fence, VK_TRUE, UINT64_MAX);
+}
+
+void RenderFrame::ResetFence()
+{
+    vkResetFences(device.get_handle(), 1, &fence);
+}
+
+bool RenderFrame::GetStatus()
+{
+    return isrendering;
+}
+
+void RenderFrame::SetStatus(bool status)
+{
+    isrendering = status;
 }
 
 } // namespace cruelEngine::cruelRender

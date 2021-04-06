@@ -8,6 +8,7 @@
 #include "../src/window/window.hpp"
 
 #include "../src/render/render_header.h"
+#include "../src/render/render_tasks/render_tasks.hpp"
 #include "../src/render/vkcommon.h"
 #include "../src/scene/scene_header.h"
 #include "../src/ui/gui.hpp"
@@ -33,10 +34,6 @@ public:
         std::cout << "Render context created." << std::endl;
 #endif
 
-        properties.window_prop.width  = 640;
-        properties.window_prop.height = 480;
-        properties.window_prop.title  = "cruelEngine::Triangle::new Window";
-
         scene = std::make_shared<cruelEngine::cruelScene::Scene>();
 #ifdef DEBUG
         std::cout << "Scene created." << std::endl;
@@ -52,7 +49,7 @@ public:
             render_context->add_session(properties.window_prop.title, properties);
             render_context->get_session(i).load_scene(scene);
             render_context->get_session(i).setGuiOverlay(
-                std::make_shared<cruelGui::Gui>(render_context->get_session(i)));
+                std::make_shared<cruelGui::Gui>(render_context->get_session(i), guiFlags));
             render_context->get_session(i).getGuiOverlay()->setGuiOverlayUpdateCb(updateOverlay);
         }
 #ifdef DEBUG
@@ -84,6 +81,9 @@ public:
     }
 
 private:
+    cruelGui::Gui::GuiUsageFlags guiFlags = cruelGui::Gui::GuiUsageFlagBits::GUI_ONLY_IMGUI |
+                                            cruelGui::Gui::GuiUsageFlagBits::GUI_ENABLE_DOCKING;
+
     cruelEngine::cruelRender::RenderProp context_prop = {
         .appInfo                   = {.sType            = VK_STRUCTURE_TYPE_APPLICATION_INFO,
                     .pApplicationName = "Cruel Engine",
@@ -98,24 +98,55 @@ private:
         .vsync                     = false,
         .overlay                   = false,
     };
-    cruelEngine::cruelRender::SessionProp properties = {
-        {"cruelEngine::Triangle::main Window", 720, 640, false}};
+
+    cruelEngine::cruelRender::SessionProp properties = {{"cruelEngine - Editor", 1280, 840, false}};
+
+    // cruelEngine::cruelRender::SessionProp properties = {
+    //     {"cruelEngine::Triangle::main Window", 720, 640, false}};
 
     std::shared_ptr<cruelEngine::cruelScene::Scene> scene;
 
     std::unique_ptr<cruelEngine::cruelRender::RenderContext> render_context;
 
-    u32 frame_time = 16e3;
+    u32 frame_time = 10e3;
 };
 
 void updateOverlay(void *gui)
 {
-    auto UIOverlay = (cruelGui::Gui *) gui;
-    if (UIOverlay == nullptr)
+    auto uiOverlay = (cruelGui::Gui *) gui;
+    if (uiOverlay == nullptr)
         std::cerr << "[Render::main_loop::updateOverlay] updating guiOverlay" << std::endl;
 
-    if (ImGui::BeginMainMenuBar())
+    static bool show_magic_dick  = true;
+    static bool show_demo_window = true;
+    static bool pause_record     = false;
+    static bool show_main_menu   = true;
+    if (uiOverlay->getGuiFlags() & cruelGui::Gui::GuiUsageFlagBits::GUI_ENABLE_DOCKING)
     {
+        ImGuiWindowFlags window_flags =
+            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus |
+            (ImGuiWindowFlags_MenuBar * show_main_menu) | ImGuiWindowFlags_NoDocking |
+            ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
+            ImGuiWindowFlags_NoMove;
+
+        ImGuiViewport *viewport = ImGui::GetMainViewport();
+        ImGui::SetNextWindowPos(ImVec2(viewport->Pos.x, viewport->Pos.y));
+        ImGui::SetNextWindowSize(ImVec2(viewport->Size.x, viewport->Size.y));
+        ImGui::SetNextWindowViewport(viewport->ID);
+
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::Begin("RootWindow", 0, window_flags);
+        ImGui::PopStyleVar(3);
+
+        ImGuiID dockspace_id = ImGui::GetID("RootWindow");
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
+    }
+
+    if (show_main_menu)
+    {
+        ImGui::BeginMainMenuBar();
         if (ImGui::BeginMenu("File"))
         {
             ImGui::MenuItem("(demo menu)", NULL, false, false);
@@ -123,6 +154,11 @@ void updateOverlay(void *gui)
             {}
             if (ImGui::MenuItem("Open", "Ctrl+O"))
             {}
+            if (ImGui::MenuItem("Magic Dick"))
+            {
+                show_magic_dick = !show_magic_dick;
+            }
+
             if (ImGui::BeginMenu("Open Recent"))
             {
                 ImGui::MenuItem("fish_hat.c");
@@ -213,15 +249,60 @@ void updateOverlay(void *gui)
         ImGui::EndMainMenuBar();
     }
 
-    ImGui::Begin("magicDick", nullptr, ImGuiWindowFlags_NoMove);
+    if (show_magic_dick)
+    {
+        ImGui::Begin("Magic Dick", &show_magic_dick, ImGuiWindowFlags_NoResize);
+        uiOverlay->checkBox("Show demo", &show_demo_window);
+        ImGui::SameLine();
+        uiOverlay->checkBox("Pause Record", &pause_record);
 
-    static bool show_demo_window = true;
-    UIOverlay->checkBox("Show demo", &show_demo_window);
-    UIOverlay->text("This is a text label, and it will not wrap to new lines.");
-    ImGui::End();
+        uiOverlay->text("Application average %.3f ms/frame (%.1f FPS)",
+                        1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+        static float frame_times[240]     = {0};
+        static float rendering_times[240] = {0};
+        static int   offset               = 0;
+        if (pause_record == false)
+        {
+            frame_times[offset]     = uiOverlay->getSession().getFrameTime();
+            rendering_times[offset] = uiOverlay->getSession().getRenderTime();
+            offset                  = (offset + 1) % IM_ARRAYSIZE(frame_times);
+        }
+
+        {
+            float average = 0.0f;
+            for (int n = 0; n < IM_ARRAYSIZE(frame_times); n++)
+                average += frame_times[n];
+            average /= (float) IM_ARRAYSIZE(frame_times);
+            char overlay[32];
+            sprintf(overlay, "avg %.3f ms/frame", average);
+            ImGui::PlotLines("Frame time", frame_times, IM_ARRAYSIZE(frame_times), offset, overlay,
+                             FLT_MAX, FLT_MAX, ImVec2(0, 120.0f));
+        }
+        {
+            float average = 0.0f;
+            for (int n = 0; n < IM_ARRAYSIZE(rendering_times); n++)
+                average += rendering_times[n];
+            average /= (float) IM_ARRAYSIZE(rendering_times);
+            char overlay[32];
+            sprintf(overlay, "avg %.3f ms/frame", average);
+            ImGui::PlotLines("Render time", rendering_times, IM_ARRAYSIZE(rendering_times), offset,
+                             overlay, FLT_MAX, FLT_MAX, ImVec2(0, 120.0f));
+        }
+        ImGui::End();
+    }
 
     if (show_demo_window)
+    {
         ImGui::ShowDemoWindow(&show_demo_window);
+    }
+
+    if (uiOverlay->getGuiFlags() & cruelGui::Gui::GuiUsageFlagBits::GUI_ENABLE_DOCKING)
+    {
+        ImGui::End();
+    }
+
+    uiOverlay->requireUpdate();
 }
 
 int main(int argc, char const *argv[])
@@ -233,8 +314,6 @@ int main(int argc, char const *argv[])
                argv[0]);
         return -1;
     }
-
-    static bool show_demo_window = true;
 
     Render(atoi(argv[1])).main_loop();
 

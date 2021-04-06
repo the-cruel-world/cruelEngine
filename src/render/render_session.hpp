@@ -37,6 +37,14 @@ struct SessionProp
 };
 
 /**
+struct SessionProp {
+    WindowProp windowProp;
+    float frame_rate_limit = 100;
+    bool vsync = false;
+};
+*/
+
+/**
  * \brief RenderSession renders one scene.
  *
  * The RenderSession creates and maintains windows. It also creates surface, guioverlay, swapchain,
@@ -193,8 +201,10 @@ public:
     void destroySemaphores();
 
 private:
-    float render_time = 0;
-    float frame_time  = 0;
+    float render_time = 0.0f;
+    float frame_time  = 0.0f;
+
+    float frame_rate_limit = 100.0f;
 
     std::chrono::time_point<std::chrono::high_resolution_clock> render_time_marker{};
     std::chrono::time_point<std::chrono::high_resolution_clock> frame_time_marker{};
@@ -206,7 +216,7 @@ private:
     VkSemaphore imageAvailableSemaphore = VK_NULL_HANDLE;
     VkSemaphore renderFinishedSemaphore = VK_NULL_HANDLE;
     VkFence     inFlightFences          = VK_NULL_HANDLE;
-    u32         image_index             = 0;
+    // u32         image_index             = 0;
     // std::vector<VkSemaphore> imageAvailableSemaphores{};
     // std::vector<VkSemaphore> renderFinishedSemaphores{};
 

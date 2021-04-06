@@ -44,7 +44,7 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 
     swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount,
                                             VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
-                                            VK_PRESENT_MODE_FIFO_KHR);
+                                            VK_PRESENT_MODE_MAILBOX_KHR);
 
 #ifdef RENDER_DEBUG
     std::cout << "[Rendersession] swapchain creatd!" << std::endl;
@@ -66,7 +66,7 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
                                           swapchain->get_extent(), *render_pass);
 
         renderFrames.push_back(std::make_unique<RenderFrame>(
-            (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
+            device, (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
             commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY)));
     }
 
@@ -175,10 +175,9 @@ void RenderSession::prepare_render_pass()
     dependency.dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
     dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
 
-    RenderPassAttachment attachments = {.colorAttachment    = colorAttachment,
-                                        .colorAttachmentRef = colorAttachmentRef,
-                                        .subpassDependency  = dependency,
-                                        .subpass            = {subpass}};
+    RenderPassAttachment attachments = {.colorAttachments    = {colorAttachment},
+                                        .subpassDependencies = {dependency},
+                                        .subpasses           = {subpass}};
 
     render_pass = std::make_unique<RenderPass>(device, attachments);
 }
@@ -229,10 +228,17 @@ void RenderSession::render_frame()
 {
     render_time_marker = std::chrono::high_resolution_clock::now();
 
+    RENDER_LOG("frames in flight: %d frames\n",
+               static_cast<int>(std::count_if(
+                   renderFrames.begin(), renderFrames.end(),
+                   [](std::unique_ptr<RenderFrame> const &frame) { return frame->GetStatus(); })));
+
+    u32      image_index;
+    VkResult result = swapchain->acquire_next_image(image_index, imageAvailableSemaphore);
+
     vkWaitForFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence(), VK_TRUE,
                     UINT64_MAX);
-
-    VkResult result = swapchain->acquire_next_image(image_index, imageAvailableSemaphore);
+    renderFrames[image_index]->SetStatus(false);
 
     VkSemaphore tempSemaphore                     = renderFrames[image_index]->GetImageAvaiable();
     renderFrames[image_index]->GetImageAvaiable() = imageAvailableSemaphore;
@@ -285,6 +291,7 @@ void RenderSession::render_frame()
     vkResetFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence());
     VK_CHECK_RESULT(vkQueueSubmit(graphic_queue->get_handle(), 1, &submitInfo,
                                   renderFrames[image_index]->GetFence()));
+    renderFrames[image_index]->SetStatus(true);
 
     VkSwapchainKHR swapChains[] = {swapchain->get_handle()};
 
@@ -311,6 +318,10 @@ void RenderSession::render_frame()
                      std::chrono::high_resolution_clock::now() - frame_time_marker)
                      .count();
     frame_time_marker = std::chrono::high_resolution_clock::now();
+
+    RENDER_LOG("frame time: %.3fms\trendering time: %.3fms\tframe rate: %.3ffps\n",
+               static_cast<float>(frame_time), static_cast<float>(render_time),
+               static_cast<float>(1e3 / frame_time));
 }
 
 LogicalDevice &RenderSession::get_device() const
@@ -406,7 +417,7 @@ void RenderSession::update_swapchain()
                                           swapchain->get_extent(), *render_pass);
 
         renderFrames.push_back(std::make_unique<RenderFrame>(
-            (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
+            device, (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
             commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY)));
     }
 

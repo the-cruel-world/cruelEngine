@@ -58,4 +58,24 @@ private:
     std::unique_ptr<UniformBuffer> uniform_buffer;
 };
 
+class TriangleTest : public RenderTask
+{
+public:
+    TriangleTest(RenderSession &session, std::shared_ptr<cruelScene::Object> object);
+
+    void draw(cruelRender::CommandBuffer &commandBuffer, int index);
+
+    void prepare();
+
+    void prepare_pipeline(VkPipelineCache pipeline_cache, PipelineStatus &pipeline_state);
+
+    void prepare_pipeline();
+
+    void render();
+
+    void update_render_pass(RenderPass &render_pass);
+
+private:
+};
+
 } // namespace cruelEngine::cruelRender

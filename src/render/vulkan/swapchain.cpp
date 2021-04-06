@@ -172,6 +172,21 @@ Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, VkSurface
         choose_extent(_extent, capabilities.minImageExtent, capabilities.maxImageExtent);
     properties.present_mode =
         choose_present_mode(_presentMode, presentModes, present_mode_priority_list);
+
+    for (auto &a : presentModes)
+    {
+        RENDER_LOG("supported present mode: %d\n", a);
+    }
+
+    RENDER_LOG("swapchain present mode: %s\n",
+               properties.present_mode == VK_PRESENT_MODE_FIFO_KHR ?
+                   "VK_PRESENT_MODE_FIFO_KHR" :
+                   (properties.present_mode == VK_PRESENT_MODE_MAILBOX_KHR ?
+                        "VK_PRESENT_MODE_MAILBOX_KHR" :
+                        (properties.present_mode == VK_PRESENT_MODE_IMMEDIATE_KHR ?
+                             "VK_PRESENT_MODE_IMMEDIATE_KHR" :
+                             "other")));
+
     properties.surface_format =
         choose_surface_format(properties.surface_format, formats, surface_format_priority_list);
 

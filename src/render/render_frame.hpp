@@ -11,11 +11,12 @@ class ImageView;
 class RenderPass;
 class CommandBuffer;
 class FrameBuffer;
+class LogicalDevice;
 
 class RenderFrame
 {
 public:
-    RenderFrame(Image &image, ImageView &imageView, FrameBuffer &frameBuffer,
+    RenderFrame(LogicalDevice &device, Image &image, ImageView &imageView, FrameBuffer &frameBuffer,
                 RenderPass &renderPass, CommandBuffer &commandBuffer);
     ~RenderFrame();
 
@@ -35,6 +36,14 @@ public:
 
     VkFence &GetFence();
 
+    void WaitForFence(u64 timeout);
+
+    void ResetFence();
+
+    bool GetStatus();
+
+    void SetStatus(bool status);
+
 private:
     Image       image;
     ImageView   imageView;
@@ -44,7 +53,10 @@ private:
     VkSemaphore renderFinished = VK_NULL_HANDLE;
     VkSemaphore imageAvailable = VK_NULL_HANDLE;
 
+    LogicalDevice &device;
     RenderPass &   renderPass;
     CommandBuffer &commandBuffer;
+
+    bool isrendering = false;
 };
 } // namespace cruelEngine::cruelRender

@@ -9,15 +9,18 @@ namespace cruelRender
 RenderPass::RenderPass(LogicalDevice &_device, const RenderPassAttachment &_attachments) :
     device(_device), attachments{_attachments}
 {
-    VkRenderPassCreateInfo renderPassInfo{};
-    renderPassInfo.sType           = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
-    renderPassInfo.attachmentCount = 1;
-    renderPassInfo.pAttachments    = &(attachments.colorAttachment);
-    renderPassInfo.subpassCount    = attachments.subpass.size();
-    renderPassInfo.pSubpasses      = attachments.subpass.data();
+    VkRenderPassCreateInfo renderPassInfo{VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO};
+    renderPassInfo.pNext = nullptr;
+    renderPassInfo.flags; // optional
 
-    renderPassInfo.dependencyCount = 1;
-    renderPassInfo.pDependencies   = &(attachments.subpassDependency);
+    renderPassInfo.attachmentCount = static_cast<u32>(attachments.colorAttachments.size());
+    renderPassInfo.pAttachments    = attachments.colorAttachments.data();
+
+    renderPassInfo.subpassCount = static_cast<u32>(attachments.subpasses.size());
+    renderPassInfo.pSubpasses   = attachments.subpasses.data();
+
+    renderPassInfo.dependencyCount = static_cast<u32>(attachments.subpassDependencies.size());
+    renderPassInfo.pDependencies   = attachments.subpassDependencies.data();
 
     VK_CHECK_RESULT(vkCreateRenderPass(device.get_handle(), &renderPassInfo, nullptr, &handle));
 }
