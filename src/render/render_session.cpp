@@ -1,5 +1,6 @@
 #include "render_session.hpp"
 #include "gui_overlay.hpp"
+#include "render_frame.hpp"
 #include "render_task.hpp"
 
 #include "../scene/object.hpp"
@@ -32,7 +33,6 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
     VkExtent2D extent = {};
 
     graphic_queue = &device.get_suitable_graphics_queue(0);
-
     present_queue = &device.get_suitable_present_queue(surface, 1);
 
 #ifdef RENDER_DEBUG
@@ -44,41 +44,42 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 
     swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount,
                                             VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
-                                            VK_PRESENT_MODE_FIFO_KHR);
+                                            VK_PRESENT_MODE_MAILBOX_KHR);
+
 #ifdef RENDER_DEBUG
     std::cout << "[Rendersession] swapchain creatd!" << std::endl;
 #endif
 
     prepare_render_pass();
-    // std::cout << "[Rendersession] renderpass creatd!" << std::endl;
-
-    for (auto &image_view : swapchain->get_imageViews())
-    {
-        frameBuffer.push_back(std::make_unique<FrameBuffer>(
-            device, image_view, swapchain->get_properties().extent, *render_pass));
-    }
-#ifdef RENDER_DEBUG
-    std::cout << "[Rendersession] framebuffers creatd!" << std::endl;
-#endif
-    createSemaphores();
-
-#ifdef RENDER_DEBUG
-    std::cout << "[Rendersession] semaphores creatd!" << std::endl;
-#endif
 
     commandPool = std::make_unique<CommandPool>(device, graphic_queue->get_family_index(),
                                                 CommandBuffer::ResetModeFlags::ResetIndividually);
 
-    for (size_t i = 0; i < imgCount; i++)
+    VkExtent3D extent3D{swapchain->get_extent().width, swapchain->get_extent().height, 1};
+    for (auto &image : swapchain->get_images())
     {
-        commandBuffers.push_back(
-            commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
+        Image     swapchain_image(device, image, extent3D, swapchain->get_surface_format().format,
+                              swapchain->get_properties().image_usage);
+        ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
+
+        FrameBuffer swapchain_frameBuffer(device, swapchain_imageView.get_handle(),
+                                          swapchain->get_extent(), *render_pass);
+
+        renderFrames.push_back(std::make_unique<RenderFrame>(
+            device, (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
+            commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY)));
     }
 
 #ifdef RENDER_DEBUG
     commandPool->test_list_commands();
-    std::cout << "[Rendersession] commandbuffers creatd!" << std::endl;
 #endif
+
+    VkSemaphoreCreateInfo semaphoreInfo{};
+    semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+    VK_CHECK_RESULT(
+        vkCreateSemaphore(device.get_handle(), &semaphoreInfo, nullptr, &imageAvailableSemaphore));
+    VK_CHECK_RESULT(
+        vkCreateSemaphore(device.get_handle(), &semaphoreInfo, nullptr, &renderFinishedSemaphore));
 
     // Init time_markers
     frame_time_marker  = std::chrono::high_resolution_clock::now();
@@ -97,25 +98,28 @@ void on_window_resize_cb(GLFWwindow *window, int width, int height)
 
 RenderSession::~RenderSession()
 {
-    //! run destructor until all the render process ends.
-    device.wait_idle();
+    graphic_queue->wait_idle();
+    present_queue->wait_idle();
 
-    commandBuffers.clear();
-    commandPool->ResetPool();
-    commandPool.reset();
+    if (imageAvailableSemaphore != VK_NULL_HANDLE)
+    {
+        vkDestroySemaphore(device.get_handle(), imageAvailableSemaphore, nullptr);
+    }
+    if (renderFinishedSemaphore != VK_NULL_HANDLE)
+    {
+        vkDestroySemaphore(device.get_handle(), renderFinishedSemaphore, nullptr);
+    }
 
-    device.get_commandPool().ResetPool();
+    render_pass.reset();
+    renderFrames.clear();
+    swapchain.reset();
 
     tasks.clear();
     guiOverlay.reset();
 
-    destroySemaphores();
-    frameBuffer.clear();
-    render_pass.reset();
-    swapchain.reset();
-#ifdef RENDER_DEBUG
-    std::cout << "[RenderSession::destructor] destroy guiOverlay finally" << std::endl;
-#endif
+    commandPool->ResetPool();
+    commandPool.reset();
+
     if (surface != VK_NULL_HANDLE)
     {
         vkDestroySurfaceKHR(instance.get_handle(), surface, nullptr);
@@ -171,10 +175,9 @@ void RenderSession::prepare_render_pass()
     dependency.dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
     dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
 
-    RenderPassAttachment attachments = {.colorAttachment    = colorAttachment,
-                                        .colorAttachmentRef = colorAttachmentRef,
-                                        .subpassDependency  = dependency,
-                                        .subpass            = {subpass}};
+    RenderPassAttachment attachments = {.colorAttachments    = {colorAttachment},
+                                        .subpassDependencies = {dependency},
+                                        .subpasses           = {subpass}};
 
     render_pass = std::make_unique<RenderPass>(device, attachments);
 }
@@ -189,12 +192,9 @@ void RenderSession::draw()
 
     graphic_queue->wait_idle();
 
-    for (size_t i = 0; i < commandBuffers.size(); i++)
+    for (auto &renderFrame : renderFrames)
     {
-        commandBuffers[i].get().begin();
-#ifdef RENDER_DEBUG
-        std::cout << "[session] cmd begin " << i << std::endl;
-#endif
+        renderFrame->RecordBegin();
         VkViewport viewport{};
         viewport.x        = 0.0f;
         viewport.y        = 0.0f;
@@ -202,59 +202,53 @@ void RenderSession::draw()
         viewport.height   = static_cast<float>(swapchain.get()->get_extent().height);
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
-        commandBuffers[i].get().setViewport(0, {viewport});
+        renderFrame->GetCommandBuffer().setViewport(0, {viewport});
         VkRect2D scissor{};
         scissor.offset = {0, 0};
         scissor.extent = swapchain.get()->get_extent();
-        commandBuffers[i].get().setScissor(0, {scissor});
+        renderFrame->GetCommandBuffer().setScissor(0, {scissor});
 
-        commandBuffers[i].get().begin_renderpass(render_pass->get_handle(),
-                                                 frameBuffer[i]->get_handle(),
-                                                 swapchain->get_properties().extent);
         for (auto &task : tasks)
         {
-            task->draw(commandBuffers[i].get(), i);
+            task->draw(renderFrame->GetCommandBuffer(), 0);
         }
 
         if (guiOverlay != nullptr)
         {
-#ifdef RENDER_DEBUG
-            std::cout << "[session] draw ui overlay. cmd" << i << std::endl;
-#endif
-            vkCmdSetViewport(commandBuffers[i].get().get_handle(), 0, 1, &viewport);
-            vkCmdSetScissor(commandBuffers[i].get().get_handle(), 0, 1, &scissor);
-            guiOverlay->Draw(commandBuffers[i].get());
+            vkCmdSetViewport(renderFrame->GetCommandBuffer().get_handle(), 0, 1, &viewport);
+            vkCmdSetScissor(renderFrame->GetCommandBuffer().get_handle(), 0, 1, &scissor);
+            guiOverlay->Draw(renderFrame->GetCommandBuffer());
         }
 
-        commandBuffers[i].get().end_renderpass();
-        commandBuffers[i].get().end();
-#ifdef RENDER_DEBUG
-        std::cout << "[session] cmd end " << i << std::endl;
-#endif
+        renderFrame->RecordEnd();
     }
 }
 
 void RenderSession::render_frame()
 {
     render_time_marker = std::chrono::high_resolution_clock::now();
-    vkWaitForFences(device.get_handle(), 1, &inFlightFences[currentFrame], VK_TRUE, UINT64_MAX);
-    vkResetFences(device.get_handle(), 1, &inFlightFences[currentFrame]);
+
+    RENDER_LOG("frames in flight: %d frames\n",
+               static_cast<int>(std::count_if(
+                   renderFrames.begin(), renderFrames.end(),
+                   [](std::unique_ptr<RenderFrame> const &frame) { return frame->GetStatus(); })));
 
     u32      image_index;
-    VkResult result =
-        swapchain->acquire_next_image(image_index, imageAvailableSemaphores[currentFrame]);
+    VkResult result = swapchain->acquire_next_image(image_index, imageAvailableSemaphore);
+
+    vkWaitForFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence(), VK_TRUE,
+                    UINT64_MAX);
+    renderFrames[image_index]->SetStatus(false);
+
+    VkSemaphore tempSemaphore                     = renderFrames[image_index]->GetImageAvaiable();
+    renderFrames[image_index]->GetImageAvaiable() = imageAvailableSemaphore;
+    imageAvailableSemaphore                       = tempSemaphore;
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR)
     {
         update_swapchain();
         return;
     }
-
-    if (imagesInFlight[image_index] != VK_NULL_HANDLE)
-    {
-        vkWaitForFences(device.get_handle(), 1, &imagesInFlight[image_index], VK_TRUE, UINT64_MAX);
-    }
-    imagesInFlight[image_index] = inFlightFences[currentFrame];
 
     if (guiOverlay != nullptr)
     {
@@ -278,44 +272,44 @@ void RenderSession::render_frame()
         task->render();
     }
 
+    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+
+    VkSemaphore waitSemaphores[]   = {renderFrames[image_index]->GetImageAvaiable()};
+    VkSemaphore signalSemaphores[] = {renderFrames[image_index]->GetRenderFinished()};
+
     VkSubmitInfo submitInfo{VK_STRUCTURE_TYPE_SUBMIT_INFO};
-
-    submitInfo.commandBufferCount = 1;
-    submitInfo.pCommandBuffers    = &(commandBuffers[image_index].get().get_handle());
-
-    VkSemaphore          waitSemaphores[] = {imageAvailableSemaphores[currentFrame]};
-    VkPipelineStageFlags waitStages[]     = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-    submitInfo.waitSemaphoreCount         = 1;
-    submitInfo.pWaitSemaphores            = waitSemaphores;
-    submitInfo.pWaitDstStageMask          = waitStages;
-
-    VkSemaphore signalSemaphores[]  = {renderFinishedSemaphores[currentFrame]};
+    submitInfo.commandBufferCount   = 1;
+    submitInfo.pCommandBuffers      = &(renderFrames[image_index]->GetCommandBuffer().get_handle());
+    submitInfo.waitSemaphoreCount   = 1;
+    submitInfo.pWaitSemaphores      = waitSemaphores;
+    submitInfo.pWaitDstStageMask    = waitStages;
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores    = signalSemaphores;
 
-    vkResetFences(device.get_handle(), 1, &inFlightFences[currentFrame]);
-    VK_CHECK_RESULT(
-        vkQueueSubmit(graphic_queue->get_handle(), 1, &submitInfo, inFlightFences[currentFrame]));
+    vkWaitForFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence(), VK_TRUE,
+                    UINT64_MAX);
+    vkResetFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence());
+    VK_CHECK_RESULT(vkQueueSubmit(graphic_queue->get_handle(), 1, &submitInfo,
+                                  renderFrames[image_index]->GetFence()));
+    renderFrames[image_index]->SetStatus(true);
+
+    VkSwapchainKHR swapChains[] = {swapchain->get_handle()};
 
     VkPresentInfoKHR presentInfo{};
     presentInfo.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
     presentInfo.waitSemaphoreCount = 1;
     presentInfo.pWaitSemaphores    = signalSemaphores;
-    VkSwapchainKHR swapChains[]    = {swapchain->get_handle()};
     presentInfo.swapchainCount     = 1;
     presentInfo.pSwapchains        = swapChains;
     presentInfo.pImageIndices      = &image_index;
     presentInfo.pResults           = nullptr; // Optional
 
     result = present_queue->present(presentInfo);
-    // present_queue->wait_idle();
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
     {
         update_swapchain();
     }
-
-    currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 
     render_time = std::chrono::duration<float, std::chrono::milliseconds::period>(
                       std::chrono::high_resolution_clock::now() - render_time_marker)
@@ -324,6 +318,10 @@ void RenderSession::render_frame()
                      std::chrono::high_resolution_clock::now() - frame_time_marker)
                      .count();
     frame_time_marker = std::chrono::high_resolution_clock::now();
+
+    RENDER_LOG("frame time: %.3fms\trendering time: %.3fms\tframe rate: %.3ffps\n",
+               static_cast<float>(frame_time), static_cast<float>(render_time),
+               static_cast<float>(1e3 / frame_time));
 }
 
 LogicalDevice &RenderSession::get_device() const
@@ -356,48 +354,6 @@ RenderPass &RenderSession::get_render_pass()
     return *render_pass;
 }
 
-void RenderSession::createSemaphores()
-{
-    imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
-    renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
-    inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
-    imagesInFlight.resize(swapchain->get_images().size(), VK_NULL_HANDLE);
-
-    VkSemaphoreCreateInfo semaphoreInfo{};
-    semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-
-    VkFenceCreateInfo fenceInfo{};
-    fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-    fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
-
-    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-    {
-        if (vkCreateSemaphore(device.get_handle(), &semaphoreInfo, nullptr,
-                              &imageAvailableSemaphores[i]) != VK_SUCCESS ||
-            vkCreateSemaphore(device.get_handle(), &semaphoreInfo, nullptr,
-                              &renderFinishedSemaphores[i]) != VK_SUCCESS ||
-            vkCreateFence(device.get_handle(), &fenceInfo, nullptr, &inFlightFences[i]) !=
-                VK_SUCCESS)
-            throw std::runtime_error("createSemaphores: failed to create semaphores!");
-    }
-}
-
-void RenderSession::destroySemaphores()
-{
-    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
-    {
-        vkDestroySemaphore(device.get_handle(), renderFinishedSemaphores[i], nullptr);
-        vkDestroySemaphore(device.get_handle(), imageAvailableSemaphores[i], nullptr);
-        vkDestroyFence(device.get_handle(), inFlightFences[i], nullptr);
-    }
-
-    inFlightFences.clear();
-    imagesInFlight.clear();
-
-    imageAvailableSemaphores.clear();
-    renderFinishedSemaphores.clear();
-}
-
 void RenderSession::load_scene(std::shared_ptr<cruelScene::Scene> new_scene)
 {
     if (scene != nullptr)
@@ -420,7 +376,6 @@ bool RenderSession::is_session_alive()
 {
     if (!glfwWindowShouldClose(&window->get_handle()))
     {
-        // vkDeviceWaitIdle(device.get_handle());
         return true;
     }
     return false;
@@ -435,35 +390,36 @@ void RenderSession::update_swapchain()
         glfwGetFramebufferSize(&window->get_handle(), &width, &height);
         glfwWaitEvents();
     }
-    vkDeviceWaitIdle(device.get_handle());
 
-    destroySemaphores();
-    frameBuffer.clear();
-    render_pass.reset();
+    graphic_queue->wait_idle();
+    present_queue->wait_idle();
+
+    renderFrames.clear();
     swapchain = std::make_unique<Swapchain>(*swapchain, VkExtent2D({(u32) width, (u32) height}));
 
     prepare_render_pass();
 
-    for (auto &image_view : swapchain->get_imageViews())
-    {
-        frameBuffer.push_back(std::make_unique<FrameBuffer>(
-            device, image_view, swapchain->get_properties().extent, *render_pass));
-    }
-
-    createSemaphores();
-
-    commandBuffers.clear();
     commandPool->ResetPool();
-
-    for (size_t i = 0; i < imgCount; i++)
-    {
-        commandBuffers.push_back(
-            commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY));
-    }
 
 #ifdef RENDER_DEBUG
     commandPool->test_list_commands();
 #endif
+
+    VkExtent3D extent3D{swapchain->get_extent().width, swapchain->get_extent().height, 1};
+
+    for (auto &image : swapchain->get_images())
+    {
+        Image     swapchain_image(device, image, extent3D, swapchain->get_surface_format().format,
+                              swapchain->get_properties().image_usage);
+        ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
+
+        FrameBuffer swapchain_frameBuffer(device, swapchain_imageView.get_handle(),
+                                          swapchain->get_extent(), *render_pass);
+
+        renderFrames.push_back(std::make_unique<RenderFrame>(
+            device, (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
+            commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY)));
+    }
 
     if (guiOverlay != nullptr)
     {

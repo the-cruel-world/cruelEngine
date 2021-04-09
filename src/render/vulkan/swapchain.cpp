@@ -123,14 +123,14 @@ VkImageUsageFlags composite_image_flags(std::vector<VkImageUsageFlagBits> &image
     return image_usage;
 }
 
-Swapchain::Swapchain(LogicalDevice &_device, const VkSurfaceKHR &_surface, const VkExtent2D _extent,
+Swapchain::Swapchain(LogicalDevice &_device, VkSurfaceKHR &_surface, const VkExtent2D _extent,
                      const u32 _imageCount, const VkSurfaceTransformFlagBitsKHR _transform,
                      const VkPresentModeKHR                   _presentMode,
                      const std::vector<VkImageUsageFlagBits> &_image_usage) :
     Swapchain{*this, _device, _surface, _extent, _imageCount, _transform, _presentMode}
 {}
 
-Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, const VkSurfaceKHR &_surface,
+Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, VkSurfaceKHR &_surface,
                      const VkExtent2D _extent, const u32 _imageCount,
                      const VkSurfaceTransformFlagBitsKHR      _transform,
                      const VkPresentModeKHR                   _presentMode,
@@ -172,6 +172,21 @@ Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, const VkS
         choose_extent(_extent, capabilities.minImageExtent, capabilities.maxImageExtent);
     properties.present_mode =
         choose_present_mode(_presentMode, presentModes, present_mode_priority_list);
+
+    for (auto &a : presentModes)
+    {
+        RENDER_LOG("supported present mode: %d\n", a);
+    }
+
+    RENDER_LOG("swapchain present mode: %s\n",
+               properties.present_mode == VK_PRESENT_MODE_FIFO_KHR ?
+                   "VK_PRESENT_MODE_FIFO_KHR" :
+                   (properties.present_mode == VK_PRESENT_MODE_MAILBOX_KHR ?
+                        "VK_PRESENT_MODE_MAILBOX_KHR" :
+                        (properties.present_mode == VK_PRESENT_MODE_IMMEDIATE_KHR ?
+                             "VK_PRESENT_MODE_IMMEDIATE_KHR" :
+                             "other")));
+
     properties.surface_format =
         choose_surface_format(properties.surface_format, formats, surface_format_priority_list);
 
@@ -216,29 +231,29 @@ Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, const VkS
     // imageViews.resize(available_images);
     // ImageView newimage_view(device, &image);
     // imageViews.emplace_back(device, &image, properties.surface_format.format);
-    imageViews.resize(images.size());
-    for (size_t i = 0; i < images.size(); i++)
-    {
-        VkImageViewCreateInfo createInfo{};
-        createInfo.sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-        createInfo.image    = images[i];
-        createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-        createInfo.format   = properties.surface_format.format;
+    // imageViews.resize(images.size());
+    // for (size_t i = 0; i < images.size(); i++)
+    // {
+    //     VkImageViewCreateInfo createInfo{};
+    //     createInfo.sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    //     createInfo.image    = images[i];
+    //     createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    //     createInfo.format   = properties.surface_format.format;
 
-        createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-        createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+    //     createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+    //     createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+    //     createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+    //     createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
 
-        createInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
-        createInfo.subresourceRange.baseMipLevel   = 0;
-        createInfo.subresourceRange.levelCount     = 1;
-        createInfo.subresourceRange.baseArrayLayer = 0;
-        createInfo.subresourceRange.layerCount     = 1;
+    //     createInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+    //     createInfo.subresourceRange.baseMipLevel   = 0;
+    //     createInfo.subresourceRange.levelCount     = 1;
+    //     createInfo.subresourceRange.baseArrayLayer = 0;
+    //     createInfo.subresourceRange.layerCount     = 1;
 
-        VK_CHECK_RESULT(
-            vkCreateImageView(device.get_handle(), &createInfo, nullptr, &imageViews[i]));
-    }
+    //     VK_CHECK_RESULT(
+    //         vkCreateImageView(device.get_handle(), &createInfo, nullptr, &imageViews[i]));
+    // }
 }
 
 Swapchain::Swapchain(Swapchain &old_swapchain, const VkExtent2D _extent) :
@@ -251,11 +266,11 @@ Swapchain::~Swapchain()
 {
     if (handle != VK_NULL_HANDLE)
         vkDestroySwapchainKHR(device.get_handle(), handle, nullptr);
-    for (auto &image_view : imageViews)
-    {
-        if (image_view != VK_NULL_HANDLE)
-            vkDestroyImageView(device.get_handle(), image_view, nullptr);
-    }
+    // for (auto &image_view : imageViews)
+    // {
+    //     if (image_view != VK_NULL_HANDLE)
+    //         vkDestroyImageView(device.get_handle(), image_view, nullptr);
+    // }
 }
 
 VkResult Swapchain::acquire_next_image(uint32_t &image_index, VkSemaphore image_acquired_semaphore,

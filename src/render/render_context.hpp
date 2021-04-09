@@ -38,8 +38,10 @@ struct RenderProp
     bool validation = true;
 
     //! The names of validation layers in this vector will be enabled for this RenderContext.
-    std::vector<const char *> validationLayers = {"VK_LAYER_KHRONOS_validation",
-                                                  "VK_LAYER_LUNARG_monitor"};
+
+    std::vector<const char *> validationLayers = {
+        "VK_LAYER_KHRONOS_validation",
+    };
 
     //! The names of instance extensions in this vector will be enabled for this RenderContext.
     std::vector<const char *> enabledInstanceExtensions = {};

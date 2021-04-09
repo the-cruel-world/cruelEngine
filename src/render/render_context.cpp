@@ -102,7 +102,7 @@ void RenderContext::draw()
  */
 void RenderContext::render_frame()
 {
-    // std::cout << "session num: " << sessions.size() << std::endl;
+    RENDER_LOG("Session num: %d\n", static_cast<int>(sessions.size()));
     for (auto &session : sessions)
     {
         if (session->is_session_alive())

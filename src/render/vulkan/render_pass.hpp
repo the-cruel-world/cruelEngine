@@ -9,10 +9,9 @@ class LogicalDevice;
 
 struct RenderPassAttachment
 {
-    VkAttachmentDescription           colorAttachment;
-    VkAttachmentReference             colorAttachmentRef;
-    VkSubpassDependency               subpassDependency;
-    std::vector<VkSubpassDescription> subpass;
+    std::vector<VkAttachmentDescription> colorAttachments;
+    std::vector<VkSubpassDependency>     subpassDependencies;
+    std::vector<VkSubpassDescription>    subpasses;
 };
 
 class RenderPass

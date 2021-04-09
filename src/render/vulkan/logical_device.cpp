@@ -18,13 +18,10 @@ LogicalDevice::LogicalDevice(const PhysicalDevice &     _physicalDevice,
     flags(_flags),
     resource_cache{*this}
 {
-    // clock_t start_time = clock();
     createDevice();
-    // std::cout << "[logical] device created. time: " << (clock() - start_time) *
-    // 1e-5  << "ms" << std::endl; start_time = clock();
+
     query_queues();
-    // std::cout << "[logical] queue pool created. time: " << (clock() -
-    // start_time) * 1e-5  << "ms" << std::endl;
+
     commandPool = std::make_unique<CommandPool>(
         *this,
         get_queue_by_flags(VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_COMPUTE_BIT, 0).get_family_index(),
@@ -34,12 +31,12 @@ LogicalDevice::LogicalDevice(const PhysicalDevice &     _physicalDevice,
 LogicalDevice::~LogicalDevice()
 {
     commandPool.reset();
-    // std::cout << "command Pool deleted" << std::endl;
     queues.clear();
-    // std::cout << "command Pool deleted" << std::endl;
     if (handle != VK_NULL_HANDLE)
         vkDestroyDevice(handle, nullptr);
+#ifdef RENDER_DEBUG
     std::cout << "Logical device destroied" << std::endl;
+#endif
 }
 
 void LogicalDevice::createDevice()
@@ -103,8 +100,10 @@ void LogicalDevice::query_queues()
 
     for (size_t family_index = 0; family_index < queueFamilyCount; family_index++)
     {
+#ifdef RENDER_DEBUG
         std::cout << "Queue Family [" << family_index
                   << "]: " << queueFamilies[family_index].queueCount << std::endl;
+#endif
         if (queueFamilies[family_index].queueCount > 0)
         {
             for (size_t queue_index = 0;

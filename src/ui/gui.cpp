@@ -286,8 +286,9 @@ void Gui::prepare_resource()
     auto &singleTimeCmd =
         session.get_device().request_commandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
 
+#ifdef GUI_DEBUG
     session.get_device().get_commandPool().test_list_commands();
-
+#endif
     singleTimeCmd.beginOneTime();
 
     //! Set image layout

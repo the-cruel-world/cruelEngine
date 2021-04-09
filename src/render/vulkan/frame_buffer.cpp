@@ -23,16 +23,27 @@ FrameBuffer::FrameBuffer(LogicalDevice &device, const VkImageView &imageView,
     framebufferInfo.layers          = 1;
 
     VK_CHECK_RESULT(vkCreateFramebuffer(device.get_handle(), &framebufferInfo, nullptr, &handle));
-    // std::cout << "FrameBuffer created! id: " << get_handle() << std::endl;
+#ifdef RENDER_DEBUG
+    std::cout << "x---x FrameBuffer created! id: " << get_handle() << std::endl;
+#endif
+}
+
+FrameBuffer::FrameBuffer(FrameBuffer &&other) :
+    device{other.device}, handle{other.handle}, extent{other.extent}
+{
+#ifdef RENDER_DEBUG
+    std::cout << "x---x FrameBuffer moved! id: " << get_handle() << std::endl;
+#endif
+    other.handle = VK_NULL_HANDLE;
 }
 
 FrameBuffer::~FrameBuffer()
 {
-    // std::cout << "FrameBuffer Destroying!" << std::endl;
+#ifdef RENDER_DEBUG
+    std::cout << "x---x FrameBuffer Destroyed! id: " << get_handle() << std::endl;
+#endif
     if (handle != VK_NULL_HANDLE)
-        // std::cout << "FrameBuffer Destroying!" << std::endl;
         vkDestroyFramebuffer(device.get_handle(), handle, nullptr);
-    // std::cout << "FrameBuffer Destroyed!" << std::endl;
 }
 } // namespace cruelRender
 } // namespace cruelEngine
