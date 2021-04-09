@@ -15,7 +15,19 @@ So a proper render API is required.
 
 * Render Session
 
+  1. Render Passes should be on the higher level to support the multi-pass rendering
+  2. There should be some mechanism to manage multiple render passes.
+
+* Render Frame
+
+  Render Frame is a set of images, imageviews and framebuffers. It's a collection of objects that needed for render images.
+  1. It should support render to texture (image)
+  2. It should support render to swapchain images.
+  3. The render Frame should include many images and image views sas framebuffer supports multiple imageviews.
+
 * Render Tasks
+  
+  a batch of rasks to render the objects in the scene.
 
 * GUI Overlay
 
