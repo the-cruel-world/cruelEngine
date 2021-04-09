@@ -1,9 +1,9 @@
 #pragma once
-#include "../common.h"
-#include "component.hpp"
-#include "components/camera.hpp"
-#include "node.hpp"
-#include "object.hpp"
+#include "scene/component.hpp"
+#include "scene/components/camera.hpp"
+#include "scene/node.hpp"
+#include "scene/object.hpp"
+#include "sgcommon.h"
 
 namespace cruelEngine::cruelScene
 {
@@ -12,33 +12,32 @@ class Object;
 class Scene
 {
 public:
-    Scene();
+    Scene(const std::string &name);
     virtual ~Scene();
 
-    void addObject(std::shared_ptr<Object> obj);
+    const std::string &get_name() const;
 
-    void rmObject(std::string name);
+    void set_name(const std::string &new_name);
 
-    const std::vector<std::shared_ptr<Object>> &get_objs() const
+    void add_node(std::unique_ptr<Node> &&node);
+
+    void add_nodes(std::vector<std::unique_ptr<Node>> &&new_nodes);
+
+    /**
+     * The input node must be in the nodes list of the scene.
+     */
+    void set_root_node(Node &node)
     {
-        return sceneObjects;
+        root = &node;
+        root->SetParent(*root); // root's parent points to itself
     }
 
-    void add_node(std::shared_ptr<Node> node);
-
-    const std::vector<std::shared_ptr<Node>> &get_nodes() const;
-
-    void set_root_node(std::shared_ptr<Node> node)
-    {
-        root = std::move(node);
-    }
-
-    std::shared_ptr<Node> get_root_node()
+    Node *get_root_node()
     {
         return root;
     }
 
-    void add_component(std::shared_ptr<Component> component);
+    void add_component(std::unique_ptr<Component> component);
 
     void prepare_camera();
 
@@ -49,25 +48,27 @@ public:
     void render();
 
 protected:
+    std::string name;
+
     std::vector<std::shared_ptr<Object>> sceneObjects{};
 
     std::unique_ptr<Camera> camera;
 
     /**
-     * All nodes in this scene.
-     */
-    std::vector<std::shared_ptr<Node>> nodes;
-
-    /**
      * pointer to the root node.
      */
-    std::shared_ptr<Node> root = nullptr;
+    Node *root = nullptr;
 
     Node *find_node(const std::string &name);
 
     /**
+     * All nodes in this scene.
+     */
+    std::vector<std::unique_ptr<Node>> nodes;
+
+    /**
      * Components
      */
-    std::unordered_map<std::type_index, std::vector<std::shared_ptr<Component>>> components;
+    std::unordered_map<std::type_index, std::vector<std::unique_ptr<Component>>> components;
 };
 } // namespace cruelEngine::cruelScene

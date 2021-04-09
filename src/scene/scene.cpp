@@ -4,9 +4,8 @@
 
 namespace cruelEngine::cruelScene
 {
-Scene::Scene()
+Scene::Scene(const std::string &name) : name{name}
 {
-    set_root_node(std::make_shared<Node>(0, "Root"));
     prepare_camera();
 }
 
@@ -15,26 +14,29 @@ Scene::~Scene()
     sceneObjects.clear();
 }
 
-void Scene::addObject(std::shared_ptr<Object> obj)
+const std::string &Scene::get_name() const
 {
-    sceneObjects.push_back(std::move(obj));
-    // obj.reset();
+    return name;
 }
 
-void Scene::rmObject(std::string name)
-{}
-
-void Scene::add_node(std::shared_ptr<Node> node)
+void Scene::set_name(const std::string &new_name)
 {
-    nodes.push_back(std::move(node));
+    name = new_name;
 }
 
-const std::vector<std::shared_ptr<Node>> &Scene::get_nodes() const
+void Scene::add_node(std::unique_ptr<Node> &&node)
 {
-    return nodes;
+    nodes.emplace_back(std::move(node));
 }
 
-void Scene::add_component(std::shared_ptr<Component> component)
+void Scene::add_nodes(std::vector<std::unique_ptr<Node>> &&new_nodes)
+{
+    assert(nodes.empty() && "Scene already in use. can't reset nodes, create a new scene instead.");
+
+    nodes = std::move(new_nodes);
+}
+
+void Scene::add_component(std::unique_ptr<Component> component)
 {
     components[typeid(component)].push_back(std::move(component));
 }

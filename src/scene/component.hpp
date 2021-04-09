@@ -1,5 +1,5 @@
 #pragma once
-#include "../common.h"
+#include "sgcommon.h"
 
 namespace cruelEngine::cruelScene
 {

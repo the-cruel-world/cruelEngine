@@ -1,6 +1,6 @@
 #pragma once
-#include "../scene/object.hpp"
-#include "vkcommon.h"
+#include "render/vkcommon.h"
+#include "scene/object.hpp"
 
 namespace cruelEngine
 {

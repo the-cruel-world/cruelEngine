@@ -9,11 +9,8 @@ file (GLOB RENDER_TASKS_HEADERS "render_tasks/*.hpp" "render_tasks/*.h")
 file (GLOB RENDER_SRC "*.cpp" "*.hpp" "*.h" )
 file (GLOB RENDER_HEADERS "*.hpp" "*.h" )
 
-include_directories(../ ./
-    ${Vulkan_INCLUDE_DIRS}
-    ${glfw3_INCLUDE_DIRS}
-    ${glm_INCLUDE_DIRS})
+add_library(cruelRender ${LIBRARY_TYPE} ${VULKAN_CORE_SRC} ${RENDER_TASKS} ${RENDER_SRC})
 
-add_library(cruelRender SHARED ${VULKAN_CORE_SRC} ${RENDER_TASKS} ${RENDER_SRC})
+target_precompile_headers(cruelRender PUBLIC "${CMAKE_SOURCE_DIR}/src/common.h")
 
 target_link_libraries(cruelRender cruelDebug cruelWindow cruelScene ${Vulkan_LIBRARIES} ${glm_LIBRARIES})

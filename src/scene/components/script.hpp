@@ -1,5 +1,5 @@
 #pragma once
-#include "../component.hpp"
+#include "scene/component.hpp"
 
 namespace cruelEngine::cruelScene
 {

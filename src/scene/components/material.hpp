@@ -1,4 +1,5 @@
 #pragma once
+#include "scene/component.hpp"
 
 namespace cruelEngine::cruelScene
 {
@@ -15,7 +16,7 @@ enum class AlphaMode
 /**
  * \brief Material defines the physical properties of objects.
  */
-class Material
+class Material : public Component
 {
 public:
     Material();

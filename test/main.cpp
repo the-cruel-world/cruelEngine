@@ -7,9 +7,9 @@
 #include <unistd.h>
 #include <vector>
 
-#include "../src/render/render_header.h"
-#include "../src/scene/scene_header.h"
-#include <../src/window/window.hpp>
+#include "render/render_header.h"
+#include "scene/scene_header.h"
+#include "window/window.hpp"
 
 u32  cruelEngine::Window::count       = 0;
 bool cruelEngine::Window::glfw_inited = false;
@@ -19,7 +19,7 @@ using namespace cruelEngine::cruelRender;
 
 using namespace std;
 
-void print_tree(int level, std::shared_ptr<Node> root)
+void print_tree(int level, Node *root)
 {
     for (size_t i = 0; i < level; i++)
     {
@@ -79,26 +79,22 @@ int main(int argc, char const *argv[])
          * Scene Tree structure test.
          */
         cout << "Scene Tree structure test." << endl;
-        auto scene = std::make_unique<Scene>();
+        auto scene = std::make_unique<Scene>("Scene");
 
-        auto nodes = scene->get_root_node();
+        std::vector<std::unique_ptr<Node>> nodes;
 
-        if (nodes == nullptr)
-            return -1;
+        nodes.push_back(std::make_unique<Node>(0, "world"));
+        nodes.push_back(std::make_unique<Node>(1, "terrian"));
+        nodes.push_back(std::make_unique<Node>(1, "skybox"));
+        nodes.push_back(std::make_unique<Node>(2, "player1"));
+        nodes.push_back(std::make_unique<Node>(2, "player2"));
+        nodes.push_back(std::make_unique<Node>(3, "clothes"));
 
-        nodes->AddChild(std::make_shared<Node>(1, "world"));
+        scene->set_root_node(*nodes[0]);
 
-        nodes->GetChild("world")->AddChild(std::make_shared<Node>(1, "terrian"));
+        scene->add_nodes(std::move(nodes));
 
-        nodes->GetChild("world")->AddChild(std::make_shared<Node>(1, "skybox"));
-
-        nodes->AddChild(std::make_shared<Node>(1, "player1"));
-
-        nodes->AddChild(std::make_shared<Node>(1, "player2"));
-
-        nodes->GetChild("player2")->AddChild(std::make_shared<Node>(1, "clothes"));
-
-        print_tree(0, nodes);
+        print_tree(0, scene->get_root_node());
     }
 
     {

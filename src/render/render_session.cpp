@@ -354,22 +354,23 @@ RenderPass &RenderSession::get_render_pass()
     return *render_pass;
 }
 
+/** \todo Complete this part after scene graph.*/
 void RenderSession::load_scene(std::shared_ptr<cruelScene::Scene> new_scene)
 {
     if (scene != nullptr)
         scene.reset();
     scene = new_scene;
-    for (auto &a : scene->get_objs())
-    {
-        switch (a->get_type())
-        {
-            case cruelScene::ObjectType::SCENE_OBJ_TYPE_GEOM:
-                tasks.push_back(std::make_unique<GeomTask>(*this, a));
-                break;
-            default:
-                break;
-        }
-    }
+    // for (auto &a : scene->get_objs())
+    // {
+    //     switch (a->get_type())
+    //     {
+    //         case cruelScene::ObjectType::SCENE_OBJ_TYPE_GEOM:
+    //             tasks.push_back(std::make_unique<GeomTask>(*this, a));
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 }
 
 bool RenderSession::is_session_alive()

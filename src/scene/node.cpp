@@ -5,11 +5,6 @@ namespace cruelEngine::cruelScene
 Node::Node(const size_t id, const std::string &name) : id{id}, name{name}
 {}
 
-const std::shared_ptr<Node> &Node::GetParent() const
-{
-    return parent;
-}
-
 void Node::SetId(size_t new_id)
 {
     id = new_id;
@@ -25,38 +20,44 @@ const std::string &Node::GetName() const
     return name;
 }
 
-void Node::SetParent(std::shared_ptr<Node> node)
+void Node::SetParent(Node &node)
 {
-    parent.reset();
-    parent = std::move(node);
+    parent = &node;
+
+    /** \todo After set parent, new transfermance needed. */
 }
 
-void Node::AddChild(std::shared_ptr<Node> node)
+const Node *Node::GetParent() const
 {
-    children.push_back(std::move((node)));
+    return parent;
 }
 
-const std::shared_ptr<Node> &Node::GetChild(size_t id)
+void Node::AddChild(Node &node)
+{
+    children.push_back(&node);
+}
+
+const Node *Node::GetChild(size_t id)
 {
     for (auto &child : children)
     {
         if (child->GetId() == id)
             return child;
     }
-    return std::forward<std::shared_ptr<Node>>(nullptr);
+    return nullptr;
 }
 
-const std::shared_ptr<Node> &Node::GetChild(std::string name)
+const Node *Node::GetChild(std::string name)
 {
     for (auto &child : children)
     {
         if (child->GetName() == name)
             return child;
     }
-    return std::forward<std::shared_ptr<Node>>(nullptr);
+    return nullptr;
 }
 
-const std::vector<std::shared_ptr<Node>> &Node::GetChildren() const
+const std::vector<Node *> &Node::GetChildren() const
 {
     return children;
 }

@@ -1,7 +1,7 @@
 #pragma once
-#include "../common.h"
-#include "../render/vkcommon.h"
-#include "../types.h"
+#include "render/vkcommon.h"
+#include "sgcommon.h"
+#include "types.h"
 
 namespace cruelEngine::cruelScene
 {

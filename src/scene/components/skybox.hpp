@@ -1,5 +1,5 @@
-#include "../mesh.hpp"
-#include "../object.hpp"
+#include "scene/mesh.hpp"
+#include "scene/object.hpp"
 
 namespace cruelEngine::cruelScene
 {

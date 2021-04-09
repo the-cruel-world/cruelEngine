@@ -4,14 +4,14 @@
 #include <memory>
 #include <vector>
 
-#include "../src/application/application.hpp"
-#include "../src/window/window.hpp"
+#include "application/application.hpp"
+#include "window/window.hpp"
 
-#include "../src/render/render_header.h"
-#include "../src/render/render_tasks/render_tasks.hpp"
-#include "../src/render/vkcommon.h"
-#include "../src/scene/scene_header.h"
-#include "../src/ui/gui.hpp"
+#include "render/render_header.h"
+#include "render/render_tasks/render_tasks.hpp"
+#include "render/vkcommon.h"
+#include "scene/scene_header.h"
+#include "ui/gui.hpp"
 
 u32  cruelEngine::Window::count       = 0;
 bool cruelEngine::Window::glfw_inited = false;
@@ -34,12 +34,11 @@ public:
         std::cout << "Render context created." << std::endl;
 #endif
 
-        scene = std::make_shared<cruelEngine::cruelScene::Scene>();
+        scene = std::make_shared<cruelEngine::cruelScene::Scene>("scene");
 #ifdef DEBUG
         std::cout << "Scene created." << std::endl;
 #endif
-        scene->addObject(
-            std::make_shared<cruelEngine::cruelScene::SkyBox>("Sky", scene->get_camera()));
+        // scene->addObject(std::move(cruelEngine::cruelScene::SkyBox("Sky", scene->get_camera())));
 #ifdef DEBUG
         std::cout << "Scene object created." << std::endl;
 #endif

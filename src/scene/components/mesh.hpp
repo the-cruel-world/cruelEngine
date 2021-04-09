@@ -1,6 +1,6 @@
 #pragma once
-#include "../component.hpp"
-#include "aabb.hpp"
+#include "scene/component.hpp"
+#include "scene/components/aabb.hpp"
 
 namespace cruelEngine::cruelScene
 {

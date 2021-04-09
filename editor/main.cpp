@@ -4,14 +4,14 @@
 #include <memory>
 #include <vector>
 
-#include "../src/application/application.hpp"
-#include "../src/window/window.hpp"
+#include "application/application.hpp"
+#include "window/window.hpp"
 
-#include "../src/render/render_header.h"
-#include "../src/render/vkcommon.h"
+#include "render/render_header.h"
+#include "render/vkcommon.h"
 
-#include "../src/scene/scene_header.h"
-#include "../src/ui/gui.hpp"
+#include "scene/scene_header.h"
+#include "ui/gui.hpp"
 
 u32  cruelEngine::Window::count       = 0;
 bool cruelEngine::Window::glfw_inited = false;
