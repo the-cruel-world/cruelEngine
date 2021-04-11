@@ -17,4 +17,9 @@ void AABB::Reset()
     max = std::numeric_limits<glm::vec3>::min();
 }
 
+std::type_index AABB::GetType()
+{
+    return typeid(AABB);
+}
+
 } // namespace cruelEngine::cruelScene

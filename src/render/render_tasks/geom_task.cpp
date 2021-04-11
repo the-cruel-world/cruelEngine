@@ -1,11 +1,14 @@
 #include "../../scene/components/skybox.hpp"
-#include "../../scene/mesh.hpp"
 #include "render_tasks.hpp"
 
 #include "../vulkan/logical_device.hpp"
 
+
+
 namespace cruelEngine::cruelRender
 {
+
+//! \todo Change to use the new implements of mesh.
 GeomTask::GeomTask(RenderSession &session, std::shared_ptr<cruelScene::Object> object) :
     RenderTask(session, object)
 {

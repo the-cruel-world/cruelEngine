@@ -2,7 +2,25 @@
 
 namespace cruelEngine::cruelScene
 {
-Mesh2::Mesh2(const std::string &name) : Component(name)
+Mesh::Mesh(const std::string &name) : Component(name)
+{
+}
+
+void Mesh::UpdateBounds()
 {}
+
+const AABB &Mesh::GetBounds() const
+{
+    return bounds;
+}
+
+std::type_index Mesh::GetType()
+{
+    return typeid(Mesh);
+}
+void Mesh::AddPrimitive(Primitive &primitive)
+{
+    primitives.push_back(&primitive);
+}
 
 } // namespace cruelEngine::cruelScene

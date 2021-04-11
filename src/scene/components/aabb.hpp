@@ -1,3 +1,4 @@
+#pragma once
 #include "scene/component.hpp"
 #include "scene/object.hpp"
 
@@ -14,6 +15,8 @@ public:
     AABB(const glm::vec3 &min, const glm::vec3 &max);
 
     virtual ~AABB() = default;
+
+    std::type_index GetType() override;
 
     //   void update(const glm::vec3 &point);
 
@@ -38,6 +41,7 @@ public:
     }
 
     void Reset();
+
 
 private:
     glm::vec3 min;

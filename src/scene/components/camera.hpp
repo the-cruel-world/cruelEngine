@@ -10,6 +10,8 @@ public:
 
     virtual ~Camera();
 
+    std::type_index GetType() override;
+
     virtual glm::mat4 get_projection()
     {
         return glm::mat4(1.0f);

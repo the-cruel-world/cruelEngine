@@ -37,7 +37,7 @@ public:
         return root;
     }
 
-    void add_component(std::unique_ptr<Component> component);
+    void add_component(std::unique_ptr<Component> &&component);
 
     void prepare_camera();
 

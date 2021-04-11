@@ -1,7 +1,7 @@
 file(GLOB SRC "*.cpp" "*.hpp" "*.h" "basic/*.cpp" "basic/*.hpp" "components/*.cpp" "components/*.hpp")
 file(GLOB HEADERS "*.hpp" "*.h" "basic/*.hpp" "components/*.hpp")
 
-set (TINYGLTF ${CMAKE_SOURCE_DIR}/external/tinygltf)
+set (TINYGLTF "${CMAKE_SOURCE_DIR}/external/tinygltf")
 
 include_directories(${TINYGLTF})
 

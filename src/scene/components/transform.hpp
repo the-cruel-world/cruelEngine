@@ -10,6 +10,8 @@ public:
 
     virtual ~Transform() = default;
 
+    std::type_index GetType() override;
+
     void SetTranslation(const glm::vec3 &newTranslation);
 
     void SetRotation(const glm::quat &newRotation);

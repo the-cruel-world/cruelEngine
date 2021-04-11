@@ -50,11 +50,11 @@ add_subdirectory(src)
 
 # add_subdirectory(examples)
 
-OPTION(EDITOR "Build CruelEngine Editor" ON)
-if (EDITOR)
-# build the editor
-add_subdirectory(editor)
-endif(EDITOR)
+#OPTION(EDITOR "Build CruelEngine Editor" OFF)
+#if (EDITOR)
+## build the editor
+#add_subdirectory(editor)
+#endif(EDITOR)
 
 OPTION(TEST "Build CruelEngine tests" ON)
 if (TEST)

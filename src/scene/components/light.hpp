@@ -16,5 +16,8 @@ enum class LightType
 class Light : public Component
 {
 public:
+
+    std::type_index GetType() override;
+
 };
 } // namespace cruelEngine::cruelScene

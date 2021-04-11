@@ -24,7 +24,7 @@ void Node::SetParent(Node &node)
 {
     parent = &node;
 
-    /** \todo After set parent, new transfermance needed. */
+    /** \todo After set parent, new transform needed. */
 }
 
 const Node *Node::GetParent() const
@@ -60,6 +60,27 @@ const Node *Node::GetChild(std::string name)
 const std::vector<Node *> &Node::GetChildren() const
 {
     return children;
+}
+Component &Node::GetComponent(const std::type_index index)
+{
+    return *components.at(index);
+}
+template <class T>
+T &Node::GetComponent()
+{
+    return dynamic_cast<T &>(GetComponent(typeid(T)));
+}
+void Node::SetComponent(Component &new_component)
+{
+    auto it = components.find(new_component.GetType());
+    if (it != components.end())
+    {
+        it->second = &new_component;
+    }
+    else
+    {
+        components.insert(std::make_pair(new_component.GetType(), &new_component));
+    }
 }
 
 } // namespace cruelEngine::cruelScene

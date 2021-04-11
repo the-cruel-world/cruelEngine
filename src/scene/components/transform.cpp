@@ -21,4 +21,8 @@ void Transform::SetWorldMatrix(const glm::mat4 &newWorldMatrix)
 {
     worldMatrix = newWorldMatrix;
 }
+std::type_index Transform::GetType()
+{
+    return typeid(Transform);
+}
 } // namespace cruelEngine::cruelScene

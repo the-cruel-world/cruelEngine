@@ -1,35 +1,34 @@
 #pragma once
 #include "scene/component.hpp"
+#include "scene/node.hpp"
+#include "scene/components/primitive.hpp"
 #include "scene/components/aabb.hpp"
 
 namespace cruelEngine::cruelScene
 {
-struct VertexAttribute
-{
-    u32 stride = 0;
-
-    u32 offset = 0;
-};
-
 /**
- * \brief Mesh2 stores the geom data.
+ * \brief Mesh stores the geom data.
  */
-class Mesh2 : Component
+class Mesh : public Component
 {
-    Mesh2(const std::string &name);
+public:
+    Mesh(const std::string &name);
 
-    ~Mesh2() = default;
+    ~Mesh() = default;
 
-    void UpdateBounds(){};
+    void UpdateBounds();
 
-    const AABB &GetBounds() const
-    {
-        return bounds;
-    }
+    const AABB &GetBounds() const;
+
+    std::type_index GetType() override;
+
+    void AddPrimitive(Primitive &primitive);
 
 private:
     AABB bounds;
 
-    std::vector<VertexAttribute> vertexAttributes{};
+    std::vector<Primitive *> primitives;
+
+    std::vector<Node *> nodes;
 };
 } // namespace cruelEngine::cruelScene

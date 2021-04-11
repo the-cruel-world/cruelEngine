@@ -1,7 +1,6 @@
 
 #pragma once
-#include "sgcommon.h"
-// #include "component.hpp"
+#include "component.hpp"
 #include "scene/components/transform.hpp"
 namespace cruelEngine::cruelScene
 {
@@ -34,7 +33,14 @@ public:
 
     const std::vector<Node *> &GetChildren() const;
 
-protected:
+    void SetComponent(Component &new_component);
+
+    template <class  T>
+    T &GetComponent();
+
+    Component &GetComponent(const std::type_index index);
+
+    protected:
     size_t id;
 
     std::string name;
@@ -47,7 +53,7 @@ protected:
 
     Transform transform;
 
-    std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
+    std::unordered_map<std::type_index, Component *> components;
 };
 
 } // namespace cruelEngine::cruelScene

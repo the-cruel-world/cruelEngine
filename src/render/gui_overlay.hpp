@@ -29,7 +29,7 @@ public:
 
     virtual ~GuiOverlay() = default;
 
-    RenderSession &getSession();
+    RenderSession &GetSession();
 
     void setGuiOverlayUpdateCb(void (*callback)(void *));
 

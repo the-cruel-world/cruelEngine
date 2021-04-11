@@ -20,6 +20,8 @@ public:
         return shapeType;
     }
 
+    std::type_index GetType() override;
+
 private:
     ColliderShape shapeType = ColliderShape::COLLIDER_SHAPE_BOX;
 };

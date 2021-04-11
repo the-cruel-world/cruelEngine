@@ -1,6 +1,5 @@
 #include "scene/component.hpp"
-#include "scene/components/skybox.hpp"
-#include "scene/mesh.hpp"
 #include "scene/node.hpp"
 #include "scene/object.hpp"
 #include "scene/scene.hpp"
+#include "components/components.h"

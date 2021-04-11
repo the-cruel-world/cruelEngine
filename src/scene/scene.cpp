@@ -36,7 +36,7 @@ void Scene::add_nodes(std::vector<std::unique_ptr<Node>> &&new_nodes)
     nodes = std::move(new_nodes);
 }
 
-void Scene::add_component(std::unique_ptr<Component> component)
+void Scene::add_component(std::unique_ptr<Component> &&component)
 {
     components[typeid(component)].push_back(std::move(component));
 }

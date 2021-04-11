@@ -19,6 +19,8 @@ public:
         return name;
     }
 
+    virtual std::type_index GetType() = 0;
+
 protected:
     std::string name;
 };

@@ -10,6 +10,8 @@ public:
 
     virtual ~Texture() = default;
 
+    std::type_index GetType() override;
+
 private:
 };
 } // namespace cruelEngine::cruelScene

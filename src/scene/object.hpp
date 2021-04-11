@@ -4,10 +4,10 @@
 
 namespace cruelEngine::cruelScene
 {
-class Mesh;
 struct Texture;
 struct Vertex;
 class Camera;
+class Mesh;
 
 enum class ObjectType
 {
@@ -52,13 +52,12 @@ public:
 
 protected:
     std::string name;
-    // std::chrono::high_resolution_clock         lifetime;
 
     ObjectType type;
 
     Camera &camera;
 
-    // std::vector<Mesh> mesh;
+    // std::vector<Mesh1> mesh;
     // std::vector<Texture> textures;
     // std::vector<Vertex> vertices;
 };
