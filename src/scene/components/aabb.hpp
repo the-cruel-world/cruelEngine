@@ -42,7 +42,6 @@ public:
 
     void Reset();
 
-
 private:
     glm::vec3 min;
 

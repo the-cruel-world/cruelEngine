@@ -3,11 +3,8 @@
 
 #include "../vulkan/logical_device.hpp"
 
-
-
 namespace cruelEngine::cruelRender
 {
-
 //! \todo Change to use the new implements of mesh.
 GeomTask::GeomTask(RenderSession &session, std::shared_ptr<cruelScene::Object> object) :
     RenderTask(session, object)

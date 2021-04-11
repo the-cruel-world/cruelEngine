@@ -9,6 +9,7 @@ public:
     Script(const std::string &name);
 
     std::type_index GetType() override;
+
 private:
 };
 

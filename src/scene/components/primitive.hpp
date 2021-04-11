@@ -12,7 +12,6 @@
 
 namespace cruelEngine::cruelScene
 {
-
 typedef struct VertexAttribute
 {
     u32 stride = 0;
@@ -36,12 +35,12 @@ public:
 
     void SetData(char *new_data, size_t size);
 
-    const char * GetData() const;
+    const char *GetData() const;
 
 private:
     AABB bounds;
 
-    char *data {nullptr};
+    char *data{nullptr};
 
     size_t size = 0;
 
@@ -51,6 +50,6 @@ private:
     const Material *material{nullptr};
 };
 
-}
+} // namespace cruelEngine::cruelScene
 
 #endif // CRUELENGINE_PRIMITIVE_H

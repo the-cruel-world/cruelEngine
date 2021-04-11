@@ -6,10 +6,9 @@ namespace cruelEngine::cruelRender
 class RenderPass;
 class LogicalDevice;
 
-
 /**
  * \todo framebuffer multi image support.
-*/
+ */
 class FrameBuffer
 {
 public:
@@ -48,4 +47,4 @@ private:
 
     VkExtent2D extent{};
 };
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

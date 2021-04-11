@@ -6,4 +6,4 @@ std::type_index Light::GetType()
 {
     return typeid(Light);
 }
-}
+} // namespace cruelEngine::cruelScene

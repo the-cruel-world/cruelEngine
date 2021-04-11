@@ -11,8 +11,8 @@ class Image : Component
 public:
     Image(const std::string &name);
 
-
     std::type_index GetType() override;
+
 private:
 };
 } // namespace cruelEngine::cruelScene

@@ -3,8 +3,7 @@
 namespace cruelEngine::cruelScene
 {
 Mesh::Mesh(const std::string &name) : Component(name)
-{
-}
+{}
 
 void Mesh::UpdateBounds()
 {}

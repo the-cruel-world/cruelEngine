@@ -1,8 +1,8 @@
 #pragma once
 #include "scene/component.hpp"
-#include "scene/node.hpp"
-#include "scene/components/primitive.hpp"
 #include "scene/components/aabb.hpp"
+#include "scene/components/primitive.hpp"
+#include "scene/node.hpp"
 
 namespace cruelEngine::cruelScene
 {

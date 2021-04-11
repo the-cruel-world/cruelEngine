@@ -4,8 +4,8 @@
 
 #include "primitive.hpp"
 
-namespace cruelEngine::cruelScene {
-
+namespace cruelEngine::cruelScene
+{
 Primitive::~Primitive()
 {
     if (data != nullptr)
@@ -24,19 +24,21 @@ const std::vector<VertexAttribute> &Primitive::GetVertexAttributes() const
     return vertexAttributes;
 }
 
-void Primitive::SetVertexAttributes(std::vector<VertexAttribute> && newVertexAttributes)
+void Primitive::SetVertexAttributes(std::vector<VertexAttribute> &&newVertexAttributes)
 {
     vertexAttributes = std::move(newVertexAttributes);
 }
 
 void Primitive::SetData(char *new_data, size_t new_size)
 {
-    if (new_size * 5 < size || new_size > size){
+    if (new_size * 5 < size || new_size > size)
+    {
         size = new_size;
         delete[] data;
         data = new char[new_size];
     }
-    else if (data == nullptr) {
+    else if (data == nullptr)
+    {
         size = new_size;
         data = new char[new_size];
     }
@@ -47,4 +49,4 @@ const char *Primitive::GetData() const
 {
     return data;
 }
-};
+}; // namespace cruelEngine::cruelScene

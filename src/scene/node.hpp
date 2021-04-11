@@ -35,12 +35,12 @@ public:
 
     void SetComponent(Component &new_component);
 
-    template <class  T>
+    template <class T>
     T &GetComponent();
 
     Component &GetComponent(const std::type_index index);
 
-    protected:
+protected:
     size_t id;
 
     std::string name;
