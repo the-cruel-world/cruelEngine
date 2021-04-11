@@ -22,6 +22,4 @@ target_link_libraries(render cruelWindow cruelApplication cruelDebug cruelGui cr
 
 add_executable(gltf gltf.cpp)
 
-target_precompile_headers(gltf PUBLIC "${TINYGLTF_DIR}/tiny_gltf.h" "${TINYGLTF_DIR}/json.hpp")
-
-target_link_libraries(gltf)
+target_link_libraries(gltf cruelScene)
