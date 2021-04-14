@@ -12,11 +12,13 @@
 
 namespace cruelEngine::cruelScene
 {
-typedef struct VertexAttribute
+enum
+
+    typedef struct VertexAttribute
 {
-    u32 stride = 0;
-    u32 offset = 0;
-} VertexAttribute;
+    u32 stride = 0; u32 offset = 0;
+}
+VertexAttribute;
 
 class Primitive : public Component
 {

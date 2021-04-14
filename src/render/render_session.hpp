@@ -37,14 +37,6 @@ struct SessionProp
 };
 
 /**
-struct SessionProp {
-    WindowProp windowProp;
-    float frame_rate_limit = 100;
-    bool vsync = false;
-};
-*/
-
-/**
  * \brief RenderSession renders one scene.
  *
  * The RenderSession creates and maintains windows. It also creates surface, guioverlay, swapchain,
@@ -59,6 +51,38 @@ struct SessionProp {
 class RenderSession
 {
 public:
+    typedef enum RendererOptionBits
+    {
+        RENDER_OPTION_DEFAULT_BIT                           = 0,
+        RENDER_OPTION_SHADOW_ENABLE_BIT                     = 1 << 0,
+        RENDER_OPTION_SHADOW_CASCADE_ENABLE_BIT             = 1 << 1,
+        RENDER_OPTION_FOG_ENABLE_BIT                        = 1 << 2,
+        RENDER_OPTION_ENVIRONMENT_ENABLE_BIT                = 1 << 3,
+        RENDER_OPTION_REFRACTION_ENABLE_BIT                 = 1 << 4,
+        RENDER_OPTION_POSITIONAL_LIGHT_ENABLE_BIT           = 1 << 5,
+        RENDER_OPTION_POSITIONAL_LIGHT_SHADOW_ENABLE_BIT    = 1 << 6,
+        RENDER_OPTION_POSITIONAL_LIGHT_CLUSTER_LIST_BIT     = 1 << 7,
+        RENDER_OPTION_SHADOW_VSM_BIT                        = 1 << 8,
+        RENDER_OPTION_POSITIONAL_LIGHT_SHADOW_VSM_BIT       = 1 << 9,
+        RENDER_OPTION_SHADOW_PCF_KERNEL_WIDTH_3_BIT         = 1 << 10,
+        RENDER_OPTION_SHADOW_PCF_KERNEL_WIDTH_5_BIT         = 1 << 11,
+        RENDER_OPTION_VOLUMETRIC_FOG_ENABLE_BIT             = 1 << 12,
+        RENDER_OPTION_ALPHA_TEST_DISABLE_BIT                = 1 << 13,
+        RENDER_OPTION_POSITIONAL_LIGHT_CLUSTER_BINDLESS_BIT = 1 << 14,
+        RENDER_OPTION_MULTIVIEW_BIT                         = 1 << 15,
+        RENDER_OPTION_AMBIENT_OCCLUSION_BIT                 = 1 << 16
+    } RendererOptionBits;
+    typedef u32 RendererOptionFlags;
+
+    /**
+    struct SessionProp {
+        WindowProp windowProp;
+        RendererOptionFlags render_features = RENDER_OPTION_DEFAULT_BIT;
+        float frame_rate_limit = 100;
+        bool vsync = false;
+    };
+    */
+
     /**
      * \brief RenderSession Constructor.
      *
