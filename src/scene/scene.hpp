@@ -39,6 +39,33 @@ public:
 
     void add_component(std::unique_ptr<Component> &&component);
 
+    template <class T>
+    std::vector<T *> GetComponents() const
+    {
+        std::vector<T *> result;
+        // find components with this type;
+        if (components.find(typeid(T)) != components.end())
+        {
+            const std::vector<std::unique_ptr<Component>> &scene_components =
+                components.at(typeid(T));
+
+            result.resize(scene_components.size());
+
+            std::transform(scene_components.begin(), scene_components.end(), result.begin(),
+                           [](const std::unique_ptr<Component> &component) -> T * {
+                               return dynamic_cast<T *>(component.get());
+                           });
+        }
+        else
+        {
+            std::cout << "Type: " << typeid(T).name() << " not found in scene ( " << name << " )"
+                      << std::endl;
+        }
+        return result;
+    }
+
+    std::vector<Component *> GetAllComponents() const;
+
     void prepare_camera();
 
     Camera &get_camera();

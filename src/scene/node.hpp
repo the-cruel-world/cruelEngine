@@ -36,9 +36,18 @@ public:
     void SetComponent(Component &new_component);
 
     template <class T>
-    T &GetComponent();
+    T &GetComponent()
+    {
+        return dynamic_cast<T &>(GetComponent(typeid(T)));
+    }
 
     Component &GetComponent(const std::type_index index);
+
+    template <class T>
+    bool HasComponent() const
+    {
+        return components.count(typeid(T)) > 0;
+    }
 
 protected:
     size_t id;

@@ -65,11 +65,7 @@ Component &Node::GetComponent(const std::type_index index)
 {
     return *components.at(index);
 }
-template <class T>
-T &Node::GetComponent()
-{
-    return dynamic_cast<T &>(GetComponent(typeid(T)));
-}
+
 void Node::SetComponent(Component &new_component)
 {
     auto it = components.find(new_component.GetType());

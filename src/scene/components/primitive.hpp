@@ -12,13 +12,21 @@
 
 namespace cruelEngine::cruelScene
 {
-enum
-
-    typedef struct VertexAttribute
+enum VertexFormat
 {
-    u32 stride = 0; u32 offset = 0;
-}
-VertexAttribute;
+    VERTEX_FORMAT_UNDEFINED = 0,
+    VERTEX_FORMAT_R32_FLOAT,
+    VERTEX_FORMAT_R32G32_FLOAT,
+    VERTEX_FORMAT_R32G32B32_FLOAT,
+    VERTEX_FORMAT_R32G32B32A32_FLOAT,
+};
+
+typedef struct VertexAttribute
+{
+    VertexFormat format = VERTEX_FORMAT_UNDEFINED;
+    u32          offset = 0;
+    u32          stride = 0;
+} VertexAttribute;
 
 class Primitive : public Component
 {
@@ -27,17 +35,27 @@ public:
 
     std::type_index GetType() override;
 
-    void UpdateBounds();
-
+    // Boundary box
+    void        UpdateBounds(const glm::vec3 &new_min, const glm::vec3 &new_max);
+    void        UpdateBounds(const AABB &bound);
     const AABB &GetBounds() const;
 
+    // Material
+    void            SetMaterial();
+    const Material *GetMaterial();
+
+    // Vertex attribute
     const std::vector<VertexAttribute> &GetVertexAttributes() const;
+    void                                SetVertexAttributes(std::vector<VertexAttribute> &&);
+    void                                SetVertexLength(const size_t new_length);
+    size_t                              GetVertexLength();
 
-    void SetVertexAttributes(std::vector<VertexAttribute> &&);
-
-    void SetData(char *new_data, size_t size);
-
+    // The vertex data
+    void        SetData(char *new_data, size_t size);
     const char *GetData() const;
+    char *      GetDataMutant();
+    void        SetDataSize(size_t new_size);
+    size_t      GetDataSize();
 
 private:
     AABB bounds;
@@ -48,6 +66,8 @@ private:
 
     // vertex have different use.
     std::vector<VertexAttribute> vertexAttributes{};
+
+    size_t length;
 
     const Material *material{nullptr};
 };

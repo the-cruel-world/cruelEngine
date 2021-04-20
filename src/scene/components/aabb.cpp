@@ -21,5 +21,10 @@ std::type_index AABB::GetType()
 {
     return typeid(AABB);
 }
+void AABB::update(const glm::vec3 &new_min, const glm::vec3 &new_max)
+{
+    min = new_min;
+    max = new_max;
+}
 
 } // namespace cruelEngine::cruelScene

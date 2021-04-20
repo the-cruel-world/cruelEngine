@@ -12,6 +12,8 @@ Scene::Scene(const std::string &name) : name{name}
 Scene::~Scene()
 {
     sceneObjects.clear();
+    nodes.clear();      // will be cleaned automatically without this line
+    components.clear(); // will be cleaned automatically without this line
 }
 
 const std::string &Scene::get_name() const
@@ -38,7 +40,7 @@ void Scene::add_nodes(std::vector<std::unique_ptr<Node>> &&new_nodes)
 
 void Scene::add_component(std::unique_ptr<Component> &&component)
 {
-    components[typeid(component)].push_back(std::move(component));
+    components[component->GetType()].push_back(std::move(component));
 }
 
 void Scene::update()
@@ -55,5 +57,17 @@ void Scene::prepare_camera()
 Camera &Scene::get_camera()
 {
     return *camera;
+}
+std::vector<Component *> Scene::GetAllComponents() const
+{
+    std::vector<Component *> result;
+    for (auto &component_list : components)
+    {
+        for (auto &component : component_list.second)
+        {
+            result.push_back(component.get());
+        }
+    }
+    return result;
 }
 } // namespace cruelEngine::cruelScene

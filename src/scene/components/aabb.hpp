@@ -18,7 +18,7 @@ public:
 
     std::type_index GetType() override;
 
-    //   void update(const glm::vec3 &point);
+    void update(const glm::vec3 &new_min, const glm::vec3 &new_max);
 
     glm::vec3 GetScale() const
     {

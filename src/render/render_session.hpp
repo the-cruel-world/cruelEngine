@@ -269,6 +269,7 @@ private:
     //! \brief The renderpass of this session. Every session should have at least
     //! one render pass.
     std::unique_ptr<RenderPass> render_pass;
+    // instead use subpasses.
 
     //! \brief The redner properties of a render session.
     SessionProp session_properties;

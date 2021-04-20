@@ -27,8 +27,7 @@ class GltfLaoder
         uint32_t count;
         uint32_t stride;
 
-        ScalarType type;
-        uint32_t   components;
+        uint32_t components;
 
         union
         {
