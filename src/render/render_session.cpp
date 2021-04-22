@@ -1,19 +1,21 @@
-#include "render_session.hpp"
-#include "gui_overlay.hpp"
-#include "render_frame.hpp"
-#include "render_task.hpp"
+#include "render/render_session.hpp"
+#include "render/gui_overlay.hpp"
+#include "render/render_frame.hpp"
+#include "render/render_task.hpp"
+#include "render/subpass.hpp"
 
-#include "../scene/object.hpp"
-#include "../scene/scene.hpp"
-#include "render_tasks/render_tasks.hpp"
-#include "vulkan/command_buffer.hpp"
-#include "vulkan/command_pool.hpp"
-#include "vulkan/frame_buffer.hpp"
-#include "vulkan/instance.hpp"
-#include "vulkan/logical_device.hpp"
-#include "vulkan/queue.hpp"
-#include "vulkan/render_pass.hpp"
-#include "vulkan/swapchain.hpp"
+#include "scene/object.hpp"
+#include "scene/scene.hpp"
+
+#include "render/render_tasks/render_tasks.hpp"
+#include "render/vulkan/command_buffer.hpp"
+#include "render/vulkan/command_pool.hpp"
+#include "render/vulkan/frame_buffer.hpp"
+#include "render/vulkan/instance.hpp"
+#include "render/vulkan/logical_device.hpp"
+#include "render/vulkan/queue.hpp"
+#include "render/vulkan/render_pass.hpp"
+#include "render/vulkan/swapchain.hpp"
 
 namespace cruelEngine::cruelRender
 {
@@ -42,14 +44,18 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
               << present_queue->get_index() << std::endl;
 #endif
 
+    /**
+     * If vsync if enabled, use mailbox, or use the immediate mode (frame rate unlimited.)*/
     swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount,
                                             VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
-                                            VK_PRESENT_MODE_MAILBOX_KHR);
+                                            session_properties.vsync == true ?  VK_PRESENT_MODE_MAILBOX_KHR : VK_PRESENT_MODE_IMMEDIATE_KHR);
 
 #ifdef RENDER_DEBUG
     std::cout << "[Rendersession] swapchain creatd!" << std::endl;
 #endif
 
+    /**
+     * Methods to create subpasses. according to the session properties. */
     prepare_render_pass();
 
     commandPool = std::make_unique<CommandPool>(device, graphic_queue->get_family_index(),

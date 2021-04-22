@@ -7,9 +7,10 @@
 #pragma once
 #include "vkcommon.h"
 
-#include "vulkan/render_pass.hpp"
+#include "render/vulkan/render_pass.hpp"
 
-cruelEngine::cruelRender{
+namespace cruelEngine::cruelRender
+{
 class SubPass
 {
 public:
@@ -17,9 +18,7 @@ public:
     ~SubPass();
 
 private:
-
 };
-};
-
+}; // namespace cruelEngine::cruelRender
 
 #endif // CRUELENGINE_SUBPASS_HPP

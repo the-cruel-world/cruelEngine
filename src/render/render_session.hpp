@@ -30,11 +30,12 @@ class RenderTask;
 class Queue;
 class GuiOverlay;
 class RenderFrame;
+class SubPass;
 
-struct SessionProp
-{
-    WindowProp window_prop;
-};
+//struct SessionProp
+//{
+//    WindowProp window_prop;
+//};
 
 /**
  * \brief RenderSession renders one scene.
@@ -74,14 +75,12 @@ public:
     } RendererOptionBits;
     typedef u32 RendererOptionFlags;
 
-    /**
     struct SessionProp {
         WindowProp windowProp;
         RendererOptionFlags render_features = RENDER_OPTION_DEFAULT_BIT;
         float frame_rate_limit = 100;
         bool vsync = false;
     };
-    */
 
     /**
      * \brief RenderSession Constructor.
@@ -269,7 +268,8 @@ private:
     //! \brief The renderpass of this session. Every session should have at least
     //! one render pass.
     std::unique_ptr<RenderPass> render_pass;
-    // instead use subpasses.
+    // instead use subpasses name -> subpass.
+    std::unordered_map<std::string, std::unique_ptr<SubPass>> subpasses;
 
     //! \brief The redner properties of a render session.
     SessionProp session_properties;

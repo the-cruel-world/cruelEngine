@@ -1,14 +1,21 @@
 cmake_minimum_required(VERSION 3.8.0)
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(cruelEngine)
+project(cruelEngine LANGUAGES CXX C)
+
+# Set version for our engine
+set(CRUELENGINE_VERSION_MAJOR 0)
+set(CRUELENGINE_VERSION_MINOR 0)
+set(CRUELENGINE_VERSION_PATCH 0)
 
 set(default_build_type "Release")
 
-OPTION(DEBUG "Enable debug for all" OFF)
-OPTION(RENDER_DEBUG "Enbale debug for render" OFF)
+OPTION(CRUELENGINE_DEBUG_ALL "Enable debug for all" OFF)
+OPTION(CRUELENGINE_DEBUG_RENDER "Enbale debug for render" OFF)
+OPTION(CRUELENGINE_TEST "Build CruelEngine tests" ON)
 
 string(ASCII 27 ESCAPE)
 set (MESSAGE_HEADER "${ESCAPE}[31m[Note]:${ESCAPE}[0m ")
@@ -38,6 +45,7 @@ ENDIF(DYNAMIC)
 
 FIND_PACKAGE(PkgConfig REQUIRED)
 FIND_PACKAGE(glfw3 REQUIRED FATAL_ERROR)
+FIND_PACKAGE(glm REQUIRED FATAL_ERROR)
 
 set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src)
 
@@ -45,7 +53,12 @@ include_directories(${PROJECT_INCLUDE_DIR}
     ${glfw3_INCLUDE_DIRS}
     ${glm_INCLUDE_DIRS})
 
-# build the library
+
+
+# build the external libraries
+add_subdirectory(external)
+
+# build the engine
 add_subdirectory(src)
 
 # add_subdirectory(examples)
@@ -56,7 +69,6 @@ add_subdirectory(src)
 #add_subdirectory(editor)
 #endif(EDITOR)
 
-OPTION(TEST "Build CruelEngine tests" ON)
 if (TEST)
 # build test
 add_subdirectory(test)

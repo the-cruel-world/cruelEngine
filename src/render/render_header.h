@@ -3,6 +3,7 @@
 #include "render_frame.hpp"
 #include "render_session.hpp"
 #include "render_task.hpp"
+#include "subpass.hpp"
 
 #include "vulkan/buffer.hpp"
 #include "vulkan/command_buffer.hpp"
