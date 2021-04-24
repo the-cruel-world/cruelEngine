@@ -6,9 +6,13 @@
 
 namespace cruelEngine::cruelRender
 {
-SubPass::SubPass()
+SubPass::SubPass(RenderSession &session) : session{session}
 {}
 
 SubPass::~SubPass()
 {}
+RenderSession &SubPass::GetSession()
+{
+    return session;
+}
 }; // namespace cruelEngine::cruelRender

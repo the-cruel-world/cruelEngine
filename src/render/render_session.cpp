@@ -3,6 +3,7 @@
 #include "render/render_frame.hpp"
 #include "render/render_task.hpp"
 #include "render/subpass.hpp"
+#include "render/subpasses/geompass.hpp"
 
 #include "scene/object.hpp"
 #include "scene/scene.hpp"
@@ -46,9 +47,10 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 
     /**
      * If vsync if enabled, use mailbox, or use the immediate mode (frame rate unlimited.)*/
-    swapchain = std::make_unique<Swapchain>(device, surface, extent, imgCount,
-                                            VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
-                                            session_properties.vsync == true ?  VK_PRESENT_MODE_MAILBOX_KHR : VK_PRESENT_MODE_IMMEDIATE_KHR);
+    swapchain = std::make_unique<Swapchain>(
+        device, surface, extent, imgCount, VK_SURFACE_TRANSFORM_IDENTITY_BIT_KHR,
+        session_properties.vsync == true ? VK_PRESENT_MODE_MAILBOX_KHR :
+                                           VK_PRESENT_MODE_IMMEDIATE_KHR);
 
 #ifdef RENDER_DEBUG
     std::cout << "[Rendersession] swapchain creatd!" << std::endl;
@@ -486,5 +488,40 @@ float RenderSession::getRenderTime() const
 float RenderSession::getFrameTime() const
 {
     return frame_time;
+}
+const std::vector<std::unique_ptr<RenderTask>> &RenderSession::GetTasks() const
+{
+    return tasks;
+}
+void RenderSession::BuildRenderPass()
+{
+    assert(subpasses.size() > 0 && "Can not create a renderpass without any subopass.");
+
+    // collect renderpass infos
+    std::vector<SubpassInfo> subpass_info(subpasses.size());
+    auto                     subpass_info_it = subpass_info.begin();
+    for (auto &subpass : subpasses)
+    {
+        subpass_info_it->input_attachments  = subpass.second->get_input_attachments();
+        subpass_info_it->output_attachments = subpass.second->get_output_attachments();
+        subpass_info_it->color_resolve_attachments =
+            subpass.second->get_color_resolve_attachments();
+        subpass_info_it->disable_depth_stencil_attachment =
+            subpass.second->get_disable_depth_stencil_attachment();
+        subpass_info_it->depth_stencil_resolve_attachment =
+            subpass.second->get_depth_stencil_resolve_attachment();
+        subpass_info_it->depth_stencil_resolve_mode =
+            subpass.second->get_depth_stencil_resolve_mode();
+    }
+
+    // build the final renderpass
+}
+void RenderSession::BuildSubPasses()
+{
+    if (session_properties.render_features & RENDER_OPTION_DEFAULT_BIT)
+    {
+        subpasses.emplace("RENDER_PASS_DEFAULT", std::make_unique<GeomPass>(*this, *scene));
+    }
+    /** And many other subpasses. */
 }
 } // namespace cruelEngine::cruelRender

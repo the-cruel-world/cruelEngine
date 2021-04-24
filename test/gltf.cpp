@@ -97,6 +97,8 @@ bool load_mesh(tinygltf::Model &model,
                 scene_primitive->SetDataSize(bufferSize);
             }
 
+            printf("original data: %d", src);
+
             for (size_t i=0;i<vertexCount;i++)
             {
                 memcpy(data, src, posView.byteStride);

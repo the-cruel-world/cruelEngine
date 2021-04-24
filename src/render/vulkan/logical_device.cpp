@@ -170,5 +170,9 @@ VkResult LogicalDevice::wait_idle()
 {
     return vkDeviceWaitIdle(handle);
 }
+ResourceCache &LogicalDevice::GetResourceCache()
+{
+    return resource_cache;
+}
 
 } // namespace cruelEngine::cruelRender

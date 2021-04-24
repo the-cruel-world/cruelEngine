@@ -32,7 +32,7 @@ class GuiOverlay;
 class RenderFrame;
 class SubPass;
 
-//struct SessionProp
+// struct SessionProp
 //{
 //    WindowProp window_prop;
 //};
@@ -75,11 +75,12 @@ public:
     } RendererOptionBits;
     typedef u32 RendererOptionFlags;
 
-    struct SessionProp {
-        WindowProp windowProp;
-        RendererOptionFlags render_features = RENDER_OPTION_DEFAULT_BIT;
-        float frame_rate_limit = 100;
-        bool vsync = false;
+    struct SessionProp
+    {
+        WindowProp          windowProp;
+        RendererOptionFlags render_features  = RENDER_OPTION_DEFAULT_BIT;
+        float               frame_rate_limit = 100;
+        bool                vsync            = false;
     };
 
     /**
@@ -202,12 +203,21 @@ public:
     VkSurfaceKHR & get_surface();
     RenderPass &   get_render_pass();
     CommandPool &  getCommandPool();
-    void           set_session_id(u32 new_id);
-    u32            get_session_id() const;
-    Queue *        get_graphic_queue() const;
-    Queue *        get_present_queue() const;
-    float          getRenderTime() const;
-    float          getFrameTime() const;
+
+    void set_session_id(u32 new_id);
+    u32  get_session_id() const;
+
+    Queue *get_graphic_queue() const;
+    Queue *get_present_queue() const;
+
+    float getRenderTime() const;
+    float getFrameTime() const;
+
+    void                                            UpdateTasks();
+    const std::vector<std::unique_ptr<RenderTask>> &GetTasks() const;
+
+    void BuildRenderPass();
+    void BuildSubPasses();
 
     /**
      * \brief SetGuiOverlay
@@ -265,12 +275,6 @@ private:
     //! one swapchain.
     std::unique_ptr<Swapchain> swapchain;
 
-    //! \brief The renderpass of this session. Every session should have at least
-    //! one render pass.
-    std::unique_ptr<RenderPass> render_pass;
-    // instead use subpasses name -> subpass.
-    std::unordered_map<std::string, std::unique_ptr<SubPass>> subpasses;
-
     //! \brief The redner properties of a render session.
     SessionProp session_properties;
 
@@ -292,7 +296,11 @@ private:
 
     std::vector<std::unique_ptr<RenderFrame>> renderFrames{};
 
-    // std::vector<std::reference_wrapper<CommandBuffer>> commandBuffers;
+    //! \brief The renderpass of this session. Every session should have at least
+    //! one render pass.
+    std::unique_ptr<RenderPass> render_pass;
+    // instead use subpasses name -> subpass.
+    std::unordered_map<std::string, std::unique_ptr<SubPass>> subpasses;
 
     std::vector<std::unique_ptr<RenderTask>> tasks;
 };

@@ -62,6 +62,9 @@ private:
 
     char *data{nullptr};
 
+    char *vertices{nullptr};
+    char *indices{nullptr};
+
     size_t size = 0;
 
     // vertex have different use.

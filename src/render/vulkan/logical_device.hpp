@@ -85,6 +85,8 @@ public:
 
     // request_Fence();
 
+    ResourceCache &GetResourceCache();
+
     /** \brief Wait for the device the finish the task it is running. */
     VkResult wait_idle();
 
