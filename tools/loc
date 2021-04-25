@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 args=$@
 find ${args} -name "*.cpp" -o -name "*.hpp" -o -name "*.h" | xargs wc -l

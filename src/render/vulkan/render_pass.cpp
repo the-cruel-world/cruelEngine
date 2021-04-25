@@ -14,11 +14,19 @@ RenderPass::RenderPass(LogicalDevice &device, std::vector<VkAttachmentDescriptio
     renderPassInfo.pNext = nullptr;
     renderPassInfo.flags; // optional
 
-    renderPassInfo.attachmentCount = static_cast<u32>(this->attachments.size());
-    renderPassInfo.pAttachments    = this->attachments.data();
-
     // create subpasses and dependencies for renderpass. and then create the render pass.
-    create_render_pass();
+    {
+        create_render_pass();
+
+        renderPassInfo.subpassCount;
+        renderPassInfo.pSubpasses;
+
+        renderPassInfo.dependencyCount;
+        renderPassInfo.pDependencies;
+
+        renderPassInfo.attachmentCount = static_cast<u32>(this->attachments.size());
+        renderPassInfo.pAttachments    = this->attachments.data();
+    }
 
     VK_CHECK_RESULT(vkCreateRenderPass(device.get_handle(), &renderPassInfo, nullptr, &handle));
 }
@@ -36,9 +44,24 @@ RenderPass::~RenderPass()
 }
 void RenderPass::create_render_pass()
 {
-    VkSubpassDescription    subpass;
-    VkAttachmentDescription attachment;
-    attachment;
+    /**
+     * If no subpass if provided, create a default subpass.
+     * */
+    if (subpasses.empty())
+    {
+        VkSubpassDescription subpass_description;
+        subpass_description.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+
+        subpass_description.colorAttachmentCount;
+        subpass_description.pColorAttachments;
+
+        subpass_description.inputAttachmentCount;
+        subpass_description.pInputAttachments;
+
+        subpass_description.pResolveAttachments;
+        subpass_description.pDepthStencilAttachment;
+    }
 }
+
 } // namespace cruelRender
 } // namespace cruelEngine

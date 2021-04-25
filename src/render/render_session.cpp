@@ -515,7 +515,11 @@ void RenderSession::BuildRenderPass()
     }
 
     // build the final renderpass
+    // create the render pass
+    std::vector<VkAttachmentDescription> attachments;
+    render_pass = std::make_unique<RenderPass>(device, attachments, subpass_info);
 }
+
 void RenderSession::BuildSubPasses()
 {
     if (session_properties.render_features & RENDER_OPTION_DEFAULT_BIT)

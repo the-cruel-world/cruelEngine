@@ -27,7 +27,8 @@ void GeomPass::draw(CommandBuffer &commandBuffer)
 {
     auto &tasks = session.GetTasks();
     for (auto &task : session.GetTasks())
-    {}
+    {
+    }
 }
 
 void GeomPass::DrawPrimitives(CommandBuffer &commandBuffer)
