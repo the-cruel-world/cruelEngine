@@ -31,11 +31,38 @@ class Queue;
 class GuiOverlay;
 class RenderFrame;
 class SubPass;
+class RenderPipeline;
 
-// struct SessionProp
-//{
-//    WindowProp window_prop;
-//};
+typedef enum RendererOptionBits
+{
+    RENDER_OPTION_DEFAULT_BIT                           = 0,
+    RENDER_OPTION_SHADOW_ENABLE_BIT                     = 1 << 0,
+    RENDER_OPTION_SHADOW_CASCADE_ENABLE_BIT             = 1 << 1,
+    RENDER_OPTION_FOG_ENABLE_BIT                        = 1 << 2,
+    RENDER_OPTION_ENVIRONMENT_ENABLE_BIT                = 1 << 3,
+    RENDER_OPTION_REFRACTION_ENABLE_BIT                 = 1 << 4,
+    RENDER_OPTION_POSITIONAL_LIGHT_ENABLE_BIT           = 1 << 5,
+    RENDER_OPTION_POSITIONAL_LIGHT_SHADOW_ENABLE_BIT    = 1 << 6,
+    RENDER_OPTION_POSITIONAL_LIGHT_CLUSTER_LIST_BIT     = 1 << 7,
+    RENDER_OPTION_SHADOW_VSM_BIT                        = 1 << 8,
+    RENDER_OPTION_POSITIONAL_LIGHT_SHADOW_VSM_BIT       = 1 << 9,
+    RENDER_OPTION_SHADOW_PCF_KERNEL_WIDTH_3_BIT         = 1 << 10,
+    RENDER_OPTION_SHADOW_PCF_KERNEL_WIDTH_5_BIT         = 1 << 11,
+    RENDER_OPTION_VOLUMETRIC_FOG_ENABLE_BIT             = 1 << 12,
+    RENDER_OPTION_ALPHA_TEST_DISABLE_BIT                = 1 << 13,
+    RENDER_OPTION_POSITIONAL_LIGHT_CLUSTER_BINDLESS_BIT = 1 << 14,
+    RENDER_OPTION_MULTIVIEW_BIT                         = 1 << 15,
+    RENDER_OPTION_AMBIENT_OCCLUSION_BIT                 = 1 << 16
+} RendererOptionBits;
+typedef u32 RendererOptionFlags;
+
+struct SessionProp
+{
+    WindowProp          windowProp;
+    RendererOptionFlags render_features  = RENDER_OPTION_DEFAULT_BIT;
+    float               frame_rate_limit = 100;
+    bool                vsync            = false;
+};
 
 /**
  * \brief RenderSession renders one scene.
@@ -52,37 +79,6 @@ class SubPass;
 class RenderSession
 {
 public:
-    typedef enum RendererOptionBits
-    {
-        RENDER_OPTION_DEFAULT_BIT                           = 0,
-        RENDER_OPTION_SHADOW_ENABLE_BIT                     = 1 << 0,
-        RENDER_OPTION_SHADOW_CASCADE_ENABLE_BIT             = 1 << 1,
-        RENDER_OPTION_FOG_ENABLE_BIT                        = 1 << 2,
-        RENDER_OPTION_ENVIRONMENT_ENABLE_BIT                = 1 << 3,
-        RENDER_OPTION_REFRACTION_ENABLE_BIT                 = 1 << 4,
-        RENDER_OPTION_POSITIONAL_LIGHT_ENABLE_BIT           = 1 << 5,
-        RENDER_OPTION_POSITIONAL_LIGHT_SHADOW_ENABLE_BIT    = 1 << 6,
-        RENDER_OPTION_POSITIONAL_LIGHT_CLUSTER_LIST_BIT     = 1 << 7,
-        RENDER_OPTION_SHADOW_VSM_BIT                        = 1 << 8,
-        RENDER_OPTION_POSITIONAL_LIGHT_SHADOW_VSM_BIT       = 1 << 9,
-        RENDER_OPTION_SHADOW_PCF_KERNEL_WIDTH_3_BIT         = 1 << 10,
-        RENDER_OPTION_SHADOW_PCF_KERNEL_WIDTH_5_BIT         = 1 << 11,
-        RENDER_OPTION_VOLUMETRIC_FOG_ENABLE_BIT             = 1 << 12,
-        RENDER_OPTION_ALPHA_TEST_DISABLE_BIT                = 1 << 13,
-        RENDER_OPTION_POSITIONAL_LIGHT_CLUSTER_BINDLESS_BIT = 1 << 14,
-        RENDER_OPTION_MULTIVIEW_BIT                         = 1 << 15,
-        RENDER_OPTION_AMBIENT_OCCLUSION_BIT                 = 1 << 16
-    } RendererOptionBits;
-    typedef u32 RendererOptionFlags;
-
-    struct SessionProp
-    {
-        WindowProp          windowProp;
-        RendererOptionFlags render_features  = RENDER_OPTION_DEFAULT_BIT;
-        float               frame_rate_limit = 100;
-        bool                vsync            = false;
-    };
-
     /**
      * \brief RenderSession Constructor.
      *
@@ -100,7 +96,6 @@ public:
 
     /**
      * \brief update the swapchain
-     *
      * When the a window_resize event is captured, execute this function
      * to rebuild a new swapchain. Okay, it should be the resize function.
      */
@@ -111,7 +106,6 @@ public:
 
     /**
      * \brief LoadScene
-     *
      * Load a scene for rendering, The load process will also create rendertasks for all primitives
      * in the scene.
      */
@@ -119,21 +113,18 @@ public:
 
     /**
      * \brief AddTasks
-     *
      * Add new tasks to the RenderSession. This is for external tasks.
      */
     void add_new_task(std::unique_ptr<RenderTask> task);
 
     /**
      * \brief Prepare
-     *
      * Run the preparation work for renderSession.
      */
     void prepare();
 
     /**
      * \brief Create render_pass
-     *
      * Create a proper render pass according to the render properties.
      * Use subpasses. see [render pass best practice];
      */
@@ -141,35 +132,30 @@ public:
 
     /**
      * \brief Draw
-     *
      * Draw all render tasks, gui included.
      */
     void draw();
 
     /**
      * \brief CreateGuiStaff
-     *
      * CreateGuiStaff creates swapchain, renderpass.
      */
     void CreateGuiStaff();
 
     /**
      * \brief CreateSceneStaff
-     *
      * CreateSceneStaff creates render tasks for scene.
      */
     void CreateSceneStaff();
 
     /**
      * \brief DrawGui
-     *
      * DrawGui draws gui. Records all draw commands related to the gui.
      */
     void DrawGui();
 
     /**
      * \brief DrawScene
-     *
      * DrawScene records all draw commands related to the scene. Infact, it just call all
      * renderTasks' draw command.
      */
@@ -177,21 +163,18 @@ public:
 
     /**
      * \brief RenderGui
-     *
      * RenderGui submit the draw commands of gui to graphic queue.
      */
     void RenderGui();
 
     /**
      * \brief RenderScene
-     *
      * RenderGui submit the draw commands of gui to graphic queue.
      */
     void RenderScene();
 
     /**
      * \brief RenderFrame
-     *
      * Draw a new frame.
      */
     void render_frame();
@@ -200,9 +183,9 @@ public:
     Instance &     getInstance() const;
     Swapchain &    get_swapchain() const;
     Window &       get_window() const;
-    VkSurfaceKHR & get_surface();
-    RenderPass &   get_render_pass();
-    CommandPool &  getCommandPool();
+
+    VkSurfaceKHR &get_surface();
+    CommandPool & getCommandPool();
 
     void set_session_id(u32 new_id);
     u32  get_session_id() const;
@@ -213,15 +196,10 @@ public:
     float getRenderTime() const;
     float getFrameTime() const;
 
-    void                                            UpdateTasks();
     const std::vector<std::unique_ptr<RenderTask>> &GetTasks() const;
-
-    void BuildRenderPass();
-    void BuildSubPasses();
 
     /**
      * \brief SetGuiOverlay
-     *
      * Set the guiOverlay for the RenderSession. If the pointer to guiOverlay is "null_ptr", the
      * session will not render the guioverlay.
      */
@@ -244,18 +222,11 @@ private:
 
     u32 session_id = 0;
     u32 imgCount   = 3;
-    // const int MAX_FRAMES_IN_FLIGHT = 2;
 
     VkSemaphore imageAvailableSemaphore = VK_NULL_HANDLE;
     VkSemaphore renderFinishedSemaphore = VK_NULL_HANDLE;
     VkFence     inFlightFences          = VK_NULL_HANDLE;
     // u32         image_index             = 0;
-    // std::vector<VkSemaphore> imageAvailableSemaphores{};
-    // std::vector<VkSemaphore> renderFinishedSemaphores{};
-
-    // std::vector<VkFence> inFlightFences{};
-    // std::vector<VkFence> imagesInFlight{};
-    // size_t               currentFrame = 0;
 
     //! \brief The reference points to the instance of the render context
     Instance &instance;
@@ -290,17 +261,13 @@ private:
 
     std::shared_ptr<cruelScene::Scene> scene;
 
-    // std::vector<std::unique_ptr<FrameBuffer>> frameBuffer;
-
     std::unique_ptr<CommandPool> commandPool;
 
     std::vector<std::unique_ptr<RenderFrame>> renderFrames{};
 
-    //! \brief The renderpass of this session. Every session should have at least
-    //! one render pass.
-    std::unique_ptr<RenderPass> render_pass;
-    // instead use subpasses name -> subpass.
-    std::unordered_map<std::string, std::unique_ptr<SubPass>> subpasses;
+    std::unique_ptr<RenderPipeline> renderPipeline;
+
+    //    std::vector<std::unique_ptr<RenderPipeline>> renderPipelines{};
 
     std::vector<std::unique_ptr<RenderTask>> tasks;
 };

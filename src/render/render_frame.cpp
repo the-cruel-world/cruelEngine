@@ -1,19 +1,13 @@
 #include "render_frame.hpp"
 #include "vulkan/command_buffer.hpp"
+#include "vulkan/frame_buffer.hpp"
 #include "vulkan/logical_device.hpp"
 #include "vulkan/render_pass.hpp"
 
 namespace cruelEngine::cruelRender
 {
-RenderFrame::RenderFrame(LogicalDevice &device, Image &image, ImageView &imageView,
-                         FrameBuffer &frameBuffer, RenderPass &renderPass,
-                         CommandBuffer &commandBuffer) :
-    image{std::move(image)},
-    imageView{std::move(imageView)},
-    frameBuffer{std::move(frameBuffer)},
-    device{device},
-    renderPass{renderPass},
-    commandBuffer{commandBuffer}
+RenderFrame::RenderFrame(LogicalDevice &device, Image &image, ImageView &imageView) :
+    image{std::move(image)}, imageView{std::move(imageView)}, device{device}
 {
     // Create fence;
     VkFenceCreateInfo fenceInfo{};
@@ -32,7 +26,6 @@ RenderFrame::RenderFrame(LogicalDevice &device, Image &image, ImageView &imageVi
 
 RenderFrame::~RenderFrame()
 {
-    commandBuffer.Release();
     if (fence != VK_NULL_HANDLE)
     {
         vkDestroyFence(image.get_device().get_handle(), fence, nullptr);
@@ -47,14 +40,17 @@ RenderFrame::~RenderFrame()
     }
 }
 
-void RenderFrame::RecordBegin()
+void RenderFrame::RecordBegin(CommandBuffer &commandBuffer, RenderPass &renderPass)
 {
     VkExtent2D extent{image.GetExtent().width, image.GetExtent().height};
+
+    // \todo should use framebuffer from resource cache instead;
+    FrameBuffer frameBuffer(device, imageView.get_handle(), extent, renderPass);
     commandBuffer.begin();
     commandBuffer.begin_renderpass(renderPass.get_handle(), frameBuffer.get_handle(), extent);
 }
 
-void RenderFrame::RecordEnd()
+void RenderFrame::RecordEnd(CommandBuffer &commandBuffer)
 {
     commandBuffer.end_renderpass();
     commandBuffer.end();
@@ -69,11 +65,6 @@ void RenderFrame::Submit()
 
 void RenderFrame::Present()
 {}
-
-CommandBuffer &RenderFrame::GetCommandBuffer()
-{
-    return commandBuffer;
-}
 
 VkSemaphore &RenderFrame::GetImageAvaiable()
 {

@@ -10,25 +10,10 @@ RenderPass::RenderPass(LogicalDevice &device, std::vector<VkAttachmentDescriptio
                        std::vector<SubpassInfo> subpasses) :
     device{device}, attachments{attachments}
 {
-    VkRenderPassCreateInfo renderPassInfo{VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO};
-    renderPassInfo.pNext = nullptr;
-    renderPassInfo.flags; // optional
-
     // create subpasses and dependencies for renderpass. and then create the render pass.
     {
-        create_render_pass();
-
-        renderPassInfo.subpassCount;
-        renderPassInfo.pSubpasses;
-
-        renderPassInfo.dependencyCount;
-        renderPassInfo.pDependencies;
-
-        renderPassInfo.attachmentCount = static_cast<u32>(this->attachments.size());
-        renderPassInfo.pAttachments    = this->attachments.data();
+        create_subpass(attachments, subpasses);
     }
-
-    VK_CHECK_RESULT(vkCreateRenderPass(device.get_handle(), &renderPassInfo, nullptr, &handle));
 }
 
 RenderPass::RenderPass(RenderPass &&other) :
@@ -42,8 +27,62 @@ RenderPass::~RenderPass()
     if (handle != VK_NULL_HANDLE)
         vkDestroyRenderPass(device.get_handle(), handle, nullptr);
 }
-void RenderPass::create_render_pass()
+void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachments,
+                                std::vector<SubpassInfo>              subpasses)
 {
+    std::vector<VkSubpassDescription> subpass_descriptions{};
+
+    std::vector<std::vector<VkAttachmentReference>> input_attachments{subpasses.size()};
+    std::vector<std::vector<VkAttachmentReference>> color_attachments{subpasses.size()};
+    std::vector<std::vector<VkAttachmentReference>> depth_attachments{subpasses.size()};
+    std::vector<std::vector<VkAttachmentReference>> color_resolve_attachments{subpasses.size()};
+    std::vector<std::vector<VkAttachmentReference>> depth_resolve_attachments{subpasses.size()};
+
+    // \todo Add depthstencil support
+    for (size_t i = 0; i < subpasses.size(); ++i)
+    {
+        auto &subpass = subpasses[i];
+
+        for (auto &output : subpass.output_attachments)
+        {
+            auto initial_layout = attachments[output].initialLayout == VK_IMAGE_LAYOUT_UNDEFINED ?
+                                      VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL :
+                                      attachments[output].initialLayout;
+            color_attachments[i].push_back((VkAttachmentReference){output, initial_layout});
+        }
+        for (auto &input : subpass.input_attachments)
+        {
+            auto initial_layout = attachments[input].initialLayout == VK_IMAGE_LAYOUT_UNDEFINED ?
+                                      VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL :
+                                      attachments[input].initialLayout;
+            input_attachments[i].push_back((VkAttachmentReference){input, initial_layout});
+        }
+        for (auto resolve : subpass.color_resolve_attachments)
+        {
+            auto initial_layout = attachments[resolve].initialLayout == VK_IMAGE_LAYOUT_UNDEFINED ?
+                                      VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL :
+                                      attachments[resolve].initialLayout;
+            color_resolve_attachments[i].push_back(
+                (VkAttachmentReference){resolve, initial_layout});
+        }
+
+        VkSubpassDescription subpass_description;
+        subpass_description.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+
+        subpass_description.inputAttachmentCount = static_cast<u32>(input_attachments[i].size());
+        subpass_description.pInputAttachments =
+            input_attachments[i].empty() ? nullptr : input_attachments[i].data();
+
+        subpass_description.colorAttachmentCount = static_cast<u32>(color_attachments[i].size());
+        subpass_description.pColorAttachments =
+            color_attachments[i].empty() ? nullptr : color_attachments[i].data();
+
+        subpass_description.pResolveAttachments =
+            color_resolve_attachments[i].empty() ? nullptr : color_resolve_attachments[i].data();
+
+        subpass_descriptions.push_back(subpass_description);
+    }
+
     /**
      * If no subpass if provided, create a default subpass.
      * */
@@ -60,7 +99,39 @@ void RenderPass::create_render_pass()
 
         subpass_description.pResolveAttachments;
         subpass_description.pDepthStencilAttachment;
+
+        subpass_descriptions.push_back(subpass_description);
     }
+
+    u32                              subpass_count = subpasses.size();
+    std::vector<VkSubpassDependency> subpass_dependencies{subpass_count - 1};
+    if (subpass_count > 1)
+    {
+        for (u32 i = 0; i < (u32)(subpass_dependencies.size()); i++)
+        {
+            subpass_dependencies[i].srcSubpass      = i;
+            subpass_dependencies[i].dstSubpass      = i + 1;
+            subpass_dependencies[i].srcStageMask    = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+            subpass_dependencies[i].dstStageMask    = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+            subpass_dependencies[i].srcAccessMask   = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+            subpass_dependencies[i].dstAccessMask   = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+            subpass_dependencies[i].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+        }
+    }
+
+    VkRenderPassCreateInfo renderPassInfo{VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO};
+    renderPassInfo.pNext = nullptr;
+    renderPassInfo.flags; // optional
+    renderPassInfo.subpassCount = static_cast<u32>(subpass_descriptions.size());
+    renderPassInfo.pSubpasses   = subpass_descriptions.data();
+
+    renderPassInfo.dependencyCount = static_cast<u32>(subpass_dependencies.size());
+    renderPassInfo.pDependencies   = subpass_dependencies.data();
+
+    renderPassInfo.attachmentCount = static_cast<u32>(this->attachments.size());
+    renderPassInfo.pAttachments    = this->attachments.data();
+
+    VK_CHECK_RESULT(vkCreateRenderPass(device.get_handle(), &renderPassInfo, nullptr, &handle));
 }
 
 } // namespace cruelRender

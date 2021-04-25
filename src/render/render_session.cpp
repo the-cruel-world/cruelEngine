@@ -1,6 +1,7 @@
 #include "render/render_session.hpp"
 #include "render/gui_overlay.hpp"
 #include "render/render_frame.hpp"
+#include "render/render_pipeline.hpp"
 #include "render/render_task.hpp"
 #include "render/subpass.hpp"
 #include "render/subpasses/geompass.hpp"
@@ -25,7 +26,7 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
     instance{instance}, device{device}, session_properties{session_properties}
 {
     //! Create a new window for this session.
-    window                    = std::make_unique<Window>(session_properties.window_prop);
+    window                    = std::make_unique<Window>(session_properties.windowProp);
     on_window_resize_callback = on_window_resize_cb;
     glfwSetFramebufferSizeCallback(&window->get_handle(), on_window_resize_callback);
 
@@ -70,12 +71,8 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
                               swapchain->get_properties().image_usage);
         ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
 
-        FrameBuffer swapchain_frameBuffer(device, swapchain_imageView.get_handle(),
-                                          swapchain->get_extent(), *render_pass);
-
-        renderFrames.push_back(std::make_unique<RenderFrame>(
-            device, (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
-            commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY)));
+        renderFrames.push_back(
+            std::make_unique<RenderFrame>(device, (swapchain_image), (swapchain_imageView)));
     }
 
 #ifdef RENDER_DEBUG
@@ -118,7 +115,6 @@ RenderSession::~RenderSession()
         vkDestroySemaphore(device.get_handle(), renderFinishedSemaphore, nullptr);
     }
 
-    render_pass.reset();
     renderFrames.clear();
     swapchain.reset();
 
@@ -154,42 +150,6 @@ std::shared_ptr<GuiOverlay> RenderSession::getGuiOverlay()
     return guiOverlay;
 }
 
-void RenderSession::prepare_render_pass()
-{
-    VkAttachmentDescription colorAttachment{};
-    colorAttachment.format         = swapchain->get_surface_format().format;
-    colorAttachment.samples        = VK_SAMPLE_COUNT_1_BIT;
-    colorAttachment.loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR;
-    colorAttachment.storeOp        = VK_ATTACHMENT_STORE_OP_STORE;
-    colorAttachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-    colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-    colorAttachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
-    colorAttachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-
-    VkAttachmentReference colorAttachmentRef{};
-    colorAttachmentRef.attachment = 0;
-    colorAttachmentRef.layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
-    VkSubpassDescription subpass{};
-    subpass.pipelineBindPoint    = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    subpass.colorAttachmentCount = 1;
-    subpass.pColorAttachments    = &colorAttachmentRef;
-
-    VkSubpassDependency dependency{};
-    dependency.srcSubpass    = VK_SUBPASS_EXTERNAL;
-    dependency.dstSubpass    = 0;
-    dependency.srcStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    dependency.srcAccessMask = 0;
-    dependency.dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-
-    RenderPassAttachment attachments = {.colorAttachments    = {colorAttachment},
-                                        .subpassDependencies = {dependency},
-                                        .subpasses           = {subpass}};
-
-    render_pass = std::make_unique<RenderPass>(device, attachments);
-}
-
 void RenderSession::draw()
 {
 #ifdef RENDER_DEBUG
@@ -202,7 +162,7 @@ void RenderSession::draw()
 
     for (auto &renderFrame : renderFrames)
     {
-        renderFrame->RecordBegin();
+        //        renderFrame->RecordBegin();
         VkViewport viewport{};
         viewport.x        = 0.0f;
         viewport.y        = 0.0f;
@@ -210,25 +170,25 @@ void RenderSession::draw()
         viewport.height   = static_cast<float>(swapchain.get()->get_extent().height);
         viewport.minDepth = 0.0f;
         viewport.maxDepth = 1.0f;
-        renderFrame->GetCommandBuffer().setViewport(0, {viewport});
+        //        renderFrame->GetCommandBuffer().setViewport(0, {viewport});
         VkRect2D scissor{};
         scissor.offset = {0, 0};
         scissor.extent = swapchain.get()->get_extent();
-        renderFrame->GetCommandBuffer().setScissor(0, {scissor});
+        //        renderFrame->GetCommandBuffer().setScissor(0, {scissor});
 
-        for (auto &task : tasks)
-        {
-            task->draw(renderFrame->GetCommandBuffer(), 0);
-        }
+        //        for (auto &task : tasks)
+        //        {
+        //            task->draw(renderFrame->GetCommandBuffer(), 0);
+        //        }
 
-        if (guiOverlay != nullptr)
-        {
-            vkCmdSetViewport(renderFrame->GetCommandBuffer().get_handle(), 0, 1, &viewport);
-            vkCmdSetScissor(renderFrame->GetCommandBuffer().get_handle(), 0, 1, &scissor);
-            guiOverlay->Draw(renderFrame->GetCommandBuffer());
-        }
+        //        if (guiOverlay != nullptr)
+        //        {
+        //            vkCmdSetViewport(renderFrame->GetCommandBuffer().get_handle(), 0, 1,
+        //            &viewport); vkCmdSetScissor(renderFrame->GetCommandBuffer().get_handle(), 0,
+        //            1, &scissor); guiOverlay->Draw(renderFrame->GetCommandBuffer());
+        //        }
 
-        renderFrame->RecordEnd();
+        //        renderFrame->RecordEnd();
     }
 }
 
@@ -286,8 +246,9 @@ void RenderSession::render_frame()
     VkSemaphore signalSemaphores[] = {renderFrames[image_index]->GetRenderFinished()};
 
     VkSubmitInfo submitInfo{VK_STRUCTURE_TYPE_SUBMIT_INFO};
-    submitInfo.commandBufferCount   = 1;
-    submitInfo.pCommandBuffers      = &(renderFrames[image_index]->GetCommandBuffer().get_handle());
+    submitInfo.commandBufferCount = 1;
+    //    submitInfo.pCommandBuffers      =
+    //    &(renderFrames[image_index]->GetCommandBuffer().get_handle());
     submitInfo.waitSemaphoreCount   = 1;
     submitInfo.pWaitSemaphores      = waitSemaphores;
     submitInfo.pWaitDstStageMask    = waitStages;
@@ -357,11 +318,6 @@ VkSurfaceKHR &RenderSession::get_surface()
     return surface;
 }
 
-RenderPass &RenderSession::get_render_pass()
-{
-    return *render_pass;
-}
-
 /** \todo Complete this part after scene graph.*/
 void RenderSession::load_scene(std::shared_ptr<cruelScene::Scene> new_scene)
 {
@@ -422,12 +378,8 @@ void RenderSession::update_swapchain()
                               swapchain->get_properties().image_usage);
         ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
 
-        FrameBuffer swapchain_frameBuffer(device, swapchain_imageView.get_handle(),
-                                          swapchain->get_extent(), *render_pass);
-
-        renderFrames.push_back(std::make_unique<RenderFrame>(
-            device, (swapchain_image), (swapchain_imageView), (swapchain_frameBuffer), *render_pass,
-            commandPool->RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY)));
+        renderFrames.push_back(
+            std::make_unique<RenderFrame>(device, (swapchain_image), (swapchain_imageView)));
     }
 
     if (guiOverlay != nullptr)
@@ -445,11 +397,6 @@ void RenderSession::update_swapchain()
         else
             std::cout << "[Session::render_frame] guiOverlay doesn't need Update." << std::endl;
 #endif
-    }
-
-    for (auto &task : tasks)
-    {
-        task->update_render_pass(*render_pass);
     }
 
     draw();
@@ -492,40 +439,5 @@ float RenderSession::getFrameTime() const
 const std::vector<std::unique_ptr<RenderTask>> &RenderSession::GetTasks() const
 {
     return tasks;
-}
-void RenderSession::BuildRenderPass()
-{
-    assert(subpasses.size() > 0 && "Can not create a renderpass without any subopass.");
-
-    // collect renderpass infos
-    std::vector<SubpassInfo> subpass_info(subpasses.size());
-    auto                     subpass_info_it = subpass_info.begin();
-    for (auto &subpass : subpasses)
-    {
-        subpass_info_it->input_attachments  = subpass.second->get_input_attachments();
-        subpass_info_it->output_attachments = subpass.second->get_output_attachments();
-        subpass_info_it->color_resolve_attachments =
-            subpass.second->get_color_resolve_attachments();
-        subpass_info_it->disable_depth_stencil_attachment =
-            subpass.second->get_disable_depth_stencil_attachment();
-        subpass_info_it->depth_stencil_resolve_attachment =
-            subpass.second->get_depth_stencil_resolve_attachment();
-        subpass_info_it->depth_stencil_resolve_mode =
-            subpass.second->get_depth_stencil_resolve_mode();
-    }
-
-    // build the final renderpass
-    // create the render pass
-    std::vector<VkAttachmentDescription> attachments;
-    render_pass = std::make_unique<RenderPass>(device, attachments, subpass_info);
-}
-
-void RenderSession::BuildSubPasses()
-{
-    if (session_properties.render_features & RENDER_OPTION_DEFAULT_BIT)
-    {
-        subpasses.emplace("RENDER_PASS_DEFAULT", std::make_unique<GeomPass>(*this, *scene));
-    }
-    /** And many other subpasses. */
 }
 } // namespace cruelEngine::cruelRender

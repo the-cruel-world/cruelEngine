@@ -85,6 +85,8 @@ public:
 protected:
     RenderSession &session;
 
+    u32 task_id;
+
     // RenderPass &render_pass;
 
     std::unique_ptr<PipelineLayout> pipeline_layout{};

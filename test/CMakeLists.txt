@@ -20,6 +20,10 @@ add_executable(render render.cpp)
 
 target_link_libraries(render cruelWindow cruelApplication cruelDebug cruelGui cruelScene cruelRender ${Vulkan_LIBRARIES} ${glm_LIBRARIES})
 
+add_executable(render_api render_api.cpp)
+
+target_link_libraries(render_api cruelWindow cruelApplication cruelDebug cruelGui cruelScene cruelRender ${Vulkan_LIBRARIES} ${glm_LIBRARIES})
+
 add_executable(gltf gltf.cpp)
 
 target_link_libraries(gltf cruelScene)

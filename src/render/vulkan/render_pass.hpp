@@ -92,7 +92,8 @@ public:
         return device;
     }
 
-    void create_render_pass();
+    void create_subpass(std::vector<VkAttachmentDescription> &attachments,
+                        std::vector<SubpassInfo>              subpasses);
 
 private:
     LogicalDevice &device;

@@ -23,16 +23,19 @@ namespace cruelEngine::cruelRender
 class GeomPass : public SubPass
 {
 public:
-    GeomPass(RenderSession &session, cruelScene::Scene &scene);
+    GeomPass(RenderSession &session, cruelScene::Scene &scene, cruelScene::Camera &camera);
 
     virtual void prepare() override;
+
+    virtual void prepare_pipeline();
 
     virtual void draw(CommandBuffer &commandBuffer) override;
 
 protected:
     void UpdateUniform();
 
-    void DrawPrimitives(CommandBuffer &commandBuffer);
+    void DrawPrimitives(CommandBuffer &commandBuffer, cruelScene::Primitive &primitive,
+                        VkFrontFace frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE);
 
     cruelScene::Scene &scene;
 

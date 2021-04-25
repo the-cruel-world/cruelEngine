@@ -16,19 +16,16 @@ class LogicalDevice;
 class RenderFrame
 {
 public:
-    RenderFrame(LogicalDevice &device, Image &image, ImageView &imageView, FrameBuffer &frameBuffer,
-                RenderPass &renderPass, CommandBuffer &commandBuffer);
+    RenderFrame(LogicalDevice &device, Image &image, ImageView &imageView);
     ~RenderFrame();
 
-    void RecordBegin();
+    void RecordBegin(CommandBuffer &commandBuffer, RenderPass &renderPass);
 
-    void RecordEnd();
+    void RecordEnd(CommandBuffer &commandBuffer);
 
     void Submit();
 
     void Present();
-
-    CommandBuffer &GetCommandBuffer();
 
     VkSemaphore &GetImageAvaiable();
 
@@ -45,17 +42,14 @@ public:
     void SetStatus(bool status);
 
 private:
-    Image       image;
-    ImageView   imageView;
-    FrameBuffer frameBuffer;
+    Image     image;
+    ImageView imageView;
 
     VkFence     fence          = VK_NULL_HANDLE;
     VkSemaphore renderFinished = VK_NULL_HANDLE;
     VkSemaphore imageAvailable = VK_NULL_HANDLE;
 
     LogicalDevice &device;
-    RenderPass &   renderPass;
-    CommandBuffer &commandBuffer;
 
     bool isrendering = false;
 };

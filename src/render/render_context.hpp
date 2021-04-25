@@ -56,9 +56,6 @@ struct RenderProp
     //! The type of queues required by the RenderContext.
     VkQueueFlags flags = {VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT | VK_QUEUE_COMPUTE_BIT};
 
-    //! Enable vSync or not. Not supported currently.
-    bool vsync = false;
-
     //! Enable overlay or not. Not supported currently.
     bool overlay = false;
 };

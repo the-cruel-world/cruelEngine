@@ -4,7 +4,7 @@ namespace cruelEngine::cruelRender
 GuiOverlay::GuiOverlay(RenderSession &session) : session{session}
 {}
 
-RenderSession &GuiOverlay::getSession()
+RenderSession &GuiOverlay::GetSession()
 {
     return session;
 }

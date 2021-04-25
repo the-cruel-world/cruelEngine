@@ -231,8 +231,8 @@ void Gui::update()
 void Gui::renderFrame()
 {
     ImGuiIO &io    = ImGui::GetIO();
-    io.DisplaySize = ImVec2(getSession().get_swapchain().get_properties().extent.width,
-                            getSession().get_swapchain().get_properties().extent.height);
+    io.DisplaySize = ImVec2(GetSession().get_swapchain().get_properties().extent.width,
+                            GetSession().get_swapchain().get_properties().extent.height);
 
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -429,7 +429,7 @@ void Gui::prepare_pipeline()
         VK_FALSE};
     cruelRender::PipelineStatus::ViewportState    viewport_state;
     cruelRender::PipelineStatus::MultisampleState multisample_state = {
-        VK_SAMPLE_COUNT_1_BIT, VK_FALSE, 1.0f, VK_NULL_HANDLE, VK_FALSE, VK_FALSE};
+        VK_SAMPLE_COUNT_1_BIT, VK_FALSE, 1.0f, 0, VK_FALSE, VK_FALSE};
 
     cruelRender::PipelineStatus::DepthStencilState depth_stencil_state{};
     depth_stencil_state.depth_compare_op = VK_COMPARE_OP_ALWAYS;
@@ -460,7 +460,7 @@ void Gui::prepare_pipeline()
     pipelineState.set_color_blend_state(color_blend_state);
     pipelineState.set_dynamic_state(dynamic_state);
     pipelineState.set_pipeline_layout(*pipelineLayout);
-    pipelineState.set_render_pass(session.get_render_pass());
+//    pipelineState.set_render_pass(session.get_render_pass());
 
     pipeline = std::make_shared<cruelRender::GraphicsPipeline>(
         session.get_device(), (VkPipelineCache) VK_NULL_HANDLE, pipelineState);

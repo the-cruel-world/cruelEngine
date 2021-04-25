@@ -15,7 +15,12 @@ set(default_build_type "Release")
 
 OPTION(CRUELENGINE_DEBUG_ALL "Enable debug for all" OFF)
 OPTION(CRUELENGINE_DEBUG_RENDER "Enbale debug for render" OFF)
+
 OPTION(CRUELENGINE_TEST "Build CruelEngine tests" ON)
+OPTION(EDITOR "Build CruelEngine Editor" OFF)
+
+OPTION(DYNAMIC "Library build type" ON)
+
 
 string(ASCII 27 ESCAPE)
 set (MESSAGE_HEADER "${ESCAPE}[31m[Note]:${ESCAPE}[0m ")
@@ -36,11 +41,10 @@ IF (NOT CMAKE_BUILD_TYPE)
     message(${MESSAGE_HEADER} "Build type: " ${CMAKE_BUILD_TYPE})
 ENDIF ()
 
-OPTION(DYNAMIC "Library build type" ON)
 IF(DYNAMIC)
-set (LIBRARY_TYPE SHARED)
+    set (LIBRARY_TYPE SHARED)
 else (DYNAMIC)
-set (LIBRARY_TYPE STATIC)
+    set (LIBRARY_TYPE STATIC)
 ENDIF(DYNAMIC)
 
 FIND_PACKAGE(PkgConfig REQUIRED)
@@ -53,8 +57,6 @@ include_directories(${PROJECT_INCLUDE_DIR}
     ${glfw3_INCLUDE_DIRS}
     ${glm_INCLUDE_DIRS})
 
-
-
 # build the external libraries
 add_subdirectory(external)
 
@@ -63,11 +65,10 @@ add_subdirectory(src)
 
 # add_subdirectory(examples)
 
-#OPTION(EDITOR "Build CruelEngine Editor" OFF)
-#if (EDITOR)
-## build the editor
-#add_subdirectory(editor)
-#endif(EDITOR)
+if (EDITOR)
+# build the editor
+    add_subdirectory(editor)
+endif(EDITOR)
 
 if (TEST)
 # build test
