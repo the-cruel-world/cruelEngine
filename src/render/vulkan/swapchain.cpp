@@ -7,9 +7,7 @@
 #include "logical_device.hpp"
 #include "physical_device.hpp"
 
-namespace cruelEngine
-{
-namespace cruelRender
+namespace cruelEngine::cruelRender
 {
 u32 choose_image_count(u32 requestCount, u32 minCount, u32 maxCount)
 {
@@ -51,9 +49,7 @@ VkSurfaceFormatKHR choose_surface_format(VkSurfaceFormatKHR              request
 {
     auto surface_format_it = std::find_if(
         available.begin(), available.end(), [&request](const VkSurfaceFormatKHR &format) {
-            return (format.format == request.format && format.colorSpace == request.colorSpace) ?
-                       true :
-                       false;
+            return (format.format == request.format && format.colorSpace == request.colorSpace);
         });
     if (surface_format_it != available.end())
         return request;
@@ -64,9 +60,7 @@ VkSurfaceFormatKHR choose_surface_format(VkSurfaceFormatKHR              request
             std::find_if(available.begin(), available.end(),
                          [&surface_format](const VkSurfaceFormatKHR &format) {
                              return (format.format == surface_format.format &&
-                                     format.colorSpace == surface_format.colorSpace) ?
-                                        true :
-                                        false;
+                                     format.colorSpace == surface_format.colorSpace);
                          });
         if (surface_format_it != available.end())
             return surface_format;
@@ -173,19 +167,21 @@ Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, VkSurface
     properties.present_mode =
         choose_present_mode(_presentMode, presentModes, present_mode_priority_list);
 
+    std::string present_mode;
     for (auto &a : presentModes)
     {
-        RENDER_LOG("supported present mode: %d\n", a);
+        present_mode += " " + std::to_string(a) + ",";
     }
+    CRUEL_LOG("PresentMode supported: %s\n", present_mode.c_str());
 
-    RENDER_LOG("swapchain present mode: %s\n",
-               properties.present_mode == VK_PRESENT_MODE_FIFO_KHR ?
-                   "VK_PRESENT_MODE_FIFO_KHR" :
-                   (properties.present_mode == VK_PRESENT_MODE_MAILBOX_KHR ?
-                        "VK_PRESENT_MODE_MAILBOX_KHR" :
-                        (properties.present_mode == VK_PRESENT_MODE_IMMEDIATE_KHR ?
-                             "VK_PRESENT_MODE_IMMEDIATE_KHR" :
-                             "other")));
+    CRUEL_LOG("PresentMode Selected: %s\n",
+              properties.present_mode == VK_PRESENT_MODE_FIFO_KHR ?
+                  "VK_PRESENT_MODE_FIFO_KHR" :
+                  (properties.present_mode == VK_PRESENT_MODE_MAILBOX_KHR ?
+                       "VK_PRESENT_MODE_MAILBOX_KHR" :
+                       (properties.present_mode == VK_PRESENT_MODE_IMMEDIATE_KHR ?
+                            "VK_PRESENT_MODE_IMMEDIATE_KHR" :
+                            "other")));
 
     properties.surface_format =
         choose_surface_format(properties.surface_format, formats, surface_format_priority_list);
@@ -228,32 +224,7 @@ Swapchain::Swapchain(Swapchain &old_swapchain, LogicalDevice &_device, VkSurface
     VK_CHECK_RESULT(
         vkGetSwapchainImagesKHR(device.get_handle(), handle, &available_images, images.data()));
 
-    // imageViews.resize(available_images);
-    // ImageView newimage_view(device, &image);
-    // imageViews.emplace_back(device, &image, properties.surface_format.format);
-    // imageViews.resize(images.size());
-    // for (size_t i = 0; i < images.size(); i++)
-    // {
-    //     VkImageViewCreateInfo createInfo{};
-    //     createInfo.sType    = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
-    //     createInfo.image    = images[i];
-    //     createInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
-    //     createInfo.format   = properties.surface_format.format;
-
-    //     createInfo.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
-    //     createInfo.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
-    //     createInfo.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
-    //     createInfo.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
-
-    //     createInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
-    //     createInfo.subresourceRange.baseMipLevel   = 0;
-    //     createInfo.subresourceRange.levelCount     = 1;
-    //     createInfo.subresourceRange.baseArrayLayer = 0;
-    //     createInfo.subresourceRange.layerCount     = 1;
-
-    //     VK_CHECK_RESULT(
-    //         vkCreateImageView(device.get_handle(), &createInfo, nullptr, &imageViews[i]));
-    // }
+    CRUEL_LOG("%s\n", "SwapChain Created");
 }
 
 Swapchain::Swapchain(Swapchain &old_swapchain, const VkExtent2D _extent) :
@@ -266,11 +237,6 @@ Swapchain::~Swapchain()
 {
     if (handle != VK_NULL_HANDLE)
         vkDestroySwapchainKHR(device.get_handle(), handle, nullptr);
-    // for (auto &image_view : imageViews)
-    // {
-    //     if (image_view != VK_NULL_HANDLE)
-    //         vkDestroyImageView(device.get_handle(), image_view, nullptr);
-    // }
 }
 
 VkResult Swapchain::acquire_next_image(uint32_t &image_index, VkSemaphore image_acquired_semaphore,
@@ -279,5 +245,4 @@ VkResult Swapchain::acquire_next_image(uint32_t &image_index, VkSemaphore image_
     return vkAcquireNextImageKHR(device.get_handle(), handle, UINT64_MAX, image_acquired_semaphore,
                                  fence, &image_index);
 }
-} // namespace cruelRender
-} // namespace cruelEngine
+} // namespace cruelEngine::cruelRender

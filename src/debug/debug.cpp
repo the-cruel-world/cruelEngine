@@ -35,3 +35,17 @@ std::string errorString(VkResult errorCode)
             return "UNKNOWN_ERROR";
     }
 }
+
+void timestamp_str(char *str, int len)
+{
+    time_t     now;
+    struct tm *time_struct;
+    int        length;
+    char       time_buffer[40];
+
+    time(&now);                                     // get number of seconds since epoch
+    time_struct = localtime((const time_t *) &now); // convert to tm struct
+    length      = strftime(time_buffer, 40, "%m/%d/%Y %H:%M:%S > ", time_struct);
+    if (length < len)
+        sprintf(str, "%s", time_buffer);
+}

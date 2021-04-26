@@ -9,22 +9,30 @@
 using namespace std;
 using namespace cruelEngine::cruelRender;
 
+u32  cruelEngine::Window::count       = 0;
+bool cruelEngine::Window::glfw_inited = false;
+
 int main(int argc, char **argv)
 {
-
+    CRUEL_LOG("%s\n", "Launching");
     RenderProp context_prop =
         {
-            .appInfo = {VK_STRUCTURE_TYPE_APPLICATION_INFO, "render_api", "Api test", USED_VULKAN_API_VERSION},
+            .appInfo = {
+                .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+                .pApplicationName = "API test",
+                .pEngineName = "cruelEngine",
+                .apiVersion = USED_VULKAN_API_VERSION
+            },
             .validation = true,
             .validationLayers = {"VK_LAYER_KHRONOS_validation"},
             .enabledInstanceExtensions = {},
             .enabledDeviceExtensions = {VK_KHR_SWAPCHAIN_EXTENSION_NAME},
             .features = {},
-            .flags = {VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT | VK_QUEUE_COMPUTE_BIT},
+            .flags = VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT | VK_QUEUE_COMPUTE_BIT,
             .overlay = false
         };
     RenderContext context (context_prop);
-    cout << "Creating render Context." << endl;
+    CRUEL_LOG("%s", "Create render Context\n");
 
     SessionProp sessionProp {
         .windowProp = {
@@ -39,7 +47,18 @@ int main(int argc, char **argv)
     };
 
     RenderSession session(context.get_instance(), context.get_device(), sessionProp);
-    cout << "Creating render Session." << endl;
 
+    CRUEL_LOG("%s", "Create render Session\n");
+
+    RenderPipeline pipeline(context.get_device());
+    CRUEL_LOG("%s", "Create render pipeline\n");
+
+    auto lightPass = std::make_unique<LightPass>(session);
+
+    pipeline.AddSubpass(std::move(lightPass));
+
+    sleep(1);
+
+    CRUEL_LOG("%s\n", "Terminating");
     return 0;
 }

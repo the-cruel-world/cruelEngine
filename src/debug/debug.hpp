@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <time.h>
 #include <vulkan/vulkan.h>
 
 #define C_DEFAULT "\033[0m"
@@ -46,3 +47,20 @@ std::string errorString(VkResult errorCode);
         {                        \
         } while (0)
 #endif
+
+void timestamp_str(char *str, int len);
+
+#define CRUEL_LOG(fmt, ...)                                                                   \
+    do                                                                                        \
+    {                                                                                         \
+        char       time_buffer[40];                                                           \
+        time_t     now;                                                                       \
+        struct tm *time_struct;                                                               \
+        int        length;                                                                    \
+        time(&now);                                                                           \
+        time_struct = localtime((const time_t *) &now);                                       \
+        length      = strftime(time_buffer, 40, "%m/%d/%Y %H:%M:%S", time_struct);            \
+                                                                                              \
+        fprintf(stdout, C_BOLDGREEN "LOG [%s] > %s(): " C_DEFAULT fmt, time_buffer, __func__, \
+                __VA_ARGS__);                                                                 \
+    } while (0)

@@ -1,4 +1,4 @@
-#include "render_frame.hpp"
+#include "render_target.hpp"
 #include "vulkan/command_buffer.hpp"
 #include "vulkan/frame_buffer.hpp"
 #include "vulkan/logical_device.hpp"
@@ -6,7 +6,7 @@
 
 namespace cruelEngine::cruelRender
 {
-RenderFrame::RenderFrame(LogicalDevice &device, Image &image, ImageView &imageView) :
+RenderTarget::RenderTarget(LogicalDevice &device, Image &image, ImageView &imageView) :
     image{std::move(image)}, imageView{std::move(imageView)}, device{device}
 {
     // Create fence;
@@ -24,7 +24,7 @@ RenderFrame::RenderFrame(LogicalDevice &device, Image &image, ImageView &imageVi
                                       &renderFinished));
 }
 
-RenderFrame::~RenderFrame()
+RenderTarget::~RenderTarget()
 {
     if (fence != VK_NULL_HANDLE)
     {
@@ -40,63 +40,63 @@ RenderFrame::~RenderFrame()
     }
 }
 
-void RenderFrame::RecordBegin(CommandBuffer &commandBuffer, RenderPass &renderPass)
+void RenderTarget::RecordBegin(CommandBuffer &commandBuffer, RenderPass &renderPass)
 {
     VkExtent2D extent{image.GetExtent().width, image.GetExtent().height};
 
     // \todo should use framebuffer from resource cache instead;
-    FrameBuffer frameBuffer(device, imageView.get_handle(), extent, renderPass);
+    FrameBuffer frameBuffer(device, {imageView.get_handle()}, extent, renderPass);
     commandBuffer.begin();
     commandBuffer.begin_renderpass(renderPass.get_handle(), frameBuffer.get_handle(), extent);
 }
 
-void RenderFrame::RecordEnd(CommandBuffer &commandBuffer)
+void RenderTarget::RecordEnd(CommandBuffer &commandBuffer)
 {
     commandBuffer.end_renderpass();
     commandBuffer.end();
 }
 
-void RenderFrame::Submit()
+void RenderTarget::Submit()
 {
     // wait for the last submited image to finish it task.
     // vkWaitForFences(image.get_device().get_handle(), 1, &fence, VK_TRUE, UINT64_MAX);
     // vkResetFences(image.get_device().get_handle(), 1, &fence);
 }
 
-void RenderFrame::Present()
+void RenderTarget::Present()
 {}
 
-VkSemaphore &RenderFrame::GetImageAvaiable()
+VkSemaphore &RenderTarget::GetImageAvaiable()
 {
     return imageAvailable;
 }
 
-VkSemaphore &RenderFrame::GetRenderFinished()
+VkSemaphore &RenderTarget::GetRenderFinished()
 {
     return renderFinished;
 }
 
-VkFence &RenderFrame::GetFence()
+VkFence &RenderTarget::GetFence()
 {
     return fence;
 }
 
-void RenderFrame::WaitForFence(u64 timeout)
+void RenderTarget::WaitForFence(u64 timeout)
 {
     vkWaitForFences(device.get_handle(), 1, &fence, VK_TRUE, UINT64_MAX);
 }
 
-void RenderFrame::ResetFence()
+void RenderTarget::ResetFence()
 {
     vkResetFences(device.get_handle(), 1, &fence);
 }
 
-bool RenderFrame::GetStatus()
+bool RenderTarget::GetStatus()
 {
     return isrendering;
 }
 
-void RenderFrame::SetStatus(bool status)
+void RenderTarget::SetStatus(bool status)
 {
     isrendering = status;
 }

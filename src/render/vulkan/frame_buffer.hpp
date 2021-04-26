@@ -12,7 +12,7 @@ class LogicalDevice;
 class FrameBuffer
 {
 public:
-    FrameBuffer(LogicalDevice &device, const VkImageView &imageView, const VkExtent2D &extent,
+    FrameBuffer(LogicalDevice &device, const std::vector<VkImageView> &imageView, const VkExtent2D &extent,
                 const RenderPass &renderPass);
 
     FrameBuffer(const FrameBuffer &) = delete;

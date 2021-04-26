@@ -13,11 +13,11 @@ class CommandBuffer;
 class FrameBuffer;
 class LogicalDevice;
 
-class RenderFrame
+class RenderTarget
 {
 public:
-    RenderFrame(LogicalDevice &device, Image &image, ImageView &imageView);
-    ~RenderFrame();
+    RenderTarget(LogicalDevice &device, Image &image, ImageView &imageView);
+    ~RenderTarget();
 
     void RecordBegin(CommandBuffer &commandBuffer, RenderPass &renderPass);
 

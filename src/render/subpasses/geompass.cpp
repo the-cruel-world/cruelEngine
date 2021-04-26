@@ -24,6 +24,9 @@ GeomPass::GeomPass(RenderSession &session, cruelScene::Scene &scene, cruelScene:
 void GeomPass::prepare()
 {}
 
+void GeomPass::prepare_pipeline()
+{}
+
 void GeomPass::draw(CommandBuffer &commandBuffer)
 {
     auto &tasks = session.GetTasks();

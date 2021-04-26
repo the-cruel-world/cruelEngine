@@ -17,7 +17,7 @@ OPTION(CRUELENGINE_DEBUG_ALL "Enable debug for all" OFF)
 OPTION(CRUELENGINE_DEBUG_RENDER "Enbale debug for render" OFF)
 
 OPTION(CRUELENGINE_TEST "Build CruelEngine tests" ON)
-OPTION(EDITOR "Build CruelEngine Editor" OFF)
+OPTION(CRUELENGINE_EDITOR "Build CruelEngine Editor" OFF)
 
 OPTION(DYNAMIC "Library build type" ON)
 
@@ -65,12 +65,12 @@ add_subdirectory(src)
 
 # add_subdirectory(examples)
 
-if (EDITOR)
+if (CRUELENGINE_EDITOR)
 # build the editor
     add_subdirectory(editor)
-endif(EDITOR)
+endif(CRUELENGINE_EDITOR)
 
-if (TEST)
+if (CRUELENGINE_TEST)
 # build test
-add_subdirectory(test)
-endif(TEST)
+    add_subdirectory(test)
+endif(CRUELENGINE_TEST)

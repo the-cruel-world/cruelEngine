@@ -15,6 +15,7 @@ class RenderPass;
 class SubPass;
 class RenderTask;
 class RenderTarget;
+class CommandBuffer;
 
 /**
  * RenderPipeline is the pipeline for my render api.
@@ -38,15 +39,15 @@ public:
 
     RenderPipeline(const RenderPipeline &) = delete;
 
-    //    RenderPipeline(RenderPipeline &&) = default;
+    RenderPipeline(RenderPipeline &&) = delete;
 
     RenderPipeline &operator=(const RenderPipeline &) = delete;
 
-    //    RenderPipeline &operator=(RenderPipeline &&) = default;
+    RenderPipeline &operator=(RenderPipeline &&) = delete;
 
     virtual ~RenderPipeline() = default;
 
-    void Draw(RenderTarget &target);
+    void Draw(CommandBuffer &commandBuffer, RenderTarget &target, VkSubpassContents contents);
 
     void Prepare();
 

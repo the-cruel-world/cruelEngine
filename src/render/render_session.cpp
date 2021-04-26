@@ -1,7 +1,7 @@
 #include "render/render_session.hpp"
 #include "render/gui_overlay.hpp"
-#include "render/render_frame.hpp"
 #include "render/render_pipeline.hpp"
+#include "render/render_target.hpp"
 #include "render/render_task.hpp"
 #include "render/subpass.hpp"
 #include "render/subpasses/geompass.hpp"
@@ -33,18 +33,18 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
     //! create a render surface for this session.
     VK_CHECK_RESULT(
         glfwCreateWindowSurface(instance.get_handle(), &(window->get_handle()), nullptr, &surface));
+    CRUEL_LOG("%s", "Session window Created\n");
 
     VkExtent2D extent = {};
 
     graphic_queue = &device.get_suitable_graphics_queue(0);
     present_queue = &device.get_suitable_present_queue(surface, 1);
 
-#ifdef RENDER_DEBUG
-    std::cout << "[Rendersession] graphic queue info: " << graphic_queue->get_family_index()
-              << graphic_queue->get_index() << std::endl;
-    std::cout << "[Rendersession] present queue info: " << present_queue->get_family_index()
-              << present_queue->get_index() << std::endl;
-#endif
+    CRUEL_LOG("Session Graphic Queue selected %d:%d\n", graphic_queue->get_family_index(),
+              graphic_queue->get_index());
+
+    CRUEL_LOG("Session Present Queue selected %d:%d\n", present_queue->get_family_index(),
+              present_queue->get_index());
 
     /**
      * If vsync if enabled, use mailbox, or use the immediate mode (frame rate unlimited.)*/
@@ -53,16 +53,16 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
         session_properties.vsync == true ? VK_PRESENT_MODE_MAILBOX_KHR :
                                            VK_PRESENT_MODE_IMMEDIATE_KHR);
 
-#ifdef RENDER_DEBUG
-    std::cout << "[Rendersession] swapchain creatd!" << std::endl;
-#endif
+    CRUEL_LOG("%s\n", "Session SwapChain init-ed.");
 
     /**
      * Methods to create subpasses. according to the session properties. */
-    prepare_render_pass();
+    //    prepare_render_pass();
 
     commandPool = std::make_unique<CommandPool>(device, graphic_queue->get_family_index(),
                                                 CommandBuffer::ResetModeFlags::ResetIndividually);
+
+    CRUEL_LOG("%s\n", "Session CommandPool created");
 
     VkExtent3D extent3D{swapchain->get_extent().width, swapchain->get_extent().height, 1};
     for (auto &image : swapchain->get_images())
@@ -72,8 +72,9 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
         ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
 
         renderFrames.push_back(
-            std::make_unique<RenderFrame>(device, (swapchain_image), (swapchain_imageView)));
+            std::make_unique<RenderTarget>(device, (swapchain_image), (swapchain_imageView)));
     }
+    CRUEL_LOG("%s\n", "Session RenderTargets created");
 
 #ifdef RENDER_DEBUG
     commandPool->test_list_commands();
@@ -85,6 +86,8 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
         vkCreateSemaphore(device.get_handle(), &semaphoreInfo, nullptr, &imageAvailableSemaphore));
     VK_CHECK_RESULT(
         vkCreateSemaphore(device.get_handle(), &semaphoreInfo, nullptr, &renderFinishedSemaphore));
+
+    CRUEL_LOG("%s\n", "Session Semaphores created");
 
     // Init time_markers
     frame_time_marker  = std::chrono::high_resolution_clock::now();
@@ -199,7 +202,7 @@ void RenderSession::render_frame()
     RENDER_LOG("frames in flight: %d frames\n",
                static_cast<int>(std::count_if(
                    renderFrames.begin(), renderFrames.end(),
-                   [](std::unique_ptr<RenderFrame> const &frame) { return frame->GetStatus(); })));
+                   [](std::unique_ptr<RenderTarget> const &frame) { return frame->GetStatus(); })));
 
     u32      image_index;
     VkResult result = swapchain->acquire_next_image(image_index, imageAvailableSemaphore);
@@ -362,7 +365,7 @@ void RenderSession::update_swapchain()
     renderFrames.clear();
     swapchain = std::make_unique<Swapchain>(*swapchain, VkExtent2D({(u32) width, (u32) height}));
 
-    prepare_render_pass();
+    //    prepare_render_pass();
 
     commandPool->ResetPool();
 
@@ -379,7 +382,7 @@ void RenderSession::update_swapchain()
         ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
 
         renderFrames.push_back(
-            std::make_unique<RenderFrame>(device, (swapchain_image), (swapchain_imageView)));
+            std::make_unique<RenderTarget>(device, (swapchain_image), (swapchain_imageView)));
     }
 
     if (guiOverlay != nullptr)

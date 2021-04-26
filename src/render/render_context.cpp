@@ -22,9 +22,8 @@ RenderContext::RenderContext(RenderProp properties) : properties{properties}
                                           properties.validationLayers,
                                           properties.enabledInstanceExtensions);
     glfwTerminate();
-#ifdef RENDER_DEBUG
-    std::cout << "[RenderContext] Instance created" << std::endl;
-#endif
+
+    CRUEL_LOG("%s\n", "Context Instance created");
 
     // pick suitable physical device aka gpu.
     for (auto &gpu : instance->get_gpus())
@@ -35,16 +34,14 @@ RenderContext::RenderContext(RenderProp properties) : properties{properties}
             physicalDevice = std::make_unique<PhysicalDevice>(gpu, properties.features);
         }
     }
-#ifdef RENDER_DEBUG
-    std::cout << "[RenderContext] Physical device created" << std::endl;
-#endif
+
+    CRUEL_LOG("%s\n", "Physical Devices loaded");
 
     // Create Logical device
     device = std::make_unique<LogicalDevice>(*physicalDevice, properties.validationLayers,
                                              properties.enabledDeviceExtensions, properties.flags);
-#ifdef RENDER_DEBUG
-    std::cout << "[RenderContext] Logical device created" << std::endl;
-#endif
+
+    CRUEL_LOG("%s\n", "Logical Device created");
 }
 
 void RenderContext::prepareRender()

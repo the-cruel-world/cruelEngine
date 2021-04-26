@@ -1,10 +1,17 @@
 #include "gui_overlay.hpp"
 #include "render_context.hpp"
-#include "render_frame.hpp"
+#include "render_pipeline.hpp"
 #include "render_session.hpp"
+#include "render_target.hpp"
 #include "render_task.hpp"
 #include "subpass.hpp"
 
+#include "render_tasks/render_tasks.hpp"
+
+#include "subpasses/geompass.hpp"
+#include "subpasses/lightpass.hpp"
+
+// Use the abstract api instead
 #include "vulkan/buffer.hpp"
 #include "vulkan/command_buffer.hpp"
 #include "vulkan/command_pool.hpp"

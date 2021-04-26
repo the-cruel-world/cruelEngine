@@ -29,7 +29,7 @@ class Instance;
 class RenderTask;
 class Queue;
 class GuiOverlay;
-class RenderFrame;
+class RenderTarget;
 class SubPass;
 class RenderPipeline;
 
@@ -174,7 +174,7 @@ public:
     void RenderScene();
 
     /**
-     * \brief RenderFrame
+     * \brief RenderTarget
      * Draw a new frame.
      */
     void render_frame();
@@ -263,7 +263,7 @@ private:
 
     std::unique_ptr<CommandPool> commandPool;
 
-    std::vector<std::unique_ptr<RenderFrame>> renderFrames{};
+    std::vector<std::unique_ptr<RenderTarget>> renderFrames{};
 
     std::unique_ptr<RenderPipeline> renderPipeline;
 

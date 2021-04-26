@@ -460,7 +460,7 @@ void Gui::prepare_pipeline()
     pipelineState.set_color_blend_state(color_blend_state);
     pipelineState.set_dynamic_state(dynamic_state);
     pipelineState.set_pipeline_layout(*pipelineLayout);
-//    pipelineState.set_render_pass(session.get_render_pass());
+    //    pipelineState.set_render_pass(session.get_render_pass());
 
     pipeline = std::make_shared<cruelRender::GraphicsPipeline>(
         session.get_device(), (VkPipelineCache) VK_NULL_HANDLE, pipelineState);
