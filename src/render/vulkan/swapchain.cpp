@@ -245,4 +245,12 @@ VkResult Swapchain::acquire_next_image(uint32_t &image_index, VkSemaphore image_
     return vkAcquireNextImageKHR(device.get_handle(), handle, UINT64_MAX, image_acquired_semaphore,
                                  fence, &image_index);
 }
+VkImageUsageFlags Swapchain::GetImageUsage()
+{
+    return properties.image_usage;
+}
+VkFormat Swapchain::GetImageFormat()
+{
+    return properties.surface_format.format;
+}
 } // namespace cruelEngine::cruelRender

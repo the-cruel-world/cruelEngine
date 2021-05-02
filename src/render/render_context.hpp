@@ -15,6 +15,7 @@ class RenderTask;
 class RenderSession;
 struct RenderProp;
 struct SessionProp;
+class ResourceCache;
 
 /**
  * \brief RenderProp is the brief detailes/settings required to create a RenderContext.
@@ -100,10 +101,13 @@ public:
     PhysicalDevice &get_gpu() const;
 
     //! Get the logical device.
-    LogicalDevice &get_device() const;
+    LogicalDevice &get_device();
+
+    //! Get the resource cache
+    ResourceCache &GetResourceCache();
 
     //! Get the RenderSession instance with specific session index.
-    RenderSession &get_session(u32 index) const;
+    RenderSession &get_session(u32 index);
 
     //! Add a new RenderSession instance
     void add_session(std::string session_name, SessionProp &properties);
@@ -125,6 +129,8 @@ private:
 
     /*! \brief The logical device of this render context. */
     std::unique_ptr<LogicalDevice> device;
+
+    std::unique_ptr<ResourceCache> resourceCache;
 
     /*! \brief The render session container.
       Instead of let the render context to control everything, I use render

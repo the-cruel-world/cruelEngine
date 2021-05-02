@@ -112,6 +112,10 @@ public:
         return surface;
     };
 
+    VkImageUsageFlags GetImageUsage();
+
+    VkFormat GetImageFormat();
+
 private:
     LogicalDevice &device;
 

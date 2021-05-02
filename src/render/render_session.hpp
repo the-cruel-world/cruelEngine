@@ -30,6 +30,7 @@ class RenderTask;
 class Queue;
 class GuiOverlay;
 class RenderTarget;
+class RenderFrame;
 class SubPass;
 class RenderPipeline;
 
@@ -128,13 +129,23 @@ public:
      * Create a proper render pass according to the render properties.
      * Use subpasses. see [render pass best practice];
      */
-    void prepare_render_pass();
+    void prepare_render_pipeline();
 
     /**
      * \brief Draw
      * Draw all render tasks, gui included.
      */
     void draw();
+
+    void BeginFrame();
+
+    void EndFrame();
+
+    void Submit();
+
+    RenderFrame &GetAcriveFrame();
+
+    u32 GetActiveFrameIdx();
 
     /**
      * \brief CreateGuiStaff
@@ -182,9 +193,11 @@ public:
     LogicalDevice &get_device() const;
     Instance &     getInstance() const;
     Swapchain &    get_swapchain() const;
+    VkFormat       GetFormat();
     Window &       get_window() const;
 
     VkSurfaceKHR &get_surface();
+    VkExtent2D    GetExtent();
     CommandPool & getCommandPool();
 
     void set_session_id(u32 new_id);
@@ -263,7 +276,7 @@ private:
 
     std::unique_ptr<CommandPool> commandPool;
 
-    std::vector<std::unique_ptr<RenderTarget>> renderTargets;
+    std::vector<std::unique_ptr<RenderFrame>> RenderFrame;
 
     std::unique_ptr<RenderPipeline> renderPipeline;
 

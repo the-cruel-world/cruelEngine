@@ -1,7 +1,6 @@
 #pragma once
 #include "../vkcommon.h"
 #include "queue.hpp"
-#include "resource_cache.hpp"
 
 namespace cruelEngine
 {
@@ -85,8 +84,6 @@ public:
 
     // request_Fence();
 
-    ResourceCache &GetResourceCache();
-
     /** \brief Wait for the device the finish the task it is running. */
     VkResult wait_idle();
 
@@ -107,9 +104,6 @@ private:
 
     //! command pool
     std::unique_ptr<CommandPool> commandPool;
-
-    //! RenderCache
-    ResourceCache resource_cache;
 
     void query_queues();
 };

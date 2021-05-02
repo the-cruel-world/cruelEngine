@@ -1,5 +1,6 @@
 #include "render/render_session.hpp"
 #include "render/gui_overlay.hpp"
+#include "render/render_frame.hpp"
 #include "render/render_pipeline.hpp"
 #include "render/render_target.hpp"
 #include "render/render_task.hpp"
@@ -75,7 +76,7 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
         //        swapchain_image.get_format());
     }
 
-    renderTargets.push_back(std::make_unique<RenderTarget>(device, std::move(images)));
+    //    renderTargets.push_back(std::make_unique<RenderTarget>(device, std::move(images)));
 
     CRUEL_LOG("%s\n", "Session RenderTargets created");
 

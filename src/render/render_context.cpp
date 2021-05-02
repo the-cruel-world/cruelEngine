@@ -1,8 +1,10 @@
 #include "render_context.hpp"
 
 #include "../window/window.hpp"
+#include "render/resource_cache.hpp"
 #include "render_session.hpp"
 #include "render_task.hpp"
+
 #include "vulkan/instance.hpp"
 #include "vulkan/logical_device.hpp"
 #include "vulkan/physical_device.hpp"
@@ -41,6 +43,8 @@ RenderContext::RenderContext(RenderProp properties) : properties{properties}
     device = std::make_unique<LogicalDevice>(*physicalDevice, properties.validationLayers,
                                              properties.enabledDeviceExtensions, properties.flags);
 
+    resourceCache = std::make_unique<ResourceCache>(*device);
+
     CRUEL_LOG("%s\n", "Logical Device created");
 }
 
@@ -64,7 +68,27 @@ RenderContext::~RenderContext()
     CRUEL_LOG("Context: %p destroyed\n", this);
 }
 
-RenderSession &RenderContext::get_session(u32 index) const
+Instance &RenderContext::get_instance() const
+{
+    return *instance;
+}
+
+PhysicalDevice &RenderContext::get_gpu() const
+{
+    return *physicalDevice;
+}
+
+LogicalDevice &RenderContext::get_device()
+{
+    return *device;
+}
+
+ResourceCache &RenderContext::GetResourceCache()
+{
+    return *resourceCache;
+}
+
+RenderSession &RenderContext::get_session(u32 index)
 {
     if (index < sessions.size())
         return *(sessions[index]);
@@ -109,21 +133,6 @@ void RenderContext::render_frame()
     }
 }
 
-Instance &RenderContext::get_instance() const
-{
-    return *instance;
-}
-
-PhysicalDevice &RenderContext::get_gpu() const
-{
-    return *physicalDevice;
-}
-
-LogicalDevice &RenderContext::get_device() const
-{
-    return *device;
-}
-
 bool RenderContext::is_context_alive()
 {
     sessions.erase(std::remove_if(sessions.begin(), sessions.end(),
@@ -133,16 +142,5 @@ bool RenderContext::is_context_alive()
                    sessions.end());
     return (sessions.size() > 0);
 }
-
-// void RenderContext::loadObject(const cruelEngine::cruelScene::Object
-// &theObject)
-// {
-
-// }
-
-// void RenderContext::loadScene(const cruelEngine::cruelScene::Scene &theScene)
-// {
-
-// }
 
 } // namespace cruelEngine::cruelRender

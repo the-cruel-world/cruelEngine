@@ -13,7 +13,6 @@ class CommandBuffer;
 class FrameBuffer;
 class LogicalDevice;
 
-
 struct LoadStoreInfo
 {
     VkAttachmentLoadOp  loadOp  = VK_ATTACHMENT_LOAD_OP_CLEAR;
@@ -23,7 +22,7 @@ struct LoadStoreInfo
 struct Attachment
 {
     VkFormat              format{VK_FORMAT_UNDEFINED};
-    VkSampleCountFlagBits      samples{VK_SAMPLE_COUNT_1_BIT};
+    VkSampleCountFlagBits samples{VK_SAMPLE_COUNT_1_BIT};
     VkImageUsageFlags     usage{VK_IMAGE_USAGE_SAMPLED_BIT};
     VkImageLayout         initLayout{VK_IMAGE_LAYOUT_UNDEFINED};
     VkImageLayout         finalLayout{VK_IMAGE_LAYOUT_UNDEFINED};
@@ -75,7 +74,6 @@ public:
     const std::vector<LoadStoreInfo> &get_stencil_load_store_op() const;
 
     void set_stencil_load_store_op(const std::vector<LoadStoreInfo> stencil_load_store_op);
-
 
 private:
     LogicalDevice &device;

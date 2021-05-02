@@ -26,21 +26,29 @@ void GeomPass::prepare()
 
 void GeomPass::prepare_pipeline()
 {}
-
+void GeomPass::UpdateUniform()
+{}
 void GeomPass::draw(CommandBuffer &commandBuffer)
 {
-    auto &tasks = session.GetTasks();
-    for (auto &task : session.GetTasks())
-    {}
+    auto all_primitive = scene.GetComponents<cruelScene::Primitive>();
+
+    for (auto &primitive : all_primitive)
+    {
+        UpdateUniform();
+
+        DrawPrimitives(commandBuffer, *primitive, VK_FRONT_FACE_CLOCKWISE);
+    }
 }
 
 void GeomPass::DrawPrimitives(CommandBuffer &commandBuffer, cruelScene::Primitive &primitive,
                               VkFrontFace frontFace)
 {
-    auto name = primitive.GetName();
+    // prepare pipelineStatus
+    pipelineStatus;
 
-    // find the task
-    //    auto task = session.GetTask();
+    // invoke render pipeline for primitives
+
+    // draw primitives.
 }
 
 } // namespace cruelEngine::cruelRender

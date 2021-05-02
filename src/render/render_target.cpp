@@ -22,7 +22,8 @@ RenderTarget::RenderTarget(LogicalDevice &device, std::vector<Image> &&images_) 
         CRUEL_LOG("RenderTarget image: %p, imageView: %p\n", image.get_handle(),
                   imageViews.back().get_handle());
 
-        attachments.push_back(Attachment(image.get_format(), image.GetSampleCount(), image.GetUsage()));
+        attachments.push_back(
+            Attachment(image.get_format(), image.GetSampleCount(), image.GetUsage()));
     }
     extent = images.at(0).GetExtent();
 
@@ -118,10 +119,10 @@ void RenderTarget::set_load_store_op(const std::vector<LoadStoreInfo> load_store
 {
     load_store_op = load_store_op_;
 }
-void RenderTarget::set_stencil_load_store_op(const std::vector<LoadStoreInfo> stencil_load_store_op_)
+void RenderTarget::set_stencil_load_store_op(
+    const std::vector<LoadStoreInfo> stencil_load_store_op_)
 {
     stencil_load_store_op = stencil_load_store_op_;
 }
-
 
 } // namespace cruelEngine::cruelRender

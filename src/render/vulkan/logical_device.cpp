@@ -15,8 +15,7 @@ LogicalDevice::LogicalDevice(const PhysicalDevice &     _physicalDevice,
     physicalDevice(_physicalDevice),
     layerNames(_layerNames),
     requiredExtensions(_requiredExtensions),
-    flags(_flags),
-    resource_cache{*this}
+    flags(_flags)
 {
     createDevice();
 
@@ -170,9 +169,4 @@ VkResult LogicalDevice::wait_idle()
 {
     return vkDeviceWaitIdle(handle);
 }
-ResourceCache &LogicalDevice::GetResourceCache()
-{
-    return resource_cache;
-}
-
 } // namespace cruelEngine::cruelRender

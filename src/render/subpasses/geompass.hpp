@@ -7,6 +7,7 @@
 
 #pragma once
 #include "render/subpass.hpp"
+#include "render/vulkan/pipeline.hpp"
 
 namespace cruelEngine::cruelScene
 {
@@ -38,6 +39,8 @@ protected:
                         VkFrontFace frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE);
 
     cruelScene::Scene &scene;
+
+    PipelineStatus pipelineStatus{};
 
 private:
 };

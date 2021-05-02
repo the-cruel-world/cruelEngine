@@ -1,5 +1,6 @@
 #include "image.hpp"
 
+#include "buffer.hpp"
 #include "command_buffer.hpp"
 #include "logical_device.hpp"
 #include "physical_device.hpp"
@@ -119,7 +120,8 @@ Image::Image(LogicalDevice &device, const VkExtent3D &extent, const VkFormat &fo
 }
 
 Image::Image(LogicalDevice &device, const VkImage &handle, const VkExtent3D &extent,
-             const VkFormat &format, VkImageUsageFlags imageUsage, VkSampleCountFlagBits sampleCount) :
+             const VkFormat &format, VkImageUsageFlags imageUsage,
+             VkSampleCountFlagBits sampleCount) :
     device{device},
     handle{handle},
     type{findImageType(extent)},

@@ -10,6 +10,7 @@ RenderPass::RenderPass(LogicalDevice &device, std::vector<VkAttachmentDescriptio
                        std::vector<SubpassInfo> subpasses) :
     device{device}, attachments{attachments}
 {
+    CRUEL_LOG("RenderPass creating. attachments: %zu\n", attachments.size());
     // create subpasses and dependencies for renderpass. and then create the render pass.
     {
         create_subpass(attachments, subpasses);
@@ -66,7 +67,7 @@ void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachment
                 (VkAttachmentReference){resolve, initial_layout});
         }
 
-        VkSubpassDescription subpass_description;
+        VkSubpassDescription subpass_description{};
         subpass_description.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
 
         subpass_description.inputAttachmentCount = static_cast<u32>(input_attachments[i].size());
@@ -80,6 +81,8 @@ void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachment
         subpass_description.pResolveAttachments =
             color_resolve_attachments[i].empty() ? nullptr : color_resolve_attachments[i].data();
 
+        printf("Add subpass descriptions\n");
+
         subpass_descriptions.push_back(subpass_description);
     }
 
@@ -88,23 +91,20 @@ void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachment
      * */
     if (subpasses.empty())
     {
-        VkSubpassDescription subpass_description;
-        subpass_description.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        VkAttachmentReference colorAttachmentRef{};
+        colorAttachmentRef.attachment = 0;
+        colorAttachmentRef.layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
 
-        subpass_description.colorAttachmentCount;
-        subpass_description.pColorAttachments;
+        VkSubpassDescription subpass_description{};
 
-        subpass_description.inputAttachmentCount;
-        subpass_description.pInputAttachments;
-
-        subpass_description.pResolveAttachments;
-        subpass_description.pDepthStencilAttachment;
+        subpass_description.pipelineBindPoint    = VK_PIPELINE_BIND_POINT_GRAPHICS;
+        subpass_description.colorAttachmentCount = 1;
+        subpass_description.pColorAttachments    = &colorAttachmentRef;
 
         subpass_descriptions.push_back(subpass_description);
     }
-
-    u32                              subpass_count = subpasses.size();
-    std::vector<VkSubpassDependency> subpass_dependencies{subpass_count - 1};
+    u32 subpass_count = std::max<size_t>(1, subpasses.size()); // there will be at least one subpass
+    std::vector<VkSubpassDependency> subpass_dependencies(subpass_count - 1);
     if (subpass_count > 1)
     {
         for (u32 i = 0; i < (u32)(subpass_dependencies.size()); i++)
@@ -118,10 +118,21 @@ void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachment
             subpass_dependencies[i].dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
         }
     }
+    else if (subpass_count == 1)
+    {
+        VkSubpassDependency dependency{};
+        dependency.srcSubpass    = VK_SUBPASS_EXTERNAL;
+        dependency.dstSubpass    = 0;
+        dependency.srcStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcAccessMask = 0;
+        dependency.dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+        subpass_dependencies.push_back(std::move(dependency));
+    }
 
     VkRenderPassCreateInfo renderPassInfo{VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO};
-    renderPassInfo.pNext = nullptr;
-    renderPassInfo.flags; // optional
+
     renderPassInfo.subpassCount = static_cast<u32>(subpass_descriptions.size());
     renderPassInfo.pSubpasses   = subpass_descriptions.data();
 
@@ -130,6 +141,13 @@ void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachment
 
     renderPassInfo.attachmentCount = static_cast<u32>(this->attachments.size());
     renderPassInfo.pAttachments    = this->attachments.data();
+
+    printf("subpassCount: %d\n", renderPassInfo.subpassCount);
+    printf("subpasses: %p\n", renderPassInfo.pSubpasses);
+    printf("dependencyCount: %d\n", renderPassInfo.dependencyCount);
+    printf("dependencies: %p\n", renderPassInfo.pDependencies);
+    printf("attachmentCount: %d\n", renderPassInfo.attachmentCount);
+    printf("attachments: %p\n", renderPassInfo.pAttachments);
 
     VK_CHECK_RESULT(vkCreateRenderPass(device.get_handle(), &renderPassInfo, nullptr, &handle));
 }

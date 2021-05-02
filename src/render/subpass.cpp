@@ -2,7 +2,8 @@
 // Created by yiwen on 4/20/21.
 //
 
-#include "subpass.hpp"
+#include "render/subpass.hpp"
+#include "render/vulkan/render_pass.hpp"
 
 namespace cruelEngine::cruelRender
 {

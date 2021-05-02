@@ -7,8 +7,6 @@
 #pragma once
 #include "vkcommon.h"
 
-#include "render/vulkan/render_pass.hpp"
-
 namespace cruelEngine::cruelScene
 {
 class Scene;
@@ -73,8 +71,6 @@ public:
 
 protected:
     RenderSession &session;
-
-    std::unique_ptr<RenderPass> renderPass{nullptr};
 
     std::vector<uint32_t> input_attachments{};
 

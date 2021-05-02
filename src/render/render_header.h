@@ -1,9 +1,12 @@
 #include "gui_overlay.hpp"
+#include "hash.h"
 #include "render_context.hpp"
+#include "render_frame.hpp"
 #include "render_pipeline.hpp"
 #include "render_session.hpp"
 #include "render_target.hpp"
 #include "render_task.hpp"
+#include "resource_cache.hpp"
 #include "subpass.hpp"
 
 #include "render_tasks/render_tasks.hpp"

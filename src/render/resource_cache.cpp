@@ -1,11 +1,13 @@
 #include "resource_cache.hpp"
-
-#include "logical_device.hpp"
+#include "hash.h"
+#include "render/vulkan/logical_device.hpp"
 
 namespace cruelEngine::cruelRender
 {
 ResourceCache::ResourceCache(LogicalDevice &device) : device{device}
-{}
+{
+    CRUEL_LOG("%s\n", "ResourceCache created.");
+}
 
 void ResourceCache::clear_pipeline()
 {
@@ -32,6 +34,7 @@ ResourceCache::~ResourceCache()
     clear_shader_module();
     clear_pipeline();
     clear_frame_buffer();
+    CRUEL_LOG("%s\n", "ResourceCache destroyed.");
 }
 
 } // namespace cruelEngine::cruelRender

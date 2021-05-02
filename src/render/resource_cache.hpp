@@ -1,11 +1,12 @@
 #pragma once
-#include "../vkcommon.h"
-#include "buffer.hpp"
-#include "descriptor.hpp"
-#include "frame_buffer.hpp"
-#include "pipeline.hpp"
-#include "render_pass.hpp"
-#include "shader.hpp"
+#include "vkcommon.h"
+
+#include "render/vulkan/buffer.hpp"
+#include "render/vulkan/descriptor.hpp"
+#include "render/vulkan/frame_buffer.hpp"
+#include "render/vulkan/pipeline.hpp"
+#include "render/vulkan/render_pass.hpp"
+#include "render/vulkan/shader.hpp"
 
 namespace cruelEngine::cruelRender
 {
@@ -21,6 +22,13 @@ class RenderPass;
 class FrameBuffer;
 
 class LogicalDevice;
+
+struct LoadStoreInfo;
+struct Attachment;
+
+class RenderTarget;
+class RenderPipline;
+class Subpass;
 
 /**
  * \brief Resource cache. It manages the resources that creates on gpu includes
@@ -48,15 +56,23 @@ public:
 
     DescriptorSetLayout &request_descriptor_set_layout();
 
-    GraphicsPipeline &request_graphics_pipeline();
+    GraphicsPipeline &request_graphics_pipeline(PipelineStatus &pipeline_state);
 
-    ComputePipeline &request_compute_pipeline();
+    ComputePipeline &request_compute_pipeline(PipelineStatus &pipeline_state);
 
     DescriptorSet &request_descriptor_set();
 
-    RenderPass &request_render_pass();
+    RenderPass &request_render_pass(const std::vector<VkAttachmentDescription> &attachments,
+                                    const std::vector<SubpassInfo>              subpasses);
 
-    FrameBuffer &request_framebuffer();
+    RenderPass &request_render_pass(const std::vector<Attachment> &   attachments,
+                                    const std::vector<LoadStoreInfo> &load_store,
+                                    const std::vector<LoadStoreInfo> &stencil_load_store,
+                                    const std::vector<SubpassInfo>    subpasses);
+
+    FrameBuffer &request_framebuffer(const RenderTarget &render_target,
+                                     const RenderPass &  renderPass);
+
 
     void warmup();
 
@@ -115,5 +131,28 @@ private:
     std::mutex compute_pipeline_mutex;
 
     std::mutex framebuffer_mutex;
+
+    template <class T, class... A>
+    T request_resource(std::unordered_map<std::size_t, T> &resources, A &... args)
+    {
+        size_t hash_val {0U};
+        hash_param(hash_val, args...);
+
+        auto res_it = resources.find(hash_val);
+
+        if (res_it != resources.end())
+        {
+            return res_it->second;
+        }
+
+        T resource(device, args...);
+
+        auto res_ins_it = resources.template emplace(hash_val, std::move(resource));
+
+        res_it = res_ins_it.first;
+
+        return res_it->second;
+
+    }
 };
 } // namespace cruelEngine::cruelRender

@@ -44,12 +44,12 @@ public:
     VkDeviceSize       get_memory_size() const;
     VkImageSubresource get_subresource() const;
 
-    const VkImageType &      get_image_type() const;
-    const VkFormat &         get_format() const;
+    const VkImageType &         get_image_type() const;
+    const VkFormat &            get_format() const;
     const VkSampleCountFlagBits GetSampleCount() const;
-    u32                      getArrayLayers() const;
-    const VkImageUsageFlags  GetUsage() const;
-    const VkExtent3D         GetExtent() const;
+    u32                         getArrayLayers() const;
+    const VkImageUsageFlags     GetUsage() const;
+    const VkExtent3D            GetExtent() const;
 
     void copyData(void *data, VkDeviceSize size);
 
@@ -62,14 +62,14 @@ private:
     VkDeviceMemory imageMemory = VK_NULL_HANDLE;
     VkDeviceSize   imageMemorySize{};
 
-    VkImageType        type{};
-    VkExtent3D         extent{};
-    VkFormat           format{};
+    VkImageType           type{};
+    VkExtent3D            extent{};
+    VkFormat              format{};
     VkSampleCountFlagBits sampleCount{};
-    VkImageTiling      tiling{};
-    VkImageUsageFlags  usage{};
-    VkImageSubresource subresource{};
-    u32                arrayLayers;
+    VkImageTiling         tiling{};
+    VkImageUsageFlags     usage{};
+    VkImageSubresource    subresource{};
+    u32                   arrayLayers;
 
     VkImageType findImageType(VkExtent3D extent);
 };

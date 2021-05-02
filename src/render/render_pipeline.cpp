@@ -8,6 +8,7 @@
 #include "render/subpass.hpp"
 #include "render/vulkan/command_buffer.hpp"
 #include "render/vulkan/frame_buffer.hpp"
+#include "render/vulkan/render_pass.hpp"
 
 namespace cruelEngine::cruelRender
 {
@@ -106,25 +107,26 @@ void RenderPipeline::BuildRenderPass(RenderTarget &target)
 
     // build the final renderpass
     // create the render pass
-    auto targetAttachments = target.GetAttachments();
-    auto load_store = target.get_load_store_op();
+    auto targetAttachments  = target.GetAttachments();
+    auto load_store         = target.get_load_store_op();
     auto stencil_load_store = target.get_stencil_load_store_op();
 
-    std::vector<VkAttachmentDescription> attachments (targetAttachments.size());
+    std::vector<VkAttachmentDescription> attachments(targetAttachments.size());
     for (size_t i = 0; i < targetAttachments.size(); i++)
     {
-        VkAttachmentDescription attachment{};
+        attachments[i].format  = targetAttachments[i].format;
+        attachments[i].samples = targetAttachments[i].samples;
 
-        attachment.format = targetAttachments[i].format;
-        attachment.samples = targetAttachments[i].samples;
-        attachment.initialLayout = targetAttachments[i].initLayout;
-        attachment.finalLayout = targetAttachments[i].finalLayout;
+        attachments[i].initialLayout = targetAttachments[i].initLayout;
+        attachments[i].finalLayout   = targetAttachments[i].finalLayout;
 
-        attachment.loadOp = load_store[i].loadOp;
-        attachment.storeOp = load_store[i].storeOp;
-        attachment.stencilLoadOp = stencil_load_store[i].loadOp;
-        attachment.stencilStoreOp = stencil_load_store[i].storeOp;
+        attachments[i].loadOp         = load_store[i].loadOp;
+        attachments[i].storeOp        = load_store[i].storeOp;
+        attachments[i].stencilLoadOp  = stencil_load_store[i].loadOp;
+        attachments[i].stencilStoreOp = stencil_load_store[i].storeOp;
     }
+
+    // request a renderpass instead of create a new one.
     renderPass = std::make_unique<RenderPass>(device, attachments, subpass_info);
 
     CRUEL_LOG("%s\n", "Pipeline subPasses created");
