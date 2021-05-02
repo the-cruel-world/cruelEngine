@@ -45,9 +45,10 @@ public:
 
     RenderPipeline &operator=(RenderPipeline &&) = delete;
 
-    virtual ~RenderPipeline() = default;
+    virtual ~RenderPipeline();
 
-    void Draw(CommandBuffer &commandBuffer, RenderTarget &target, VkSubpassContents contents);
+    void Draw(CommandBuffer &commandBuffer, RenderTarget &target,
+              VkSubpassContents contents = VK_SUBPASS_CONTENTS_INLINE);
 
     void Prepare();
 
@@ -63,7 +64,7 @@ public:
 
     const std::vector<std::unique_ptr<RenderTask>> &GetTasks() const;
 
-    void BuildRenderPass();
+    void BuildRenderPass(RenderTarget &target);
 
 private:
     LogicalDevice &device;

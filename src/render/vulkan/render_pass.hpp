@@ -7,6 +7,7 @@ namespace cruelRender
 {
 class LogicalDevice;
 
+
 struct SubpassInfo
 {
     std::vector<uint32_t> input_attachments;

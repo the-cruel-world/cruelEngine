@@ -5,6 +5,7 @@ namespace cruelEngine::cruelRender
 {
 class RenderPass;
 class LogicalDevice;
+class ImageView;
 
 /**
  * \todo framebuffer multi image support.
@@ -12,8 +13,11 @@ class LogicalDevice;
 class FrameBuffer
 {
 public:
-    FrameBuffer(LogicalDevice &device, const std::vector<VkImageView> &imageView, const VkExtent2D &extent,
-                const RenderPass &renderPass);
+    FrameBuffer(LogicalDevice &device, const std::vector<VkImageView> &imageView,
+                const VkExtent2D &extent, const RenderPass &renderPass);
+
+    FrameBuffer(LogicalDevice &device, const std::vector<ImageView> &imageView,
+                const VkExtent2D &extent, const RenderPass &renderPass);
 
     FrameBuffer(const FrameBuffer &) = delete;
 

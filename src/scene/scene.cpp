@@ -1,6 +1,6 @@
 #include "scene.hpp"
-
 #include "object.hpp"
+#include "scene/scene_graph.hpp"
 
 namespace cruelEngine::cruelScene
 {

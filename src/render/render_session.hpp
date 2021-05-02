@@ -263,7 +263,7 @@ private:
 
     std::unique_ptr<CommandPool> commandPool;
 
-    std::vector<std::unique_ptr<RenderTarget>> renderFrames{};
+    std::vector<std::unique_ptr<RenderTarget>> renderTargets;
 
     std::unique_ptr<RenderPipeline> renderPipeline;
 

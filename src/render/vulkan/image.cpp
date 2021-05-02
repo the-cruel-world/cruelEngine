@@ -62,6 +62,7 @@ Image::Image(LogicalDevice &device, const VkExtent3D &extent, const VkFormat &fo
     type{findImageType(extent)},
     extent{extent},
     format{format},
+    sampleCount{sample_count},
     tiling{tiling},
     usage{image_usage}
 {
@@ -118,7 +119,7 @@ Image::Image(LogicalDevice &device, const VkExtent3D &extent, const VkFormat &fo
 }
 
 Image::Image(LogicalDevice &device, const VkImage &handle, const VkExtent3D &extent,
-             const VkFormat &format, VkImageUsageFlags imageUsage, VkSampleCountFlags sampleCount) :
+             const VkFormat &format, VkImageUsageFlags imageUsage, VkSampleCountFlagBits sampleCount) :
     device{device},
     handle{handle},
     type{findImageType(extent)},
@@ -264,6 +265,14 @@ void Image::copyData(void *data, VkDeviceSize size)
         throw std::runtime_error("Image::copyData fatal: data size larger than allocated space.");
 
     // Copy data to image memory
+}
+const VkSampleCountFlagBits Image::GetSampleCount() const
+{
+    return sampleCount;
+}
+const VkImageUsageFlags Image::GetUsage() const
+{
+    return usage;
 }
 
 } // namespace cruelEngine::cruelRender

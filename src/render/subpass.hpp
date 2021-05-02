@@ -49,15 +49,27 @@ public:
     // them to a simpler form
     std::vector<uint32_t> get_input_attachments();
 
+    void set_input_attachments(const std::vector<uint32_t> input_attachments);
+
     std::vector<uint32_t> get_output_attachments();
+
+    void set_output_attachments(const std::vector<uint32_t> output_attachments);
 
     std::vector<uint32_t> get_color_resolve_attachments();
 
+    void set_color_resolve_attachments(const std::vector<uint32_t> color_resolve_attachments);
+
     bool get_disable_depth_stencil_attachment();
+
+    void set_disable_depth_stencil_attachment(const bool disable_depth_stencil_attachment);
 
     uint32_t get_depth_stencil_resolve_attachment();
 
+    void set_depth_stencil_resolve_attachment(const u32 depth_stencil_resolve_attachment);
+
     VkResolveModeFlagBits get_depth_stencil_resolve_mode();
+
+    void set_depth_stencil_resolve_mode(const VkResolveModeFlagBits depth_stencil_resolve_mode);
 
 protected:
     RenderSession &session;

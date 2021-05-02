@@ -3,9 +3,11 @@
 //
 
 #include "render/render_pipeline.hpp"
+#include "render/render_target.hpp"
 #include "render/render_task.hpp"
 #include "render/subpass.hpp"
-#include "render/render_target.hpp"
+#include "render/vulkan/command_buffer.hpp"
+#include "render/vulkan/frame_buffer.hpp"
 
 namespace cruelEngine::cruelRender
 {
@@ -18,10 +20,19 @@ RenderPipeline::RenderPipeline(LogicalDevice &                         device,
     CRUEL_LOG("%s\n", "Pipeline Created");
 }
 
+RenderPipeline::~RenderPipeline()
+{
+    CRUEL_LOG("RenderPipeline: %p destroyed\n", this);
+}
+
 void RenderPipeline::Draw(CommandBuffer &commandBuffer, RenderTarget &target,
                           VkSubpassContents contents)
 {
     assert(!subpasses.empty() && "RenderPipeline should contain at least one subpass.");
+
+    if (renderPass)
+        renderPass.reset();
+    BuildRenderPass(target);
 
     for (size_t i = 0; i < subpasses.size(); i++)
     {
@@ -33,7 +44,11 @@ void RenderPipeline::Draw(CommandBuffer &commandBuffer, RenderTarget &target,
 
         if (i == 0)
         {
-            // commandBuffer.beginRenderPass();
+            // require framebuffer in resource cache
+            VkExtent2D  extent2D = {target.GetExtent().width, target.GetExtent().height};
+            FrameBuffer render_frame_buffer(device, target.GetViews(), extent2D, *renderPass);
+            commandBuffer.begin_renderpass(renderPass->get_handle(),
+                                           render_frame_buffer.get_handle(), extent2D);
         }
         else
         {
@@ -70,7 +85,7 @@ std::unique_ptr<SubPass> &RenderPipeline::GetActiveSubpass()
     return subpasses.at(active_subpass_idx);
 }
 
-void RenderPipeline::BuildRenderPass()
+void RenderPipeline::BuildRenderPass(RenderTarget &target)
 {
     assert(subpasses.size() > 0 && "Can not create a renderpass without any subopass.");
 
@@ -91,7 +106,25 @@ void RenderPipeline::BuildRenderPass()
 
     // build the final renderpass
     // create the render pass
-    std::vector<VkAttachmentDescription> attachments;
+    auto targetAttachments = target.GetAttachments();
+    auto load_store = target.get_load_store_op();
+    auto stencil_load_store = target.get_stencil_load_store_op();
+
+    std::vector<VkAttachmentDescription> attachments (targetAttachments.size());
+    for (size_t i = 0; i < targetAttachments.size(); i++)
+    {
+        VkAttachmentDescription attachment{};
+
+        attachment.format = targetAttachments[i].format;
+        attachment.samples = targetAttachments[i].samples;
+        attachment.initialLayout = targetAttachments[i].initLayout;
+        attachment.finalLayout = targetAttachments[i].finalLayout;
+
+        attachment.loadOp = load_store[i].loadOp;
+        attachment.storeOp = load_store[i].storeOp;
+        attachment.stencilLoadOp = stencil_load_store[i].loadOp;
+        attachment.stencilStoreOp = stencil_load_store[i].storeOp;
+    }
     renderPass = std::make_unique<RenderPass>(device, attachments, subpass_info);
 
     CRUEL_LOG("%s\n", "Pipeline subPasses created");

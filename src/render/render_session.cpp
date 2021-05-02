@@ -64,16 +64,19 @@ RenderSession::RenderSession(Instance &instance, LogicalDevice &device,
 
     CRUEL_LOG("%s\n", "Session CommandPool created");
 
-    VkExtent3D extent3D{swapchain->get_extent().width, swapchain->get_extent().height, 1};
+    VkExtent3D         extent3D{swapchain->get_extent().width, swapchain->get_extent().height, 1};
+    std::vector<Image> images;
     for (auto &image : swapchain->get_images())
     {
-        Image     swapchain_image(device, image, extent3D, swapchain->get_surface_format().format,
+        Image swapchain_image(device, image, extent3D, swapchain->get_surface_format().format,
                               swapchain->get_properties().image_usage);
-        ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
-
-        renderFrames.push_back(
-            std::make_unique<RenderTarget>(device, (swapchain_image), (swapchain_imageView)));
+        images.push_back(std::move(swapchain_image));
+        //        ImageView swapchain_imageView(device, &swapchain_image,
+        //        swapchain_image.get_format());
     }
+
+    renderTargets.push_back(std::make_unique<RenderTarget>(device, std::move(images)));
+
     CRUEL_LOG("%s\n", "Session RenderTargets created");
 
 #ifdef RENDER_DEBUG
@@ -118,7 +121,7 @@ RenderSession::~RenderSession()
         vkDestroySemaphore(device.get_handle(), renderFinishedSemaphore, nullptr);
     }
 
-    renderFrames.clear();
+    //    renderFrames.clear();
     swapchain.reset();
 
     tasks.clear();
@@ -133,9 +136,8 @@ RenderSession::~RenderSession()
         surface = VK_NULL_HANDLE;
     }
     window.reset();
-#ifdef RENDER_DEBUG
-    std::cout << "Session destroied" << std::endl;
-#endif
+
+    CRUEL_LOG("Session: %p destroyed\n", this);
 }
 
 void RenderSession::add_new_task(std::unique_ptr<RenderTask> task)
@@ -163,125 +165,129 @@ void RenderSession::draw()
 
     graphic_queue->wait_idle();
 
-    for (auto &renderFrame : renderFrames)
-    {
-        //        renderFrame->RecordBegin();
-        VkViewport viewport{};
-        viewport.x        = 0.0f;
-        viewport.y        = 0.0f;
-        viewport.width    = static_cast<float>(swapchain.get()->get_extent().width);
-        viewport.height   = static_cast<float>(swapchain.get()->get_extent().height);
-        viewport.minDepth = 0.0f;
-        viewport.maxDepth = 1.0f;
-        //        renderFrame->GetCommandBuffer().setViewport(0, {viewport});
-        VkRect2D scissor{};
-        scissor.offset = {0, 0};
-        scissor.extent = swapchain.get()->get_extent();
-        //        renderFrame->GetCommandBuffer().setScissor(0, {scissor});
-
-        //        for (auto &task : tasks)
-        //        {
-        //            task->draw(renderFrame->GetCommandBuffer(), 0);
-        //        }
-
-        //        if (guiOverlay != nullptr)
-        //        {
-        //            vkCmdSetViewport(renderFrame->GetCommandBuffer().get_handle(), 0, 1,
-        //            &viewport); vkCmdSetScissor(renderFrame->GetCommandBuffer().get_handle(), 0,
-        //            1, &scissor); guiOverlay->Draw(renderFrame->GetCommandBuffer());
-        //        }
-
-        //        renderFrame->RecordEnd();
-    }
+    //    for (auto &renderFrame : renderFrames)
+    //    {
+    //        //        renderFrame->RecordBegin();
+    //        VkViewport viewport{};
+    //        viewport.x        = 0.0f;
+    //        viewport.y        = 0.0f;
+    //        viewport.width    = static_cast<float>(swapchain.get()->get_extent().width);
+    //        viewport.height   = static_cast<float>(swapchain.get()->get_extent().height);
+    //        viewport.minDepth = 0.0f;
+    //        viewport.maxDepth = 1.0f;
+    //        //        renderFrame->GetCommandBuffer().setViewport(0, {viewport});
+    //        VkRect2D scissor{};
+    //        scissor.offset = {0, 0};
+    //        scissor.extent = swapchain.get()->get_extent();
+    //        //        renderFrame->GetCommandBuffer().setScissor(0, {scissor});
+    //
+    //        //        for (auto &task : tasks)
+    //        //        {
+    //        //            task->draw(renderFrame->GetCommandBuffer(), 0);
+    //        //        }
+    //
+    //        //        if (guiOverlay != nullptr)
+    //        //        {
+    //        //            vkCmdSetViewport(renderFrame->GetCommandBuffer().get_handle(), 0, 1,
+    //        //            &viewport);
+    //        vkCmdSetScissor(renderFrame->GetCommandBuffer().get_handle(), 0,
+    //        //            1, &scissor); guiOverlay->Draw(renderFrame->GetCommandBuffer());
+    //        //        }
+    //
+    //        //        renderFrame->RecordEnd();
+    //    }
 }
 
 void RenderSession::render_frame()
 {
-    render_time_marker = std::chrono::high_resolution_clock::now();
-
-    RENDER_LOG("frames in flight: %d frames\n",
-               static_cast<int>(std::count_if(
-                   renderFrames.begin(), renderFrames.end(),
-                   [](std::unique_ptr<RenderTarget> const &frame) { return frame->GetStatus(); })));
-
-    u32      image_index;
-    VkResult result = swapchain->acquire_next_image(image_index, imageAvailableSemaphore);
-
-    vkWaitForFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence(), VK_TRUE,
-                    UINT64_MAX);
-    renderFrames[image_index]->SetStatus(false);
-
-    VkSemaphore tempSemaphore                     = renderFrames[image_index]->GetImageAvaiable();
-    renderFrames[image_index]->GetImageAvaiable() = imageAvailableSemaphore;
-    imageAvailableSemaphore                       = tempSemaphore;
-
-    if (result == VK_ERROR_OUT_OF_DATE_KHR)
-    {
-        update_swapchain();
-        return;
-    }
-
-    if (guiOverlay != nullptr)
-    {
-        guiOverlay->renderFrame();
-        if (guiOverlay->needUpdate())
-        {
-            guiOverlay->update();
-#ifdef RENDER_DEBUG
-            std::cout << "[Session::render_frame] guiOverlay needs Update." << std::endl;
-#endif
-            draw();
-        }
-#ifdef RENDER_DEBUG
-        else
-            std::cout << "[Session::render_frame] guiOverlay doesn't need Update." << std::endl;
-#endif
-    }
-
-    for (auto &task : tasks)
-    {
-        task->render();
-    }
-
-    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
-
-    VkSemaphore waitSemaphores[]   = {renderFrames[image_index]->GetImageAvaiable()};
-    VkSemaphore signalSemaphores[] = {renderFrames[image_index]->GetRenderFinished()};
-
-    VkSubmitInfo submitInfo{VK_STRUCTURE_TYPE_SUBMIT_INFO};
-    submitInfo.commandBufferCount = 1;
-    //    submitInfo.pCommandBuffers      =
-    //    &(renderFrames[image_index]->GetCommandBuffer().get_handle());
-    submitInfo.waitSemaphoreCount   = 1;
-    submitInfo.pWaitSemaphores      = waitSemaphores;
-    submitInfo.pWaitDstStageMask    = waitStages;
-    submitInfo.signalSemaphoreCount = 1;
-    submitInfo.pSignalSemaphores    = signalSemaphores;
-
-    vkWaitForFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence(), VK_TRUE,
-                    UINT64_MAX);
-    vkResetFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence());
-    VK_CHECK_RESULT(vkQueueSubmit(graphic_queue->get_handle(), 1, &submitInfo,
-                                  renderFrames[image_index]->GetFence()));
-    renderFrames[image_index]->SetStatus(true);
-
-    VkSwapchainKHR swapChains[] = {swapchain->get_handle()};
-
-    VkPresentInfoKHR presentInfo{};
-    presentInfo.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
-    presentInfo.waitSemaphoreCount = 1;
-    presentInfo.pWaitSemaphores    = signalSemaphores;
-    presentInfo.swapchainCount     = 1;
-    presentInfo.pSwapchains        = swapChains;
-    presentInfo.pImageIndices      = &image_index;
-    presentInfo.pResults           = nullptr; // Optional
-
-    result = present_queue->present(presentInfo);
-
-    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
-    {
-        update_swapchain();
-    }
+    //    render_time_marker = std::chrono::high_resolution_clock::now();
+    //
+    //    RENDER_LOG("frames in flight: %d frames\n",
+    //               static_cast<int>(std::count_if(
+    //                   renderFrames.begin(), renderFrames.end(),
+    //                   [](std::unique_ptr<RenderTarget> const &frame) { return frame->GetStatus();
+    //                   })));
+    //
+    //    u32      image_index;
+    //    VkResult result = swapchain->acquire_next_image(image_index, imageAvailableSemaphore);
+    //
+    //    vkWaitForFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence(), VK_TRUE,
+    //                    UINT64_MAX);
+    //    renderFrames[image_index]->SetStatus(false);
+    //
+    //    VkSemaphore tempSemaphore                     =
+    //    renderFrames[image_index]->GetImageAvaiable();
+    //    renderFrames[image_index]->GetImageAvaiable() = imageAvailableSemaphore;
+    //    imageAvailableSemaphore                       = tempSemaphore;
+    //
+    //    if (result == VK_ERROR_OUT_OF_DATE_KHR)
+    //    {
+    //        update_swapchain();
+    //        return;
+    //    }
+    //
+    //    if (guiOverlay != nullptr)
+    //    {
+    //        guiOverlay->renderFrame();
+    //        if (guiOverlay->needUpdate())
+    //        {
+    //            guiOverlay->update();
+    //#ifdef RENDER_DEBUG
+    //            std::cout << "[Session::render_frame] guiOverlay needs Update." << std::endl;
+    //#endif
+    //            draw();
+    //        }
+    //#ifdef RENDER_DEBUG
+    //        else
+    //            std::cout << "[Session::render_frame] guiOverlay doesn't need Update." <<
+    //            std::endl;
+    //#endif
+    //    }
+    //
+    //    for (auto &task : tasks)
+    //    {
+    //        task->render();
+    //    }
+    //
+    //    VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+    //
+    //    VkSemaphore waitSemaphores[]   = {renderFrames[image_index]->GetImageAvaiable()};
+    //    VkSemaphore signalSemaphores[] = {renderFrames[image_index]->GetRenderFinished()};
+    //
+    //    VkSubmitInfo submitInfo{VK_STRUCTURE_TYPE_SUBMIT_INFO};
+    //    submitInfo.commandBufferCount = 1;
+    //    //    submitInfo.pCommandBuffers      =
+    //    //    &(renderFrames[image_index]->GetCommandBuffer().get_handle());
+    //    submitInfo.waitSemaphoreCount   = 1;
+    //    submitInfo.pWaitSemaphores      = waitSemaphores;
+    //    submitInfo.pWaitDstStageMask    = waitStages;
+    //    submitInfo.signalSemaphoreCount = 1;
+    //    submitInfo.pSignalSemaphores    = signalSemaphores;
+    //
+    //    vkWaitForFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence(), VK_TRUE,
+    //                    UINT64_MAX);
+    //    vkResetFences(device.get_handle(), 1, &renderFrames[image_index]->GetFence());
+    //    VK_CHECK_RESULT(vkQueueSubmit(graphic_queue->get_handle(), 1, &submitInfo,
+    //                                  renderFrames[image_index]->GetFence()));
+    //    renderFrames[image_index]->SetStatus(true);
+    //
+    //    VkSwapchainKHR swapChains[] = {swapchain->get_handle()};
+    //
+    //    VkPresentInfoKHR presentInfo{};
+    //    presentInfo.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+    //    presentInfo.waitSemaphoreCount = 1;
+    //    presentInfo.pWaitSemaphores    = signalSemaphores;
+    //    presentInfo.swapchainCount     = 1;
+    //    presentInfo.pSwapchains        = swapChains;
+    //    presentInfo.pImageIndices      = &image_index;
+    //    presentInfo.pResults           = nullptr; // Optional
+    //
+    //    result = present_queue->present(presentInfo);
+    //
+    //    if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR)
+    //    {
+    //        update_swapchain();
+    //    }
 
     render_time = std::chrono::duration<float, std::chrono::milliseconds::period>(
                       std::chrono::high_resolution_clock::now() - render_time_marker)
@@ -362,7 +368,7 @@ void RenderSession::update_swapchain()
     graphic_queue->wait_idle();
     present_queue->wait_idle();
 
-    renderFrames.clear();
+    //    renderFrames.clear();
     swapchain = std::make_unique<Swapchain>(*swapchain, VkExtent2D({(u32) width, (u32) height}));
 
     //    prepare_render_pass();
@@ -381,8 +387,9 @@ void RenderSession::update_swapchain()
                               swapchain->get_properties().image_usage);
         ImageView swapchain_imageView(device, &swapchain_image, swapchain_image.get_format());
 
-        renderFrames.push_back(
-            std::make_unique<RenderTarget>(device, (swapchain_image), (swapchain_imageView)));
+        //        renderFrames.push_back(
+        //            std::make_unique<RenderTarget>(device, (swapchain_image),
+        //            (swapchain_imageView)));
     }
 
     if (guiOverlay != nullptr)

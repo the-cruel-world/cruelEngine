@@ -60,6 +60,8 @@ RenderContext::~RenderContext()
 
     /* Destroy instance. */
     instance.reset();
+
+    CRUEL_LOG("Context: %p destroyed\n", this);
 }
 
 RenderSession &RenderContext::get_session(u32 index) const

@@ -23,17 +23,20 @@ inline std::vector<uint8_t> get_attribute_data(tinygltf::Model model, uint32_t a
 };
 
 // Function to load model from gltf file.
-bool load_model(tinygltf::Model &model, const char *filename) {
+bool load_model(tinygltf::Model &model, const char *filename)
+{
     tinygltf::TinyGLTF loader;
-    std::string err;
-    std::string warn;
+    std::string        err;
+    std::string        warn;
 
     bool res = loader.LoadASCIIFromFile(&model, &err, &warn, filename);
-    if (!warn.empty()) {
+    if (!warn.empty())
+    {
         std::cout << "WARN: " << warn << std::endl;
     }
 
-    if (!err.empty()) {
+    if (!err.empty())
+    {
         std::cout << "ERR: " << err << std::endl;
     }
 
@@ -45,8 +48,7 @@ bool load_model(tinygltf::Model &model, const char *filename) {
     return res;
 }
 
-bool load_mesh(tinygltf::Model &model,
-               cruelScene::Scene &scene)
+bool load_mesh(tinygltf::Model &model, cruelScene::Scene &scene)
 {
     bool res = true;
     // load mesh;
@@ -57,49 +59,52 @@ bool load_mesh(tinygltf::Model &model,
         auto scene_mesh = std::make_unique<cruelScene::Mesh>(gltf_mesh.name);
         for (auto &gltf_primitive : gltf_mesh.primitives)
         {
-            int32_t  bufferOffset, bufferSize, vertexCount;
+            int32_t bufferOffset, bufferSize, vertexCount;
 
             auto scene_primitive = std::make_unique<cruelScene::Primitive>();
 
-
             for (auto attribute : gltf_primitive.attributes)
             {
-                const tinygltf::Accessor &posAccessor = model.accessors[attribute.second];
-                const tinygltf::BufferView &posView = model.bufferViews[posAccessor.bufferView];
+                const tinygltf::Accessor &  posAccessor = model.accessors[attribute.second];
+                const tinygltf::BufferView &posView     = model.bufferViews[posAccessor.bufferView];
 
                 bufferOffset = posAccessor.byteOffset + posView.byteOffset;
-                vertexCount = static_cast<uint32_t>(posAccessor.count);
+                vertexCount  = static_cast<uint32_t>(posAccessor.count);
 
                 std::string attr_name = attribute.first;
-                cout << "\t\tAttribute name: \"" << attr_name + "\"\t: " << attribute.second << "\t offset: " << bufferOffset << "\tlength: " << vertexCount << "\t stride: " << posView.byteStride << endl;
+                cout << "\t\tAttribute name: \"" << attr_name + "\"\t: " << attribute.second
+                     << "\t offset: " << bufferOffset << "\tlength: " << vertexCount
+                     << "\t stride: " << posView.byteStride << endl;
             }
 
             auto attribute = gltf_primitive.attributes.find("POSITION");
 
-            assert(attribute != gltf_primitive.attributes.end() && "Position attribute is necessary.");
+            assert(attribute != gltf_primitive.attributes.end() &&
+                   "Position attribute is necessary.");
             const tinygltf::Accessor &posAccessor = model.accessors[attribute->second];
 
             const tinygltf::BufferView &posView = model.bufferViews[posAccessor.bufferView];
 
             bufferOffset = posAccessor.byteOffset + posView.byteOffset;
-            vertexCount = static_cast<uint32_t>(posAccessor.count);
-            bufferSize = static_cast<uint32_t>(posAccessor.count * posView.byteStride);
+            vertexCount  = static_cast<uint32_t>(posAccessor.count);
+            bufferSize   = static_cast<uint32_t>(posAccessor.count * posView.byteStride);
 
             // fill data;
-            char *data = scene_primitive->GetDataMutant();
-            const char *src = reinterpret_cast<const char *>(&(model.buffers[posView.buffer].data[posAccessor.byteOffset + posView.byteOffset]));
+            char *      data = scene_primitive->GetDataMutant();
+            const char *src  = reinterpret_cast<const char *>(
+                &(model.buffers[posView.buffer].data[posAccessor.byteOffset + posView.byteOffset]));
             size_t dataSize = scene_primitive->GetDataSize();
             if (dataSize < bufferSize)
             {
                 free(data);
-                data = (char*)malloc(sizeof(char) * bufferSize);
+                data     = (char *) malloc(sizeof(char) * bufferSize);
                 dataSize = bufferSize;
                 scene_primitive->SetDataSize(bufferSize);
             }
 
-//            printf("original data: %d", src);
+            //            printf("original data: %d", src);
 
-            for (size_t i=0;i<vertexCount;i++)
+            for (size_t i = 0; i < vertexCount; i++)
             {
                 memcpy(data, src, posView.byteStride);
                 data += static_cast<uint32_t>(posView.byteStride);
@@ -108,11 +113,15 @@ bool load_mesh(tinygltf::Model &model,
 
             scene_primitive->SetVertexLength(vertexCount);
 
-            cruelScene::VertexAttribute position {cruelScene::VERTEX_FORMAT_R32G32B32_FLOAT, static_cast<uint32_t>(bufferOffset), static_cast<uint32_t>(posView.byteStride)};
+            cruelScene::VertexAttribute position{cruelScene::VERTEX_FORMAT_R32G32B32_FLOAT,
+                                                 static_cast<uint32_t>(bufferOffset),
+                                                 static_cast<uint32_t>(posView.byteStride)};
 
-            scene_primitive->SetVertexAttributes({position});       // Set the point attributes
-            glm::vec3 min{posAccessor.minValues[0], posAccessor.minValues[1], posAccessor.minValues[2]};
-            glm::vec3 max{posAccessor.maxValues[0], posAccessor.maxValues[1], posAccessor.maxValues[2]};
+            scene_primitive->SetVertexAttributes({position}); // Set the point attributes
+            glm::vec3 min{posAccessor.minValues[0], posAccessor.minValues[1],
+                          posAccessor.minValues[2]};
+            glm::vec3 max{posAccessor.maxValues[0], posAccessor.maxValues[1],
+                          posAccessor.maxValues[2]};
             scene_primitive->UpdateBounds(min, max);
 
             scene_mesh->AddPrimitive(*scene_primitive);
@@ -124,12 +133,11 @@ bool load_mesh(tinygltf::Model &model,
 }
 
 // Function to build nodes from gltf file.
-bool load_nodes(tinygltf::Model &model,
-                cruelScene::Scene &scene)
+bool load_nodes(tinygltf::Model &model, cruelScene::Scene &scene)
 {
-    bool res = true;
+    bool                                           res = true;
     std::vector<std::unique_ptr<cruelScene::Node>> nodes{};
-    auto meshes = scene.GetComponents<cruelScene::Mesh>();
+    auto                                           meshes = scene.GetComponents<cruelScene::Mesh>();
 
     cout << "num of mesh: " << meshes.size() << endl;
 
@@ -139,13 +147,15 @@ bool load_nodes(tinygltf::Model &model,
         auto &gltf_node  = model.nodes[node_index];
         auto  scene_node = make_unique<cruelScene::Node>(node_index, gltf_node.name);
 
-        if (gltf_node.mesh >= 0){
+        if (gltf_node.mesh >= 0)
+        {
             // \todo
             // push new mesh
             scene_node->SetComponent(*(meshes.at(gltf_node.mesh)));
         }
 
-        if (gltf_node.camera >= 0){
+        if (gltf_node.camera >= 0)
+        {
             // \todo
             // set camera
         }
@@ -155,7 +165,7 @@ bool load_nodes(tinygltf::Model &model,
 
     // Resolve the relationship for nodes.
     std::queue<std::pair<cruelScene::Node &, int>> traverse_nodes;
-    const tinygltf::Scene & gltf_scene = model.scenes[0];
+    const tinygltf::Scene &                        gltf_scene = model.scenes[0];
 
     auto root_node = std::make_unique<cruelScene::Node>(0, gltf_scene.name);
     for (size_t node_index = 0; node_index < gltf_scene.nodes.size(); ++node_index)
@@ -194,12 +204,12 @@ void print_tree(int level, cruelScene::Node *root)
     }
     if (level > 0)
         std::cout << "\\--";
-    std::cout << "[Node " << root->GetId() << "]: " << root->GetName() ;
+    std::cout << "[Node " << root->GetId() << "]: " << root->GetName();
 
     if (root->HasComponent<cruelScene::Mesh>())
     {
         auto &mesh = root->GetComponent<cruelScene::Mesh>();
-        std::cout << "\t mesh: " << mesh.GetName() ;
+        std::cout << "\t mesh: " << mesh.GetName();
     }
     std::cout << std::endl;
 
@@ -239,7 +249,7 @@ int main(int argc, char const *argv[])
 
     auto start_marker = std::chrono::high_resolution_clock::now();
 
-    Model       model;
+    Model model;
 
     // load the model and handle the errors.
     {
@@ -265,7 +275,8 @@ int main(int argc, char const *argv[])
 
     for (auto primitive : primitives)
     {
-        cout << "buffer len: " << primitive->GetDataSize() << "\t data len: " << primitive->GetVertexLength() << endl;
+        cout << "buffer len: " << primitive->GetDataSize()
+             << "\t data len: " << primitive->GetVertexLength() << endl;
     }
     load_nodes(model, scene);
 

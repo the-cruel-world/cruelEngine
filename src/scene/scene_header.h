@@ -3,3 +3,4 @@
 #include "scene/node.hpp"
 #include "scene/object.hpp"
 #include "scene/scene.hpp"
+#include "scene/scene_graph.hpp"

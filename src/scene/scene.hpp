@@ -8,6 +8,7 @@
 namespace cruelEngine::cruelScene
 {
 class Object;
+class SceneGraph;
 
 class Scene
 {
@@ -97,5 +98,7 @@ protected:
      * Components
      */
     std::unordered_map<std::type_index, std::vector<std::unique_ptr<Component>>> components;
+
+    std::vector<std::unique_ptr<SceneGraph>> sceneGraphs;
 };
 } // namespace cruelEngine::cruelScene

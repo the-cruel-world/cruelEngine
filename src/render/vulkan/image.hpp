@@ -26,7 +26,7 @@ public:
 
     Image(LogicalDevice &device, const VkImage &handle, const VkExtent3D &extent,
           const VkFormat &format, VkImageUsageFlags imageUsage,
-          VkSampleCountFlags sampleCount = VK_SAMPLE_COUNT_1_BIT);
+          VkSampleCountFlagBits sampleCount = VK_SAMPLE_COUNT_1_BIT);
 
     Image(const Image &) = delete;
 
@@ -43,11 +43,15 @@ public:
     VkDeviceMemory     get_memory() const;
     VkDeviceSize       get_memory_size() const;
     VkImageSubresource get_subresource() const;
-    const VkImageType &get_image_type() const;
-    const VkFormat &   get_format() const;
-    u32                getArrayLayers() const;
-    void               copyData(void *data, VkDeviceSize size);
-    const VkExtent3D   GetExtent() const;
+
+    const VkImageType &      get_image_type() const;
+    const VkFormat &         get_format() const;
+    const VkSampleCountFlagBits GetSampleCount() const;
+    u32                      getArrayLayers() const;
+    const VkImageUsageFlags  GetUsage() const;
+    const VkExtent3D         GetExtent() const;
+
+    void copyData(void *data, VkDeviceSize size);
 
 private:
     LogicalDevice &device;
@@ -61,7 +65,7 @@ private:
     VkImageType        type{};
     VkExtent3D         extent{};
     VkFormat           format{};
-    VkSampleCountFlags sampleCount{};
+    VkSampleCountFlagBits sampleCount{};
     VkImageTiling      tiling{};
     VkImageUsageFlags  usage{};
     VkImageSubresource subresource{};
