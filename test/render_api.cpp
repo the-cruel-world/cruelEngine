@@ -61,6 +61,42 @@ int main(int argc, char **argv)
             hash_param(hash_res, load_store);
 
             CRUEL_LOG("Hash test %zu\n", hash_res);
+
+            std::vector<VkAttachmentDescription> attachments{};
+            std::vector<SubpassInfo> subPasses{};
+
+
+            for (size_t i = 0; i < 10; i ++)
+            {
+                VkAttachmentDescription colorAttachment{};
+                colorAttachment.format         = session.get_swapchain().get_surface_format().format;
+                colorAttachment.samples        = VK_SAMPLE_COUNT_1_BIT;
+                colorAttachment.loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR;
+                colorAttachment.storeOp        = VK_ATTACHMENT_STORE_OP_STORE;
+                colorAttachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+                colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+                colorAttachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
+                colorAttachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+                SubpassInfo              subpassInfo{};
+                subpassInfo.input_attachments                = {};
+                subpassInfo.output_attachments               = {0};
+                subpassInfo.color_resolve_attachments        = {};
+                subpassInfo.disable_depth_stencil_attachment = true;
+                subpassInfo.depth_stencil_resolve_mode       = VK_RESOLVE_MODE_NONE;
+                subpassInfo.depth_stencil_resolve_attachment = {};
+
+                attachments.push_back(std::move(colorAttachment));
+                subPasses.push_back(std::move(subpassInfo));
+
+                std::size_t hash_val {0U};
+
+                RenderPass &request = render_resource_cache.request_render_pass(attachments, subPasses);
+
+                hash_param(hash_val, attachments, subPasses);
+
+                printf("Got renderpass: %lu: at %p\n", hash_val, request.get_handle());
+            }
         }
 
         {

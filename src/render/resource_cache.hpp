@@ -1,4 +1,5 @@
 #pragma once
+#include "hash.h"
 #include "vkcommon.h"
 
 #include "render/vulkan/buffer.hpp"
@@ -54,25 +55,27 @@ public:
 
     PipelineLayout &request_pipeline_layout();
 
-    DescriptorSetLayout &request_descriptor_set_layout();
-
     GraphicsPipeline &request_graphics_pipeline(PipelineStatus &pipeline_state);
 
     ComputePipeline &request_compute_pipeline(PipelineStatus &pipeline_state);
 
-    DescriptorSet &request_descriptor_set();
+    DescriptorPool &request_descriptor_pool(const VkDescriptorPoolSize &pool_size, u32 maxSets);
+
+    DescriptorSetLayout &request_descriptor_set_layout(
+        const std::vector<VkDescriptorSetLayoutBinding> &new_bindings);
+
+    DescriptorSet &request_descriptor_set(DescriptorSetLayout &layout, DescriptorPool &pool);
 
     RenderPass &request_render_pass(const std::vector<VkAttachmentDescription> &attachments,
-                                    const std::vector<SubpassInfo>              subpasses);
+                                    const std::vector<SubpassInfo> &            subpasses);
 
     RenderPass &request_render_pass(const std::vector<Attachment> &   attachments,
                                     const std::vector<LoadStoreInfo> &load_store,
                                     const std::vector<LoadStoreInfo> &stencil_load_store,
-                                    const std::vector<SubpassInfo>    subpasses);
+                                    const std::vector<SubpassInfo> &  subpasses);
 
-    FrameBuffer &request_framebuffer(const RenderTarget &render_target,
-                                     const RenderPass &  renderPass);
-
+    FrameBuffer &request_framebuffer(const std::vector<VkImageView> &imageView,
+                                     const VkExtent2D &extent, const RenderPass &renderPass);
 
     void warmup();
 
@@ -99,9 +102,11 @@ private:
 
     std::unordered_map<std::size_t, PipelineLayout> pipeline_layouts;
 
+    std::unordered_map<std::size_t, DescriptorPool> descriptor_pools;
+
     std::unordered_map<std::size_t, DescriptorSetLayout> descriptor_set_layouts;
 
-    std::unordered_map<std::size_t, DescriptorPool> descriptor_pools;
+    std::unordered_map<std::size_t, DescriptorSet> descriptor_sets;
 
     std::unordered_map<std::size_t, RenderPass> render_passes;
 
@@ -109,20 +114,20 @@ private:
 
     std::unordered_map<std::size_t, ComputePipeline> compute_pipelines;
 
-    std::unordered_map<std::size_t, DescriptorSet> descriptor_sets;
-
     std::unordered_map<std::size_t, FrameBuffer> framebuffers;
 
     // mutex
     std::mutex pipeline_cache_mutex;
+
+    std::mutex descriptor_pool_mutex;
+
+    std::mutex descriptor_set_layout_mutex;
 
     std::mutex descriptor_set_mutex;
 
     std::mutex pipeline_layout_mutex;
 
     std::mutex shader_module_mutex;
-
-    std::mutex descriptor_set_layout_mutex;
 
     std::mutex graphics_pipeline_mutex;
 
@@ -133,9 +138,12 @@ private:
     std::mutex framebuffer_mutex;
 
     template <class T, class... A>
-    T request_resource(std::unordered_map<std::size_t, T> &resources, A &... args)
+    T &request_resource(std::mutex &resource_mutex, std::unordered_map<std::size_t, T> &resources,
+                        A &...args)
     {
-        size_t hash_val {0U};
+        std::lock_guard<std::mutex> guard(resource_mutex);
+
+        size_t hash_val{0U};
         hash_param(hash_val, args...);
 
         auto res_it = resources.find(hash_val);
@@ -152,7 +160,6 @@ private:
         res_it = res_ins_it.first;
 
         return res_it->second;
-
     }
 };
 } // namespace cruelEngine::cruelRender

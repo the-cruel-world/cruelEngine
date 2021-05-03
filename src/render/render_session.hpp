@@ -33,6 +33,7 @@ class RenderTarget;
 class RenderFrame;
 class SubPass;
 class RenderPipeline;
+class ResourceCache;
 
 typedef enum RendererOptionBits
 {

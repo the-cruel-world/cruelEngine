@@ -6,9 +6,10 @@ namespace cruelEngine
 {
 namespace cruelRender
 {
-RenderPass::RenderPass(LogicalDevice &device, std::vector<VkAttachmentDescription> &attachments,
-                       std::vector<SubpassInfo> subpasses) :
-    device{device}, attachments{attachments}
+RenderPass::RenderPass(LogicalDevice &                             device,
+                       const std::vector<VkAttachmentDescription> &attachments,
+                       const std::vector<SubpassInfo> &            subpasses) :
+    device{device}
 {
     CRUEL_LOG("RenderPass creating. attachments: %zu\n", attachments.size());
     // create subpasses and dependencies for renderpass. and then create the render pass.
@@ -17,8 +18,7 @@ RenderPass::RenderPass(LogicalDevice &device, std::vector<VkAttachmentDescriptio
     }
 }
 
-RenderPass::RenderPass(RenderPass &&other) :
-    device{other.device}, attachments{other.attachments}, handle{other.handle}
+RenderPass::RenderPass(RenderPass &&other) : device{other.device}, handle{other.handle}
 {
     other.handle = VK_NULL_HANDLE;
 }
@@ -28,8 +28,8 @@ RenderPass::~RenderPass()
     if (handle != VK_NULL_HANDLE)
         vkDestroyRenderPass(device.get_handle(), handle, nullptr);
 }
-void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachments,
-                                std::vector<SubpassInfo>              subpasses)
+void RenderPass::create_subpass(const std::vector<VkAttachmentDescription> &attachments,
+                                const std::vector<SubpassInfo>              subpasses)
 {
     std::vector<VkSubpassDescription> subpass_descriptions{};
 
@@ -80,8 +80,6 @@ void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachment
 
         subpass_description.pResolveAttachments =
             color_resolve_attachments[i].empty() ? nullptr : color_resolve_attachments[i].data();
-
-        printf("Add subpass descriptions\n");
 
         subpass_descriptions.push_back(subpass_description);
     }
@@ -139,8 +137,8 @@ void RenderPass::create_subpass(std::vector<VkAttachmentDescription> &attachment
     renderPassInfo.dependencyCount = static_cast<u32>(subpass_dependencies.size());
     renderPassInfo.pDependencies   = subpass_dependencies.data();
 
-    renderPassInfo.attachmentCount = static_cast<u32>(this->attachments.size());
-    renderPassInfo.pAttachments    = this->attachments.data();
+    renderPassInfo.attachmentCount = static_cast<u32>(attachments.size());
+    renderPassInfo.pAttachments    = attachments.data();
 
     printf("subpassCount: %d\n", renderPassInfo.subpassCount);
     printf("subpasses: %p\n", renderPassInfo.pSubpasses);

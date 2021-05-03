@@ -25,7 +25,7 @@ public:
 
     DescriptorPool(const DescriptorPool &) = delete;
 
-    DescriptorPool(DescriptorPool &&) = default;
+    DescriptorPool(DescriptorPool &&other);
 
     DescriptorPool &operator=(const DescriptorPool &) = delete;
 
@@ -54,7 +54,8 @@ private:
 class DescriptorSet
 {
 public:
-    DescriptorSet(LogicalDevice &device, DescriptorSetLayout &layout, DescriptorPool &pool);
+    DescriptorSet(LogicalDevice &device, const DescriptorSetLayout &layout,
+                  const DescriptorPool &pool);
 
     DescriptorSet(const DescriptorSet &) = delete;
 
@@ -81,9 +82,9 @@ public:
 private:
     LogicalDevice &device;
 
-    DescriptorSetLayout &layout;
+    const DescriptorSetLayout &layout;
 
-    DescriptorPool &pool;
+    const DescriptorPool &pool;
 
     VkDescriptorSet handle = VK_NULL_HANDLE;
 };

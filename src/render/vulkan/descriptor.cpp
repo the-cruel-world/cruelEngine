@@ -39,9 +39,14 @@ DescriptorPool::~DescriptorPool()
         handle = VK_NULL_HANDLE;
     }
 }
+DescriptorPool::DescriptorPool(DescriptorPool &&other) :
+    device{other.device}, pool_size{other.pool_size}, handle{other.handle}
+{
+    other.handle = VK_NULL_HANDLE;
+}
 
-DescriptorSet::DescriptorSet(LogicalDevice &device, DescriptorSetLayout &layout,
-                             DescriptorPool &pool) :
+DescriptorSet::DescriptorSet(LogicalDevice &device, const DescriptorSetLayout &layout,
+                             const DescriptorPool &pool) :
     device{device}, layout{layout}, pool{pool}
 {
     VkDescriptorSetAllocateInfo allocInfo{};
@@ -78,6 +83,11 @@ void DescriptorSet::update(VkDescriptorBufferInfo &bufferInfo)
 
     vkUpdateDescriptorSets(device.get_handle(), 1, &descriptorWrite, 0, nullptr);
 }
+DescriptorSet::DescriptorSet(DescriptorSet &&other) :
+    device{other.device}, layout{other.layout}, pool{other.pool}, handle{other.handle}
+{
+    other.handle = VK_NULL_HANDLE;
+}
 
 DescriptorSetLayout::DescriptorSetLayout(
     LogicalDevice &device, const std::vector<VkDescriptorSetLayoutBinding> new_bindings) :
@@ -108,6 +118,11 @@ void DescriptorSetLayout::set_bindings(const std::vector<VkDescriptorSetLayoutBi
     {
         bindings.push_back(binding);
     }
+}
+DescriptorSetLayout::DescriptorSetLayout(DescriptorSetLayout &&other) :
+    device{other.device}, bindings{other.bindings}, handle{other.handle}
+{
+    other.handle = VK_NULL_HANDLE;
 }
 } // namespace cruelRender
 } // namespace cruelEngine

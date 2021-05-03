@@ -52,7 +52,7 @@ Pipeline::~Pipeline()
 }
 
 ComputePipeline::ComputePipeline(LogicalDevice &device, VkPipelineCache pipeline_cache,
-                                 PipelineStatus &pipeline_state) :
+                                 const PipelineStatus &pipeline_state) :
     Pipeline{device}
 {
     const ShaderModule shader_module =
@@ -86,7 +86,7 @@ ComputePipeline::ComputePipeline(LogicalDevice &device, VkPipelineCache pipeline
 }
 
 GraphicsPipeline::GraphicsPipeline(LogicalDevice &device, VkPipelineCache pipeline_cache,
-                                   PipelineStatus &pipeline_state) :
+                                   const PipelineStatus &pipeline_state) :
     Pipeline{device}
 {
     std::vector<VkPipelineShaderStageCreateInfo> stage_create_infos;

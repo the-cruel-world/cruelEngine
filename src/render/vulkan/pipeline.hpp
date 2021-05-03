@@ -341,8 +341,9 @@ class ComputePipeline : public Pipeline
 {
 public:
     ComputePipeline(LogicalDevice &device, VkPipelineCache pipeline_cache,
-                    PipelineStatus &pipeline_state);
-    virtual ~ComputePipeline() = default;
+                    const PipelineStatus &pipeline_state);
+    virtual ~ComputePipeline()          = default;
+    ComputePipeline(ComputePipeline &&) = default;
 };
 
 /**
@@ -352,8 +353,9 @@ class GraphicsPipeline : public Pipeline
 {
 public:
     GraphicsPipeline(LogicalDevice &device, VkPipelineCache pipeline_cache,
-                     PipelineStatus &pipeline_state);
-    virtual ~GraphicsPipeline() = default;
+                     const PipelineStatus &pipeline_state);
+    virtual ~GraphicsPipeline()           = default;
+    GraphicsPipeline(GraphicsPipeline &&) = default;
 };
 } // namespace cruelRender
 } // namespace cruelEngine

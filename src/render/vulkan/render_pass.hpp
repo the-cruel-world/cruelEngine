@@ -68,8 +68,8 @@ public:
      * @param subpasses all the subpasses belongs to this render pass. If none is provided, create a
      * default subpass.
      * */
-    RenderPass(LogicalDevice &device, std::vector<VkAttachmentDescription> &attachments,
-               std::vector<SubpassInfo> subpasses);
+    RenderPass(LogicalDevice &device, const std::vector<VkAttachmentDescription> &attachments,
+               const std::vector<SubpassInfo> &subpasses);
 
     RenderPass(RenderPass &&other); // move operator
 
@@ -92,13 +92,11 @@ public:
         return device;
     }
 
-    void create_subpass(std::vector<VkAttachmentDescription> &attachments,
-                        std::vector<SubpassInfo>              subpasses);
+    void create_subpass(const std::vector<VkAttachmentDescription> &attachments,
+                        const std::vector<SubpassInfo>              subpasses);
 
 private:
     LogicalDevice &device;
-
-    std::vector<VkAttachmentDescription> attachments{};
 
     VkRenderPass handle = VK_NULL_HANDLE;
 };
