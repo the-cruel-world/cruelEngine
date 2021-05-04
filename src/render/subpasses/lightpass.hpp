@@ -9,7 +9,7 @@ class CommandBuffer;
 class LightPass : public SubPass
 {
 public:
-    LightPass(RenderSession &session);
+    LightPass(RenderContext &context);
 
     virtual void prepare() override;
 

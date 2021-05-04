@@ -56,6 +56,8 @@ RenderContext::~RenderContext()
     /* Destroy all sessions before the device. */
     sessions.clear();
 
+    resourceCache.reset();
+
     /* Release the logical device. */
     device.reset();
 

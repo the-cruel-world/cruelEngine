@@ -12,6 +12,7 @@ class RenderPass;
 class CommandBuffer;
 class FrameBuffer;
 class LogicalDevice;
+class RenderContext;
 
 struct LoadStoreInfo
 {
@@ -35,11 +36,13 @@ struct Attachment
 class RenderTarget
 {
 public:
-    RenderTarget(LogicalDevice &device, std::vector<Image> &&images);
+    RenderTarget(RenderContext &context, std::vector<Image> &&images);
 
     ~RenderTarget();
 
     std::vector<ImageView> &GetViews();
+
+    std::vector<VkImageView> GetVkViews();
 
     const VkExtent3D &GetExtent() const;
 
@@ -76,7 +79,7 @@ public:
     void set_stencil_load_store_op(const std::vector<LoadStoreInfo> stencil_load_store_op);
 
 private:
-    LogicalDevice &device;
+    RenderContext &context;
 
     VkExtent3D extent{};
 

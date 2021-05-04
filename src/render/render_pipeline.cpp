@@ -3,8 +3,10 @@
 //
 
 #include "render/render_pipeline.hpp"
+#include "render/render_context.hpp"
 #include "render/render_target.hpp"
 #include "render/render_task.hpp"
+#include "render/resource_cache.hpp"
 #include "render/subpass.hpp"
 #include "render/vulkan/command_buffer.hpp"
 #include "render/vulkan/frame_buffer.hpp"
@@ -12,9 +14,9 @@
 
 namespace cruelEngine::cruelRender
 {
-RenderPipeline::RenderPipeline(LogicalDevice &                         device,
+RenderPipeline::RenderPipeline(RenderContext &                         context,
                                std::vector<std::unique_ptr<SubPass>> &&subpasses) :
-    subpasses{std::move(subpasses)}, device{device}
+    subpasses{std::move(subpasses)}, context{context}
 {
     //    BuildRenderPass();
 
@@ -31,9 +33,7 @@ void RenderPipeline::Draw(CommandBuffer &commandBuffer, RenderTarget &target,
 {
     assert(!subpasses.empty() && "RenderPipeline should contain at least one subpass.");
 
-    if (renderPass)
-        renderPass.reset();
-    BuildRenderPass(target);
+    RenderPass &renderPass = BuildRenderPass(target);
 
     for (size_t i = 0; i < subpasses.size(); i++)
     {
@@ -46,10 +46,12 @@ void RenderPipeline::Draw(CommandBuffer &commandBuffer, RenderTarget &target,
         if (i == 0)
         {
             // require framebuffer in resource cache
-            VkExtent2D  extent2D = {target.GetExtent().width, target.GetExtent().height};
-            FrameBuffer render_frame_buffer(device, target.GetViews(), extent2D, *renderPass);
-            commandBuffer.begin_renderpass(renderPass->get_handle(),
-                                           render_frame_buffer.get_handle(), extent2D);
+            VkExtent2D extent2D = {target.GetExtent().width, target.GetExtent().height};
+
+            FrameBuffer &frame_buffer = context.GetResourceCache().request_framebuffer(
+                target.GetVkViews(), extent2D, renderPass);
+            commandBuffer.begin_renderpass(renderPass.get_handle(), frame_buffer.get_handle(),
+                                           extent2D);
         }
         else
         {
@@ -77,16 +79,12 @@ const std::vector<std::unique_ptr<RenderTask>> &RenderPipeline::GetTasks() const
 {
     return tasks;
 }
-RenderPass &RenderPipeline::GetRenderPass()
-{
-    return *renderPass;
-}
 std::unique_ptr<SubPass> &RenderPipeline::GetActiveSubpass()
 {
     return subpasses.at(active_subpass_idx);
 }
 
-void RenderPipeline::BuildRenderPass(RenderTarget &target)
+RenderPass &RenderPipeline::BuildRenderPass(RenderTarget &target)
 {
     assert(subpasses.size() > 0 && "Can not create a renderpass without any subopass.");
 
@@ -125,11 +123,12 @@ void RenderPipeline::BuildRenderPass(RenderTarget &target)
         attachments[i].stencilLoadOp  = stencil_load_store[i].loadOp;
         attachments[i].stencilStoreOp = stencil_load_store[i].storeOp;
     }
-
-    // request a renderpass instead of create a new one.
-    renderPass = std::make_unique<RenderPass>(device, attachments, subpass_info);
+    RenderPass &renderPass =
+        context.GetResourceCache().request_render_pass(attachments, subpass_info);
 
     CRUEL_LOG("%s\n", "Pipeline subPasses created");
+
+    return renderPass;
 }
 
 } // namespace cruelEngine::cruelRender

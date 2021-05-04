@@ -16,6 +16,7 @@ class SubPass;
 class RenderTask;
 class RenderTarget;
 class CommandBuffer;
+class RenderContext;
 
 /**
  * RenderPipeline is the pipeline for my render api.
@@ -35,7 +36,7 @@ public:
      *
      * @param SubPass The render passes required for this pipeline.
      * */
-    RenderPipeline(LogicalDevice &device, std::vector<std::unique_ptr<SubPass>> &&SubPass = {});
+    RenderPipeline(RenderContext &context, std::vector<std::unique_ptr<SubPass>> &&SubPass = {});
 
     RenderPipeline(const RenderPipeline &) = delete;
 
@@ -58,19 +59,14 @@ public:
 
     std::vector<std::unique_ptr<SubPass>> &GetSubPasses();
 
-    RenderPass &GetRenderPass();
-
     void UpdateTasks();
 
     const std::vector<std::unique_ptr<RenderTask>> &GetTasks() const;
 
-    void BuildRenderPass(RenderTarget &target);
+    RenderPass &BuildRenderPass(RenderTarget &target);
 
 private:
-    LogicalDevice &device;
-    //! \brief The renderpass of this pipeline. Every session should have at least
-    //! one render pass.
-    std::unique_ptr<RenderPass> renderPass;
+    RenderContext &context;
 
     std::vector<std::unique_ptr<SubPass>> subpasses;
 

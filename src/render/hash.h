@@ -24,12 +24,10 @@ inline void hash_combine(size_t &seed, const T &v)
 
 namespace std
 {
-
 template <>
 struct hash<cruelEngine::cruelRender::ShaderModule>
 {
-    std::size_t operator()(const cruelEngine::cruelRender::ShaderModule
-                           &shader) const
+    std::size_t operator()(const cruelEngine::cruelRender::ShaderModule &shader) const
     {
         std::size_t res = 0;
         for (auto &a : shader.get_source())
@@ -42,7 +40,6 @@ struct hash<cruelEngine::cruelRender::ShaderModule>
         return res;
     }
 };
-
 
 template <>
 struct hash<VkPipelineLayoutCreateInfo>
@@ -61,7 +58,8 @@ struct hash<VkPipelineLayoutCreateInfo>
 template <>
 struct hash<cruelEngine::cruelRender::PipelineStatus::StencilOpState>
 {
-    std::size_t operator()(const cruelEngine::cruelRender::PipelineStatus::StencilOpState &opstate) const
+    std::size_t
+        operator()(const cruelEngine::cruelRender::PipelineStatus::StencilOpState &opstate) const
     {
         std::size_t res = 0;
         cruelEngine::cruelRender::hash_combine(res, opstate.fail_op);
@@ -397,8 +395,8 @@ inline void hash_param(size_t &seed, const T &value)
 }
 
 template <>
-inline void hash_param<std::vector<ShaderModule>>(size_t &                           seed,
-                                                    const std::vector<ShaderModule> &value)
+inline void hash_param<std::vector<ShaderModule>>(size_t &                         seed,
+                                                  const std::vector<ShaderModule> &value)
 {
     for (auto &shader : value)
     {

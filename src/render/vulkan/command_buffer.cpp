@@ -155,5 +155,64 @@ CommandBuffer::CmdStateFlags CommandBuffer::GetCmdState()
 {
     return cmdState;
 }
+void CommandBuffer::set_render_pass(const RenderPass &new_render_pass)
+{
+    pipelineStatus.set_render_pass(new_render_pass);
+    pipelineStatus.set_subpass_index(0);
+}
+void CommandBuffer::set_pipeline_layout(PipelineLayout &new_pipeline_layout)
+{
+    pipelineStatus.set_pipeline_layout(new_pipeline_layout);
+}
+void CommandBuffer::set_vertex_input_state(
+    const PipelineStatus::VertexInputState &new_vertex_input_sate)
+{
+    pipelineStatus.set_vertex_input_state(new_vertex_input_sate);
+}
+void CommandBuffer::set_input_assembly_state(
+    const PipelineStatus::InputAssemblyState &new_input_assembly_state)
+{
+    pipelineStatus.set_input_assembly_state(new_input_assembly_state);
+}
+void CommandBuffer::set_rasterization_state(
+    const PipelineStatus::RasterizationState &new_rasterization_state)
+{
+    pipelineStatus.set_rasterization_state(new_rasterization_state);
+}
+void CommandBuffer::set_viewport_state(const PipelineStatus::ViewportState &new_viewport_state)
+{
+    pipelineStatus.set_viewport_state(new_viewport_state);
+}
+void CommandBuffer::set_multisample_state(
+    const PipelineStatus::MultisampleState &new_multisample_state)
+{
+    pipelineStatus.set_multisample_state(new_multisample_state);
+}
+void CommandBuffer::set_depth_stencil_state(
+    const PipelineStatus::DepthStencilState &new_depth_stencil_state)
+{
+    pipelineStatus.set_depth_stencil_state(new_depth_stencil_state);
+}
+void CommandBuffer::set_color_blend_state(
+    const PipelineStatus::ColorBlendState &new_color_blend_state)
+{
+    pipelineStatus.set_color_blend_state(new_color_blend_state);
+}
+void CommandBuffer::set_dynamic_state(const PipelineStatus::DynamicState &new_dynamic_state)
+{
+    pipelineStatus.set_dynamic_state(new_dynamic_state);
+}
+void CommandBuffer::set_subpass_index(uint32_t new_subpass_index)
+{
+    pipelineStatus.set_subpass_index(new_subpass_index);
+}
+void CommandBuffer::reset_pipeline_state()
+{
+    pipelineStatus.reset();
+}
+void CommandBuffer::next_subpass()
+{
+    pipelineStatus.set_subpass_index(pipelineStatus.get_subpass_index() + 1);
+}
 
 } // namespace cruelEngine::cruelRender

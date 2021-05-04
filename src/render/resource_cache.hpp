@@ -28,7 +28,6 @@ struct LoadStoreInfo;
 struct Attachment;
 
 class RenderTarget;
-class RenderPipline;
 class Subpass;
 
 /**
@@ -55,10 +54,11 @@ public:
 
     PipelineLayout &request_pipeline_layout(const std::vector<ShaderModule> &shaders);
 
-    PipelineLayout &request_pipeline_layout(const std::vector<ShaderModule> &shaders,
+    PipelineLayout &request_pipeline_layout(const std::vector<ShaderModule> & shaders,
                                             const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
 
-    DescriptorPool &request_descriptor_pool(const VkDescriptorPoolSize &pool_size, u32 maxSets = DescriptorPool::MAX_SETS_PER_POOL);
+    DescriptorPool &request_descriptor_pool(const VkDescriptorPoolSize &pool_size,
+                                            u32 maxSets = DescriptorPool::MAX_SETS_PER_POOL);
 
     DescriptorSetLayout &request_descriptor_set_layout(
         const std::vector<VkDescriptorSetLayoutBinding> &new_bindings);

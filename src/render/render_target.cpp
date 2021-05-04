@@ -1,6 +1,6 @@
 #include "render_target.hpp"
+#include "render_context.hpp"
 #include "vulkan/command_buffer.hpp"
-#include "vulkan/frame_buffer.hpp"
 #include "vulkan/image.hpp"
 #include "vulkan/image_view.hpp"
 #include "vulkan/logical_device.hpp"
@@ -13,12 +13,13 @@ Attachment::Attachment(VkFormat format, VkSampleCountFlagBits samples, VkImageUs
     format{format}, samples{samples}, usage{usage}, initLayout{initLayout}, finalLayout{finalLayout}
 {}
 
-RenderTarget::RenderTarget(LogicalDevice &device, std::vector<Image> &&images_) :
-    device{device}, images{std::move(images_)}
+RenderTarget::RenderTarget(RenderContext &context, std::vector<Image> &&images_) :
+    context{context}, images{std::move(images_)}
 {
     for (auto &image : images)
     {
-        imageViews.push_back(std::move(ImageView(device, &image, image.get_format())));
+        imageViews.push_back(
+            std::move(ImageView(context.get_device(), &image, image.get_format())));
         CRUEL_LOG("RenderTarget image: %p, imageView: %p\n", image.get_handle(),
                   imageViews.back().get_handle());
 
@@ -78,12 +79,12 @@ VkFence &RenderTarget::GetFence()
 
 void RenderTarget::WaitForFence(u64 timeout)
 {
-    vkWaitForFences(device.get_handle(), 1, &fence, VK_TRUE, UINT64_MAX);
+    vkWaitForFences(context.get_device().get_handle(), 1, &fence, VK_TRUE, UINT64_MAX);
 }
 
 void RenderTarget::ResetFence()
 {
-    vkResetFences(device.get_handle(), 1, &fence);
+    vkResetFences(context.get_device().get_handle(), 1, &fence);
 }
 
 bool RenderTarget::GetStatus()
@@ -102,6 +103,15 @@ const VkExtent3D &RenderTarget::GetExtent() const
 std::vector<ImageView> &RenderTarget::GetViews()
 {
     return imageViews;
+}
+std::vector<VkImageView> RenderTarget::GetVkViews()
+{
+    std::vector<VkImageView> vkimages(images.size());
+
+    std::transform(imageViews.begin(), imageViews.end(), vkimages.begin(),
+                   [](const ImageView &view) { return view.get_handle(); });
+
+    return vkimages;
 }
 const std::vector<Attachment> &RenderTarget::GetAttachments() const
 {

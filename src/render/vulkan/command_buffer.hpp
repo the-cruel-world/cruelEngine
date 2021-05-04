@@ -1,10 +1,12 @@
 #pragma once
 #include "../vkcommon.h"
+#include "render/vulkan/pipeline.hpp"
 
 namespace cruelEngine::cruelRender
 {
 class CommandPool;
 class Queue;
+struct PipelineStatus;
 
 /** The data prototype of the commandBuffer. It will include all different types
  * of vulkan command. */
@@ -71,6 +73,8 @@ public:
     void begin_renderpass(const VkRenderPass &renderPass, const VkFramebuffer &frameBuffer,
                           const VkExtent2D extent2dMode);
 
+    void next_subpass();
+
     void end_renderpass();
 
     /** \brief Execute this recorded commandbuffer immidiately. */
@@ -91,10 +95,35 @@ public:
 
     CmdStateFlags GetCmdState();
 
+    void set_render_pass(const RenderPass &new_render_pass);
+
+    void set_pipeline_layout(PipelineLayout &new_pipeline_layout);
+
+    void set_vertex_input_state(const PipelineStatus::VertexInputState &new_vertex_input_sate);
+
+    void set_input_assembly_state(
+        const PipelineStatus::InputAssemblyState &new_input_assembly_state);
+
+    void set_rasterization_state(const PipelineStatus::RasterizationState &new_rasterization_state);
+
+    void set_viewport_state(const PipelineStatus::ViewportState &new_viewport_state);
+
+    void set_multisample_state(const PipelineStatus::MultisampleState &new_multisample_state);
+
+    void set_depth_stencil_state(const PipelineStatus::DepthStencilState &new_depth_stencil_state);
+
+    void set_color_blend_state(const PipelineStatus::ColorBlendState &new_color_blend_state);
+
+    void set_dynamic_state(const PipelineStatus::DynamicState &new_dynamic_state);
+
+    void set_subpass_index(uint32_t new_subpass_index);
+
+    void reset_pipeline_state();
+
 private:
     const CommandPool &commandPool;
 
-    // RenderPass                  &renderPass;
+    PipelineStatus pipelineStatus{};
 
     VkCommandBuffer handle = VK_NULL_HANDLE;
 

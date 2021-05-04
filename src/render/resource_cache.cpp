@@ -39,7 +39,7 @@ ResourceCache::~ResourceCache()
 
 ShaderModule &ResourceCache::request_shader_module()
 {
-//    return ;
+    //    return ;
 }
 
 PipelineLayout &ResourceCache::request_pipeline_layout(const std::vector<ShaderModule> &shaders)
@@ -48,8 +48,8 @@ PipelineLayout &ResourceCache::request_pipeline_layout(const std::vector<ShaderM
 }
 
 PipelineLayout &
-ResourceCache::request_pipeline_layout(const std::vector<ShaderModule> & shaders,
-                                       const VkPipelineLayoutCreateInfo &pipelineLayoutInfo)
+    ResourceCache::request_pipeline_layout(const std::vector<ShaderModule> & shaders,
+                                           const VkPipelineLayoutCreateInfo &pipelineLayoutInfo)
 {
     return request_resource(pipeline_layout_mutex, pipeline_layouts, shaders, pipelineLayoutInfo);
 }
@@ -73,8 +73,8 @@ DescriptorSet &ResourceCache::request_descriptor_set(DescriptorSetLayout &layout
 }
 
 RenderPass &
-ResourceCache::request_render_pass(const std::vector<VkAttachmentDescription> &attachments,
-                                   const std::vector<SubpassInfo> &            subpasses)
+    ResourceCache::request_render_pass(const std::vector<VkAttachmentDescription> &attachments,
+                                       const std::vector<SubpassInfo> &            subpasses)
 {
     return request_resource(render_pass_mutex, render_passes, attachments, subpasses);
 }
@@ -113,7 +113,7 @@ void ResourceCache::summary()
     {
         std::lock_guard<std::mutex> guard(pipeline_layout_mutex);
         printf("  PipelineLayout in cache (%lu):\n", pipeline_layouts.size());
-        for (auto &a:pipeline_layouts)
+        for (auto &a : pipeline_layouts)
         {
             printf("\t%20zu : %p\n", a.first, a.second.get_handle());
         }
@@ -122,7 +122,7 @@ void ResourceCache::summary()
     {
         std::lock_guard<std::mutex> guard(descriptor_set_mutex);
         printf("  DesctiprorSets in cache (%lu):\n", descriptor_sets.size());
-        for (auto &a:descriptor_sets)
+        for (auto &a : descriptor_sets)
         {
             printf("\t%20zu : %p\n", a.first, a.second.get_handle());
         }
@@ -131,7 +131,7 @@ void ResourceCache::summary()
     {
         std::lock_guard<std::mutex> guard(descriptor_set_layout_mutex);
         printf("  DesctiprorSetLayouts in cache (%lu):\n", descriptor_set_layouts.size());
-        for (auto &a:descriptor_set_layouts)
+        for (auto &a : descriptor_set_layouts)
         {
             printf("\t%20zu : %p\n", a.first, a.second.get_handle());
         }
@@ -140,7 +140,7 @@ void ResourceCache::summary()
     {
         std::lock_guard<std::mutex> guard(descriptor_pool_mutex);
         printf("  DesctiprorPools in cache (%lu):\n", descriptor_pools.size());
-        for (auto &a:descriptor_pools)
+        for (auto &a : descriptor_pools)
         {
             printf("\t%20zu : %p\n", a.first, a.second.get_handle());
         }
@@ -149,7 +149,7 @@ void ResourceCache::summary()
     {
         std::lock_guard<std::mutex> guard(render_pass_mutex);
         printf("  RenderPasses in cache (%lu):\n", render_passes.size());
-        for (auto &a:render_passes)
+        for (auto &a : render_passes)
         {
             printf("\t%20zu : %p\n", a.first, a.second.get_handle());
         }
@@ -158,7 +158,7 @@ void ResourceCache::summary()
     {
         std::lock_guard<std::mutex> guard(graphics_pipeline_mutex);
         printf("  Graphics Pipelines in cache (%lu):\n", graphics_pipelines.size());
-        for (auto &a:graphics_pipelines)
+        for (auto &a : graphics_pipelines)
         {
             printf("\t%20zu : %p\n", a.first, a.second.get_handle());
         }
@@ -167,7 +167,7 @@ void ResourceCache::summary()
     {
         std::lock_guard<std::mutex> guard(compute_pipeline_mutex);
         printf("  Compute Pipelines in cache (%lu):\n", compute_pipelines.size());
-        for (auto &a:compute_pipelines)
+        for (auto &a : compute_pipelines)
         {
             printf("\t%20zu : %p\n", a.first, a.second.get_handle());
         }
@@ -176,7 +176,7 @@ void ResourceCache::summary()
     {
         std::lock_guard<std::mutex> guard(framebuffer_mutex);
         printf("  FrameBuffer in cache (%lu):\n", framebuffers.size());
-        for (auto &a:framebuffers)
+        for (auto &a : framebuffers)
         {
             printf("\t%20zu : %p\n", a.first, a.second.get_handle());
         }

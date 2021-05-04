@@ -288,13 +288,13 @@ int main(int argc, char **argv)
 
         // Test All
         {
-            RenderPipeline pipeline(context.get_device());
+            RenderPipeline pipeline(context);
             CRUEL_LOG("%s", "Create render pipeline\n");
 
-            auto lightPass = std::make_unique<LightPass>(session);
+            auto lightPass = std::make_unique<LightPass>(context);
             lightPass->set_output_attachments({1});
 
-            auto shadowPass = std::make_unique<LightPass>(session);
+            auto shadowPass = std::make_unique<LightPass>(context);
             lightPass->set_input_attachments({1});
             lightPass->set_output_attachments({0});
 
@@ -330,7 +330,7 @@ int main(int argc, char **argv)
                 images.push_back(std::move(normal_image));
 
                 auto renderTarget =
-                    std::make_unique<RenderTarget>(context.get_device(), std::move(images));
+                    std::make_unique<RenderTarget>(context, std::move(images));
 
                 renderTargets.push_back(std::move(renderTarget));
             }
@@ -347,8 +347,11 @@ int main(int argc, char **argv)
                 {{VK_ATTACHMENT_LOAD_OP_DONT_CARE, VK_ATTACHMENT_STORE_OP_DONT_CARE},
                  {VK_ATTACHMENT_LOAD_OP_DONT_CARE, VK_ATTACHMENT_STORE_OP_DONT_CARE}});
 
+            CommandBuffer &commandBuffer = session.getCommandPool().RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY);
+            commandBuffer.begin();
+
             pipeline.Draw(
-                session.getCommandPool().RequestCommandBuffer(VK_COMMAND_BUFFER_LEVEL_PRIMARY),
+                commandBuffer,
                 renderTarget);
             sleep(1);
         }

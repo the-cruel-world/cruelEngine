@@ -4,15 +4,16 @@
 
 #include "render/subpass.hpp"
 #include "render/vulkan/render_pass.hpp"
+#include "render_context.hpp"
 
 namespace cruelEngine::cruelRender
 {
-SubPass::SubPass(RenderSession &session) : session{session}
+SubPass::SubPass(RenderContext &context) : context{context}
 {}
 
-RenderSession &SubPass::GetSession()
+RenderContext &SubPass::GetContext()
 {
-    return session;
+    return context;
 }
 std::vector<uint32_t> SubPass::get_input_attachments()
 {

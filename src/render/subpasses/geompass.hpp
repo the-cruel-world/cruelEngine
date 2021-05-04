@@ -24,7 +24,7 @@ namespace cruelEngine::cruelRender
 class GeomPass : public SubPass
 {
 public:
-    GeomPass(RenderSession &session, cruelScene::Scene &scene, cruelScene::Camera &camera);
+    GeomPass(RenderContext &context, cruelScene::Scene &scene, cruelScene::Camera &camera);
 
     virtual void prepare() override;
 
@@ -39,8 +39,6 @@ protected:
                         VkFrontFace frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE);
 
     cruelScene::Scene &scene;
-
-    PipelineStatus pipelineStatus{};
 
 private:
 };

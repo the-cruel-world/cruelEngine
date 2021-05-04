@@ -16,6 +16,7 @@ namespace cruelEngine::cruelRender
 {
 class RenderSession;
 class CommandBuffer;
+class RenderContext;
 
 class SubPass
 {
@@ -25,7 +26,7 @@ public:
      *
      * @param session the session that the renderpass will be executed in.
      * */
-    SubPass(RenderSession &session);
+    SubPass(RenderContext &context);
 
     SubPass(const SubPass &) = delete;
 
@@ -41,7 +42,7 @@ public:
 
     virtual void prepare() = 0;
 
-    RenderSession &GetSession();
+    RenderContext &GetContext();
 
     // The configurations of a subpass, these are from the kronosGroup's framework. I need to change
     // them to a simpler form
@@ -70,7 +71,7 @@ public:
     void set_depth_stencil_resolve_mode(const VkResolveModeFlagBits depth_stencil_resolve_mode);
 
 protected:
-    RenderSession &session;
+    RenderContext &context;
 
     std::vector<uint32_t> input_attachments{};
 

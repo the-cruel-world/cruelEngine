@@ -2,7 +2,7 @@
 
 namespace cruelEngine::cruelRender
 {
-LightPass::LightPass(RenderSession &session) : SubPass(session)
+LightPass::LightPass(RenderContext &context) : SubPass(context)
 {}
 
 void LightPass::prepare()
