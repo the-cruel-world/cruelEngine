@@ -17,11 +17,9 @@ class DescriptorSet;
 class DescriptorPool
 {
 public:
-    DescriptorPool(
-        LogicalDevice &            device,
-        const VkDescriptorPoolSize pool_size /*need one more parameter to specify maxsets*/);
+    static const u32 MAX_SETS_PER_POOL = 16;
 
-    DescriptorPool(LogicalDevice &device, const VkDescriptorPoolSize pool_size, u32 maxSets);
+    DescriptorPool(LogicalDevice &device, const VkDescriptorPoolSize pool_size, u32 maxSets=MAX_SETS_PER_POOL);
 
     DescriptorPool(const DescriptorPool &) = delete;
 

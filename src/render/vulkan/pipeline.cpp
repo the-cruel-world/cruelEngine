@@ -35,6 +35,11 @@ PipelineLayout::~PipelineLayout()
     if (handle != VK_NULL_HANDLE)
         vkDestroyPipelineLayout(device.get_handle(), handle, nullptr);
 }
+PipelineLayout::PipelineLayout(PipelineLayout &&other)
+: device{other.device}, shaders{other.shaders}, handle{other.handle}
+{
+    other.handle = VK_NULL_HANDLE;
+}
 
 Pipeline::Pipeline(LogicalDevice &device) : device{device}
 {}

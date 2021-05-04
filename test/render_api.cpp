@@ -6,6 +6,10 @@
 #include "scene/scene_header.h"
 #include "ui/gui.hpp"
 
+#ifndef RESOURCE_BASE_DIR
+#define RESOURCE_BASE_DIR "Hello"
+#endif
+
 using namespace std;
 using namespace cruelEngine::cruelRender;
 
@@ -28,6 +32,7 @@ int main(int argc, char **argv)
                                    .flags = VK_QUEUE_GRAPHICS_BIT | VK_QUEUE_TRANSFER_BIT |
                                             VK_QUEUE_COMPUTE_BIT,
                                    .overlay = false};
+        // RenderContext test
         {
             RenderContext context(context_prop);
             CRUEL_LOG("%s", "Create render Context\n");
@@ -42,65 +47,218 @@ int main(int argc, char **argv)
             .frame_rate_limit = 100,
             .vsync            = false};
 
+        // Test RenderSessioin
         {
-            // Test RenderSessioin
             RenderSession session(context.get_instance(), context.get_device(), sessionProp);
             CRUEL_LOG("%s", "Create render Session\n");
         }
 
         RenderSession session(context.get_instance(), context.get_device(), sessionProp);
 
+        // Resource Cache test
         {
-            // Resource Cache
             ResourceCache render_resource_cache(context.get_device());
-            std::size_t   hash_res = 0U;
 
-            std::vector<LoadStoreInfo> load_store(
-                10, {VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE});
-
-            hash_param(hash_res, load_store);
-
-            CRUEL_LOG("Hash test %zu\n", hash_res);
-
-            std::vector<VkAttachmentDescription> attachments{};
-            std::vector<SubpassInfo> subPasses{};
-
-
-            for (size_t i = 0; i < 10; i ++)
+            // RenderPass from cache test
             {
-                VkAttachmentDescription colorAttachment{};
-                colorAttachment.format         = session.get_swapchain().get_surface_format().format;
-                colorAttachment.samples        = VK_SAMPLE_COUNT_1_BIT;
-                colorAttachment.loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR;
-                colorAttachment.storeOp        = VK_ATTACHMENT_STORE_OP_STORE;
-                colorAttachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-                colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-                colorAttachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
-                colorAttachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+                std::vector<VkAttachmentDescription> attachments{};
+                std::vector<SubpassInfo>             subPasses{};
+                for (size_t i = 0; i < 10; i++)
+                {
+                    VkAttachmentDescription colorAttachment{};
+                    colorAttachment.format  = session.get_swapchain().get_surface_format().format;
+                    colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+                    colorAttachment.loadOp  = VK_ATTACHMENT_LOAD_OP_CLEAR;
+                    colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+                    colorAttachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+                    colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+                    colorAttachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
+                    colorAttachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
 
-                SubpassInfo              subpassInfo{};
-                subpassInfo.input_attachments                = {};
-                subpassInfo.output_attachments               = {0};
-                subpassInfo.color_resolve_attachments        = {};
-                subpassInfo.disable_depth_stencil_attachment = true;
-                subpassInfo.depth_stencil_resolve_mode       = VK_RESOLVE_MODE_NONE;
-                subpassInfo.depth_stencil_resolve_attachment = {};
+                    SubpassInfo subpassInfo{};
+                    subpassInfo.input_attachments                = {};
+                    subpassInfo.output_attachments               = {0};
+                    subpassInfo.color_resolve_attachments        = {};
+                    subpassInfo.disable_depth_stencil_attachment = true;
+                    subpassInfo.depth_stencil_resolve_mode       = VK_RESOLVE_MODE_NONE;
+                    subpassInfo.depth_stencil_resolve_attachment = {};
 
-                attachments.push_back(std::move(colorAttachment));
-                subPasses.push_back(std::move(subpassInfo));
+                    attachments.push_back(std::move(colorAttachment));
+                    subPasses.push_back(std::move(subpassInfo));
 
-                std::size_t hash_val {0U};
+                    std::size_t hash_val{0U};
 
-                RenderPass &request = render_resource_cache.request_render_pass(attachments, subPasses);
+                    RenderPass &request =
+                        render_resource_cache.request_render_pass(attachments, subPasses);
 
-                hash_param(hash_val, attachments, subPasses);
+                    hash_param(hash_val, attachments, subPasses);
 
-                printf("Got renderpass: %lu: at %p\n", hash_val, request.get_handle());
+                    printf("  Got renderpass: %lu: at %p\n", hash_val, request.get_handle());
+                }
             }
+
+            // Descriptorpool test
+            {
+                std::vector<VkDescriptorSetLayoutBinding> bindings = {};
+                for (size_t i = 1; i < 10; i++)
+                {
+                    CRUEL_LOG("Descriptor from cache test round %zu\n", i);
+                    std::size_t hash_val{0U};
+
+                    VkDescriptorSetLayoutBinding uboLayoutBinding{};
+                    uboLayoutBinding.binding                           = i;
+                    uboLayoutBinding.descriptorType                    = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                    uboLayoutBinding.descriptorCount                   = 1;
+                    uboLayoutBinding.stageFlags                        = VK_SHADER_STAGE_VERTEX_BIT;
+                    uboLayoutBinding.pImmutableSamplers                = nullptr; // Optional
+
+                    bindings.push_back(uboLayoutBinding);
+                    DescriptorSetLayout &layout = render_resource_cache.request_descriptor_set_layout(bindings);
+                    hash_val = 0U;
+                    hash_param(hash_val, bindings);
+                    printf("  Got descriptorSetlayout: %lu: at %p\n", hash_val, layout.get_handle());
+
+                    int descriptor_count = bindings.size();
+                    VkDescriptorPoolSize poolSize{};
+                    poolSize.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                    poolSize.descriptorCount = descriptor_count;
+
+                    DescriptorPool &pool = render_resource_cache.request_descriptor_pool(poolSize);
+                    hash_val = 0U;
+                    hash_param(hash_val, poolSize, DescriptorPool::MAX_SETS_PER_POOL);
+                    printf("  Got descriptorPool: %lu: at %p\n", hash_val, pool.get_handle());
+
+                    DescriptorSet &set = render_resource_cache.request_descriptor_set(layout, pool);
+                    hash_val = 0U;
+                    hash_param(hash_val, layout, pool);
+                    printf("  Got descriptorSet: %lu: at %p\n", hash_val, set.get_handle());
+                }
+            }
+
+            // Pipeline test
+            {
+                for (size_t i = 1; i < 10; i++)
+                {
+                    CRUEL_LOG("Pipeline from cache test round %zu\n", i);
+                    std::size_t hash_val{0U};
+
+                    std::vector<ShaderModule> shaders{};
+                    shaders.emplace_back(session.get_device(),
+                                         RESOURCE_BASE_DIR"/shaders/"
+                                         "wireframe/frag.spv",
+                                         "main", VK_SHADER_STAGE_FRAGMENT_BIT);
+
+                    shaders.emplace_back(session.get_device(),
+                                         RESOURCE_BASE_DIR"/shaders/"
+                                         "wireframe/vert.spv",
+                                         "main", VK_SHADER_STAGE_VERTEX_BIT);
+
+                    VkDescriptorSetLayoutBinding uboLayoutBinding{};
+                    uboLayoutBinding.binding                           = 0;
+                    uboLayoutBinding.descriptorType                    = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+                    uboLayoutBinding.descriptorCount                   = 1;
+                    uboLayoutBinding.stageFlags                        = VK_SHADER_STAGE_VERTEX_BIT;
+                    uboLayoutBinding.pImmutableSamplers                = nullptr; // Optional
+                    DescriptorSetLayout &descriptor_set_layout = render_resource_cache.request_descriptor_set_layout({uboLayoutBinding});
+
+                    VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
+                    pipelineLayoutInfo.sType                  = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+                    pipelineLayoutInfo.setLayoutCount         = 1;
+                    pipelineLayoutInfo.pSetLayouts            = &descriptor_set_layout.get_handle(); // Optional
+                    pipelineLayoutInfo.pushConstantRangeCount = 0;                                    // Optional
+                    pipelineLayoutInfo.pPushConstantRanges    = nullptr;                              // Optional
+
+                    PipelineLayout &pipelineLayout = render_resource_cache.request_pipeline_layout(shaders, pipelineLayoutInfo);
+                    hash_val = 0U;
+                    hash_param(hash_val, shaders, pipelineLayoutInfo);
+                    printf("  Got PipelineLayout: %lu: at %p\n", hash_val, pipelineLayout.get_handle());
+
+                    shaders.clear();
+                    shaders.emplace_back(session.get_device(),
+                                         RESOURCE_BASE_DIR"/shaders/"
+                                         "triangle/hello_triangle/frag.spv",
+                                         "main", VK_SHADER_STAGE_FRAGMENT_BIT);
+
+                    shaders.emplace_back(session.get_device(),
+                                         RESOURCE_BASE_DIR"/shaders/"
+                                         "triangle/hello_triangle/vert.spv",
+                                         "main", VK_SHADER_STAGE_VERTEX_BIT);
+
+                    pipelineLayoutInfo.setLayoutCount         = 0;
+                    pipelineLayoutInfo.pSetLayouts            = nullptr; // Optional
+                    PipelineLayout &pipelineLayout2 = render_resource_cache.request_pipeline_layout(shaders, pipelineLayoutInfo);
+
+
+                    VkAttachmentDescription colorAttachment{};
+                    colorAttachment.format  = session.get_swapchain().get_surface_format().format;
+                    colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
+                    colorAttachment.loadOp  = VK_ATTACHMENT_LOAD_OP_CLEAR;
+                    colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
+                    colorAttachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+                    colorAttachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+                    colorAttachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
+                    colorAttachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+
+                    SubpassInfo subpassInfo{};
+                    subpassInfo.input_attachments                = {};
+                    subpassInfo.output_attachments               = {0};
+                    subpassInfo.color_resolve_attachments        = {};
+                    subpassInfo.disable_depth_stencil_attachment = true;
+                    subpassInfo.depth_stencil_resolve_mode       = VK_RESOLVE_MODE_NONE;
+                    subpassInfo.depth_stencil_resolve_attachment = {};
+
+                    RenderPass &renderPass =
+                        render_resource_cache.request_render_pass({colorAttachment}, {subpassInfo});
+
+                    PipelineStatus                   pipeline_state{};
+                    PipelineStatus::VertexInputState vertex_input_state;
+
+                    PipelineStatus::InputAssemblyState input_assembly_state;
+                    PipelineStatus::RasterizationState rasterization_state = {
+                        VK_FALSE, VK_FALSE, VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_CLOCKWISE,
+                        VK_FALSE};
+                    PipelineStatus::ViewportState    viewport_state;
+                    PipelineStatus::MultisampleState multisample_state = {
+                        VK_SAMPLE_COUNT_1_BIT, VK_FALSE, 1.0f, 0, VK_FALSE, VK_FALSE};
+
+                    PipelineStatus::DepthStencilState         depth_stencil_state;
+                    PipelineStatus::ColorBlendState           color_blend_state;
+                    PipelineStatus::ColorBlendAttachmentState attach = {
+                        VK_FALSE,
+                        VK_BLEND_FACTOR_ONE,
+                        VK_BLEND_FACTOR_ZERO,
+                        VK_BLEND_OP_ADD,
+                        VK_BLEND_FACTOR_ONE,
+                        VK_BLEND_FACTOR_ZERO,
+                        VK_BLEND_OP_ADD,
+                        VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT |
+                        VK_COLOR_COMPONENT_A_BIT};
+                    color_blend_state.attachments.push_back(attach);
+
+                    PipelineStatus::DynamicState dynamic_state;
+                    pipeline_state.set_vertex_input_state(vertex_input_state);
+                    pipeline_state.set_input_assembly_state(input_assembly_state);
+                    pipeline_state.set_rasterization_state(rasterization_state);
+                    pipeline_state.set_viewport_state(viewport_state);
+                    pipeline_state.set_multisample_state(multisample_state);
+                    pipeline_state.set_depth_stencil_state(depth_stencil_state);
+                    pipeline_state.set_color_blend_state(color_blend_state);
+                    pipeline_state.set_dynamic_state(dynamic_state);
+                    pipeline_state.set_pipeline_layout(pipelineLayout2);
+                    pipeline_state.set_render_pass(renderPass);
+                    pipeline_state.set_subpass_index(0);
+
+                    GraphicsPipeline &graphicsPipeline = render_resource_cache.request_graphics_pipeline(pipeline_state);
+                    hash_val = 0U;
+                    hash_param(hash_val, pipeline_state);
+                    printf("  Got GraphicsPipeline: %lu: at %p\n", hash_val, graphicsPipeline.get_handle());
+                }
+            }
+            render_resource_cache.summary();
         }
 
+        // RenderPass test
         {
-            // Test RenderPass
             std::vector<VkAttachmentDescription> attachments{};
 
             VkAttachmentDescription colorAttachment{};
@@ -128,8 +286,8 @@ int main(int argc, char **argv)
             RenderPass renderPass(context.get_device(), attachments, subPasses);
         }
 
+        // Test All
         {
-            // Test All
             RenderPipeline pipeline(context.get_device());
             CRUEL_LOG("%s", "Create render pipeline\n");
 

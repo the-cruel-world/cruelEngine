@@ -18,6 +18,8 @@ public:
     PipelineLayout(LogicalDevice &_device, const std::vector<ShaderModule> &shaders,
                    const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
 
+    PipelineLayout(PipelineLayout &&other);
+
     ~PipelineLayout();
 
     const VkPipelineLayout &get_handle() const

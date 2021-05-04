@@ -72,5 +72,6 @@ endif(CRUELENGINE_EDITOR)
 
 if (CRUELENGINE_TEST)
 # build test
+    add_compile_definitions(RESOURCE_BASE_DIR="${CMAKE_SOURCE_DIR}/data/")
     add_subdirectory(test)
 endif(CRUELENGINE_TEST)

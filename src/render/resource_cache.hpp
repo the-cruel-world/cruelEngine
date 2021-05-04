@@ -53,13 +53,12 @@ public:
 public:
     ShaderModule &request_shader_module();
 
-    PipelineLayout &request_pipeline_layout();
+    PipelineLayout &request_pipeline_layout(const std::vector<ShaderModule> &shaders);
 
-    GraphicsPipeline &request_graphics_pipeline(PipelineStatus &pipeline_state);
+    PipelineLayout &request_pipeline_layout(const std::vector<ShaderModule> &shaders,
+                                            const VkPipelineLayoutCreateInfo &pipelineLayoutInfo);
 
-    ComputePipeline &request_compute_pipeline(PipelineStatus &pipeline_state);
-
-    DescriptorPool &request_descriptor_pool(const VkDescriptorPoolSize &pool_size, u32 maxSets);
+    DescriptorPool &request_descriptor_pool(const VkDescriptorPoolSize &pool_size, u32 maxSets = DescriptorPool::MAX_SETS_PER_POOL);
 
     DescriptorSetLayout &request_descriptor_set_layout(
         const std::vector<VkDescriptorSetLayoutBinding> &new_bindings);
@@ -73,6 +72,10 @@ public:
                                     const std::vector<LoadStoreInfo> &load_store,
                                     const std::vector<LoadStoreInfo> &stencil_load_store,
                                     const std::vector<SubpassInfo> &  subpasses);
+
+    GraphicsPipeline &request_graphics_pipeline(PipelineStatus &pipeline_state);
+
+    ComputePipeline &request_compute_pipeline(PipelineStatus &pipeline_state);
 
     FrameBuffer &request_framebuffer(const std::vector<VkImageView> &imageView,
                                      const VkExtent2D &extent, const RenderPass &renderPass);
@@ -90,6 +93,8 @@ public:
     void clear_shader_module();
 
     void clear();
+
+    void summary();
 
 private:
     LogicalDevice &device;
