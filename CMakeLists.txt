@@ -63,6 +63,9 @@ add_subdirectory(external)
 # build the engine
 add_subdirectory(src)
 
+#build the plugin
+# add_subdirectory(plugin)
+
 # add_subdirectory(examples)
 
 if (CRUELENGINE_EDITOR)
